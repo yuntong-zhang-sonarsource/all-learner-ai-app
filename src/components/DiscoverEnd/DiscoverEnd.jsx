@@ -59,13 +59,13 @@ const SpeakSentenceComponent = () => {
       sx={{
         background: "linear-gradient(45deg, #5FDF9A 30%, #35C57C 90%)",
         minHeight: "100vh",
-        padding: "20px 100px",
+        // padding: "20px 100px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         boxSizing: "border-box",
       }}
     >
-      <IconButton>
-        <img src={back} alt="back" style={{ height: "30px" }} />
-      </IconButton>
       <Card sx={sectionStyle}>
         <Box sx={{ position: "absolute", left: "3px", bottom: "0px" }}>
           <img

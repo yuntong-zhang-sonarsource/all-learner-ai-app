@@ -309,7 +309,7 @@ function VoiceAnalyser(props) {
             blackLivesToShow,
             redLivesToShow,
           };
-
+          console.log("here", newLivesData);
           var audio = new Audio(
             newLivesData.redLivesToShow <
             (livesData?.redLivesToShow || livesData?.lives)
@@ -403,9 +403,7 @@ function VoiceAnalyser(props) {
         });
         try {
           const response = await S3Client.send(command);
-        } catch (err) {
- 
-        }
+        } catch (err) {}
       }
 
       response(

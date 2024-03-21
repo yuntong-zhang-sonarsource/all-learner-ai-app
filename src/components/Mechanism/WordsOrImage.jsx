@@ -205,13 +205,13 @@ const WordsOrImage = ({
                   mb: 4,
                   color: "#333F61",
                   textAlign: "center",
-                  fontSize: "40px",
                   paddingX: "140px",
                   lineHeight: "normal",
                   fontWeight: 700,
                   fontFamily: "Quicksand",
                   lineHeight: "50px",
                 }}
+                fontSize={{ md: "40px", xs: "25px" }}
               >
                 {words || ""}
               </Typography>

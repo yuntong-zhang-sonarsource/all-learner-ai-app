@@ -158,7 +158,11 @@ const MainLayout = (props) => {
     backgroundPosition: "center center", // Center the image
     backgroundRepeat: "no-repeat", // Do not repeat the image
     minHeight: "100vh",
-    padding: "30px 100px",
+    // padding: "30px 100px",
+    display: "flex",
+    paddingTop: { md: "0px", xs: "20px" },
+    justifyContent: "center",
+    alignItems: "center",
     boxSizing: "border-box",
     background: props?.background || levelsImages?.[LEVEL]?.backgroundColor,
     position: "relative",
@@ -374,6 +378,7 @@ const MainLayout = (props) => {
                           ml: {
                             lg: 25,
                             md: 18,
+                            xs: 13,
                           },
                           borderRadius: "30px",
                           background: "white",
@@ -385,10 +390,12 @@ const MainLayout = (props) => {
                               key={i}
                               sx={{
                                 width: {
+                                  xs: "20px",
                                   md: "28px",
                                   lg: "36px",
                                 },
                                 height: {
+                                  xs: "20px",
                                   md: "28px",
                                   lg: "36px",
                                 },
@@ -401,6 +408,7 @@ const MainLayout = (props) => {
                                 ml: {
                                   md: 1.5,
                                   lg: 2,
+                                  xs: 0.5,
                                 },
                                 mr: i == practiceSteps?.length - 1 ? 2 : 0,
                                 borderRadius: "30px",
@@ -412,7 +420,7 @@ const MainLayout = (props) => {
                               {currentPracticeStep > i ? (
                                 <GreenTick />
                               ) : (
-                                <span
+                                <Typography
                                   style={{
                                     color:
                                       currentPracticeStep == i
@@ -420,12 +428,12 @@ const MainLayout = (props) => {
                                         : "#1E2937",
                                     fontWeight: 600,
                                     lineHeight: "20px",
-                                    fontSize: "16px",
                                     fontFamily: "Quicksand",
                                   }}
+                                  fontSize={{ md: "16px", xs: "10px" }}
                                 >
                                   {elem.name}
-                                </span>
+                                </Typography>
                               )}
                             </Box>
                           );
@@ -439,27 +447,29 @@ const MainLayout = (props) => {
                           ml: {
                             lg: 25,
                             md: 15,
+                            xs: 13,
                           },
                           mt: 2,
                         }}
                       >
-                        <span
+                        <Typography
                           style={{
                             color: "#1E2937",
                             fontWeight: 500,
                             lineHeight: "18px",
-                            fontSize: "14px",
                             fontFamily: "Quicksand",
                           }}
+                          fontSize={{ md: "14px", xs: "10px" }}
                         >
                           {"Overall Progress:"}
-                        </span>
+                        </Typography>
                         <Box
                           sx={{
                             height: "12px",
                             width: {
                               md: "250px",
                               lg: "350px",
+                              xs: "90px",
                             },
                             background: "#D1F8D5",
                             borderRadius: "6px",
@@ -697,6 +707,7 @@ const MainLayout = (props) => {
                             ml: {
                               lg: 25,
                               md: 18,
+                              xs: 13,
                             },
                             borderRadius: "30px",
                             background: "white",
@@ -708,10 +719,12 @@ const MainLayout = (props) => {
                                 key={i}
                                 sx={{
                                   width: {
+                                    xs: "20px",
                                     md: "28px",
                                     lg: "36px",
                                   },
                                   height: {
+                                    xs: "20px",
                                     md: "28px",
                                     lg: "36px",
                                   },
@@ -724,6 +737,7 @@ const MainLayout = (props) => {
                                   ml: {
                                     md: 1.5,
                                     lg: 2,
+                                    xs: 0.5,
                                   },
                                   mr: i == practiceSteps?.length - 1 ? 2 : 0,
                                   borderRadius: "30px",
@@ -735,7 +749,7 @@ const MainLayout = (props) => {
                                 {currentPracticeStep > i ? (
                                   <GreenTick />
                                 ) : (
-                                  <span
+                                  <Typography
                                     style={{
                                       color:
                                         currentPracticeStep == i
@@ -743,12 +757,12 @@ const MainLayout = (props) => {
                                           : "#1E2937",
                                       fontWeight: 600,
                                       lineHeight: "20px",
-                                      fontSize: "16px",
                                       fontFamily: "Quicksand",
                                     }}
+                                    fontSize={{ md: "16px", xs: "10px" }}
                                   >
                                     {elem.name}
-                                  </span>
+                                  </Typography>
                                 )}
                               </Box>
                             );
@@ -762,27 +776,29 @@ const MainLayout = (props) => {
                             ml: {
                               lg: 25,
                               md: 15,
+                              xs: 13,
                             },
                             mt: 2,
                           }}
                         >
-                          <span
+                          <Typography
                             style={{
                               color: "#1E2937",
                               fontWeight: 500,
                               lineHeight: "18px",
-                              fontSize: "14px",
                               fontFamily: "Quicksand",
                             }}
+                            fontSize={{ md: "14px", xs: "10px" }}
                           >
                             {"Overall Progress:"}
-                          </span>
+                          </Typography>
                           <Box
                             sx={{
                               height: "12px",
                               width: {
                                 md: "250px",
                                 lg: "350px",
+                                xs: "90px",
                               },
                               background: "#D1F8D5",
                               borderRadius: "6px",

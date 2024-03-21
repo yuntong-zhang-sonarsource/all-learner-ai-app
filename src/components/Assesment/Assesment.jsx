@@ -4,6 +4,7 @@ import {
   Box,
   Grid,
   IconButton,
+  Typography,
 } from "../../../node_modules/@mui/material/index";
 import {
   BASE_API,
@@ -230,7 +231,7 @@ export const ProfileHeader = ({
       >
         <Box sx={{ display: "flex", alignItems: "center", width: "50%" }}>
           {handleBack && (
-            <Box ml="94px">
+            <Box ml={{ md: "94px", xs: "30px" }}>
               <IconButton onClick={handleBack}>
                 <img src={back} alt="back" style={{ height: "30px" }} />
               </IconButton>
@@ -486,41 +487,41 @@ const Assesment = ({ discoverStart }) => {
           <Box
             sx={{
               position: "absolute",
-              right: 200,
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
             }}
-            mt={5}
+            right={{ md: 150, xs: 50 }}
+            mt={{ md: 5, xs: 2 }}
           >
-            <span
+            <Typography
               style={{
                 color: "#322020",
                 fontWeight: 700,
-                fontSize: "40px",
                 fontFamily: "Quicksand",
                 lineHeight: "62px",
               }}
+              fontSize={{ md: "40px", xs: "30px" }}
             >
               {discoverStart
                 ? "Lets test your language skills"
                 : "You have good language skills"}
-            </span>
+            </Typography>
             <Box>
-              <span
+              <Typography
                 style={{
                   color: "#1CB0F6",
                   fontWeight: 600,
-                  fontSize: "30px",
                   fontFamily: "Quicksand",
                   lineHeight: "50px",
                 }}
+                fontSize={{ md: "30px", xs: "20px" }}
               >
                 {level > 0
                   ? `Take the assessment to complete Level ${level}.`
                   : "Take the assessment to discover your level"}
-              </span>
+              </Typography>
             </Box>
             <Box sx={{ cursor: "pointer" }} mt={2} onClick={handleRedirect}>
               <StartAssessmentButton />
