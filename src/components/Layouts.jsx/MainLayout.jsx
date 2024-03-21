@@ -853,7 +853,7 @@ const MainLayout = (props) => {
                         if (gameOverData) {
                           gameOverData.link
                             ? navigate(gameOverData.link)
-                            : window.location.reload();
+                            : navigate("/");
                         }
                       }}
                     >
