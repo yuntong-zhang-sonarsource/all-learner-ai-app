@@ -191,7 +191,7 @@ const WordsOrImage = ({
             </Box>
           </Box>
         ) : (
-          <>
+          <Box>
             {!words && (
               <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
@@ -220,12 +220,16 @@ const WordsOrImage = ({
               <Box
                 display={"flex"}
                 mb={4}
-                sx={{ width: "100%", justifyContent: "center" }}
+                sx={{
+                  width: "100%",
+                  justifyContent: "center",
+                  flexWrap: "wrap",
+                }}
               >
                 {highlightWords(words, matchedChar)}
               </Box>
             )}
-          </>
+          </Box>
         )}
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <VoiceAnalyser

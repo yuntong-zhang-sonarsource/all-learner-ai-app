@@ -4,7 +4,10 @@ import Mechanics2 from "../../components/Practice/Mechanics2";
 import Mechanics3 from "../../components/Practice/Mechanics3";
 import Mechanics4 from "../../components/Practice/Mechanics4";
 import Mechanics5 from "../../components/Practice/Mechanics5";
-import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
+import {
+  useLocation,
+  useNavigate,
+} from "../../../node_modules/react-router-dom/dist/index";
 import {
   BASE_API,
   callConfetti,
@@ -52,6 +55,7 @@ const Practice = () => {
   const [gameOverData, setGameOverData] = useState();
   const LIVES = 5;
   const TARGETS_PERCENTAGE = 0.3;
+  const { state } = useLocation();
 
   const gameOver = (data) => {
     let userWon = livesData?.redLivesToShow > 0;
@@ -77,6 +81,7 @@ const Practice = () => {
       Number(currentPracticeStep + 1) > 0 &&
       currentQuestion == 0 &&
       !fromBack
+      // !state?.refresh
     ) {
       setDisableScreen(true);
       callConfettiAndPlay();
@@ -169,7 +174,7 @@ const Practice = () => {
         let currentPracticeStep =
           practiceProgress[virtualId].currentPracticeStep;
         let isShowCase = currentPracticeStep == 4 || currentPracticeStep == 9; // P4 or P8
-        if (isShowCase && !isGameOver) {
+        if (isShowCase || isGameOver) {
           // assesment
 
           const sub_session_id = getLocalData("sub_session_id");
@@ -313,99 +318,108 @@ const Practice = () => {
     });
   };
 
-  useEffect(() => {
-    (async () => {
-      let quesArr = [];
-      try {
-        const lang = getLocalData("lang");
-        const virtualId = getLocalData("virtualId");
-        const sessionId = getLocalData("sessionId");
+  const fetchDetails = async () => {
+    let quesArr = [];
+    try {
+      const lang = getLocalData("lang");
+      const virtualId = getLocalData("virtualId");
+      const sessionId = getLocalData("sessionId");
 
-        const getMilestoneDetails = await axios.get(
-          `${BASE_API}lais/scores/getMilestone/user/${virtualId}?language=${lang}`
-        );
-        setLocalData(
-          "getMilestone",
-          JSON.stringify({ ...getMilestoneDetails.data })
-        );
+      const getMilestoneDetails = await axios.get(
+        `${BASE_API}lais/scores/getMilestone/user/${virtualId}?language=${lang}`
+      );
+      setLocalData(
+        "getMilestone",
+        JSON.stringify({ ...getMilestoneDetails.data })
+      );
 
-        let level =
-          Number(
-            getMilestoneDetails?.data.data?.milestone_level?.replace("m", "")
-          ) || 1;
+      let level =
+        Number(
+          getMilestoneDetails?.data.data?.milestone_level?.replace("m", "")
+        ) || 1;
 
-        setLevel(level);
+      setLevel(level);
 
-        const resLessons = await axios.get(
-          `${BASE_API}lp-tracker/api/lesson/getLessonProgressByUserId/${virtualId}?language=${lang}`
-        );
-        const getPointersDetails = await axios.get(
-          `${BASE_API}lp-tracker/api/pointer/getPointers/${virtualId}/${sessionId}?language=${lang}`
-        );
-        setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+      const resLessons = await axios.get(
+        `${BASE_API}lp-tracker/api/lesson/getLessonProgressByUserId/${virtualId}?language=${lang}`
+      );
+      const getPointersDetails = await axios.get(
+        `${BASE_API}lp-tracker/api/pointer/getPointers/${virtualId}/${sessionId}?language=${lang}`
+      );
+      setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
 
-        let userState = Number.isInteger(
-          Number(resLessons.data?.result?.result?.lesson)
-        )
-          ? Number(resLessons.data?.result?.result?.lesson)
-          : 0;
+      let userState = Number.isInteger(
+        Number(resLessons.data?.result?.result?.lesson)
+      )
+        ? Number(resLessons.data?.result?.result?.lesson)
+        : 0;
 
-        let practiceProgress = getLocalData("practiceProgress");
-        practiceProgress = practiceProgress ? JSON.parse(practiceProgress) : {};
+      let practiceProgress = getLocalData("practiceProgress");
+      practiceProgress = practiceProgress ? JSON.parse(practiceProgress) : {};
 
-        practiceProgress[virtualId] = {
-          currentQuestion: 0,
-          currentPracticeProgress: (userState / practiceSteps.length) * 100,
-          currentPracticeStep: userState || 0,
-        };
+      practiceProgress[virtualId] = {
+        currentQuestion: 0,
+        currentPracticeProgress: (userState / practiceSteps.length) * 100,
+        currentPracticeStep: userState || 0,
+      };
 
-        const currentGetContent = levelGetContent?.[level]?.find(
-          (elem) => elem.title == practiceSteps?.[userState].name
-        );
+      const currentGetContent = levelGetContent?.[level]?.find(
+        (elem) => elem.title == practiceSteps?.[userState].name
+      );
 
-        const resWord = await axios.get(
-          `${BASE_API}lais/scores/GetContent/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}`
-        );
-        setLivesData({
-          ...livesData,
-          totalTargets: resWord?.data?.totalTargets,
-          targetsForLives: resWord?.data?.totalTargets * TARGETS_PERCENTAGE,
-          targetPerLive:
-            (resWord?.data?.totalTargets * TARGETS_PERCENTAGE) / LIVES,
+      const resWord = await axios.get(
+        `${BASE_API}lais/scores/GetContent/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}`
+      );
+      setLivesData({
+        ...livesData,
+        totalTargets: resWord?.data?.totalTargets,
+        targetsForLives: resWord?.data?.totalTargets * TARGETS_PERCENTAGE,
+        targetPerLive:
+          (resWord?.data?.totalTargets * TARGETS_PERCENTAGE) / LIVES,
+      });
+      quesArr = [...quesArr, ...(resWord?.data?.content || [])];
+      setCurrentContentType(currentGetContent.criteria);
+      setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
+      setAssessmentResponse(resWord);
+
+      localStorage.setItem("storyTitle", resWord?.name);
+
+      setQuestions(quesArr);
+      setMechanism(currentGetContent.mechanism);
+
+      let showcaseLevel = userState == 4 || userState == 9;
+      setIsShowCase(showcaseLevel);
+
+      if (showcaseLevel) {
+        await axios.post(`${BASE_API}lp-tracker/api/lesson/addLesson`, {
+          userId: virtualId,
+          sessionId: sessionId,
+          milestone: "showcase",
+          lesson: userState,
+          progress: 0,
+          language: lang,
+          milestoneLevel: `m${level}`,
         });
-        quesArr = [...quesArr, ...(resWord?.data?.content || [])];
-        setCurrentContentType(currentGetContent.criteria);
-        setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
-        setAssessmentResponse(resWord);
-
-        localStorage.setItem("storyTitle", resWord?.name);
-
-        setQuestions(quesArr);
-        setMechanism(currentGetContent.mechanism);
-
-        let showcaseLevel = userState == 4 || userState == 9;
-        setIsShowCase(showcaseLevel);
-
-        if (showcaseLevel) {
-          await axios.post(`${BASE_API}lp-tracker/api/lesson/addLesson`, {
-            userId: virtualId,
-            sessionId: sessionId,
-            milestone: "showcase",
-            lesson: userState,
-            progress: 0,
-            language: lang,
-            milestoneLevel: `m${level}`,
-          });
-        }
-
-        setCurrentQuestion(practiceProgress[virtualId]?.currentQuestion || 0);
-        setLocalData("practiceProgress", JSON.stringify(practiceProgress));
-        setProgressData(practiceProgress[virtualId]);
-      } catch (error) {
-        console.log("err", error);
       }
-    })();
+
+      setCurrentQuestion(practiceProgress[virtualId]?.currentQuestion || 0);
+      setLocalData("practiceProgress", JSON.stringify(practiceProgress));
+      setProgressData(practiceProgress[virtualId]);
+    } catch (error) {
+      console.log("err", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDetails();
   }, []);
+
+  // useEffect(() => {
+  //   if (state?.refresh) {
+  //     setGameOverData(undefined);
+  //     fetchDetails();
+  //   }
+  // }, [state]);
 
   const handleBack = async () => {
     if (progressData.currentPracticeStep > 0) {
