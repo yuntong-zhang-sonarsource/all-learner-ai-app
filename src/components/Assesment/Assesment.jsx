@@ -466,6 +466,7 @@ export const ProfileHeader = ({
 
 const Assesment = ({ discoverStart }) => {
   let username;
+  let password;
   if (localStorage.getItem("token") !== null) {
     let jwtToken = localStorage.getItem("token");
     var userDetails = jwtDecode(jwtToken);
@@ -474,6 +475,7 @@ const Assesment = ({ discoverStart }) => {
   }
   const [searchParams, setSearchParams] = useSearchParams();
    username = searchParams.get("username");
+   password = searchParams.get("password");
   const [profileName, setProfileName] = useState(username);
   const [openMessageDialog, setOpenMessageDialog] = useState("");
   // let lang = searchParams.get("lang") || "ta";
