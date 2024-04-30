@@ -1,6 +1,6 @@
 {
     "URLS": {
-        "GET_VIRTUAL_ID": "api/virtualId/generateVirtualID",
+        "GET_VIRTUAL_ID": "v1/vid/generateVirtualID",
         "GET_MILESTONE": "lais/scores/getMilestone/user",
         "GET_POINTER": "api/pointer/getPoints",
         "GET_ASSESSMENT": "content-service/v1/content/getAssessment",

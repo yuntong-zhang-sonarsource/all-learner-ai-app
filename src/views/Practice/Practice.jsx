@@ -219,17 +219,17 @@ const Practice = () => {
             }
           );
           const { data: getSetData } = getSetResultRes;
-          await axios.post(
-            `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.CREATE_LEARNER_PROGRESS}`,
-            {
-              userId: virtualId,
-              sessionId: sessionId,
-              subSessionId: sub_session_id,
-              milestoneLevel: getSetData?.data?.currentLevel,
-              totalSyllableCount: totalSyllableCount,
-              language: localStorage.getItem("lang"),
-            }
-          );
+          // await axios.post(
+          //   `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.CREATE_LEARNER_PROGRESS}`,
+          //   {
+          //     userId: virtualId,
+          //     sessionId: sessionId,
+          //     subSessionId: sub_session_id,
+          //     milestoneLevel: getSetData?.data?.currentLevel,
+          //     totalSyllableCount: totalSyllableCount,
+          //     language: localStorage.getItem("lang"),
+          //   }
+          // );
           setLocalData("previous_level", getSetData.data.previous_level);
           if (getSetData.data.sessionResult == "pass") {
             await axios.post(
@@ -354,12 +354,12 @@ const Practice = () => {
   const playTeacherAudio = () => {
     const contentId = questions[currentQuestion]?.contentId;
     var audio = new Audio(
-      `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${contentId}.wav`
+      `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/Audio/${contentId}.wav`
     );
     audio.addEventListener("canplaythrough", () => {
       set_temp_audio(
         new Audio(
-          `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${contentId}.wav`
+          `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/Audio/${contentId}.wav`
         )
       );
     });

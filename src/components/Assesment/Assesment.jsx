@@ -89,89 +89,89 @@ export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
           </span>
         </Box>
         <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
-          <Grid container justifyContent={"space-evenly"} sx={{ width: "80%" }}>
-            {languages.map((elem) => {
-              const isSelectedLang = elem.lang == selectedLang;
-              return (
-                <Grid xs={4} item>
-                  <Box
-                    onClick={() => setSelectedLang(elem.lang)}
-                    sx={{
-                      cursor: "pointer",
-                      mt: "34px",
-                      ml: "15px",
-                      me: "15px",
-                      height: "140px",
-                      background: isSelectedLang ? "#EE6931" : "#EFEFEF",
-                      borderRadius: "10px",
-                      border: `3px solid ${
-                        isSelectedLang ? "#A03D13" : "#DADADA"
-                      }`,
-                      display: "flex",
-                      justifyContent: "center",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "flex-end",
-                      }}
-                    >
-                      {isSelectedLang ? (
-                        <Box mt={"-2px"} mr={"15px"}>
-                          <RoundTick />
-                        </Box>
-                      ) : (
-                        <Box
-                          mt={"-2px"}
-                          mr={"15px"}
-                          sx={{
-                            height: "18px",
-                            width: "18px",
-                            borderRadius: "15px",
-                            border: "1.5px solid #999999",
-                          }}
-                        ></Box>
-                      )}
-                    </Box>
-                    <Box mt="-2px">
-                      <span
-                        style={{
-                          color: isSelectedLang ? "#FFFFFF" : "#000000",
-                          fontWeight: 600,
-                          fontSize: "50px",
-                          fontFamily: "Quicksand",
-                          lineHeight: "62px",
-                        }}
-                      >
-                        {elem.symbol}
-                      </span>
-                    </Box>
-                    <Box mt={1}>
-                      <span
-                        style={{
-                          color: isSelectedLang ? "#FFFFFF" : "#000000",
-                          fontWeight: 600,
-                          fontSize: "20px",
-                          fontFamily: "Quicksand",
-                          lineHeight: "25px",
-                        }}
-                      >
-                        {elem.name}
-                      </span>
-                    </Box>
-                  </Box>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Box>
+  <Grid container justifyContent={"space-evenly"} sx={{ width: "80%" }}>
+    {languages.map((elem) => {
+      const isSelectedLang = elem.lang == selectedLang;
+      return (
+        <Grid xs={5} item>
+          <Box
+            onClick={() => setSelectedLang(elem.lang)}
+            sx={{
+              cursor: "pointer",
+              mt: "34px",
+              ml: "15px",
+              me: "15px",
+              height: "140px",
+              background: isSelectedLang ? "#EE6931" : "#EFEFEF",
+              borderRadius: "10px",
+              border: `3px solid ${
+                isSelectedLang ? "#A03D13" : "#DADADA"
+              }`,
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              {isSelectedLang ? (
+                <Box mt={"-2px"} mr={"15px"}>
+                  <RoundTick />
+                </Box>
+              ) : (
+                <Box
+                  mt={"-2px"}
+                  mr={"15px"}
+                  sx={{
+                    height: "18px",
+                    width: "18px",
+                    borderRadius: "15px",
+                    border: "1.5px solid #999999",
+                  }}
+                ></Box>
+              )}
+            </Box>
+            <Box mt="-2px">
+              <span
+                style={{
+                  color: isSelectedLang ? "#FFFFFF" : "#000000",
+                  fontWeight: 600,
+                  fontSize: "50px",
+                  fontFamily: "Quicksand",
+                  lineHeight: "62px",
+                }}
+              >
+                {elem.symbol}
+              </span>
+            </Box>
+            <Box mt={1}>
+              <span
+                style={{
+                  color: isSelectedLang ? "#FFFFFF" : "#000000",
+                  fontWeight: 600,
+                  fontSize: "20px",
+                  fontFamily: "Quicksand",
+                  lineHeight: "25px",
+                }}
+              >
+                {elem.name}
+              </span>
+            </Box>
+          </Box>
+        </Grid>
+      );
+    })}
+  </Grid>
+</Box>
         <Box
           sx={{ width: "100%", display: "flex", justifyContent: "center" }}
-          mt="60px"
+          mt="50px" mb="10px"
           // mr="110px"
         >
           <Box
@@ -473,6 +473,7 @@ const Assesment = ({ discoverStart }) => {
     setLocalData("profileName", username);
   }
   const [searchParams, setSearchParams] = useSearchParams();
+   username = searchParams.get("username");
   const [profileName, setProfileName] = useState(username);
   const [openMessageDialog, setOpenMessageDialog] = useState("");
   // let lang = searchParams.get("lang") || "ta";
@@ -487,14 +488,16 @@ const Assesment = ({ discoverStart }) => {
     // setLevel(level);
     setLocalData("lang", lang);
     dispatch(setVirtualId(localStorage.getItem("virtualId")));
-    let contentSessionId = localStorage.getItem("contentSessionId");
-    localStorage.setItem("sessionId", contentSessionId);
+    if(localStorage.getItem("contentSessionId")){
+      let contentSessionId = localStorage.getItem("contentSessionId");
+      localStorage.setItem("sessionId", contentSessionId);
+    }
     if (discoverStart && username && !localStorage.getItem("virtualId")) {
       (async () => {
         setLocalData("profileName", username);
-        const usernameDetails = await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_VIRTUAL_ID}?username=${username}`
-        );
+        const usernameDetails = await axios.get(
+          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_VIRTUAL_ID}?username=${username}&password=${password}`
+          );
         const getMilestoneDetails = await axios.get(
           `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${usernameDetails?.data?.result?.virtualID}?language=${lang}`
         );
@@ -510,8 +513,8 @@ const Assesment = ({ discoverStart }) => {
           "virtualId",
           usernameDetails?.data?.result?.virtualID
         );
-        let session_id = localStorage.getItem("sessionId");
-
+        let session_id = uniqueId();
+        localStorage.setItem("sessionId", `${session_id}`);
         localStorage.setItem("lang", lang || "ta");
         const getPointersDetails = await axios.get(
           `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${usernameDetails?.data?.result?.virtualID}/${session_id}?language=${lang}`
@@ -521,29 +524,31 @@ const Assesment = ({ discoverStart }) => {
         dispatch(setVirtualId(usernameDetails?.data?.result?.virtualID));
       })();
     } else {
-      (async () => {
-        const virtualId = getLocalData("virtualId");
-        const language = lang;
-        const getMilestoneDetails = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${virtualId}?language=${language}`
-        );
-        localStorage.setItem(
-          "getMilestone",
-          JSON.stringify({ ...getMilestoneDetails.data })
-        );
-        setLevel(
-          Number(
-            getMilestoneDetails?.data.data?.milestone_level?.replace("m", "")
-          )
-        );
-        const sessionId = getLocalData("sessionId");
-        if (virtualId) {
-          const getPointersDetails = await axios.get(
-            `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
+      if(virtualId){
+        (async () => {
+          const virtualId = getLocalData("virtualId");
+          const language = lang;
+          const getMilestoneDetails = await axios.get(
+            `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${virtualId}?language=${language}`
           );
-          setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
-        }
-      })();
+          localStorage.setItem(
+            "getMilestone",
+            JSON.stringify({ ...getMilestoneDetails.data })
+          );
+          setLevel(
+            Number(
+              getMilestoneDetails?.data.data?.milestone_level?.replace("m", "")
+            )
+          );
+          const sessionId = getLocalData("sessionId");
+          if (virtualId) {
+            const getPointersDetails = await axios.get(
+              `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
+            );
+            setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+          }
+        })();
+      }
     }
   }, [lang]);
 
