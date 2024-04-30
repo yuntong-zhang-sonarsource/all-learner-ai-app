@@ -3520,8 +3520,8 @@ export const levelConfig = {
 export const languages = [
   { name: "தமிழ்", lang: "ta", symbol: "இ" },
   { name: "English", lang: "en", symbol: "A" },
-  //{ name: "Hindi", lang: "hi", symbol: "क" },
-  ,
+  // { name: "हिंदी", lang: "hi", symbol: "क" },
+  { name: "ಕನ್ನಡ", lang: "kn", symbol: "ಕ" } ,
 ];
 
 export const randomizeArray = (arr) => {
