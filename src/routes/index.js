@@ -6,7 +6,7 @@ const routData = [
   {
     id: "route-001",
     path: "/",
-    component: reviews.DiscoverStart,
+    component: reviews.LoginPage,
     requiresAuth: false,
   },
   {
