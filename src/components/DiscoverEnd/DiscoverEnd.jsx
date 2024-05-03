@@ -122,7 +122,7 @@ const SpeakSentenceComponent = () => {
           <Box
             onClick={() => {
               // window.location.reload();
-              navigate(`/`);
+              navigate(`/discover-start`);
             }}
             sx={{
               display: "flex",

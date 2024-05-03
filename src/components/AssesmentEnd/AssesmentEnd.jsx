@@ -271,7 +271,7 @@ const AssesmentEnd = () => {
       enableNext={true}
       {...{
         handleNext: () => {
-          navigate(`/`);
+          navigate(`/discover-start`);
         },
       }}
     >

@@ -529,7 +529,7 @@ const Practice = () => {
       setCurrentQuestion(practiceProgress[virtualId]?.currentQuestion || 0);
       setLocalData("practiceProgress", JSON.stringify(practiceProgress));
     } else {
-      navigate("/");
+      navigate("/discover-start");
     }
   };
 

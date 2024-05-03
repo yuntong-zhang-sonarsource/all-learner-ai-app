@@ -378,7 +378,7 @@ export const ProfileHeader = ({
               <Box
                 ml={handleBack ? "12px" : "94px"}
                 sx={{ cursor: "pointer" }}
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/discover-start")}
               >
                 <img src={profilePic}></img>
               </Box>
@@ -474,8 +474,9 @@ const Assesment = ({ discoverStart }) => {
     setLocalData("profileName", username);
   }
   const [searchParams, setSearchParams] = useSearchParams();
-   username = searchParams.get("username");
-   password = searchParams.get("password");
+  //  username = searchParams.get("username");
+  //  password = searchParams.get("password");
+  username = localStorage.getItem("profileName");
   const [profileName, setProfileName] = useState(username);
   const [openMessageDialog, setOpenMessageDialog] = useState("");
   // let lang = searchParams.get("lang") || "ta";
@@ -527,7 +528,7 @@ const Assesment = ({ discoverStart }) => {
         dispatch(setVirtualId(usernameDetails?.data?.virtualID));
       })();
     } else {
-      if(virtualId){
+      if(localStorage.getItem("virtualId")){
         (async () => {
           const virtualId = getLocalData("virtualId");
           const language = lang;
@@ -543,7 +544,8 @@ const Assesment = ({ discoverStart }) => {
               getMilestoneDetails?.data.data?.milestone_level?.replace("m", "")
             )
           );
-          const sessionId = getLocalData("sessionId");
+          let sessionId = uniqueId();
+          localStorage.setItem("sessionId", `${sessionId}`);
           if (virtualId) {
             const getPointersDetails = await axios.get(
               `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`

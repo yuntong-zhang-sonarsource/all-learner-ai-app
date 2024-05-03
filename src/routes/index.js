@@ -7,7 +7,7 @@ const routData = [
     id: "route-001",
     path: "/",
     component: reviews.LoginPage,
-    requiresAuth: false,
+    requiresAuth: true,
   },
   {
     id: "route-002",
@@ -49,7 +49,7 @@ const routData = [
   {
     id: "route-000",
     path: "*",
-    component: reviews.DiscoverStart,
+    component: reviews.LoginPage,
     requiresAuth: false,
   },
   {
