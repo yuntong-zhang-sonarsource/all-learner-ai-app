@@ -497,11 +497,12 @@ const Assesment = ({ discoverStart }) => {
     if (discoverStart && username && !localStorage.getItem("virtualId")) {
       (async () => {
         setLocalData("profileName", username);
+        let password
         const usernameDetails = await axios.get(
           `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_VIRTUAL_ID}?username=${username}&password=${password}`
           );
         const getMilestoneDetails = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${usernameDetails?.data?.result?.virtualID}?language=${lang}`
+          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${usernameDetails?.data?.virtualID}?language=${lang}`
         );
 
         localStorage.setItem(
@@ -513,17 +514,17 @@ const Assesment = ({ discoverStart }) => {
         );
         localStorage.setItem(
           "virtualId",
-          usernameDetails?.data?.result?.virtualID
+          usernameDetails?.data?.virtualID
         );
         let session_id = uniqueId();
         localStorage.setItem("sessionId", `${session_id}`);
         localStorage.setItem("lang", lang || "ta");
         const getPointersDetails = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${usernameDetails?.data?.result?.virtualID}/${session_id}?language=${lang}`
+          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${usernameDetails?.data?.virtualID}/${session_id}?language=${lang}`
         );
         setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
 
-        dispatch(setVirtualId(usernameDetails?.data?.result?.virtualID));
+        dispatch(setVirtualId(usernameDetails?.data?.virtualID));
       })();
     } else {
       if(virtualId){
