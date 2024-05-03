@@ -1,64 +1,79 @@
 import React, { useState } from 'react';
-import './LoginPage.css'; // Import the CSS file for styling
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Container, Typography, TextField, Button, Grid } from '@mui/material';
 import config from "../../utils/urlConstants.json";
+import './LoginPage.css'; // Import the CSS file
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e) => {
-    localStorage.clear();
     e.preventDefault();
-    // Add your login logic here
-    console.log('Username:', username);
-    console.log('Password:', password);
-    const usernameDetails = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_VIRTUAL_ID}?username=${username}&password=${password}`
-        );
-    // For demonstration purposes, let's assume the login is successful
-    // and redirect to '/discover-start'
-
-    if (usernameDetails?.data.virtualID){
-        localStorage.setItem("profileName", username);
-        localStorage.setItem(
-            "virtualId",
-            usernameDetails?.data?.virtualID
-          );
-        window.location.href = '/discover-start';
-    }else{
-        alert("Enter correct username and password")
+    if (!username || !password) {
+      alert("Please fill in all fields");
+      return;
     }
-    
+    localStorage.clear();
+
+    try {
+      const usernameDetails = await axios.get(
+        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_VIRTUAL_ID}?username=${username}&password=${password}`
+      );
+
+      if (usernameDetails?.data.virtualID) {
+        localStorage.setItem("profileName", username);
+        localStorage.setItem("virtualId", usernameDetails?.data?.virtualID);
+        navigate("/discover-start");
+      } else {
+        alert("Enter correct username and password");
+      }
+    } catch (error) {
+      console.error("Error occurred:", error);
+      alert("An error occurred. Please try again later.");
+    }
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>Login</h2>
+    <Container className="container">
+      <div className="loginBox">
+        <Typography variant="h4" align="center" gutterBottom>
+          Login
+        </Typography>
         <form onSubmit={handleSubmit}>
-          <label>
-            Username:
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </label>
-          <label>
-            Password:
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-          <button type="submit">Login</button>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                className="textField"
+                label="Username"
+                variant="outlined"
+                fullWidth
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                className="textField"
+                label="Password"
+                variant="outlined"
+                type="password"
+                fullWidth
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button type="submit" variant="contained" color="primary" fullWidth>
+                Login
+              </Button>
+            </Grid>
+          </Grid>
         </form>
       </div>
-    </div>
+    </Container>
   );
 };
 

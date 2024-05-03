@@ -287,7 +287,7 @@ const SpeakSentenceComponent = () => {
     })();
   }, []);
   const handleBack = () => {
-    navigate("/");
+    navigate("/discover-start");
   };
   return (
     <>
