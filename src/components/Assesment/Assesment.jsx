@@ -408,11 +408,11 @@ export const ProfileHeader = ({
             alignItems: "center",
           }}
         >
-          {/* <Box sx={{ position: "relative" }} mr="10px">
+          <Box sx={{ position: "relative" }} mr="10px">
             <img
               src={scoreView}
               alt="scoreView"
-              width={"86px"}
+              width={"105px"}
               height={"35px"}
             />
             <Box sx={{ position: "absolute", top: "6px", right: "16px" }}>
@@ -427,7 +427,7 @@ export const ProfileHeader = ({
                 {points}
               </span>
             </Box>
-          </Box> */}
+          </Box>
 
           <Box
             mr={"90px"}

@@ -14,7 +14,7 @@ import gameWon from "../../assets/images/gameWon.svg";
 import gameLost from "../../assets/images/gameLost.svg";
 import clouds from "../../assets/images/clouds.svg";
 import catLoading from "../../assets/images/catLoading.gif";
-
+import scoreView from "../../assets/images/scoreView.png";
 import textureImage from "../../assets/images/textureImage.png";
 import timer from "../../assets/images/timer.svg";
 import {
@@ -212,7 +212,7 @@ const MainLayout = (props) => {
         </Box>
       )}
       <Box sx={{ position: "absolute", top: "15px", right: "80px" }}>
-        {/* {showScore && (
+        {showScore && (
           <Box sx={{ position: "relative" }}>
             <img
               src={scoreView}
@@ -233,7 +233,7 @@ const MainLayout = (props) => {
               </span>
             </Box>
           </Box>
-        )} */}
+        )}
       </Box>
       {loading ? (
         <Card
