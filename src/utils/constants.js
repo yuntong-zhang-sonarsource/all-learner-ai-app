@@ -3522,6 +3522,7 @@ export const languages = [
   { name: "English", lang: "en", symbol: "A" },
   // { name: "हिंदी", lang: "hi", symbol: "क" },
   { name: "ಕನ್ನಡ", lang: "kn", symbol: "ಕ" } ,
+  { name: "తెలుగు", lang: "te", symbol: "ఈ" } ,
 ];
 
 export const randomizeArray = (arr) => {
