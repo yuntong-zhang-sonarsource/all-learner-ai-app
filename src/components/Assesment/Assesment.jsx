@@ -553,9 +553,9 @@ const Assesment = ({ discoverStart }) => {
             getMilestoneDetails?.data.data?.milestone_level?.replace("m", "")
           )
         );
-        const sessionId = getLocalData("sessionId");
+        let sessionId = getLocalData("sessionId");
 
-        if (!sessionId){
+        if (!sessionId || sessionId === 'null'){
           sessionId = uniqueId();
           localStorage.setItem("sessionId", sessionId)
         }
