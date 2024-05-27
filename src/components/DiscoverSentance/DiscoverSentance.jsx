@@ -168,16 +168,7 @@ const SpeakSentenceComponent = () => {
         );
         setInitialAssesment(false);
         const { data: getSetData } = getSetResultRes;
-        await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.CREATE_LEARNER_PROGRESS}`,
-          {
-            userId: localStorage.getItem("virtualId"),
-            sessionId: localStorage.getItem("sessionId"),
-            subSessionId: sub_session_id,
-            milestoneLevel: getSetData?.data?.currentLevel,
-            language: localStorage.getItem("lang"),
-          }
-        );
+        
         if (
           getSetData.data.sessionResult == "pass" &&
           currentContentType == "Sentence" &&
