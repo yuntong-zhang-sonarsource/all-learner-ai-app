@@ -40,6 +40,7 @@ const SpeakSentenceComponent = () => {
   const [play] = useSound(LevelCompleteAudio);
   const [openMessageDialog, setOpenMessageDialog] = useState("");
   const [totalSyllableCount, setTotalSyllableCount] = useState('');
+  const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
 
 
   const callConfettiAndPlay = () => {
@@ -97,7 +98,6 @@ const SpeakSentenceComponent = () => {
       setEnableNext(false);
     }
     if (voiceText == "success") {
-      setEnableNext(true);
       // go_to_result(voiceText);
       setVoiceText("");
     }
@@ -114,6 +114,7 @@ const SpeakSentenceComponent = () => {
   };
 
   const handleNext = async () => {
+    setIsNextButtonCalled(true)
     setEnableNext(false);
 
     try {
@@ -331,6 +332,8 @@ const SpeakSentenceComponent = () => {
           disableScreen,
           handleBack,
           setEnableNext,
+          isNextButtonCalled,
+          setIsNextButtonCalled,
           setOpenMessageDialog,
         }}
       />
