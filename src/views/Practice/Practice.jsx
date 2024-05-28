@@ -243,17 +243,19 @@ const Practice = () => {
           const { data: getSetData } = getSetResultRes;
           setPercentage(getSetData?.data?.percentage);
           checkFluency(currentContentType, getSetData?.data?.fluency);
-          // await axios.post(
-          //   `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.CREATE_LEARNER_PROGRESS}`,
-          //   {
-          //     userId: virtualId,
-          //     sessionId: sessionId,
-          //     subSessionId: sub_session_id,
-          //     milestoneLevel: getSetData?.data?.currentLevel,
-          //     totalSyllableCount: totalSyllableCount,
-          //     language: localStorage.getItem("lang"),
-          //   }
-          // );
+          if(process.env.REACT_APP_POST_LEARNER_PROGRESS === "true"){
+          await axios.post(
+            `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.CREATE_LEARNER_PROGRESS}`,
+            {
+              userId: virtualId,
+              sessionId: sessionId,
+              subSessionId: sub_session_id,
+              milestoneLevel: getSetData?.data?.currentLevel,
+              totalSyllableCount: totalSyllableCount,
+              language: localStorage.getItem("lang"),
+            }
+          );
+        }
           setLocalData("previous_level", getSetData.data.previous_level);
           if (getSetData.data.sessionResult == "pass") {
             await axios.post(
