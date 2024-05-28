@@ -243,7 +243,7 @@ const Practice = () => {
           const { data: getSetData } = getSetResultRes;
           setPercentage(getSetData?.data?.percentage);
           checkFluency(currentContentType, getSetData?.data?.fluency);
-          if(process.env.REACT_APP_POST_LEARNER_PROGRESS !== "true"){
+          if(process.env.REACT_APP_POST_LEARNER_PROGRESS === "true"){
           await axios.post(
             `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.CREATE_LEARNER_PROGRESS}`,
             {
