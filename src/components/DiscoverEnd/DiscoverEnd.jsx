@@ -1,10 +1,9 @@
-import { Box, Card, CardContent, IconButton, Typography } from "@mui/material";
+import { Box, Card, CardContent, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import axios from "../../../node_modules/axios/index";
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
 import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
-import back from "../../assets/images/back-arrow.svg";
 import discoverEndLeft from "../../assets/images/discover-end-left.svg";
 import discoverEndRight from "../../assets/images/discover-end-right.svg";
 import textureImage from "../../assets/images/textureImage.png";
@@ -14,6 +13,7 @@ import {
   setLocalData,
 } from "../../utils/constants";
 import config from '../../utils/urlConstants.json';
+import BackButton from "../../ui-components/backButton";
 
 const sectionStyle = {
   backgroundImage: `url(${textureImage})`,
@@ -64,9 +64,7 @@ const SpeakSentenceComponent = () => {
         boxSizing: "border-box",
       }}
     >
-      <IconButton>
-        <img src={back} alt="back" style={{ height: "30px" }} />
-      </IconButton>
+      <BackButton />
       <Card sx={sectionStyle}>
         <Box sx={{ position: "absolute", left: "3px", bottom: "0px" }}>
           <img

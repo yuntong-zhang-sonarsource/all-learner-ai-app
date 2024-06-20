@@ -4,7 +4,7 @@ import v11 from "../../assets/audio/V10.mp3";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import { PlayAudioButton, StopAudioButton } from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
-import { CircularProgress } from "../../../node_modules/@mui/material/index";
+import WordSentencesMechanics from "../../mechanicsComponent/wordsSentences";
 
 const WordsOrImage = ({
   handleNext,
@@ -44,9 +44,7 @@ const WordsOrImage = ({
   highlightWords,
   matchedChar,
   loading,
-  setOpenMessageDialog,
-  isNextButtonCalled,
-  setIsNextButtonCalled
+  setOpenMessageDialog
 }) => {
   const audioRef = createRef(null);
   const [duration, setDuration] = useState(0);
@@ -63,7 +61,11 @@ const WordsOrImage = ({
       setIsPlaying(true);
     }
   };
+
   const [currrentProgress, setCurrrentProgress] = useState(0);
+  const progressBarWidth = isNaN(currrentProgress / duration)
+    ? 0
+    : currrentProgress / duration;
 
   return (
     <MainLayout
@@ -90,10 +92,9 @@ const WordsOrImage = ({
         livesData,
         gameOverData,
         loading,
-        setIsNextButtonCalled
       }}
     >
-      <CardContent
+     <CardContent
         sx={{
           overflow: "hidden",
           pt: "100px",
@@ -101,10 +102,11 @@ const WordsOrImage = ({
           pointerEvents: disableScreen ? "none" : "initial",
         }}
       >
-        {type === "image" ? (
+        {type == "image" ? (
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <img
               src={image}
+              alt="image"
               style={{
                 maxWidth: "450px",
                 maxHeight: "130px",
@@ -112,7 +114,7 @@ const WordsOrImage = ({
               }}
             />
           </Box>
-        ) : type === "phonics" ? (
+        ) : type == "phonics" ? (
           <Box
             position="relative"
             sx={{
@@ -183,6 +185,7 @@ const WordsOrImage = ({
                   sx={{
                     color: "#333F61",
                     fontSize: "44px",
+                    lineHeight: "normal",
                     letterSpacing: "2.2px",
                     lineHeight: "normal",
                     fontWeight: 600,
@@ -196,44 +199,7 @@ const WordsOrImage = ({
             </Box>
           </Box>
         ) : (
-          <Box>
-            {!words && (
-              <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
-              </Box>
-            )}
-            {words && !matchedChar && (
-              <Typography
-                variant="h5"
-                component="h4"
-                sx={{
-                  mb: 4,
-                  color: "#333F61",
-                  textAlign: "center",
-                  fontSize: "40px",
-                  // lineHeight: "normal",
-                  fontWeight: 700,
-                  fontFamily: "Quicksand",
-                  lineHeight: "50px",
-                }}
-              >
-                {words || ""}
-              </Typography>
-            )}
-            {matchedChar && (
-              <Box
-              display={"flex"}
-              mb={4}
-              sx={{
-                width: "100%",
-                justifyContent: "center",
-                flexWrap: "wrap",
-              }}
-            >
-                {highlightWords(words, matchedChar)}
-              </Box>
-            )}
-         </Box>
+          <WordSentencesMechanics words={words} matchedChar={matchedChar} highlightWords={highlightWords}/>
         )}
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <VoiceAnalyser
@@ -241,10 +207,9 @@ const WordsOrImage = ({
             setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
             storyLine={storyLine}
-            dontShowListen={type === "image" || isDiscover}
+            dontShowListen={type == "image" || isDiscover}
             // updateStory={updateStory}
             originalText={words}
-            handleNext={handleNext}
             {...{
               contentId,
               contentType,
@@ -255,9 +220,7 @@ const WordsOrImage = ({
               setEnableNext,
               livesData,
               setLivesData,
-              setOpenMessageDialog,
-              isNextButtonCalled,
-              setIsNextButtonCalled
+              setOpenMessageDialog
             }}
           />
         </Box>

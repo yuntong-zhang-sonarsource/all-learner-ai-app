@@ -1,12 +1,12 @@
 import React from 'react';
-import { Box, Card, CardContent, Button, Typography, IconButton, Divider } from '@mui/material';
-import back from '../../assets/images/back-arrow.svg';
+import { Box, Card, CardContent, Button, Typography, Divider } from '@mui/material';
 import speak from '../../assets/images/ic-speak.svg';
 import arrow from '../../assets/images/ic-arrow.svg';
 import level from '../../assets/images/level.svg';
 import elephant from '../../assets/images/elephant.svg';
 import timer from '../../assets/images/timer.svg';
 import practicebg from '../../assets/images/practice-bg.svg';
+import BackButton from '../../ui-components/backButton';
 
 const sectionStyle = {
     width: '100%',
@@ -22,10 +22,7 @@ const sectionStyle = {
 const Mechanics2 = ({page, setPage}) => {
   return (
     <Box sx={sectionStyle}>
-      <IconButton>
-        <img src={back} alt='back' style={{ height: '30px' }} />
-      </IconButton>
-
+      <BackButton />
       <Card sx={{ width: '85vw', height: '80vh', borderRadius: '15px', display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
         <CardContent>
           <img src={timer} alt='timer' height='40px'/>

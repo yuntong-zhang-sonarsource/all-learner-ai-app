@@ -1,16 +1,20 @@
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Box, Card, CardContent, IconButton, Typography } from "@mui/material";
+import back from "../../assets/images/back-arrow.svg";
 import Stack from '@mui/material/Stack';
 
 import practicebgstone from "../../assets/images/practice-bg-stone.svg";
 import practicebgstone2 from "../../assets/images/practice-bg-stone2.svg";
 import practicebgstone3 from "../../assets/images/practice-bg-stone3.svg";
+
 import practicebg from "../../assets/images/practice-bg.svg";
 import practicebg2 from "../../assets/images/practice-bg2.svg";
 import practicebg3 from "../../assets/images/practice-bg3.svg";
+
 import gameWon from "../../assets/images/gameWon.svg";
 import gameLost from "../../assets/images/gameLost.svg";
 import clouds from "../../assets/images/clouds.svg";
 import catLoading from "../../assets/images/catLoading.gif";
+
 import textureImage from "../../assets/images/textureImage.png";
 import timer from "../../assets/images/timer.svg";
 import {
@@ -39,6 +43,8 @@ import gameLoseAudio from "../../assets/audio/gameLose.wav";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProgressBar from "../../ui-components/progressBar";
+import PracticeSteps from "../../ui-components/practiseSteps";
 
 const MainLayout = (props) => {
   const levelsImages = {
@@ -101,7 +107,7 @@ const MainLayout = (props) => {
     enableNext,
     showNext = true,
     showTimer = true,
-    // showScore = true,
+    showScore = true,
     nextLessonAndHome = false,
     cardBackground,
     backgroundImage,
@@ -174,7 +180,7 @@ const MainLayout = (props) => {
     livesData?.blackLivesToShow > 0 ? livesData?.blackLivesToShow : 0;
 
   const redLivesToShow =
-    livesData?.redLivesToShow !== undefined
+    livesData?.redLivesToShow != undefined
       ? livesData?.redLivesToShow > 0
         ? livesData?.redLivesToShow
         : 0
@@ -193,7 +199,7 @@ const MainLayout = (props) => {
             position: "absolute",
             bottom: "70px",
             left:
-              LEVEL === 1
+              LEVEL == 1
                 ? "3px"
                 : LEVEL == 2
                   ? "40px"
@@ -299,29 +305,7 @@ const MainLayout = (props) => {
                 {props.children}
               </CardContent>
               {steps > 0 && (
-                <Box
-                  sx={{
-                    width: "85vw",
-                    position: "absolute",
-                    display: "flex",
-                    top: "0",
-                  }}
-                >
-                  {stepsArr?.map((step, index) => {
-                    const showGreen = step + 1 <= currentStep;
-                    return (
-                      <Box
-                        index={index}
-                        sx={{
-                          height: "8px",
-                          width: `${100 / steps}%`,
-                          background: showGreen ? "#18DE2C" : "#C1C6CC",
-                          marginLeft: "3px",
-                        }}
-                      ></Box>
-                    );
-                  })}
-                </Box>
+                <ProgressBar stepsArr={stepsArr} currentStep={currentStep} steps={steps} />
               )}
               {contentType && contentType.toLowerCase() !== 'word' && startShowCase && (
                 <Box
@@ -378,159 +362,7 @@ const MainLayout = (props) => {
                     }}
                   >
                     {showProgress && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          width: "100%",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            flexDirection: "column",
-                          }}
-                        >
-                          {" "}
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              height: "48px",
-                              border: "1.5px solid rgba(51, 63, 97, 0.15)",
-                              ml: {
-                                xs: 10,
-                                sm: 15,
-                                lg: 25,
-                                md: 18,
-                              },
-                              borderRadius: "30px",
-                              background: "white",
-                            }}
-                          >
-                            {practiceSteps.map((elem, i) => {
-                              return (
-                                <Box
-                                  key={i}
-                                  sx={{
-                                    width: {
-                                      xs: "24px",
-                                      sm: "26px",
-                                      md: "28px",
-                                      lg: "36px",
-                                    },
-                                    height: {
-                                      xs: "24px",
-                                      sm: "26px",
-                                      md: "28px",
-                                      lg: "36px",
-                                    },
-                                    background:
-                                      currentPracticeStep > i
-                                        ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
-                                        : currentPracticeStep === i
-                                        ? "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)"
-                                        : "rgba(0, 0, 0, 0.04)",
-                                    ml: {
-                                      xs: 0.5,
-                                      sm: 0.5,
-                                      md: 1.5,
-                                      lg: 2,
-                                    },
-                                    mr: i === practiceSteps?.length - 1 ? 2 : 0,
-                                    borderRadius: "30px",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  {currentPracticeStep > i ? (
-                                    <GreenTick />
-                                  ) : (
-                                    <span
-                                      style={{
-                                        color:
-                                          currentPracticeStep === i
-                                            ? "white"
-                                            : "#1E2937",
-                                        fontWeight: 600,
-                                        lineHeight: "20px",
-                                        fontSize: "16px",
-                                        fontFamily: "Quicksand",
-                                      }}
-                                    >
-                                      {elem.name}
-                                    </span>
-                                  )}
-                                </Box>
-                              );
-                            })}
-                          </Box>
-                          {/* <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              ml: {
-                                xs: 10,
-                                sm: 15,
-                                lg: 25,
-                                md: 15,
-                              },
-                              mt: 2,
-                            }}
-                          >
-                            <span
-                              style={{
-                                color: "#1E2937",
-                                fontWeight: 500,
-                                lineHeight: "18px",
-                                fontSize: "14px",
-                                fontFamily: "Quicksand",
-                              }}
-                            >
-                              {"Overall Progress:"}
-                            </span>
-                            <Box
-                              sx={{
-                                height: "12px",
-                                width: {
-                                  md: "250px",
-                                  lg: "350px",
-                                },
-                                background: "#D1F8D5",
-                                borderRadius: "6px",
-                                ml: 2,
-                                position: "relative",
-                              }}
-                            >
-                              <Box
-                                sx={{
-                                  height: "12px",
-                                  width: `${currentPracticeProgress}%`,
-                                  background: "#18DE2C",
-                                  borderRadius: "6px",
-                                  position: "absolute",
-                                }}
-                              ></Box>
-                            </Box>
-                            <span
-                              style={{
-                                color: "#1E2937",
-                                fontWeight: 700,
-                                lineHeight: "18px",
-                                fontSize: "14px",
-                                fontFamily: "Quicksand",
-                                marginLeft: "10px",
-                              }}
-                            >
-                              {`${currentPracticeProgress}%`}
-                            </span>
-                          </Box> */}
-                        </Box>
-                      </Box>
+                      <PracticeSteps currentPracticeStep={currentPracticeStep} />
                     )}
                     <Box
                       sx={{ display: "flex", justifyContent: "right", mr: 4 }}
@@ -538,13 +370,7 @@ const MainLayout = (props) => {
                       {enableNext ? (
                         <Box
                           sx={{ cursor: "pointer" }}
-                          onClick={() => {
-                            if (props.setIsNextButtonCalled) {
-                              props.setIsNextButtonCalled(true);
-                            } else {
-                              handleNext();
-                            }
-                          }}                          
+                          onClick={() => handleNext()}
                         >
                           <NextButton />
                         </Box>
@@ -771,150 +597,7 @@ const MainLayout = (props) => {
                       }}
                     >
                       {showProgress && (
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            width: "100%",
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              flexDirection: "column",
-                            }}
-                          >
-                            {" "}
-                            <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                height: "48px",
-                                border: "1.5px solid rgba(51, 63, 97, 0.15)",
-                                ml: {
-                                  lg: 25,
-                                  md: 18,
-                                },
-                                borderRadius: "30px",
-                                background: "white",
-                              }}
-                            >
-                              {practiceSteps.map((elem, i) => {
-                                return (
-                                  <Box
-                                    key={i}
-                                    sx={{
-                                      width: {
-                                        md: "28px",
-                                        lg: "36px",
-                                      },
-                                      height: {
-                                        md: "28px",
-                                        lg: "36px",
-                                      },
-                                      background:
-                                        currentPracticeStep > i
-                                          ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
-                                          : currentPracticeStep === i
-                                          ? "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)"
-                                          : "rgba(0, 0, 0, 0.04)",
-                                      ml: {
-                                        md: 1.5,
-                                        lg: 2,
-                                      },
-                                      mr:
-                                        i === practiceSteps?.length - 1 ? 2 : 0,
-                                      borderRadius: "30px",
-                                      display: "flex",
-                                      justifyContent: "center",
-                                      alignItems: "center",
-                                    }}
-                                  >
-                                    {currentPracticeStep > i ? (
-                                      <GreenTick />
-                                    ) : (
-                                      <span
-                                        style={{
-                                          color:
-                                            currentPracticeStep === i
-                                              ? "white"
-                                              : "#1E2937",
-                                          fontWeight: 600,
-                                          lineHeight: "20px",
-                                          fontSize: "16px",
-                                          fontFamily: "Quicksand",
-                                        }}
-                                      >
-                                        {elem.name}
-                                      </span>
-                                    )}
-                                  </Box>
-                                );
-                              })}
-                            </Box>
-                            {/* <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                ml: {
-                                  lg: 25,
-                                  md: 15,
-                                },
-                                mt: 2,
-                              }}
-                            >
-                              <span
-                                style={{
-                                  color: "#1E2937",
-                                  fontWeight: 500,
-                                  lineHeight: "18px",
-                                  fontSize: "14px",
-                                  fontFamily: "Quicksand",
-                                }}
-                              >
-                                {"Overall Progress:"}
-                              </span>
-                              <Box
-                                sx={{
-                                  height: "12px",
-                                  width: {
-                                    md: "250px",
-                                    lg: "350px",
-                                  },
-                                  background: "#D1F8D5",
-                                  borderRadius: "6px",
-                                  ml: 2,
-                                  position: "relative",
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    height: "12px",
-                                    width: `${currentPracticeProgress}%`,
-                                    background: "#18DE2C",
-                                    borderRadius: "6px",
-                                    position: "absolute",
-                                  }}
-                                ></Box>
-                              </Box>
-                              <span
-                                style={{
-                                  color: "#1E2937",
-                                  fontWeight: 700,
-                                  lineHeight: "18px",
-                                  fontSize: "14px",
-                                  fontFamily: "Quicksand",
-                                  marginLeft: "10px",
-                                }}
-                              >
-                                {`${currentPracticeProgress}%`}
-                              </span>
-                            </Box> */}
-                          </Box>
-                        </Box>
+                        <PracticeSteps currentPracticeStep={currentPracticeStep} />
                       )}
                       <Box
                         sx={{ display: "flex", justifyContent: "right", mr: 4 }}
