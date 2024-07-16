@@ -362,6 +362,14 @@ export const ProfileHeader = ({
     }
   };
 
+  const isOfflineModel = localStorage.getItem("isOfflineModel") === "true";
+
+  const selectedLanguage = languages?.find(
+    (elem) => elem.lang === language && elem.offline === isOfflineModel
+  );
+
+  const displayLanguage = selectedLanguage?.name || "Select Language";
+
   return (
     <>
       {!!openMessageDialog && (
@@ -489,8 +497,7 @@ export const ProfileHeader = ({
                     lineHeight: "25px",
                   }}
                 >
-                  {languages?.find((elem) => elem.lang === language)?.name ||
-                    "Select Language"}
+                  {displayLanguage}
                 </span>
               </Box>
             </Box>
