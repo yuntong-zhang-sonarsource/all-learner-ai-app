@@ -3525,13 +3525,20 @@ const AllLanguages = [
   { name: "తెలుగు", lang: "te", symbol: "ఈ", offline: false },
 ];
 
-const appLanguages = process.env.REACT_APP_IS_APP_LANGUAGES
-  ? JSON.parse(process.env.REACT_APP_IS_APP_LANGUAGES)
+const appLanguages = process.env.REACT_APP_LANGUAGES
+  ? JSON.parse(process.env.REACT_APP_LANGUAGES)
   : [];
 
-export const languages = AllLanguages.filter((lang) =>
-  appLanguages.includes(lang.lang)
-);
+const offlineLanguages = process.env.REACT_APP_ASR_OFFLINE_LANGUAGUAGES
+  ? JSON.parse(process.env.REACT_APP_ASR_OFFLINE_LANGUAGUAGES)
+  : [];
+
+export const languages = AllLanguages.filter((lang) => {
+  return (
+    (appLanguages.includes(lang.lang) && !lang.offline) ||
+    (offlineLanguages.includes(lang.lang) && lang.offline)
+  );
+});
 
 export const randomizeArray = (arr) => {
   let wordsArr = [...arr];
