@@ -53,7 +53,7 @@ export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
 
   const [loading, setLoading] = useState(false);
 
-  const dbName = "whisperModels";
+  const dbName = "language-ai-models";
   const dbVersion = 1;
   let db;
 
