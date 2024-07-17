@@ -51,6 +51,98 @@ export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
     localStorage.setItem("isOfflineModel", isOfflineModel);
   }, [isOfflineModel]);
 
+  const [loading, setLoading] = useState(false);
+
+  const dbName = "language-ai-models";
+  const dbVersion = 1;
+  let db;
+
+  // Open IndexedDB
+
+  const openDB = () => {
+    return new Promise((resolve, reject) => {
+      const request = window.indexedDB.open(dbName, dbVersion);
+      request.onerror = (event) => {
+        console.error("IndexedDB error:", event.target.errorCode);
+        reject(event.target.error);
+      };
+      request.onsuccess = (event) => {
+        db = event.target.result;
+        console.log("IndexedDB opened successfully");
+        resolve();
+      };
+      request.onupgradeneeded = (event) => {
+        db = event.target.result;
+        console.log("Creating object store for models");
+        if (!db.objectStoreNames.contains("models")) {
+          db.createObjectStore("models");
+        }
+      };
+    });
+  };
+
+  // Function to store model in IndexedDB
+  const storeModel = async (modelName, modelURL) => {
+    try {
+      const response = await fetch(modelURL);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const modelData = await response.arrayBuffer();
+      const uint8Array = new Uint8Array(modelData);
+
+      const transaction = await db.transaction(["models"], "readwrite");
+      const store = transaction.objectStore("models");
+
+      store.put(uint8Array, modelName);
+      console.log(`Stored model ${modelName} in IndexedDB`);
+    } catch (error) {
+      console.error("Error storing model in IndexedDB:", error);
+    }
+  };
+
+  // Function to check if the model is already stored in IndexedDB
+  const isModelStored = (modelName) => {
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(["models"], "readonly");
+      const store = transaction.objectStore("models");
+      const request = store.get(modelName);
+
+      request.onerror = function (event) {
+        console.error(
+          "Error checking model in IndexedDB:",
+          event.target.errorCode
+        );
+        reject(event.target.error);
+      };
+
+      request.onsuccess = function (event) {
+        resolve(!!event.target.result);
+      };
+    });
+  };
+
+  // Function to load model
+  const loadModel = async () => {
+    setLoading(true);
+    try {
+      await openDB();
+      const modelName = "en-model";
+      const modelURL = "./models/ggml-model-whisper-base.en-q5_1.bin";
+
+      const stored = await isModelStored(modelName);
+      if (!stored) {
+        await storeModel(modelName, modelURL);
+      } else {
+        console.log(`Model ${modelName} is already stored in IndexedDB`);
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -94,11 +186,11 @@ export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
         </Box>
         <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
           <Grid container justifyContent={"space-evenly"} sx={{ width: "80%" }}>
-            {languages?.map((elem) => {
+            {languages?.map((elem, index) => {
               const isSelectedLang =
                 isOfflineModel === elem.offline && elem.lang === selectedLang;
               return (
-                <Grid xs={5} item key={elem.lang}>
+                <Grid xs={5} item key={index}>
                   <Box
                     onClick={() => {
                       setSelectedLang(elem.lang);
@@ -187,6 +279,9 @@ export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
             onClick={() => {
               setLang(selectedLang);
               setOpenLangModal(false);
+              if (isOfflineModel) {
+                loadModel();
+              }
             }}
             sx={{
               cursor: "pointer",
