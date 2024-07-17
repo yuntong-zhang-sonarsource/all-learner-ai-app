@@ -59,7 +59,7 @@ export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
 
   // Open IndexedDB
 
-  const openDB = React.useCallback(() => {
+  const openDB = () => {
     return new Promise((resolve, reject) => {
       const request = window.indexedDB.open(dbName, dbVersion);
       request.onerror = (event) => {
@@ -79,7 +79,7 @@ export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
         }
       };
     });
-  }, [dbName, dbVersion]);
+  };
 
   // Function to store model in IndexedDB
   const storeModel = async (modelName, modelURL) => {
@@ -91,7 +91,7 @@ export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
       const modelData = await response.arrayBuffer();
       const uint8Array = new Uint8Array(modelData);
 
-      const transaction = db.transaction(["models"], "readwrite");
+      const transaction = await db.transaction(["models"], "readwrite");
       const store = transaction.objectStore("models");
 
       store.put(uint8Array, modelName);
@@ -127,8 +127,8 @@ export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
     setLoading(true);
     try {
       await openDB();
-      const modelName = "ggml-model-whisper-base.en-q5_1.bin";
-      const modelURL = "models/ggml-model-whisper-base.en-q5_1.bin";
+      const modelName = "en-model";
+      const modelURL = "./models/ggml-model-whisper-base.en-q5_1.bin";
 
       const stored = await isModelStored(modelName);
       if (!stored) {
