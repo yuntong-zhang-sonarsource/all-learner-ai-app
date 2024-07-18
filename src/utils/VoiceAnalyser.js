@@ -90,6 +90,16 @@ function VoiceAnalyser(props) {
         await fetchFile(recordedBlob)
       );
 
+      const nondenoiseddata = ffmpeg.FS("readFile", "recorded.webm");
+      const nondenoisedBlob = new Blob([nondenoiseddata.buffer], {
+        type: "audio/webm",
+      });
+
+      if (callUpdateLearner) {
+        let nonDenoisedText = await getResponseText(nondenoisedBlob);
+        console.log("non denoised output -- ", nonDenoisedText);
+      }
+
       const rnnoiseModelPath = "models/cb.rnnn"; // Ensure this path is correct and accessible
       await ffmpeg.FS(
         "writeFile",
@@ -104,9 +114,15 @@ function VoiceAnalyser(props) {
         "arnndn=m=cb.rnnn",
         "output.wav"
       );
+
       const data = ffmpeg.FS("readFile", "output.wav");
       const denoisedBlob = new Blob([data.buffer], { type: "audio/wav" });
       const newDenoisedUrl = URL.createObjectURL(denoisedBlob);
+
+      if (callUpdateLearner) {
+        let denoisedText = await getResponseText(denoisedBlob);
+        console.log("denoised output -- ", denoisedText);
+      }
 
       setRecordedAudio((prevUrl) => {
         if (prevUrl) {
@@ -119,6 +135,77 @@ function VoiceAnalyser(props) {
     } catch (error) {
       console.error("Error processing audio:", error);
     }
+  };
+
+  const getResponseText = async (audioBlob) => {
+    let denoised_response_text = "";
+    let isWhisperRunning = false;
+    let audio0 = null;
+    let context = new AudioContext({
+      sampleRate: 16000,
+      channelCount: 1,
+      echoCancellation: false,
+      autoGainControl: true,
+      noiseSuppression: true,
+    });
+
+    window.OfflineAudioContext =
+      window.OfflineAudioContext || window.webkitOfflineAudioContext;
+
+    window.whisperModule.set_status("");
+
+    const blobToArrayBuffer = async (blob) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(blob);
+      });
+    };
+
+    let audioBuf = await blobToArrayBuffer(audioBlob);
+    let audioBuffer = await context.decodeAudioData(audioBuf);
+
+    var offlineContext = new OfflineAudioContext(
+      audioBuffer.numberOfChannels,
+      audioBuffer.length,
+      audioBuffer.sampleRate
+    );
+    var source = offlineContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(offlineContext.destination);
+    source.start(0);
+
+    let renderedBuffer = await offlineContext.startRendering();
+    let audio = renderedBuffer.getChannelData(0);
+    let audioAll = new Float32Array(
+      audio0 == null ? audio.length : audio0.length + audio.length
+    );
+
+    if (audio0 != null) {
+      audioAll.set(audio0, 0);
+    }
+    audioAll.set(audio, audio0 == null ? 0 : audio0.length);
+
+    window.whisperModule.set_audio(1, audioAll);
+
+    let whisperStatus = "";
+
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    while (1) {
+      whisperStatus = window.whisperModule.get_status();
+      if (whisperStatus === "running whisper ...") {
+        isWhisperRunning = true;
+      }
+      if (isWhisperRunning && whisperStatus === "waiting for audio ...") {
+        denoised_response_text = window.whisperModule.get_transcribed();
+        break;
+      }
+      await delay(100);
+    }
+
+    return denoised_response_text;
   };
 
   useEffect(() => {
