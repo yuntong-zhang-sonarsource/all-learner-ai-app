@@ -172,7 +172,14 @@ function VoiceAnalyser(props) {
     };
 
     let audioBuf = await blobToArrayBuffer(audioBlob);
-    let audioBuffer = await context.decodeAudioData(audioBuf);
+
+    let audioBuffer;
+    try {
+      audioBuffer = await context.decodeAudioData(audioBuf);
+    } catch (error) {
+      console.error("Error decoding audio data:", error);
+      return "";
+    }
 
     var offlineContext = new OfflineAudioContext(
       audioBuffer.numberOfChannels,
