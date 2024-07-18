@@ -27,6 +27,7 @@ import {
   compareArrays,
   getLocalData,
   replaceAll,
+  rnnoiseModelPath,
 } from "./constants";
 import config from "./urlConstants.json";
 import { filterBadWords } from "./Badwords";
@@ -90,7 +91,13 @@ function VoiceAnalyser(props) {
         await fetchFile(recordedBlob)
       );
 
-      const nondenoiseddata = ffmpeg.FS("readFile", "recorded.webm");
+      let nondenoiseddata;
+      try {
+        nondenoiseddata = ffmpeg.FS("readFile", "recorded.webm");
+      } catch (error) {
+        console.error("Error reading recorded file:", error);
+        return;
+      }
       const nondenoisedBlob = new Blob([nondenoiseddata.buffer], {
         type: "audio/webm",
       });
@@ -104,7 +111,6 @@ function VoiceAnalyser(props) {
         }
       }
 
-      const rnnoiseModelPath = "models/cb.rnnn"; // Ensure this path is correct and accessible
       await ffmpeg.FS(
         "writeFile",
         "cb.rnnn",
@@ -119,7 +125,13 @@ function VoiceAnalyser(props) {
         "output.wav"
       );
 
-      const data = ffmpeg.FS("readFile", "output.wav");
+      let data;
+      try {
+        data = ffmpeg.FS("readFile", "output.wav");
+      } catch (error) {
+        console.error("Error reading output file:", error);
+        return;
+      }
       const denoisedBlob = new Blob([data.buffer], { type: "audio/wav" });
       const newDenoisedUrl = URL.createObjectURL(denoisedBlob);
 
@@ -208,13 +220,16 @@ function VoiceAnalyser(props) {
 
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    while (1) {
+    let checkWhisperStatus = true;
+
+    while (checkWhisperStatus) {
       whisperStatus = window.whisperModule.get_status();
       if (whisperStatus === "running whisper ...") {
         isWhisperRunning = true;
       }
       if (isWhisperRunning && whisperStatus === "waiting for audio ...") {
         denoised_response_text = window.whisperModule.get_transcribed();
+        checkWhisperStatus = false;
         break;
       }
       await delay(100);
