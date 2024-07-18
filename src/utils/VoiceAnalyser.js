@@ -27,6 +27,7 @@ import {
   compareArrays,
   getLocalData,
   replaceAll,
+  rnnoiseModelPath,
 } from "./constants";
 import config from "./urlConstants.json";
 import { filterBadWords } from "./Badwords";
@@ -90,7 +91,26 @@ function VoiceAnalyser(props) {
         await fetchFile(recordedBlob)
       );
 
-      const rnnoiseModelPath = "models/cb.rnnn"; // Ensure this path is correct and accessible
+      let nondenoiseddata;
+      try {
+        nondenoiseddata = ffmpeg.FS("readFile", "recorded.webm");
+      } catch (error) {
+        console.error("Error reading recorded file:", error);
+        return;
+      }
+      const nondenoisedBlob = new Blob([nondenoiseddata.buffer], {
+        type: "audio/webm",
+      });
+
+      if (callUpdateLearner) {
+        try {
+          let nonDenoisedText = await getResponseText(nondenoisedBlob);
+          console.log("non denoised output -- ", nonDenoisedText);
+        } catch (error) {
+          console.error("Error getting non denoised text:", error);
+        }
+      }
+
       await ffmpeg.FS(
         "writeFile",
         "cb.rnnn",
@@ -104,9 +124,25 @@ function VoiceAnalyser(props) {
         "arnndn=m=cb.rnnn",
         "output.wav"
       );
-      const data = ffmpeg.FS("readFile", "output.wav");
+
+      let data;
+      try {
+        data = ffmpeg.FS("readFile", "output.wav");
+      } catch (error) {
+        console.error("Error reading output file:", error);
+        return;
+      }
       const denoisedBlob = new Blob([data.buffer], { type: "audio/wav" });
       const newDenoisedUrl = URL.createObjectURL(denoisedBlob);
+
+      if (callUpdateLearner) {
+        try {
+          let denoisedText = await getResponseText(denoisedBlob);
+          console.log("denoised output -- ", denoisedText);
+        } catch (error) {
+          console.error("Error getting denoised text:", error);
+        }
+      }
 
       setRecordedAudio((prevUrl) => {
         if (prevUrl) {
@@ -119,6 +155,87 @@ function VoiceAnalyser(props) {
     } catch (error) {
       console.error("Error processing audio:", error);
     }
+  };
+
+  const getResponseText = async (audioBlob) => {
+    let denoised_response_text = "";
+    let isWhisperRunning = false;
+    let audio0 = null;
+    let context = new AudioContext({
+      sampleRate: 16000,
+      channelCount: 1,
+      echoCancellation: false,
+      autoGainControl: true,
+      noiseSuppression: true,
+    });
+
+    window.OfflineAudioContext =
+      window.OfflineAudioContext || window.webkitOfflineAudioContext;
+
+    window.whisperModule.set_status("");
+
+    const blobToArrayBuffer = async (blob) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(blob);
+      });
+    };
+
+    let audioBuf = await blobToArrayBuffer(audioBlob);
+
+    let audioBuffer;
+    try {
+      audioBuffer = await context.decodeAudioData(audioBuf);
+    } catch (error) {
+      console.error("Error decoding audio data:", error);
+      return "";
+    }
+
+    var offlineContext = new OfflineAudioContext(
+      audioBuffer.numberOfChannels,
+      audioBuffer.length,
+      audioBuffer.sampleRate
+    );
+    var source = offlineContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(offlineContext.destination);
+    source.start(0);
+
+    let renderedBuffer = await offlineContext.startRendering();
+    let audio = renderedBuffer.getChannelData(0);
+    let audioAll = new Float32Array(
+      audio0 == null ? audio.length : audio0.length + audio.length
+    );
+
+    if (audio0 != null) {
+      audioAll.set(audio0, 0);
+    }
+    audioAll.set(audio, audio0 == null ? 0 : audio0.length);
+
+    window.whisperModule.set_audio(1, audioAll);
+
+    let whisperStatus = "";
+
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    let checkWhisperStatus = true;
+
+    while (checkWhisperStatus) {
+      whisperStatus = window.whisperModule.get_status();
+      if (whisperStatus === "running whisper ...") {
+        isWhisperRunning = true;
+      }
+      if (isWhisperRunning && whisperStatus === "waiting for audio ...") {
+        denoised_response_text = window.whisperModule.get_transcribed();
+        checkWhisperStatus = false;
+        break;
+      }
+      await delay(100);
+    }
+
+    return denoised_response_text;
   };
 
   useEffect(() => {
