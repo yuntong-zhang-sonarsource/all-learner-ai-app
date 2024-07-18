@@ -96,8 +96,12 @@ function VoiceAnalyser(props) {
       });
 
       if (callUpdateLearner) {
-        let nonDenoisedText = await getResponseText(nondenoisedBlob);
-        console.log("non denoised output -- ", nonDenoisedText);
+        try {
+          let nonDenoisedText = await getResponseText(nondenoisedBlob);
+          console.log("non denoised output -- ", nonDenoisedText);
+        } catch (error) {
+          console.error("Error getting non denoised text:", error);
+        }
       }
 
       const rnnoiseModelPath = "models/cb.rnnn"; // Ensure this path is correct and accessible
@@ -120,8 +124,12 @@ function VoiceAnalyser(props) {
       const newDenoisedUrl = URL.createObjectURL(denoisedBlob);
 
       if (callUpdateLearner) {
-        let denoisedText = await getResponseText(denoisedBlob);
-        console.log("denoised output -- ", denoisedText);
+        try {
+          let denoisedText = await getResponseText(denoisedBlob);
+          console.log("denoised output -- ", denoisedText);
+        } catch (error) {
+          console.error("Error getting denoised text:", error);
+        }
       }
 
       setRecordedAudio((prevUrl) => {

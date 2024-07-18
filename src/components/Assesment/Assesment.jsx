@@ -130,9 +130,17 @@ export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
       // ignore
     }
     try {
-      const transaction = await db.transaction(["models"], "readonly");
-      const store = transaction.objectStore("models");
-      const request = await store.get(modelName);
+      let transaction;
+      let store;
+      let request;
+      try {
+        transaction = await db.transaction(["models"], "readonly");
+        store = transaction.objectStore("models");
+        request = await store.get(modelName);
+      } catch (error) {
+        console.error("Error accessing IndexedDB:", error);
+        return;
+      }
 
       request.onsuccess = async () => {
         const modelData = request.result;
