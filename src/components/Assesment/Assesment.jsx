@@ -40,7 +40,7 @@ import config from "../../utils/urlConstants.json";
 import panda from "../../assets/images/panda.svg";
 import cryPanda from "../../assets/images/cryPanda.svg";
 import { uniqueId } from "../../services/utilService";
-import { CircularProgress } from "../../../node_modules/@mui/material/index";
+import { CircularProgress } from "@mui/material";
 
 export const LanguageModal = ({
   lang,
@@ -578,9 +578,7 @@ export const ProfileHeader = ({
             mr={{ xs: "10px", sm: "90px" }}
             onClick={() =>
               setOpenLangModal
-                ? loading
-                  ? setOpenLangModal(false)
-                  : setOpenLangModal(true)
+                ? setOpenLangModal(!loading)
                 : setOpenMessageDialog({
                     message: "go to homescreen to change language",
                     dontShowHeader: true,
