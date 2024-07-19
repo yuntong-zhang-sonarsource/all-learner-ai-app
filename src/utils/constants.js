@@ -3550,3 +3550,5 @@ export const randomizeArray = (arr) => {
   }
   return wordsArr;
 };
+
+export const rnnoiseModelPath = "models/cb.rnnn";

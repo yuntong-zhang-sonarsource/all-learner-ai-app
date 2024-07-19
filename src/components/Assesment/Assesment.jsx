@@ -40,7 +40,7 @@ import config from "../../utils/urlConstants.json";
 import panda from "../../assets/images/panda.svg";
 import cryPanda from "../../assets/images/cryPanda.svg";
 import { uniqueId } from "../../services/utilService";
-import { CircularProgress } from "@mui/material";
+import CircularProgressOverlay from "../CustomComponent/CircularProgressOverlay";
 
 export const LanguageModal = ({
   lang,
@@ -126,6 +126,48 @@ export const LanguageModal = ({
     });
   };
 
+  // Function to load model in whisper cpp module
+  const loadModelWhisper = async (modelName) => {
+    try {
+      window.whisperModule.FS_unlink("whisper.bin");
+    } catch (e) {
+      // ignore
+    }
+    try {
+      let transaction;
+      let store;
+      let request;
+      try {
+        transaction = await db.transaction(["models"], "readonly");
+        store = transaction.objectStore("models");
+        request = await store.get(modelName);
+      } catch (error) {
+        console.error("Error accessing IndexedDB:", error);
+        return;
+      }
+
+      request.onsuccess = async () => {
+        const modelData = request.result;
+        let storeResponse = await window.whisperModule.FS_createDataFile(
+          "/",
+          "whisper.bin",
+          modelData,
+          true,
+          true
+        );
+        setTimeout(console.log(window.whisperModule.init("whisper.bin")), 5000);
+      };
+
+      request.onerror = (err) => {
+        console.error(`Error to get model data: ${err}`);
+      };
+
+      console.log(`Stored model in whisper cpp memory`);
+    } catch (error) {
+      console.error("Error storing model in IndexedDB:", error);
+    }
+  };
+
   // Function to load model
   const loadModel = async () => {
     setLoading(true);
@@ -140,6 +182,7 @@ export const LanguageModal = ({
       } else {
         console.log(`Model ${modelName} is already stored in IndexedDB`);
       }
+      await loadModelWhisper(modelName);
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -746,22 +789,7 @@ const Assesment = ({ discoverStart }) => {
 
   return (
     <>
-      {loading && (
-        <Box
-          sx={{
-            display: "flex",
-            position: "absolute",
-            zIndex: 999,
-            justifyContent: "center",
-            width: "100%",
-            alignItems: "center",
-            height: "100vh",
-            backgroundColor: "rgb(0 0 0 / 56%)",
-          }}
-        >
-          <CircularProgress size="4rem" sx={{ color: "#ffffff" }} />
-        </Box>
-      )}
+      {loading && <CircularProgressOverlay size="4rem" color={"#ffffff"} />}
       {!!openMessageDialog && (
         <MessageDialog
           message={openMessageDialog.message}
