@@ -40,7 +40,7 @@ import config from "../../utils/urlConstants.json";
 import panda from "../../assets/images/panda.svg";
 import cryPanda from "../../assets/images/cryPanda.svg";
 import { uniqueId } from "../../services/utilService";
-import CircularProgressOverlay from "../CustomComponent/CircularProgressOverlay";
+import CircularProgressOverlay from "../CommonComponent/CircularProgressOverlay";
 
 export const LanguageModal = ({
   lang,
