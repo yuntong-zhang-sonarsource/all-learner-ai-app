@@ -33,6 +33,7 @@ import config from "./urlConstants.json";
 import { filterBadWords } from "./Badwords";
 import { fetchFile } from "@ffmpeg/ffmpeg";
 import useFFmpeg from "./useFFmpeg";
+import * as fuzz from "fuzzball";
 // import S3Client from '../config/awsS3';
 /* eslint-disable */
 
@@ -75,6 +76,11 @@ function VoiceAnalyser(props) {
   const [isAudioPreprocessing, setIsAudioPreprocessing] = useState(
     process.env.REACT_APP_IS_AUDIOPREPROCESSING === "true"
   );
+  const [nonDenoisedText, setNonDenoisedText] = useState("");
+  const [denoisedText, setDenoisedText] = useState("");
+  const [isOfflineModel, setIsOfflineModel] = useState(
+    localStorage.getItem("isOfflineModel") === "true"
+  );
 
   const { ffmpeg, loading } = useFFmpeg();
 
@@ -104,8 +110,10 @@ function VoiceAnalyser(props) {
 
       if (callUpdateLearner) {
         try {
-          let nonDenoisedText = await getResponseText(nondenoisedBlob);
-          console.log("non denoised output -- ", nonDenoisedText);
+          let nonDenoisedRes = await getResponseText(nondenoisedBlob);
+          setNonDenoisedText(nonDenoisedRes);
+          console.log("non denoised output -- ", nonDenoisedRes);
+          console.log(fuzz.ratio(props.originalText, nonDenoisedRes));
         } catch (error) {
           console.error("Error getting non denoised text:", error);
         }
@@ -137,8 +145,10 @@ function VoiceAnalyser(props) {
 
       if (callUpdateLearner) {
         try {
-          let denoisedText = await getResponseText(denoisedBlob);
-          console.log("denoised output -- ", denoisedText);
+          let denoisedRes = await getResponseText(denoisedBlob);
+          setDenoisedText(denoisedRes);
+          console.log("denoised output -- ", denoisedRes);
+          console.log(fuzz.ratio(props.originalText, denoisedRes));
         } catch (error) {
           console.error("Error getting denoised text:", error);
         }
@@ -270,6 +280,7 @@ function VoiceAnalyser(props) {
         );
 
         setRecordedPauseCount(silenceStartCount);
+        console.log("silenceStartCount", silenceStartCount);
       } catch (error) {
         console.error("Error processing audio for pause count:", error);
       } finally {
@@ -471,12 +482,28 @@ function VoiceAnalyser(props) {
       let newThresholdPercentage = 0;
       let data = {};
 
+      let response_text = "";
+      let mode = isOfflineModel ? "offline" : "online";
+      let pause_count = recordedPauseCount;
+
+      if (
+        fuzz.ratio(originalText, nonDenoisedText) >=
+        fuzz.ratio(originalText, denoisedText)
+      ) {
+        response_text = nonDenoisedText;
+      } else {
+        response_text = denoisedText;
+      }
+
       if (callUpdateLearner) {
         const { data: updateLearnerData } = await axios.post(
           `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.UPDATE_LEARNER_PROFILE}/${lang}`,
           {
             original_text: originalText,
-            audio: base64Data,
+            response_text: response_text,
+            mode: mode,
+            pause_count: pause_count,
+            audio: mode === "offline" ? "" : base64Data,
             user_id: virtualId,
             session_id: sessionId,
             language: lang,
@@ -489,7 +516,7 @@ function VoiceAnalyser(props) {
         data = updateLearnerData;
         responseText = data.responseText;
         profanityWord = await filterBadWords(data.responseText);
-        if (profanityWord !== data.responseText) {
+        if (profanityWord.includes("**")) {
           props?.setOpenMessageDialog({
             message: "Please avoid using inappropriate language.",
             isError: true,
