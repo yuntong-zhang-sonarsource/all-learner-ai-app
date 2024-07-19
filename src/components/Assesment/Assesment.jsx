@@ -40,8 +40,14 @@ import config from "../../utils/urlConstants.json";
 import panda from "../../assets/images/panda.svg";
 import cryPanda from "../../assets/images/cryPanda.svg";
 import { uniqueId } from "../../services/utilService";
+import CircularProgressOverlay from "../CommonComponent/CircularProgressOverlay";
 
-export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
+export const LanguageModal = ({
+  lang,
+  setLang,
+  setOpenLangModal,
+  setLoading,
+}) => {
   const [selectedLang, setSelectedLang] = useState(lang);
   const [isOfflineModel, setIsOfflineModel] = useState(
     localStorage.getItem("isOfflineModel") === "true"
@@ -50,8 +56,6 @@ export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
   useEffect(() => {
     localStorage.setItem("isOfflineModel", isOfflineModel);
   }, [isOfflineModel]);
-
-  const [loading, setLoading] = useState(false);
 
   const dbName = "language-ai-models";
   const dbVersion = 1;
@@ -480,6 +484,7 @@ export const ProfileHeader = ({
   lang,
   profileName,
   points = 0,
+  loading,
   handleBack,
 }) => {
   const language = lang || getLocalData("lang");
@@ -616,7 +621,7 @@ export const ProfileHeader = ({
             mr={{ xs: "10px", sm: "90px" }}
             onClick={() =>
               setOpenLangModal
-                ? setOpenLangModal(true)
+                ? setOpenLangModal(!loading)
                 : setOpenMessageDialog({
                     message: "go to homescreen to change language",
                     dontShowHeader: true,
@@ -656,6 +661,7 @@ const Assesment = ({ discoverStart }) => {
   }
   // const [searchParams, setSearchParams] = useSearchParams();
   // const [profileName, setProfileName] = useState(username);
+  const [loading, setLoading] = useState(false);
   const [openMessageDialog, setOpenMessageDialog] = useState("");
   // let lang = searchParams.get("lang") || "ta";
   const [level, setLevel] = useState("");
@@ -783,6 +789,7 @@ const Assesment = ({ discoverStart }) => {
 
   return (
     <>
+      {loading && <CircularProgressOverlay size="4rem" color={"#ffffff"} />}
       {!!openMessageDialog && (
         <MessageDialog
           message={openMessageDialog.message}
@@ -794,12 +801,19 @@ const Assesment = ({ discoverStart }) => {
         />
       )}
       {openLangModal && (
-        <LanguageModal {...{ lang, setLang, setOpenLangModal }} />
+        <LanguageModal {...{ lang, setLang, setOpenLangModal, setLoading }} />
       )}
       {level > 0 ? (
         <Box style={sectionStyle}>
           <ProfileHeader
-            {...{ level, lang, setOpenLangModal, points, setOpenMessageDialog }}
+            {...{
+              level,
+              lang,
+              setOpenLangModal,
+              points,
+              loading,
+              setOpenMessageDialog,
+            }}
           />
           <Box
             sx={{
