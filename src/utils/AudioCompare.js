@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AudioAnalyser from "react-audio-analyser";
-import { Box } from "@mui/material";
 import { ListenButton, RetryIcon, SpeakButton, StopButton } from "./constants";
 import RecordVoiceVisualizer from "./RecordVoiceVisualizer";
 import useAudioDetection from "./useAudioDetection";
+import { Box, CircularProgress } from "@mui/material";
 
 const AudioRecorderCompair = (props) => {
   const { startDetection, stopDetection, isSilent, isRunning, audioDetected } =
@@ -11,6 +11,7 @@ const AudioRecorderCompair = (props) => {
   const [status, setStatus] = useState("");
   const [audioSrc, setAudioSrc] = useState("");
   const [recordingInitialized, setRecordingInitialized] = useState(false);
+  const [loader,setLoader] = useState(false);
   const audioType = "audio/wav";
 
   const controlAudio = async (status) => {
@@ -26,7 +27,7 @@ const AudioRecorderCompair = (props) => {
     setAudioSrc("");
     setRecordingInitialized(false);
   };
-
+  
   const handleMic = async () => {
     if (props.setEnableNext) {
       props.setEnableNext(false);
@@ -35,7 +36,15 @@ const AudioRecorderCompair = (props) => {
     resetRecording();
   };
 
+  useEffect(()=>{
+    if(!!props.recordedAudio){
+      setLoader(false);
+    }
+  },[props.recordedAudio])
+  
+
   const handleStop = () => {
+    setLoader(true);
     if (props.setEnableNext) {
       props.setEnableNext(true);
     }
@@ -64,6 +73,7 @@ const AudioRecorderCompair = (props) => {
         if (props.setEnableNext) {
           props.setEnableNext(false);
         }
+        setLoader(false);
       } else {
         if (localStorage.getItem("isOfflineModel") === "true") {
           props.handleProcess(temp_audioSrc);
@@ -81,6 +91,11 @@ const AudioRecorderCompair = (props) => {
 
   return (
     <div>
+      {loader && (
+        <Box sx={{ display: "flex" }}>
+          <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
+        </Box>
+      )}
       <div>
         {(() => {
           if (status === "recording" && recordingInitialized) {
@@ -115,7 +130,7 @@ const AudioRecorderCompair = (props) => {
                 }}
                 className="game-action-button"
               >
-                {(!props.dontShowListen || props.recordedAudio) && (
+                {!loader && (!props.dontShowListen || props.recordedAudio) && (
                   <>
                     {!props.pauseAudio ? (
                       <div
@@ -151,7 +166,12 @@ const AudioRecorderCompair = (props) => {
                       sx={{ cursor: "pointer" }}
                       onClick={handleMic}
                     >
-                      {!props.recordedAudio ? <SpeakButton /> : <RetryIcon />}
+                      {!loader &&
+                        (!props.recordedAudio ? (
+                          <SpeakButton />
+                        ) : (
+                          <RetryIcon />
+                        ))}
                     </Box>
                   )}
                 </div>
