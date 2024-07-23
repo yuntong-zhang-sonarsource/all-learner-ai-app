@@ -26,7 +26,6 @@ const ProgressOverlay = ({
           variant="determinate"
           value={downloadProgress}
           sx={{
-            height: 10,
             borderRadius: 5,
             height: 20,
             '& .MuiLinearProgress-bar': {

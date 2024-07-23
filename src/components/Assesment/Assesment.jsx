@@ -67,7 +67,6 @@ export const LanguageModal = ({
   let db;
 
   // Open IndexedDB
-
   const openDB = () => {
     return new Promise((resolve, reject) => {
       const request = window.indexedDB.open(dbName, dbVersion);
@@ -157,7 +156,7 @@ export const LanguageModal = ({
     try {
       window.whisperModule.FS_unlink("whisper.bin");
     } catch (e) {
-      // ignore
+      console.log(e)
     }
     try {
       let transaction;
@@ -828,7 +827,6 @@ const Assesment = ({ discoverStart }) => {
   const dbVersion = 1;
   let db;
 
-
   // Function to check if the model is already stored in IndexedDB
   const isModelStored = async (modelName) => {
     return new Promise((resolve, reject) => {
@@ -855,7 +853,7 @@ const Assesment = ({ discoverStart }) => {
       try {
         window.whisperModule.FS_unlink("whisper.bin");
       } catch (e) {
-        // ignore
+        console.log(e)
       }
       try {
         let transaction;
