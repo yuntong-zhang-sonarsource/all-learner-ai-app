@@ -43,7 +43,7 @@ import config from "../../utils/urlConstants.json";
 import panda from "../../assets/images/panda.svg";
 import cryPanda from "../../assets/images/cryPanda.svg";
 import { uniqueId } from "../../services/utilService";
-import CircularProgressOverlay from "../CommonComponent/CircularProgressOverlay";
+import ProgressOverlay from "../CommonComponent/ProgressOverlay";
 import { end } from "../../services/telementryService";
 
 export const LanguageModal = ({
@@ -51,6 +51,7 @@ export const LanguageModal = ({
   setLang,
   setOpenLangModal,
   setLoading,
+  setDownloadProgress
 }) => {
   const [selectedLang, setSelectedLang] = useState(lang);
   const [isOfflineModel, setIsOfflineModel] = useState(
@@ -96,13 +97,34 @@ export const LanguageModal = ({
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      const modelData = await response.arrayBuffer();
-      const uint8Array = new Uint8Array(modelData);
-
-      const transaction = await db.transaction(["models"], "readwrite");
+  
+      const reader = response.body.getReader();
+      const contentLength = +response.headers.get('Content-Length');
+      let receivedLength = 0;
+      const chunks = [];
+  
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+        receivedLength += value.length;
+  
+        // Update progress
+        const percentage = ((receivedLength / contentLength) * 100);
+        setDownloadProgress(percentage.toFixed());
+      }
+  
+      const modelData = new Uint8Array(receivedLength);
+      let position = 0;
+      for (let chunk of chunks) {
+        modelData.set(chunk, position);
+        position += chunk.length;
+      }
+  
+      const transaction = db.transaction(["models"], "readwrite");
       const store = transaction.objectStore("models");
-
-      store.put(uint8Array, modelName);
+  
+      store.put(modelData, modelName);
       console.log(`Stored model ${modelName} in IndexedDB`);
     } catch (error) {
       console.error("Error storing model in IndexedDB:", error);
@@ -185,6 +207,7 @@ export const LanguageModal = ({
         await storeModel(modelName, modelURL);
       } else {
         console.log(`Model ${modelName} is already stored in IndexedDB`);
+        return;
       }
       await loadModelWhisper(modelName);
     } catch (error) {
@@ -719,6 +742,7 @@ const Assesment = ({ discoverStart }) => {
   const [openLangModal, setOpenLangModal] = useState(false);
   const [lang, setLang] = useState(getLocalData("lang") || "en");
   const [points, setPoints] = useState(0);
+  const [downloadProgress, setDownloadProgress] = useState(0);
 
   useEffect(() => {
     // const level = getLocalData('userLevel');
@@ -799,7 +823,174 @@ const Assesment = ({ discoverStart }) => {
   const { virtualId } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
-  const handleRedirect = () => {
+
+  const dbName = "language-ai-models";
+  const dbVersion = 1;
+  let db;
+
+
+  // Function to check if the model is already stored in IndexedDB
+  const isModelStored = async (modelName) => {
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(["models"], "readonly");
+      const store = transaction.objectStore("models");
+      const request = store.get(modelName);
+
+      request.onerror = function (event) {
+        console.error(
+          "Error checking model in IndexedDB:",
+          event.target.errorCode
+        );
+        reject(event.target.error);
+      };
+
+      request.onsuccess = function (event) {
+        resolve(!!event.target.result);
+      };
+    });
+  };
+
+    // Function to load model in whisper cpp module
+    const loadModelWhisper = async (modelName) => {
+      try {
+        window.whisperModule.FS_unlink("whisper.bin");
+      } catch (e) {
+        // ignore
+      }
+      try {
+        let transaction;
+        let store;
+        let request;
+        try {
+          transaction = await db.transaction(["models"], "readonly");
+          store = transaction.objectStore("models");
+          request = await store.get(modelName);
+        } catch (error) {
+          console.error("Error accessing IndexedDB:", error);
+          return;
+        }
+  
+        request.onsuccess = async () => {
+          const modelData = request.result;
+          let storeResponse = await window.whisperModule.FS_createDataFile(
+            "/",
+            "whisper.bin",
+            modelData,
+            true,
+            true
+          );
+          setTimeout(console.log(window.whisperModule.init("whisper.bin")), 5000);
+        };
+  
+        request.onerror = (err) => {
+          console.error(`Error to get model data: ${err}`);
+        };
+  
+        console.log(`Stored model in whisper cpp memory`);
+      } catch (error) {
+        console.error("Error storing model in IndexedDB:", error);
+      }
+    };
+
+    // Function to store model in IndexedDB
+    const storeModel = async (modelName, modelURL) => {
+      try {
+        const response = await fetch(modelURL);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    
+        const reader = response.body.getReader();
+        const contentLength = +response.headers.get('Content-Length');
+        let receivedLength = 0;
+        const chunks = [];
+    
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          chunks.push(value);
+          receivedLength += value.length;
+    
+          // Update progress
+          const percentage = ((receivedLength / contentLength) * 100);
+          setDownloadProgress(percentage.toFixed());
+        }
+    
+        const modelData = new Uint8Array(receivedLength);
+        let position = 0;
+        for (let chunk of chunks) {
+          modelData.set(chunk, position);
+          position += chunk.length;
+        }
+    
+        const transaction = db.transaction(["models"], "readwrite");
+        const store = transaction.objectStore("models");
+    
+        store.put(modelData, modelName);
+        console.log(`Stored model ${modelName} in IndexedDB`);
+      } catch (error) {
+        console.error("Error storing model in IndexedDB:", error);
+      }
+    };
+
+      // Function to load model
+  const loadModel = async () => {
+    setLoading(true);
+    try {
+      await openDB();
+      const modelName = "en-model";
+      const modelURL = "./models/ggml-model-whisper-base.en-q5_1.bin";
+
+      const stored = await isModelStored(modelName);
+      if (!stored) {
+        await storeModel(modelName, modelURL);
+      } else {
+        console.log(`Model ${modelName} is already stored in IndexedDB`);
+      }
+      await loadModelWhisper(modelName);
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+    // Open IndexedDB
+
+    const openDB = () => {
+      return new Promise((resolve, reject) => {
+        const request = window.indexedDB.open(dbName, dbVersion);
+        request.onerror = (event) => {
+          console.error("IndexedDB error:", event.target.errorCode);
+          reject(event.target.error);
+        };
+        request.onsuccess = (event) => {
+          db = event.target.result;
+          console.log("IndexedDB opened successfully");
+          resolve();
+        };
+        request.onupgradeneeded = (event) => {
+          db = event.target.result;
+          console.log("Creating object store for models");
+          if (!db.objectStoreNames.contains("models")) {
+            db.createObjectStore("models");
+          }
+        };
+      });
+    };
+
+  const handleRedirect = async () => {
+    const modelName = "en-model";
+    await openDB();
+    const stored = await isModelStored(modelName);
+    if (stored) {
+      console.log(`Model ${modelName} is already stored in IndexedDB`);
+    }
+    else{
+      alert(`you have to download en-offline model`)
+      loadModel();
+      return;
+    }
     const profileName = getLocalData("profileName");
     if (!username && !profileName && !virtualId && level === 0) {
       // alert("please add username in query param");
@@ -839,7 +1030,7 @@ const Assesment = ({ discoverStart }) => {
 
   return (
     <>
-      {loading && <CircularProgressOverlay size="4rem" color={"#ffffff"} />}
+      {loading && <ProgressOverlay size="4rem" color={"#ffffff"} showLinearProgress={true} downloadProgress={downloadProgress} />}
       {!!openMessageDialog && (
         <MessageDialog
           message={openMessageDialog.message}
@@ -851,7 +1042,7 @@ const Assesment = ({ discoverStart }) => {
         />
       )}
       {openLangModal && (
-        <LanguageModal {...{ lang, setLang, setOpenLangModal, setLoading }} />
+        <LanguageModal {...{ lang, setLang, setOpenLangModal, setLoading, setDownloadProgress }} />
       )}
       {level > 0 ? (
         <Box style={sectionStyle}>

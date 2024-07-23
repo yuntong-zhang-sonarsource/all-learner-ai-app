@@ -34,7 +34,8 @@ import { filterBadWords } from "./Badwords";
 import { fetchFile } from "@ffmpeg/ffmpeg";
 import useFFmpeg from "./useFFmpeg";
 import * as fuzz from "fuzzball";
-// import S3Client from '../config/awsS3';
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import S3Client from '../config/awsS3';
 /* eslint-disable */
 
 const AudioPath = {
@@ -165,6 +166,7 @@ function VoiceAnalyser(props) {
     } catch (error) {
       console.error("Error processing audio:", error);
     }
+    setLoader(false);
   };
 
   const getResponseText = async (audioBlob) => {
@@ -385,7 +387,7 @@ function VoiceAnalyser(props) {
       });
     });
   }
-
+  
   useEffect(() => {
     if (recordedAudio !== "") {
       // setLoader(true);
@@ -599,23 +601,24 @@ function VoiceAnalyser(props) {
 
       // TODO: Remove false when REACT_APP_AWS_S3_BUCKET_NAME and keys added
       var audioFileName = "";
-      if (process.env.REACT_APP_CAPTURE_AUDIO === "true" && false) {
+      if (process.env.REACT_APP_CAPTURE_AUDIO === "true") {
         let getContentId = currentLine;
         audioFileName = `${
           process.env.REACT_APP_CHANNEL
         }/${sessionId}-${Date.now()}-${getContentId}.wav`;
-
-        const command = new PutObjectCommand({
-          Bucket: process.env.REACT_APP_AWS_S3_BUCKET_NAME,
-          Key: audioFileName,
-          Body: Uint8Array.from(window.atob(base64Data), (c) =>
-            c.charCodeAt(0)
-          ),
-          ContentType: "audio/wav",
-        });
-        try {
-          const response = await S3Client.send(command);
-        } catch (err) {}
+const command = new PutObjectCommand({
+  Bucket: process.env.REACT_APP_AWS_S3_BUCKET_NAME,
+  Key: audioFileName,
+  Body: Uint8Array.from(window.atob(base64Data), (c) =>
+  c.charCodeAt(0)
+  ),
+  ContentType: "audio/wav",
+});
+try {
+  const response = await S3Client.send(command);
+        } catch (err) {
+          console.log(err);
+        }
       }
 
       response(
