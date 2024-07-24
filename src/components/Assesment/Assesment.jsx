@@ -151,48 +151,6 @@ export const LanguageModal = ({
     });
   };
 
-  // Function to load model in whisper cpp module
-  const loadModelWhisper = async (modelName) => {
-    try {
-      window.whisperModule.FS_unlink("whisper.bin");
-    } catch (e) {
-      console.log(e)
-    }
-    try {
-      let transaction;
-      let store;
-      let request;
-      try {
-        transaction = await db.transaction(["models"], "readonly");
-        store = transaction.objectStore("models");
-        request = await store.get(modelName);
-      } catch (error) {
-        console.error("Error accessing IndexedDB:", error);
-        return;
-      }
-
-      request.onsuccess = async () => {
-        const modelData = request.result;
-        let storeResponse = await window.whisperModule.FS_createDataFile(
-          "/",
-          "whisper.bin",
-          modelData,
-          true,
-          true
-        );
-        setTimeout(console.log(window.whisperModule.init("whisper.bin")), 5000);
-      };
-
-      request.onerror = (err) => {
-        console.error(`Error to get model data: ${err}`);
-      };
-
-      console.log(`Stored model in whisper cpp memory`);
-    } catch (error) {
-      console.error("Error storing model in IndexedDB:", error);
-    }
-  };
-
   // Function to load model
   const loadModel = async () => {
     setLoading(true);
@@ -208,7 +166,6 @@ export const LanguageModal = ({
         console.log(`Model ${modelName} is already stored in IndexedDB`);
         return;
       }
-      await loadModelWhisper(modelName);
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -945,7 +902,6 @@ const Assesment = ({ discoverStart }) => {
       } else {
         console.log(`Model ${modelName} is already stored in IndexedDB`);
       }
-      await loadModelWhisper(modelName);
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -978,6 +934,7 @@ const Assesment = ({ discoverStart }) => {
     };
 
   const handleRedirect = async () => {
+    if(localStorage.getItem('isOfflineModel') === 'true'){
     const modelName = "en-model";
     await openDB();
     const stored = await isModelStored(modelName);
@@ -986,9 +943,11 @@ const Assesment = ({ discoverStart }) => {
     }
     else{
       alert(`you have to download en-offline model`)
-      loadModel();
+      await loadModel();
       return;
     }
+    await loadModelWhisper(modelName);
+  }
     const profileName = getLocalData("profileName");
     if (!username && !profileName && !virtualId && level === 0) {
       // alert("please add username in query param");
