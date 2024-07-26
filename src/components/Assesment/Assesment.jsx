@@ -809,6 +809,7 @@ const Assesment = ({ discoverStart }) => {
     const loadModelWhisper = async (modelName) => {
       try {
         window.whisperModule.FS_unlink("whisper.bin");
+        await window.whisperModule.free(1)
       } catch (e) {
         console.log(e)
       }
