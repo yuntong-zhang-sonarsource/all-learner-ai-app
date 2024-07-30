@@ -4,6 +4,7 @@ import Mechanics2 from "../../components/Practice/Mechanics2";
 import Mechanics3 from "../../components/Practice/Mechanics3";
 import Mechanics4 from "../../components/Practice/Mechanics4";
 import Mechanics5 from "../../components/Practice/Mechanics5";
+
 import {
   useLocation,
   useNavigate,
@@ -68,6 +69,7 @@ const Practice = () => {
     let userWon = isUserPass ? true : false;
     const meetsFluencyCriteria = livesData.meetsFluencyCriteria ? true : false;
     setGameOverData({ gameOver: true, userWon, ...data, meetsFluencyCriteria});
+
   };
 
   useEffect(() => {
@@ -490,6 +492,13 @@ const Practice = () => {
   useEffect(() => {
     fetchDetails();
   }, []);
+
+  // useEffect(() => {
+  //   if (state?.refresh) {
+  //     setGameOverData(undefined);
+  //     fetchDetails();
+  //   }
+  // }, [state]);
 
   const handleBack = async () => {
     if (progressData.currentPracticeStep > 0) {
