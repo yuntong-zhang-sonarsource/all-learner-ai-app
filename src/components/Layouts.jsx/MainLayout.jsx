@@ -159,7 +159,11 @@ const MainLayout = (props) => {
     backgroundPosition: "center center", // Center the image
     backgroundRepeat: "no-repeat", // Do not repeat the image
     minHeight: "100vh",
-    padding: "30px 100px",
+    // padding: "30px 100px",
+    display: "flex",
+    paddingTop: { md: "0px", xs: "20px" },
+    justifyContent: "center",
+    alignItems: "center",
     boxSizing: "border-box",
     background: props?.background || levelsImages?.[LEVEL]?.backgroundColor,
     position: "relative",
@@ -952,7 +956,7 @@ const MainLayout = (props) => {
                             }
                           }}
                         >
-                          <span
+                          <Typography
                             style={{
                               color: "#FFFFFF",
                               fontWeight: 600,
