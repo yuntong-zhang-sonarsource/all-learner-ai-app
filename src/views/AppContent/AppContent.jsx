@@ -7,15 +7,13 @@ const PrivateRoute = (props) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (!virtualId && props.requiresAuth) {
-      navigate("/");
+      navigate("/login");
     }
   }, [virtualId]);
 
   return <>{props.children}</>;
 };
 const AppContent = ({ routes }) => {
-  // const navigate = useNavigate();
-  // const location = useLocation();
 
   return (
     <Fragment>
