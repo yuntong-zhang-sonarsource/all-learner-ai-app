@@ -3523,7 +3523,7 @@ const AllLanguages = [
   { name: "हिंदी", lang: "hi", symbol: "क", offline: false },
   { name: "ಕನ್ನಡ", lang: "kn", symbol: "ಕ", offline: false },
   { name: "తెలుగు", lang: "te", symbol: "ఈ", offline: false },
-  { name: "ગુજરાતી", lang: "gu", symbol: "ગુ" } ,
+  { name: "ગુજરાતી", lang: "gu", symbol: "ગુ",  offline: false } ,
 ];
 
 const appLanguages = process.env.REACT_APP_LANGUAGES
