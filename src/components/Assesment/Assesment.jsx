@@ -89,11 +89,11 @@ export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
           </span>
         </Box>
         <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
-          <Grid container justifyContent={"space-evenly"} sx={{ width: "80%" }}>
+          <Grid container sx={{ width: "80%" }}>
             {languages.map((elem) => {
               const isSelectedLang = elem.lang === selectedLang;
               return (
-                <Grid xs={5} item key={elem.lang}>
+                <Grid xs={4} item key={elem.lang}>
                   <Box
                     onClick={() => setSelectedLang(elem.lang)}
                     sx={{
