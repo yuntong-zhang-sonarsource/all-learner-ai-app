@@ -51,6 +51,8 @@ const AudioRecorder = (props) => {
   };
 
   const stopRecording = () => {
+    const endTime = new Date().getTime();
+    localStorage.setItem("endDuration", endTime);
     setStatus("inactive");
     if (recorderRef.current) {
       recorderRef.current.stopRecording(() => {

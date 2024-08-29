@@ -686,6 +686,8 @@ const Practice = () => {
         window.parent.postMessage({ type: "stringLengths", length });
       }
     }
+    const currentTime = new Date().getTime();
+    localStorage.setItem("startDuration", currentTime);
   }, [questions[currentQuestion]]);
 
   const renderMechanics = () => {

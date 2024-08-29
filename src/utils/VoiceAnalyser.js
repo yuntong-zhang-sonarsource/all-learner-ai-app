@@ -250,6 +250,11 @@ function VoiceAnalyser(props) {
     //         setApiResponse(apiResponse['output'][0]['source'] != '' ? apiResponse['output'][0]['source'] : '-');
     //         setLoader(false);
     //     });
+    const startTime = parseInt(localStorage.getItem("startDuration"));
+    const endTime = parseInt(localStorage.getItem("endDuration"));
+    const totalDuration =
+      parseInt(new Date(endTime).toLocaleTimeString().slice(3, 5)) -
+      parseInt(new Date(startTime).toLocaleTimeString().slice(3, 5));
 
     try {
       const lang = getLocalData("lang");
@@ -276,6 +281,7 @@ function VoiceAnalyser(props) {
             sub_session_id,
             contentId,
             contentType,
+            fluencyDuration: totalDuration,
           }
         );
         data = updateLearnerData;
