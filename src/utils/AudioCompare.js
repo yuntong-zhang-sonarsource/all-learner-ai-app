@@ -24,6 +24,8 @@ const AudioRecorder = (props) => {
   }, []);
 
   const startRecording = async () => {
+    const micStartTime = new Date().getTime();
+    localStorage.setItem("micStart", micStartTime);
     setStatus("recording");
     if (props.setEnableNext) {
       props.setEnableNext(false);
@@ -51,8 +53,8 @@ const AudioRecorder = (props) => {
   };
 
   const stopRecording = () => {
-    const endTime = new Date().getTime();
-    localStorage.setItem("endDuration", endTime);
+    const micStopTime = new Date().getTime();
+    localStorage.setItem("micStop", micStopTime);
     setStatus("inactive");
     if (recorderRef.current) {
       recorderRef.current.stopRecording(() => {

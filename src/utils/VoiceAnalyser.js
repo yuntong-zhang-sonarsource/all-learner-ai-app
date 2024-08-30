@@ -250,11 +250,12 @@ function VoiceAnalyser(props) {
     //         setApiResponse(apiResponse['output'][0]['source'] != '' ? apiResponse['output'][0]['source'] : '-');
     //         setLoader(false);
     //     });
-    const startTime = parseInt(localStorage.getItem("startDuration"));
-    const endTime = parseInt(localStorage.getItem("endDuration"));
-    const totalDuration =
-      parseInt(new Date(endTime).toLocaleTimeString().slice(3, 5)) -
-      parseInt(new Date(startTime).toLocaleTimeString().slice(3, 5));
+    const loadStart = parseInt(localStorage.getItem("loadStart"));
+    const micStart = parseInt(localStorage.getItem("micStart"));
+    const micStop = parseInt(localStorage.getItem("micStop"));
+
+    const loadToMicStartDuration = (micStart - loadStart) / 1000; // in seconds
+    const micDuration = (micStop - micStart) / 1000; // in seconds
 
     try {
       const lang = getLocalData("lang");
@@ -281,7 +282,8 @@ function VoiceAnalyser(props) {
             sub_session_id,
             contentId,
             contentType,
-            fluencyDuration: totalDuration,
+            practiceDuration: loadToMicStartDuration.toFixed(2),
+            readDuration: micDuration.toFixed(2),
           }
         );
         data = updateLearnerData;
