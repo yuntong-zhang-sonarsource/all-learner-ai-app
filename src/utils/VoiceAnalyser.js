@@ -250,12 +250,6 @@ function VoiceAnalyser(props) {
     //         setApiResponse(apiResponse['output'][0]['source'] != '' ? apiResponse['output'][0]['source'] : '-');
     //         setLoader(false);
     //     });
-    const loadStart = parseInt(localStorage.getItem("loadStart"));
-    const micStart = parseInt(localStorage.getItem("micStart"));
-    const micStop = parseInt(localStorage.getItem("micStop"));
-
-    const loadToMicStartDuration = (micStart - loadStart) / 1000; // in seconds
-    const micDuration = (micStop - micStart) / 1000; // in seconds
 
     try {
       const lang = getLocalData("lang");
@@ -270,6 +264,13 @@ function VoiceAnalyser(props) {
       let data = {};
 
       if (callUpdateLearner) {
+        const loadStart = parseInt(localStorage.getItem("loadStart"));
+        const micStart = parseInt(localStorage.getItem("micStart"));
+        const micStop = parseInt(localStorage.getItem("micStop"));
+
+        const loadToMicStartDuration = (micStart - loadStart) / 1000; // in seconds
+        const micDuration = (micStop - micStart) / 1000; // in seconds
+
         const { data: updateLearnerData } = await axios.post(
           `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.UPDATE_LEARNER_PROFILE}/${lang}`,
           {
@@ -282,8 +283,8 @@ function VoiceAnalyser(props) {
             sub_session_id,
             contentId,
             contentType,
-            practiceDuration: loadToMicStartDuration.toFixed(2),
-            readDuration: micDuration.toFixed(2),
+            practiceDuration: parseFloat(loadToMicStartDuration.toFixed(2)),
+            readDuration: parseFloat(micDuration.toFixed(2)),
           }
         );
         data = updateLearnerData;
