@@ -283,8 +283,8 @@ function VoiceAnalyser(props) {
             sub_session_id,
             contentId,
             contentType,
-            practiceDuration: parseInt(loadToMicStartDuration.toFixed(0)),
-            readDuration: parseInt(micDuration.toFixed(0)),
+            practice_duration: parseInt(loadToMicStartDuration.toFixed(0)),
+            read_duration: parseInt(micDuration.toFixed(0)),
           }
         );
         data = updateLearnerData;
