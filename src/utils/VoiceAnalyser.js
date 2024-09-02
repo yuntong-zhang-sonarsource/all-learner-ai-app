@@ -264,9 +264,12 @@ function VoiceAnalyser(props) {
       let data = {};
 
       if (callUpdateLearner) {
-        const loadStart = parseInt(localStorage.getItem("loadStart"));
-        const micStart = parseInt(localStorage.getItem("micStart"));
-        const micStop = parseInt(localStorage.getItem("micStop"));
+        const { contentLoadStartTime, micStartTime, micStopTime } = JSON.parse(
+          localStorage.getItem("duration")
+        );
+        const loadStart = parseInt(contentLoadStartTime);
+        const micStart = parseInt(micStartTime);
+        const micStop = parseInt(micStopTime);
 
         const loadToMicStartDuration = (micStart - loadStart) / 1000; // in seconds
         const micDuration = (micStop - micStart) / 1000; // in seconds
