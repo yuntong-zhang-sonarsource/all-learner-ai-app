@@ -264,6 +264,16 @@ function VoiceAnalyser(props) {
       let data = {};
 
       if (callUpdateLearner) {
+        const { contentLoadStartTime, micStartTime, micStopTime } = JSON.parse(
+          localStorage.getItem("duration")
+        );
+        const loadStart = parseInt(contentLoadStartTime);
+        const micStart = parseInt(micStartTime);
+        const micStop = parseInt(micStopTime);
+
+        const loadToMicStartDuration = (micStart - loadStart) / 1000; // in seconds
+        const micDuration = (micStop - micStart) / 1000; // in seconds
+
         const { data: updateLearnerData } = await axios.post(
           `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.UPDATE_LEARNER_PROFILE}/${lang}`,
           {
@@ -276,6 +286,8 @@ function VoiceAnalyser(props) {
             sub_session_id,
             contentId,
             contentType,
+            practice_duration: parseInt(loadToMicStartDuration.toFixed(0)),
+            read_duration: parseInt(micDuration.toFixed(0)),
           }
         );
         data = updateLearnerData;

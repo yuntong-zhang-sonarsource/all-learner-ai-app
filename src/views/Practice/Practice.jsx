@@ -686,6 +686,12 @@ const Practice = () => {
         window.parent.postMessage({ type: "stringLengths", length });
       }
     }
+    const contentLoadStartTime = new Date().getTime();
+    const duration = {
+      ...JSON.parse(localStorage.getItem("duration")),
+      contentLoadStartTime: contentLoadStartTime,
+    };
+    localStorage.setItem("duration", JSON.stringify(duration));
   }, [questions[currentQuestion]]);
 
   const renderMechanics = () => {
