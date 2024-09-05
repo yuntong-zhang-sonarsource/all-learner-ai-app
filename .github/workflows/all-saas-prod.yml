@@ -79,7 +79,7 @@ jobs:
         run: npm run build
 
       - name: Deploy to S3 Bucket
-        run: aws s3 sync ./build s3://allfrontendbucket/
+        run: aws s3 sync ./build s3://allsaas-frontend/
 
       - name: Debug Environment Variables
         run: |
