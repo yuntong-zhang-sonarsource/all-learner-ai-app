@@ -690,6 +690,7 @@ const Practice = () => {
     const duration = {
       ...JSON.parse(localStorage.getItem("duration")),
       contentLoadStartTime: contentLoadStartTime,
+      retryCount: 0,
     };
     localStorage.setItem("duration", JSON.stringify(duration));
   }, [questions[currentQuestion]]);

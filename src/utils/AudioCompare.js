@@ -25,9 +25,11 @@ const AudioRecorder = (props) => {
 
   const startRecording = async () => {
     const micStartTime = new Date().getTime();
+    const { retryCount } = JSON.parse(localStorage.getItem("duration"));
     const duration = {
       ...JSON.parse(localStorage.getItem("duration")),
       micStartTime: micStartTime,
+      retryCount: retryCount + 1,
     };
     localStorage.setItem("duration", JSON.stringify(duration));
     setStatus("recording");

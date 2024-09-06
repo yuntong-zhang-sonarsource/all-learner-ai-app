@@ -264,9 +264,8 @@ function VoiceAnalyser(props) {
       let data = {};
 
       if (callUpdateLearner) {
-        const { contentLoadStartTime, micStartTime, micStopTime } = JSON.parse(
-          localStorage.getItem("duration")
-        );
+        const { contentLoadStartTime, micStartTime, micStopTime, retryCount } =
+          JSON.parse(localStorage.getItem("duration"));
         const loadStart = parseInt(contentLoadStartTime);
         const micStart = parseInt(micStartTime);
         const micStop = parseInt(micStopTime);
@@ -286,8 +285,9 @@ function VoiceAnalyser(props) {
             sub_session_id,
             contentId,
             contentType,
-            practice_duration: parseInt(loadToMicStartDuration.toFixed(0)),
-            read_duration: parseInt(micDuration.toFixed(0)),
+            practice_duration: parseFloat(loadToMicStartDuration.toFixed(2)),
+            read_duration: parseFloat(micDuration.toFixed(2)),
+            retry_count: parseInt(retryCount),
           }
         );
         data = updateLearnerData;
