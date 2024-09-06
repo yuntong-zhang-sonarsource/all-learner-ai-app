@@ -453,7 +453,7 @@ export const ProfileHeader = ({
                     lineHeight: "25px",
                   }}
                 >
-                  {username || ""}
+                  {username ? username.split('@')[0] : ""}
                 </span>
               </Box>
             </>
