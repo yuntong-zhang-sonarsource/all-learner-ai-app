@@ -29,11 +29,17 @@ const AudioRecorder = (props) => {
 
       // Retrieve and parse localStorage value safely
       const durationData = localStorage.getItem("duration");
-      if (!durationData) {
-        throw new Error("Duration data not found in localStorage.");
-      }
+      let parsedDuration = { retryCount: 0 }; // Default values
 
-      const parsedDuration = JSON.parse(durationData);
+      if (durationData) {
+        try {
+          parsedDuration = JSON.parse(durationData);
+        } catch (err) {
+          console.error("Error parsing duration data from localStorage:", err);
+          // Optionally, reset to default values if parsing fails
+          parsedDuration = { retryCount: 0 };
+        }
+      }
       const retryCount = parsedDuration.retryCount || 0; // Handle if retryCount is missing
 
       const duration = {
@@ -43,7 +49,11 @@ const AudioRecorder = (props) => {
       };
 
       // Safely set the new duration data in localStorage
-      localStorage.setItem("duration", JSON.stringify(duration));
+      try {
+        localStorage.setItem("duration", JSON.stringify(duration));
+      } catch (err) {
+        console.error("Error updating duration data in localStorage:", err);
+      }
 
       // Update the UI status
       setStatus("recording");
@@ -82,7 +92,14 @@ const AudioRecorder = (props) => {
         throw new Error("Duration data not found in localStorage.");
       }
 
-      const parsedDuration = JSON.parse(durationData);
+      let parsedDuration = {};
+
+      if (durationData) {
+        parsedDuration = JSON.parse(durationData);
+      } else {
+        // Initialize default duration if "duration" is not present in localStorage
+        parsedDuration = { retryCount: 0, micStartTime: 0 };
+      }
       const duration = {
         ...parsedDuration,
         micStopTime: micStopTime,
