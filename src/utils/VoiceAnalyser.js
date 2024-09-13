@@ -263,9 +263,27 @@ function VoiceAnalyser(props) {
       let newThresholdPercentage = 0;
       let data = {};
 
-      if (callUpdateLearner) {
+      try {
+        const durationData = localStorage.getItem("duration");
+
+        // Check if the durationData exists
+        if (!durationData) {
+          throw new Error("Duration data not found in localStorage.");
+        }
+
         const { contentLoadStartTime, micStartTime, micStopTime, retryCount } =
-          JSON.parse(localStorage.getItem("duration"));
+          JSON.parse(durationData);
+
+        // Check if any of the required values are missing or invalid
+        if (
+          !contentLoadStartTime ||
+          !micStartTime ||
+          !micStopTime ||
+          retryCount === undefined
+        ) {
+          throw new Error("Incomplete or invalid duration data.");
+        }
+
         const loadStart = parseInt(contentLoadStartTime);
         const micStart = parseInt(micStartTime);
         const micStop = parseInt(micStopTime);
@@ -290,16 +308,20 @@ function VoiceAnalyser(props) {
             retry_count: parseInt(retryCount),
           }
         );
+
         data = updateLearnerData;
         responseText = data.responseText;
         profanityWord = await filterBadWords(data.responseText);
+
         if (profanityWord !== data.responseText) {
           props?.setOpenMessageDialog({
             message: "Please avoid using inappropriate language.",
             isError: true,
           });
         }
+
         newThresholdPercentage = data?.subsessionTargetsCount || 0;
+
         if (contentType.toLowerCase() !== "word") {
           handlePercentageForLife(
             newThresholdPercentage,
@@ -308,6 +330,18 @@ function VoiceAnalyser(props) {
             lang
           );
         }
+      } catch (error) {
+        console.error(
+          "Error retrieving duration data or updating learner profile:",
+          error
+        );
+
+        // Optionally, show an error message to the user
+        props?.setOpenMessageDialog({
+          message:
+            error.message || "An error occurred while processing your data.",
+          isError: true,
+        });
       }
 
       const responseEndTime = new Date().getTime();

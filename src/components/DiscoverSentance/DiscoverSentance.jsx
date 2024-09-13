@@ -108,13 +108,39 @@ const SpeakSentenceComponent = () => {
   };
 
   useEffect(() => {
-    const contentLoadStartTime = new Date().getTime();
-    const duration = {
-      ...JSON.parse(localStorage.getItem("duration")),
-      contentLoadStartTime: contentLoadStartTime,
-      retryCount: 0,
-    };
-    localStorage.setItem("duration", JSON.stringify(duration));
+    try {
+      const contentLoadStartTime = new Date().getTime();
+
+      // Retrieve and parse localStorage value safely
+      const durationData = localStorage.getItem("duration");
+      let parsedDuration = {};
+
+      if (durationData) {
+        parsedDuration = JSON.parse(durationData);
+      } else {
+        // Initialize with default values if "duration" is not present in localStorage
+        parsedDuration = { retryCount: 0 };
+      }
+
+      // Update the duration object with new contentLoadStartTime and reset retryCount
+      const duration = {
+        ...parsedDuration,
+        contentLoadStartTime: contentLoadStartTime,
+        retryCount: 0,
+      };
+
+      // Safely update localStorage with the new duration object
+      localStorage.setItem("duration", JSON.stringify(duration));
+    } catch (err) {
+      console.error("Error updating duration in localStorage:", err);
+
+      // Optionally, show an error message to the user or handle the error
+      setOpenMessageDialog({
+        message:
+          err.message || "An error occurred while initializing the duration.",
+        isError: true,
+      });
+    }
   }, [questions[currentQuestion]]);
 
   const handleNext = async () => {

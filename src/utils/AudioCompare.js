@@ -24,69 +24,128 @@ const AudioRecorder = (props) => {
   }, []);
 
   const startRecording = async () => {
-    const micStartTime = new Date().getTime();
-    const { retryCount } = JSON.parse(localStorage.getItem("duration"));
-    const duration = {
-      ...JSON.parse(localStorage.getItem("duration")),
-      micStartTime: micStartTime,
-      retryCount: retryCount + 1,
-    };
-    localStorage.setItem("duration", JSON.stringify(duration));
-    setStatus("recording");
-    if (props.setEnableNext) {
-      props.setEnableNext(false);
-    }
     try {
+      const micStartTime = new Date().getTime();
+
+      // Retrieve and parse localStorage value safely
+      const durationData = localStorage.getItem("duration");
+      if (!durationData) {
+        throw new Error("Duration data not found in localStorage.");
+      }
+
+      const parsedDuration = JSON.parse(durationData);
+      const retryCount = parsedDuration.retryCount || 0; // Handle if retryCount is missing
+
+      const duration = {
+        ...parsedDuration,
+        micStartTime: micStartTime,
+        retryCount: retryCount + 1,
+      };
+
+      // Safely set the new duration data in localStorage
+      localStorage.setItem("duration", JSON.stringify(duration));
+
+      // Update the UI status
+      setStatus("recording");
+      if (props.setEnableNext) {
+        props.setEnableNext(false);
+      }
+
+      // Request microphone access and start recording
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaStreamRef.current = stream;
 
-      // Use RecordRTC with specific configurations to match the blob structure
       recorderRef.current = new RecordRTC(stream, {
         type: "audio",
-        mimeType: "audio/wav", // Ensuring the same MIME type as AudioRecorderCompair
-        recorderType: RecordRTC.StereoAudioRecorder, // Use StereoAudioRecorder for better compatibility
-        numberOfAudioChannels: 1, // Match the same number of audio channels
-        desiredSampRate: 16000, // Adjust the sample rate if necessary to match
+        mimeType: "audio/wav", // Same MIME type as AudioRecorderCompair
+        recorderType: RecordRTC.StereoAudioRecorder, // Use StereoAudioRecorder for compatibility
+        numberOfAudioChannels: 1, // Same number of audio channels
+        desiredSampRate: 16000, // Adjust sample rate if needed
         disableLogs: true,
       });
 
+      // Start recording
       recorderRef.current.startRecording();
-
       setIsRecording(true);
     } catch (err) {
-      console.error("Failed to start recording:", err);
+      console.error("Error in startRecording:", err);
+
+      // Display a message or handle the error as necessary
+      props?.setOpenMessageDialog({
+        message: err.message || "Failed to start recording. Please try again.",
+        isError: true,
+      });
     }
   };
 
   const stopRecording = () => {
-    const micStopTime = new Date().getTime();
-    const duration = {
-      ...JSON.parse(localStorage.getItem("duration")),
-      micStopTime: micStopTime,
-    };
-    localStorage.setItem("duration", JSON.stringify(duration));
-    setStatus("inactive");
-    if (recorderRef.current) {
-      recorderRef.current.stopRecording(() => {
-        const blob = recorderRef.current.getBlob();
+    try {
+      const micStopTime = new Date().getTime();
 
-        if (blob) {
-          setAudioBlob(blob);
-          saveBlob(blob); // Persist the blob
-        } else {
-          console.error("Failed to retrieve audio blob.");
-        }
+      // Retrieve and parse localStorage value safely
+      const durationData = localStorage.getItem("duration");
+      if (!durationData) {
+        throw new Error("Duration data not found in localStorage.");
+      }
 
-        // Stop the media stream
-        if (mediaStreamRef.current) {
-          mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-        }
+      const parsedDuration = JSON.parse(durationData);
+      const duration = {
+        ...parsedDuration,
+        micStopTime: micStopTime,
+      };
 
-        setIsRecording(false);
+      // Safely update localStorage
+      localStorage.setItem("duration", JSON.stringify(duration));
+
+      // Update UI status
+      setStatus("inactive");
+
+      // Stop recording if the recorder exists
+      if (recorderRef.current) {
+        recorderRef.current.stopRecording(() => {
+          try {
+            const blob = recorderRef.current.getBlob();
+
+            // Check if the blob exists
+            if (blob) {
+              setAudioBlob(blob);
+              saveBlob(blob); // Persist the blob (e.g., save it to a server or locally)
+            } else {
+              throw new Error("Failed to retrieve audio blob.");
+            }
+
+            // Stop all media stream tracks
+            if (mediaStreamRef.current) {
+              mediaStreamRef.current
+                .getTracks()
+                .forEach((track) => track.stop());
+            }
+
+            setIsRecording(false);
+          } catch (blobError) {
+            console.error("Error handling the audio blob:", blobError);
+            props?.setOpenMessageDialog({
+              message:
+                blobError.message ||
+                "An error occurred while processing the audio.",
+              isError: true,
+            });
+          }
+        });
+      }
+
+      // Enable the "Next" button if the callback is provided
+      if (props.setEnableNext) {
+        props.setEnableNext(true);
+      }
+    } catch (err) {
+      console.error("Error in stopRecording:", err);
+
+      // Optionally show an error message to the user
+      props?.setOpenMessageDialog({
+        message: err.message || "Failed to stop recording. Please try again.",
+        isError: true,
       });
-    }
-    if (props.setEnableNext) {
-      props.setEnableNext(true);
     }
   };
 
