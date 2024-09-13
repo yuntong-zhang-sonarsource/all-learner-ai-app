@@ -133,13 +133,6 @@ const SpeakSentenceComponent = () => {
       localStorage.setItem("duration", JSON.stringify(duration));
     } catch (err) {
       console.error("Error updating duration in localStorage:", err);
-
-      // Optionally, show an error message to the user or handle the error
-      setOpenMessageDialog({
-        message:
-          err.message || "An error occurred while initializing the duration.",
-        isError: true,
-      });
     }
   }, [questions[currentQuestion]]);
 

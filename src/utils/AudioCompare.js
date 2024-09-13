@@ -69,12 +69,6 @@ const AudioRecorder = (props) => {
       setIsRecording(true);
     } catch (err) {
       console.error("Error in startRecording:", err);
-
-      // Display a message or handle the error as necessary
-      props?.setOpenMessageDialog({
-        message: err.message || "Failed to start recording. Please try again.",
-        isError: true,
-      });
     }
   };
 
@@ -124,12 +118,6 @@ const AudioRecorder = (props) => {
             setIsRecording(false);
           } catch (blobError) {
             console.error("Error handling the audio blob:", blobError);
-            props?.setOpenMessageDialog({
-              message:
-                blobError.message ||
-                "An error occurred while processing the audio.",
-              isError: true,
-            });
           }
         });
       }
@@ -140,12 +128,6 @@ const AudioRecorder = (props) => {
       }
     } catch (err) {
       console.error("Error in stopRecording:", err);
-
-      // Optionally show an error message to the user
-      props?.setOpenMessageDialog({
-        message: err.message || "Failed to stop recording. Please try again.",
-        isError: true,
-      });
     }
   };
 

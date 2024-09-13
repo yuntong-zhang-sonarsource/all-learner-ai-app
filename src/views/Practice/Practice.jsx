@@ -720,13 +720,6 @@ const Practice = () => {
       localStorage.setItem("duration", JSON.stringify(duration));
     } catch (err) {
       console.error("Error in useEffect:", err);
-
-      // Optionally, show an error message to the user
-      setOpenMessageDialog({
-        message:
-          err.message || "An error occurred while processing the content.",
-        isError: true,
-      });
     }
   }, [questions[currentQuestion]]);
 

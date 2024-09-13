@@ -335,13 +335,6 @@ function VoiceAnalyser(props) {
           "Error retrieving duration data or updating learner profile:",
           error
         );
-
-        // Optionally, show an error message to the user
-        props?.setOpenMessageDialog({
-          message:
-            error.message || "An error occurred while processing your data.",
-          isError: true,
-        });
       }
 
       const responseEndTime = new Date().getTime();
