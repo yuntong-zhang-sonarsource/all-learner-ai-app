@@ -29,7 +29,7 @@ import {
   replaceAll,
 } from "./constants";
 import config from "./urlConstants.json";
-import { filterBadWords } from "./Badwords";
+import { filterBadWords } from "@tekdi/multilingual-profanity-filter";
 import S3Client from "../config/awsS3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 /* eslint-disable */
@@ -292,7 +292,7 @@ function VoiceAnalyser(props) {
         );
         data = updateLearnerData;
         responseText = data.responseText;
-        profanityWord = await filterBadWords(data.responseText);
+        profanityWord = await filterBadWords(data.responseText, lang);
         if (profanityWord !== data.responseText) {
           props?.setOpenMessageDialog({
             message: "Please avoid using inappropriate language.",
