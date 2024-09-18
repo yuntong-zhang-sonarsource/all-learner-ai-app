@@ -677,21 +677,50 @@ const Practice = () => {
   }
 
   useEffect(() => {
-    if (questions[currentQuestion]?.contentSourceData) {
-      if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-        const contentSourceData =
-          questions[currentQuestion]?.contentSourceData || [];
-        const stringLengths = contentSourceData.map((item) => item.text.length);
-        const length = stringLengths[0];
-        window.parent.postMessage({ type: "stringLengths", length });
+    try {
+      // Check if contentSourceData exists for the current question
+      if (questions[currentQuestion]?.contentSourceData) {
+        if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+          const contentSourceData =
+            questions[currentQuestion]?.contentSourceData || [];
+
+          // Safely map and retrieve string lengths
+          const stringLengths = contentSourceData.map(
+            (item) => item.text.length
+          );
+          const length = stringLengths[0];
+
+          // Post message to parent window
+          window.parent.postMessage({ type: "stringLengths", length });
+        }
       }
+
+      // Record the content load start time
+      const contentLoadStartTime = new Date().getTime();
+
+      // Safely retrieve and update localStorage
+      const durationData = localStorage.getItem("duration");
+      let parsedDuration = {};
+
+      if (durationData) {
+        parsedDuration = JSON.parse(durationData);
+      } else {
+        // Initialize with default values if "duration" is not present
+        parsedDuration = { retryCount: 0 };
+      }
+
+      // Update duration with the new start time and reset retryCount
+      const duration = {
+        ...parsedDuration,
+        contentLoadStartTime: contentLoadStartTime,
+        retryCount: 0,
+      };
+
+      // Safely update localStorage with the new duration object
+      localStorage.setItem("duration", JSON.stringify(duration));
+    } catch (err) {
+      console.error("Error in useEffect:", err);
     }
-    const contentLoadStartTime = new Date().getTime();
-    const duration = {
-      ...JSON.parse(localStorage.getItem("duration")),
-      contentLoadStartTime: contentLoadStartTime,
-    };
-    localStorage.setItem("duration", JSON.stringify(duration));
   }, [questions[currentQuestion]]);
 
   const renderMechanics = () => {

@@ -24,67 +24,127 @@ const AudioRecorder = (props) => {
   }, []);
 
   const startRecording = async () => {
-    const micStartTime = new Date().getTime();
-    const duration = {
-      ...JSON.parse(localStorage.getItem("duration")),
-      micStartTime: micStartTime,
-    };
-    localStorage.setItem("duration", JSON.stringify(duration));
-    setStatus("recording");
-    if (props.setEnableNext) {
-      props.setEnableNext(false);
-    }
     try {
+      const micStartTime = new Date().getTime();
+
+      // Retrieve and parse localStorage value safely
+      const durationData = localStorage.getItem("duration");
+      let parsedDuration = { retryCount: 0 }; // Default values
+
+      if (durationData) {
+        try {
+          parsedDuration = JSON.parse(durationData);
+        } catch (err) {
+          console.error("Error parsing duration data from localStorage:", err);
+          // Optionally, reset to default values if parsing fails
+          parsedDuration = { retryCount: 0 };
+        }
+      }
+      const retryCount = parsedDuration.retryCount || 0; // Handle if retryCount is missing
+
+      const duration = {
+        ...parsedDuration,
+        micStartTime: micStartTime,
+        retryCount: retryCount + 1,
+      };
+
+      // Safely set the new duration data in localStorage
+      try {
+        localStorage.setItem("duration", JSON.stringify(duration));
+      } catch (err) {
+        console.error("Error updating duration data in localStorage:", err);
+      }
+
+      // Update the UI status
+      setStatus("recording");
+      if (props.setEnableNext) {
+        props.setEnableNext(false);
+      }
+
+      // Request microphone access and start recording
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaStreamRef.current = stream;
 
-      // Use RecordRTC with specific configurations to match the blob structure
       recorderRef.current = new RecordRTC(stream, {
         type: "audio",
-        mimeType: "audio/wav", // Ensuring the same MIME type as AudioRecorderCompair
-        recorderType: RecordRTC.StereoAudioRecorder, // Use StereoAudioRecorder for better compatibility
-        numberOfAudioChannels: 1, // Match the same number of audio channels
-        desiredSampRate: 16000, // Adjust the sample rate if necessary to match
+        mimeType: "audio/wav", // Same MIME type as AudioRecorderCompair
+        recorderType: RecordRTC.StereoAudioRecorder, // Use StereoAudioRecorder for compatibility
+        numberOfAudioChannels: 1, // Same number of audio channels
+        desiredSampRate: 16000, // Adjust sample rate if needed
         disableLogs: true,
       });
 
+      // Start recording
       recorderRef.current.startRecording();
-
       setIsRecording(true);
     } catch (err) {
-      console.error("Failed to start recording:", err);
+      console.error("Error in startRecording:", err);
     }
   };
 
   const stopRecording = () => {
-    const micStopTime = new Date().getTime();
-    const duration = {
-      ...JSON.parse(localStorage.getItem("duration")),
-      micStopTime: micStopTime,
-    };
-    localStorage.setItem("duration", JSON.stringify(duration));
-    setStatus("inactive");
-    if (recorderRef.current) {
-      recorderRef.current.stopRecording(() => {
-        const blob = recorderRef.current.getBlob();
+    try {
+      const micStopTime = new Date().getTime();
 
-        if (blob) {
-          setAudioBlob(blob);
-          saveBlob(blob); // Persist the blob
-        } else {
-          console.error("Failed to retrieve audio blob.");
-        }
+      // Retrieve and parse localStorage value safely
+      const durationData = localStorage.getItem("duration");
+      if (!durationData) {
+        throw new Error("Duration data not found in localStorage.");
+      }
 
-        // Stop the media stream
-        if (mediaStreamRef.current) {
-          mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-        }
+      let parsedDuration = {};
 
-        setIsRecording(false);
-      });
-    }
-    if (props.setEnableNext) {
-      props.setEnableNext(true);
+      if (durationData) {
+        parsedDuration = JSON.parse(durationData);
+      } else {
+        // Initialize default duration if "duration" is not present in localStorage
+        parsedDuration = { retryCount: 0, micStartTime: 0 };
+      }
+      const duration = {
+        ...parsedDuration,
+        micStopTime: micStopTime,
+      };
+
+      // Safely update localStorage
+      localStorage.setItem("duration", JSON.stringify(duration));
+
+      // Update UI status
+      setStatus("inactive");
+
+      // Stop recording if the recorder exists
+      if (recorderRef.current) {
+        recorderRef.current.stopRecording(() => {
+          try {
+            const blob = recorderRef.current.getBlob();
+
+            // Check if the blob exists
+            if (blob) {
+              setAudioBlob(blob);
+              saveBlob(blob); // Persist the blob (e.g., save it to a server or locally)
+            } else {
+              throw new Error("Failed to retrieve audio blob.");
+            }
+
+            // Stop all media stream tracks
+            if (mediaStreamRef.current) {
+              mediaStreamRef.current
+                .getTracks()
+                .forEach((track) => track.stop());
+            }
+
+            setIsRecording(false);
+          } catch (blobError) {
+            console.error("Error handling the audio blob:", blobError);
+          }
+        });
+      }
+
+      // Enable the "Next" button if the callback is provided
+      if (props.setEnableNext) {
+        props.setEnableNext(true);
+      }
+    } catch (err) {
+      console.error("Error in stopRecording:", err);
     }
   };
 

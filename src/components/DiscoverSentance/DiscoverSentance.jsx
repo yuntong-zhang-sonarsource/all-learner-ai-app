@@ -34,9 +34,8 @@ const SpeakSentenceComponent = () => {
   const [disableScreen, setDisableScreen] = useState(false);
   const [play] = useSound(LevelCompleteAudio);
   const [openMessageDialog, setOpenMessageDialog] = useState("");
-  const [totalSyllableCount, setTotalSyllableCount] = useState('');
+  const [totalSyllableCount, setTotalSyllableCount] = useState("");
   const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
-
 
   const callConfettiAndPlay = () => {
     play();
@@ -100,7 +99,7 @@ const SpeakSentenceComponent = () => {
   }, [voiceText]);
 
   const send = (score) => {
-    if (process.env.REACT_APP_IS_APP_IFRAME === 'true') {
+    if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
       window.parent.postMessage({
         score: score,
         message: "all-test-rig-score",
@@ -108,8 +107,37 @@ const SpeakSentenceComponent = () => {
     }
   };
 
+  useEffect(() => {
+    try {
+      const contentLoadStartTime = new Date().getTime();
+
+      // Retrieve and parse localStorage value safely
+      const durationData = localStorage.getItem("duration");
+      let parsedDuration = {};
+
+      if (durationData) {
+        parsedDuration = JSON.parse(durationData);
+      } else {
+        // Initialize with default values if "duration" is not present in localStorage
+        parsedDuration = { retryCount: 0 };
+      }
+
+      // Update the duration object with new contentLoadStartTime and reset retryCount
+      const duration = {
+        ...parsedDuration,
+        contentLoadStartTime: contentLoadStartTime,
+        retryCount: 0,
+      };
+
+      // Safely update localStorage with the new duration object
+      localStorage.setItem("duration", JSON.stringify(duration));
+    } catch (err) {
+      console.error("Error updating duration in localStorage:", err);
+    }
+  }, [questions[currentQuestion]]);
+
   const handleNext = async () => {
-    setIsNextButtonCalled(true)
+    setIsNextButtonCalled(true);
     setEnableNext(false);
 
     try {
@@ -165,17 +193,17 @@ const SpeakSentenceComponent = () => {
         const { data: getSetData } = getSetResultRes;
         const data = JSON.stringify(getSetData?.data);
         Log(data, "discovery", "ET");
-        if(process.env.REACT_APP_POST_LEARNER_PROGRESS === "true"){
-        await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.CREATE_LEARNER_PROGRESS}`,
-          {
-            userId: localStorage.getItem("virtualId"),
-            sessionId: localStorage.getItem("sessionId"),
-            subSessionId: sub_session_id,
-            milestoneLevel: getSetData?.data?.currentLevel,
-            language: localStorage.getItem("lang"),
-          }
-        );
+        if (process.env.REACT_APP_POST_LEARNER_PROGRESS === "true") {
+          await axios.post(
+            `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.CREATE_LEARNER_PROGRESS}`,
+            {
+              userId: localStorage.getItem("virtualId"),
+              sessionId: localStorage.getItem("sessionId"),
+              subSessionId: sub_session_id,
+              milestoneLevel: getSetData?.data?.currentLevel,
+              language: localStorage.getItem("lang"),
+            }
+          );
         }
         if (
           getSetData.data.sessionResult === "pass" &&
@@ -193,7 +221,9 @@ const SpeakSentenceComponent = () => {
             `${process.env.REACT_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_PAGINATION}?page=1&limit=5&collectionId=${sentences?.[newSentencePassedCounter]?.collectionId}`
           );
           setCurrentContentType("Sentence");
-          setTotalSyllableCount(resSentencesPagination?.data?.totalSyllableCount);
+          setTotalSyllableCount(
+            resSentencesPagination?.data?.totalSyllableCount
+          );
           setCurrentCollectionId(
             sentences?.[newSentencePassedCounter]?.collectionId
           );
@@ -274,7 +304,7 @@ const SpeakSentenceComponent = () => {
           `${process.env.REACT_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_PAGINATION}?page=1&limit=5&collectionId=${sentences?.collectionId}`
         );
         setCurrentContentType("Sentence");
-        setTotalSyllableCount(resPagination?.data?.totalSyllableCount)
+        setTotalSyllableCount(resPagination?.data?.totalSyllableCount);
         setCurrentCollectionId(sentences?.collectionId);
         setAssessmentResponse(resAssessment);
         localStorage.setItem("storyTitle", sentences?.name);
@@ -289,7 +319,8 @@ const SpeakSentenceComponent = () => {
     })();
   }, []);
   const handleBack = () => {
-    const destination = process.env.REACT_APP_IS_APP_IFRAME === 'true' ? "/" : "/discover-start";
+    const destination =
+      process.env.REACT_APP_IS_APP_IFRAME === "true" ? "/" : "/discover-start";
     navigate(destination);
     // if (process.env.REACT_APP_IS_APP_IFRAME === 'true') {
     //   navigate("/");
