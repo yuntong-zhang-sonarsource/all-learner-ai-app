@@ -45,7 +45,7 @@ const AudioRecorder = (props) => {
       const duration = {
         ...parsedDuration,
         micStartTime: micStartTime,
-        retryCount: retryCount + 1,
+        retryCount: !!props?.recordedAudio ? retryCount + 1 : 0,
       };
 
       // Safely set the new duration data in localStorage
