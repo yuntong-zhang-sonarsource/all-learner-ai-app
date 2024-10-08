@@ -4,12 +4,35 @@ import { Box } from "@mui/material";
 import { ListenButton, RetryIcon, SpeakButton, StopButton } from "./constants";
 import RecordVoiceVisualizer from "./RecordVoiceVisualizer";
 
+// Import speech recognition and speedometer
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import Speedometer from "react-d3-speedometer";
+
 const AudioRecorder = (props) => {
   const [isRecording, setIsRecording] = useState(false);
   const [status, setStatus] = useState("");
   const [audioBlob, setAudioBlob] = useState(null);
   const recorderRef = useRef(null);
   const mediaStreamRef = useRef(null);
+
+  // Speech recognition state variables
+  const { transcript, resetTranscript } = useSpeechRecognition();
+  const [wpm, setWpm] = useState(0);
+  const [wordCount, setWordCount] = useState(0);
+  const [finalTranscript, setFinalTranscript] = useState("");
+  const [finalWpm, setFinalWpm] = useState(0);
+
+  const startTimeRef = useRef(null);
+
+  // New state variables for pauses
+  const [transcriptWords, setTranscriptWords] = useState([]);
+  const [lastWordTimestamp, setLastWordTimestamp] = useState(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [pauseDots, setPauseDots] = useState("");
+  const pauseIntervalRef = useRef(null);
+  const pauseThreshold = 1000; // Pause threshold in milliseconds (e.g., 1000ms = 1 second)
 
   useEffect(() => {
     // Cleanup when component unmounts
@@ -20,8 +43,88 @@ const AudioRecorder = (props) => {
       if (mediaStreamRef.current) {
         mediaStreamRef.current.getTracks().forEach((track) => track.stop());
       }
+      if (pauseIntervalRef.current) {
+        clearInterval(pauseIntervalRef.current);
+        pauseIntervalRef.current = null;
+      }
     };
   }, []);
+
+  // Check for browser support
+  useEffect(() => {
+    if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+      console.log("Browser does not support speech recognition.");
+    }
+  }, []);
+
+  // Use effect to handle transcript changes and pauses
+  useEffect(() => {
+    if (status === "recording") {
+      const words = transcript
+        .trim()
+        .split(/\s+/)
+        .filter((word) => word.length > 0);
+      const currentTime = Date.now();
+
+      if (words.length > 0) {
+        const lastWord = words[words.length - 1];
+
+        if (transcriptWords.length === 0) {
+          // First word
+          setTranscriptWords([lastWord]);
+          setLastWordTimestamp(currentTime);
+          setIsPaused(false);
+        } else {
+          // Check if new word is added
+          const lastTranscriptWord = transcriptWords
+            .filter((word) => word !== "...")
+            .slice(-1)[0];
+          if (lastTranscriptWord !== lastWord) {
+            // New word added
+            if (isPaused) {
+              // User started speaking again after a pause
+              setIsPaused(false);
+              setPauseDots("");
+              if (pauseIntervalRef.current) {
+                clearInterval(pauseIntervalRef.current);
+                pauseIntervalRef.current = null;
+              }
+            }
+            setTranscriptWords((prevWords) => [...prevWords, lastWord]);
+            setLastWordTimestamp(currentTime);
+          } else {
+            // No new word, check for pause
+            const timeSinceLastWord = currentTime - lastWordTimestamp;
+            if (timeSinceLastWord >= pauseThreshold && !isPaused) {
+              // Pause detected
+              setIsPaused(true);
+              setPauseDots(".");
+              pauseIntervalRef.current = setInterval(() => {
+                setPauseDots((prevDots) =>
+                  prevDots.length < 10 ? prevDots + "." : ""
+                );
+              }, 500);
+            }
+          }
+        }
+      } else {
+        // No words yet
+        if (!isPaused && lastWordTimestamp) {
+          const timeSinceLastWord = currentTime - lastWordTimestamp;
+          if (timeSinceLastWord >= pauseThreshold) {
+            // Pause detected
+            setIsPaused(true);
+            setPauseDots(".");
+            pauseIntervalRef.current = setInterval(() => {
+              setPauseDots((prevDots) =>
+                prevDots.length < 10 ? prevDots + "." : ""
+              );
+            }, 500);
+          }
+        }
+      }
+    }
+  }, [transcript, status, lastWordTimestamp]);
 
   const startRecording = async () => {
     try {
@@ -36,11 +139,10 @@ const AudioRecorder = (props) => {
           parsedDuration = JSON.parse(durationData);
         } catch (err) {
           console.error("Error parsing duration data from localStorage:", err);
-          // Optionally, reset to default values if parsing fails
           parsedDuration = { retryCount: 0 };
         }
       }
-      const retryCount = parsedDuration.retryCount || 0; // Handle if retryCount is missing
+      const retryCount = parsedDuration.retryCount || 0;
 
       const duration = {
         ...parsedDuration,
@@ -67,16 +169,29 @@ const AudioRecorder = (props) => {
 
       recorderRef.current = new RecordRTC(stream, {
         type: "audio",
-        mimeType: "audio/wav", // Same MIME type as AudioRecorderCompair
-        recorderType: RecordRTC.StereoAudioRecorder, // Use StereoAudioRecorder for compatibility
-        numberOfAudioChannels: 1, // Same number of audio channels
-        desiredSampRate: 16000, // Adjust sample rate if needed
+        mimeType: "audio/wav",
+        recorderType: RecordRTC.StereoAudioRecorder,
+        numberOfAudioChannels: 1,
+        desiredSampRate: 16000,
         disableLogs: true,
       });
 
       // Start recording
       recorderRef.current.startRecording();
       setIsRecording(true);
+
+      // Start speech recognition
+      resetTranscript();
+      setTranscriptWords([]);
+      setLastWordTimestamp(null);
+      setIsPaused(false);
+      setPauseDots("");
+      if (pauseIntervalRef.current) {
+        clearInterval(pauseIntervalRef.current);
+        pauseIntervalRef.current = null;
+      }
+      startTimeRef.current = Date.now();
+      SpeechRecognition.startListening({ continuous: true });
     } catch (err) {
       console.error("Error in startRecording:", err);
     }
@@ -97,7 +212,6 @@ const AudioRecorder = (props) => {
       if (durationData) {
         parsedDuration = JSON.parse(durationData);
       } else {
-        // Initialize default duration if "duration" is not present in localStorage
         parsedDuration = { retryCount: 0, micStartTime: 0 };
       }
       const duration = {
@@ -120,7 +234,7 @@ const AudioRecorder = (props) => {
             // Check if the blob exists
             if (blob) {
               setAudioBlob(blob);
-              saveBlob(blob); // Persist the blob (e.g., save it to a server or locally)
+              saveBlob(blob);
             } else {
               throw new Error("Failed to retrieve audio blob.");
             }
@@ -139,6 +253,35 @@ const AudioRecorder = (props) => {
         });
       }
 
+      // Stop speech recognition
+      SpeechRecognition.stopListening();
+
+      // Calculate final WPM
+      const endTime = Date.now();
+      const durationInMinutes = (endTime - startTimeRef.current) / 60000;
+      const words = transcript
+        .trim()
+        .split(/\s+/)
+        .filter((word) => word.length > 0).length;
+      const calculatedWpm = words / durationInMinutes;
+
+      setWordCount(words);
+      setWpm(Math.round(calculatedWpm));
+
+      setFinalTranscript(transcript);
+      setFinalWpm(Math.round(calculatedWpm));
+
+      // Reset transcript for next time
+      resetTranscript();
+      setTranscriptWords([]);
+      setLastWordTimestamp(null);
+      if (pauseIntervalRef.current) {
+        clearInterval(pauseIntervalRef.current);
+        pauseIntervalRef.current = null;
+      }
+      setIsPaused(false);
+      setPauseDots("");
+
       // Enable the "Next" button if the callback is provided
       if (props.setEnableNext) {
         props.setEnableNext(true);
@@ -151,6 +294,32 @@ const AudioRecorder = (props) => {
   const saveBlob = (blob) => {
     const url = window.URL.createObjectURL(blob);
     props?.setRecordedAudio(url);
+  };
+
+  // Function to render live transcript with highlighted current word and pauses
+  const renderLiveTranscript = () => {
+    if (transcriptWords.length === 0 && pauseDots === "") return null;
+
+    const lastIndex = transcriptWords.length - 1;
+
+    return (
+      <div style={{ marginTop: "20px", fontSize: "18px" }}>
+        {transcriptWords.map((word, index) => (
+          <span
+            key={index}
+            style={{
+              backgroundColor:
+                index === lastIndex && !isPaused ? "#ffff00" : "transparent",
+              padding: "2px",
+              marginRight: "5px",
+            }}
+          >
+            {word}
+          </span>
+        ))}
+        {isPaused && <span style={{ marginLeft: "5px" }}>{pauseDots}</span>}
+      </div>
+    );
   };
 
   return (
@@ -174,9 +343,12 @@ const AudioRecorder = (props) => {
                 >
                   <StopButton />
                 </Box>
-                <Box style={{ marginTop: "50px", marginBottom: "50px" }}>
+                <Box style={{ marginTop: "50px", marginBottom: "20px" }}>
                   <RecordVoiceVisualizer />
                 </Box>
+
+                {/* Display live transcript with highlighted current word and pauses */}
+                {renderLiveTranscript()}
               </div>
             );
           } else {
@@ -184,52 +356,83 @@ const AudioRecorder = (props) => {
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  flexDirection: "column",
+                  alignItems: "center",
                   margin: "0 auto",
                 }}
-                className="game-action-button"
               >
-                {props?.originalText &&
-                  (!props.dontShowListen || props.recordedAudio) && (
-                    <>
-                      {!props.pauseAudio ? (
-                        <div
-                          onClick={() => {
-                            props.playAudio(true);
-                          }}
-                        >
-                          <Box sx={{ cursor: "pointer" }}>
-                            <ListenButton />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    margin: "0 auto",
+                  }}
+                  className="game-action-button"
+                >
+                  {props?.originalText &&
+                    (!props.dontShowListen || props.recordedAudio) && (
+                      <>
+                        {!props.pauseAudio ? (
+                          <div
+                            onClick={() => {
+                              props.playAudio(true);
+                            }}
+                          >
+                            <Box sx={{ cursor: "pointer" }}>
+                              <ListenButton />
+                            </Box>
+                          </div>
+                        ) : (
+                          <Box
+                            sx={{ cursor: "pointer" }}
+                            onClick={() => {
+                              props.playAudio(false);
+                            }}
+                          >
+                            <StopButton />
                           </Box>
-                        </div>
-                      ) : (
-                        <Box
-                          sx={{ cursor: "pointer" }}
-                          onClick={() => {
-                            props.playAudio(false);
-                          }}
-                        >
-                          <StopButton />
-                        </Box>
-                      )}
-                    </>
-                  )}
+                        )}
+                      </>
+                    )}
 
-                <div>
-                  {props?.originalText && !props.showOnlyListen && (
-                    <Box
-                      marginLeft={
-                        !props.dontShowListen || props.recordedAudio
-                          ? "32px"
-                          : "0px"
-                      }
-                      sx={{ cursor: "pointer" }}
-                      onClick={startRecording}
-                    >
-                      {!props.recordedAudio ? <SpeakButton /> : <RetryIcon />}
-                    </Box>
-                  )}
+                  <div>
+                    {props?.originalText && !props.showOnlyListen && (
+                      <Box
+                        marginLeft={
+                          !props.dontShowListen || props.recordedAudio
+                            ? "32px"
+                            : "0px"
+                        }
+                        sx={{ cursor: "pointer" }}
+                        onClick={startRecording}
+                      >
+                        {!props.recordedAudio ? <SpeakButton /> : <RetryIcon />}
+                      </Box>
+                    )}
+                  </div>
                 </div>
+
+                {/* Display the speedometer and WPM after recording */}
+                {finalTranscript && (
+                  <div style={{ textAlign: "center", marginTop: "20px" }}>
+                    <Speedometer
+                      minValue={0}
+                      maxValue={200}
+                      value={finalWpm}
+                      needleColor="black"
+                      startColor="red"
+                      segments={5}
+                      endColor="green"
+                      textColor="black"
+                    />
+
+                    <div style={{ marginTop: "20px" }}>
+                      <h4>Words per minute (WPM): {finalWpm}</h4>
+                      <h4>Word count: {wordCount}</h4>
+                      <p>Transcript: {finalTranscript}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             );
           }
