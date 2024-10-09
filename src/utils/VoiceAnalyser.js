@@ -262,78 +262,83 @@ function VoiceAnalyser(props) {
       let profanityWord = "";
       let newThresholdPercentage = 0;
       let data = {};
+      if (callUpdateLearner) {
+        try {
+          const durationData = localStorage.getItem("duration");
 
-      try {
-        const durationData = localStorage.getItem("duration");
-
-        // Check if the durationData exists
-        if (!durationData) {
-          throw new Error("Duration data not found in localStorage.");
-        }
-
-        const { contentLoadStartTime, micStartTime, micStopTime, retryCount } =
-          JSON.parse(durationData);
-
-        // Check if any of the required values are missing or invalid
-        if (
-          !contentLoadStartTime ||
-          !micStartTime ||
-          !micStopTime ||
-          retryCount === undefined
-        ) {
-          throw new Error("Incomplete or invalid duration data.");
-        }
-
-        const loadStart = parseInt(contentLoadStartTime);
-        const micStart = parseInt(micStartTime);
-        const micStop = parseInt(micStopTime);
-
-        const loadToMicStartDuration = (micStart - loadStart) / 1000; // in seconds
-        const micDuration = (micStop - micStart) / 1000; // in seconds
-
-        const { data: updateLearnerData } = await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.UPDATE_LEARNER_PROFILE}/${lang}`,
-          {
-            original_text: originalText,
-            audio: base64Data,
-            user_id: virtualId,
-            session_id: sessionId,
-            language: lang,
-            date: new Date(),
-            sub_session_id,
-            contentId,
-            contentType,
-            practice_duration: parseFloat(loadToMicStartDuration.toFixed(2)),
-            read_duration: parseFloat(micDuration.toFixed(2)),
-            retry_count: parseInt(retryCount),
+          // Check if the durationData exists
+          if (!durationData) {
+            throw new Error("Duration data not found in localStorage.");
           }
-        );
 
-        data = updateLearnerData;
-        responseText = data.responseText;
-        profanityWord = await filterBadWords(data.responseText, lang);
-        if (profanityWord !== data.responseText) {
-          props?.setOpenMessageDialog({
-            message: "Please avoid using inappropriate language.",
-            isError: true,
-          });
-        }
+          const {
+            contentLoadStartTime,
+            micStartTime,
+            micStopTime,
+            retryCount,
+          } = JSON.parse(durationData);
 
-        newThresholdPercentage = data?.subsessionTargetsCount || 0;
+          // Check if any of the required values are missing or invalid
+          if (
+            !contentLoadStartTime ||
+            !micStartTime ||
+            !micStopTime ||
+            retryCount === undefined
+          ) {
+            throw new Error("Incomplete or invalid duration data.");
+          }
 
-        if (contentType.toLowerCase() !== "word") {
-          handlePercentageForLife(
-            newThresholdPercentage,
-            contentType,
-            data?.subsessionFluency,
-            lang
+          const loadStart = parseInt(contentLoadStartTime);
+          const micStart = parseInt(micStartTime);
+          const micStop = parseInt(micStopTime);
+
+          const loadToMicStartDuration = (micStart - loadStart) / 1000; // in seconds
+          const micDuration = (micStop - micStart) / 1000; // in seconds
+
+          const { data: updateLearnerData } = await axios.post(
+            `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.UPDATE_LEARNER_PROFILE}/${lang}`,
+            {
+              original_text: originalText,
+              audio: base64Data,
+              user_id: virtualId,
+              session_id: sessionId,
+              language: lang,
+              date: new Date(),
+              sub_session_id,
+              contentId,
+              contentType,
+              practice_duration: parseFloat(loadToMicStartDuration.toFixed(2)),
+              read_duration: parseFloat(micDuration.toFixed(2)),
+              retry_count: parseInt(retryCount),
+            }
+          );
+
+          data = updateLearnerData;
+          responseText = data.responseText;
+          profanityWord = await filterBadWords(data.responseText, lang);
+          if (profanityWord !== data.responseText) {
+            props?.setOpenMessageDialog({
+              message: "Please avoid using inappropriate language.",
+              isError: true,
+            });
+          }
+
+          newThresholdPercentage = data?.subsessionTargetsCount || 0;
+
+          if (contentType.toLowerCase() !== "word") {
+            handlePercentageForLife(
+              newThresholdPercentage,
+              contentType,
+              data?.subsessionFluency,
+              lang
+            );
+          }
+        } catch (error) {
+          console.error(
+            "Error retrieving duration data or updating learner profile:",
+            error
           );
         }
-      } catch (error) {
-        console.error(
-          "Error retrieving duration data or updating learner profile:",
-          error
-        );
       }
 
       const responseEndTime = new Date().getTime();
