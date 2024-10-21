@@ -1,4 +1,4 @@
-name: ALL tn staging Deployment
+name: ALL tn staging Deployment ek s3
 
 on:
   push:
