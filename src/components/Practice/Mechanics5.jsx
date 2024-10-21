@@ -11,7 +11,7 @@ const Mechanics5 = ({
   isDiscover,
   header,
   parentWords,
-  options = {},
+  options,
   image,
   question_audio,
   handleNext,
@@ -63,8 +63,7 @@ const Mechanics5 = ({
   const updateStoredData = (audios, isCorrect) => {
     if (audios) {
       const newEntry = {
-        selectedAnswer:
-          options && options.length > 0 && options[selectedOption]?.text,
+        selectedAnswer: options[selectedOption]?.text,
         audioUrl: audios,
         correctAnswer: isCorrect,
       };
@@ -219,7 +218,7 @@ const Mechanics5 = ({
             </span>
           </Box>
 
-          {options && options.length > 0 ? (
+          {options.length &&
             options.map((option, i) => (
               <Box
                 key={option.audio_url}
@@ -263,13 +262,10 @@ const Mechanics5 = ({
                     marginLeft: "10px",
                   }}
                 >
-                  {option?.text || "Text is missing"}
+                  {option.text}
                 </span>
               </Box>
-            ))
-          ) : (
-            <div>No options available</div>
-          )}
+            ))}
         </Grid>
       </Grid>
 
@@ -284,8 +280,6 @@ const Mechanics5 = ({
           dontShowListen={type === "image" || isDiscover}
           isShowCase={isShowCase || isDiscover}
           originalText={
-            options &&
-            options.length > 0 &&
             options.find((option) => option.isAns === true).text
               ? options.find((option) => option.isAns === true).text
               : parentWords
