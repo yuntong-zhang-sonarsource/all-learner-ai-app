@@ -761,7 +761,7 @@ VoiceAnalyser.propTypes = {
   setVoiceText: PropTypes.func.isRequired,
   livesData: PropTypes.object,
   contentId: PropTypes.string,
-  updateStoredData: PropTypes.func.isRequired,
+  updateStoredData: PropTypes.any,
   pageName: PropTypes.string,
 };
 

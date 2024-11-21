@@ -243,6 +243,9 @@ const MainLayout = (props) => {
           <img
             src={levelsImages?.[LEVEL]?.backgroundAddOn}
             alt="backgroundAddOn"
+            width="30" // Set width attribute
+            height="30" // Set height attribute
+            loading="lazy" // Lazy-load the image
           />
         </Box>
       )}

@@ -1,12 +1,6 @@
 import MainLayout from "../Layouts.jsx/MainLayout";
 import assessmentBackground from "../../assets/images/assessmentBackground.png";
-import {
-  Box,
-  Grid,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "../../../node_modules/@mui/material/index";
+import { Box, Grid, IconButton, Tooltip, Typography } from "@mui/material";
 import LogoutImg from "../../assets/images/logout.svg";
 import { styled } from "@mui/material/styles";
 import {
@@ -20,13 +14,12 @@ import {
   setLocalData,
 } from "../../utils/constants";
 import practicebg from "../../assets/images/practice-bg.svg";
-import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
-import { useEffect, useState } from "react";
-import axios from "../../../node_modules/axios/index";
+import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 // import { useDispatch } from 'react-redux';
 import { setVirtualId } from "../../store/slices/user.slice";
 import { useDispatch, useSelector } from "react-redux";
-import React from "react";
 import desktopLevel1 from "../../assets/images/desktopLevel1.png";
 import desktopLevel2 from "../../assets/images/desktopLevel2.png";
 import desktopLevel3 from "../../assets/images/desktopLevel3.jpg";
@@ -45,8 +38,14 @@ import panda from "../../assets/images/panda.svg";
 import cryPanda from "../../assets/images/cryPanda.svg";
 import { uniqueId } from "../../services/utilService";
 import { end } from "../../services/telementryService";
+import PropTypes from "prop-types";
 
 export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
+  LanguageModal.propTypes = {
+    lang: PropTypes.any,
+    setLang: PropTypes.any,
+    setOpenLangModal: PropTypes.any,
+  };
   const [selectedLang, setSelectedLang] = useState(lang);
   return (
     <Box
@@ -329,6 +328,12 @@ export const MessageDialog = ({
     </Box>
   );
 };
+MessageDialog.propTypes = {
+  closeDialog: PropTypes.func,
+  dontShowHeader: PropTypes.bool,
+  isError: PropTypes.any,
+  message: PropTypes.string,
+};
 
 export const ProfileHeader = ({
   setOpenLangModal,
@@ -423,7 +428,14 @@ export const ProfileHeader = ({
           {handleBack && (
             <Box ml={{ xs: "10px", sm: "94px" }}>
               <IconButton onClick={handleBack}>
-                <img src={back} alt="back" style={{ height: "30px" }} />
+                <img
+                  src={back}
+                  alt="back"
+                  style={{ height: "30px" }}
+                  width="30" // Set width attribute
+                  height="30" // Set height attribute
+                  loading="lazy" // Lazy-load the image
+                />
               </IconButton>
             </Box>
           )}
@@ -440,10 +452,14 @@ export const ProfileHeader = ({
               >
                 <img
                   src={profilePic}
-                  alt="profile-pic"
+                  alt="Profile picture"
                   style={{ height: "30px" }}
+                  width="30" // Set width attribute
+                  height="30" // Set height attribute
+                  loading="lazy" // Lazy-load the image
                 />
               </Box>
+
               <Box ml="12px">
                 <span
                   style={{
@@ -539,12 +555,19 @@ export const ProfileHeader = ({
     </>
   );
 };
+ProfileHeader.propTypes = {
+  points: PropTypes.number,
+  setOpenLangModal: PropTypes.func,
+  handleBack: PropTypes.func,
+  profileName: PropTypes.string,
+  lang: PropTypes.string,
+};
 
 const Assesment = ({ discoverStart }) => {
   let username;
   if (localStorage.getItem("token") !== null) {
     let jwtToken = localStorage.getItem("token");
-    var userDetails = jwtDecode(jwtToken);
+    let userDetails = jwtDecode(jwtToken);
     username = userDetails.student_name;
     setLocalData("profileName", username);
   }
@@ -811,6 +834,10 @@ const Assesment = ({ discoverStart }) => {
       )}
     </>
   );
+};
+
+Assesment.propTypes = {
+  discoverStart: PropTypes.bool,
 };
 
 export default Assesment;

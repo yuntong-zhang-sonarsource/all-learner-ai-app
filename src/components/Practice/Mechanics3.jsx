@@ -272,6 +272,9 @@ const Mechanics2 = ({
                       height: "clamp(150px, 20vw, 220px)",
                     }}
                     alt=""
+                    width="300" // Set explicit width
+                    height="220"
+                    loading="lazy"
                   />
                 )}
 
