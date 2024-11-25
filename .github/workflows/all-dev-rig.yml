@@ -1,4 +1,4 @@
-name: ALL rig dev Deployment
+name: ALL test-rig dev Deployment
 
 on:
   push:
