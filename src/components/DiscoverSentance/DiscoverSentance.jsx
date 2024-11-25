@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../../node_modules/axios/index";
+import axios from "axios";
 import elephant from "../../assets/images/elephant.svg";
 import {
   callConfetti,
@@ -9,7 +9,6 @@ import {
 } from "../../utils/constants";
 import WordsOrImage from "../Mechanism/WordsOrImage";
 import { uniqueId } from "../../services/utilService";
-import useSound from "use-sound";
 import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
 import config from "../../utils/urlConstants.json";
 import { MessageDialog } from "../Assesment/Assesment";
@@ -63,7 +62,7 @@ const SpeakSentenceComponent = () => {
   }, [currentQuestion]);
 
   useEffect(() => {
-    if (!(localStorage.getItem("contentSessionId") !== null)) {
+    if (localStorage.getItem("contentSessionId") === null) {
       (async () => {
         const sessionId = getLocalData("sessionId");
         const virtualId = getLocalData("virtualId");
@@ -118,7 +117,7 @@ const SpeakSentenceComponent = () => {
     try {
       const lang = getLocalData("lang");
 
-      if (!(localStorage.getItem("contentSessionId") !== null)) {
+      if (localStorage.getItem("contentSessionId") === null) {
         const pointsRes = await axios.post(
           `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
           {

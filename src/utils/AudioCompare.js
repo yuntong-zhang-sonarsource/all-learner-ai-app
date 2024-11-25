@@ -5,11 +5,10 @@ import { ListenButton, RetryIcon, SpeakButton, StopButton } from "./constants";
 import RecordVoiceVisualizer from "./RecordVoiceVisualizer";
 import playButton from "../../src/assets/listen.png";
 import pauseButton from "../../src/assets/pause.png";
+import PropTypes from "prop-types";
 
 const AudioRecorder = (props) => {
-  const [isRecording, setIsRecording] = useState(false);
   const [status, setStatus] = useState("");
-  const [audioBlob, setAudioBlob] = useState(null);
   const recorderRef = useRef(null);
   const mediaStreamRef = useRef(null);
 
@@ -45,8 +44,6 @@ const AudioRecorder = (props) => {
       });
 
       recorderRef.current.startRecording();
-
-      setIsRecording(true);
     } catch (err) {
       console.error("Failed to start recording:", err);
     }
@@ -59,7 +56,6 @@ const AudioRecorder = (props) => {
         const blob = recorderRef.current.getBlob();
 
         if (blob) {
-          setAudioBlob(blob);
           saveBlob(blob); // Persist the blob
         } else {
           console.error("Failed to retrieve audio blob.");
@@ -69,8 +65,6 @@ const AudioRecorder = (props) => {
         if (mediaStreamRef.current) {
           mediaStreamRef.current.getTracks().forEach((track) => track.stop());
         }
-
-        setIsRecording(false);
       });
     }
     if (props.setEnableNext) {
@@ -80,9 +74,10 @@ const AudioRecorder = (props) => {
 
   const saveBlob = (blob) => {
     const url = window.URL.createObjectURL(blob);
-    props?.setRecordedAudio(url);
+    if (props.setRecordedAudio) {
+      props?.setRecordedAudio(url);
+    }
   };
-
   return (
     <div>
       <div>
@@ -196,6 +191,20 @@ const AudioRecorder = (props) => {
       </div>
     </div>
   );
+};
+
+AudioRecorder.propTypes = {
+  setEnableNext: PropTypes.func,
+  recordedAudio: PropTypes.string,
+  setRecordedAudio: PropTypes.func,
+  originalText: PropTypes.string,
+  showOnlyListen: PropTypes.bool,
+  dontShowListen: PropTypes.bool,
+  isShowCase: PropTypes.bool,
+  pauseAudio: PropTypes.bool,
+  playAudio: PropTypes.func,
+  isStudentAudioPlaying: PropTypes.bool,
+  playRecordedAudio: PropTypes.func,
 };
 
 export default AudioRecorder;

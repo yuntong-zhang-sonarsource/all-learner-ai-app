@@ -15,6 +15,7 @@ import arrow from "../../assets/images/ic-arrow.svg";
 import level from "../../assets/images/level.svg";
 import timer from "../../assets/images/timer.svg";
 import practicebg from "../../assets/images/practice-bg.svg";
+import PropTypes from "prop-types";
 
 const sectionStyle = {
   width: "100%",
@@ -52,7 +53,7 @@ const Mechanics1 = ({ page, setPage }) => {
         }}
       >
         <CardContent>
-          <img src={timer} alt="timer" height="40px" />
+          <img src={timer} alt="timer" width="40" height="40" loading="lazy" />
 
           <Typography
             variant="h5"
@@ -145,6 +146,11 @@ const Mechanics1 = ({ page, setPage }) => {
       </Card>
     </Box>
   );
+};
+
+Mechanics1.propTypes = {
+  page: PropTypes.number,
+  setPage: PropTypes.func,
 };
 
 export default Mechanics1;
