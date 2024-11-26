@@ -197,14 +197,14 @@ AudioRecorder.propTypes = {
   setEnableNext: PropTypes.func,
   recordedAudio: PropTypes.string,
   setRecordedAudio: PropTypes.func,
-  originalText: PropTypes.string,
+  originalText: PropTypes.string.isRequired,
   showOnlyListen: PropTypes.bool,
   dontShowListen: PropTypes.bool,
   isShowCase: PropTypes.bool,
   pauseAudio: PropTypes.bool,
-  playAudio: PropTypes.func,
+  playAudio: PropTypes.func.isRequired,
   isStudentAudioPlaying: PropTypes.bool,
-  playRecordedAudio: PropTypes.func,
+  playRecordedAudio: PropTypes.func.isRequired,
 };
 
 export default AudioRecorder;

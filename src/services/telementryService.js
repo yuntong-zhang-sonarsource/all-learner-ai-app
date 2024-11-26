@@ -10,7 +10,7 @@ let isBuddyLogin = checkTokenInLocalStorage();
 
 if (localStorage.getItem("token") !== null) {
   let jwtToken = localStorage.getItem("token");
-  let userDetails = jwtDecode(jwtToken);
+  const userDetails = jwtDecode(jwtToken);
 }
 
 function checkTokenInLocalStorage() {

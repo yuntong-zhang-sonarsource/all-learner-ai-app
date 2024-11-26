@@ -122,13 +122,28 @@ const Practice = () => {
 
   const send = (score) => {
     if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-      window.parent.postMessage(
-        {
-          score: score,
-          message: "all-test-rig-score",
-        },
-        "*"
-      );
+      let allowedOrigins = [];
+      try {
+        allowedOrigins = JSON.parse(
+          process.env.REACT_APP_PARENT_ORIGIN_URL || "[]"
+        );
+      } catch (error) {
+        console.error(
+          "Invalid JSON format in REACT_APP_PARENT_ORIGIN_URL:",
+          error
+        );
+      }
+      const parentOrigin =
+        window?.location?.ancestorOrigins?.[0] || window.parent.location.origin;
+      if (allowedOrigins.includes(parentOrigin)) {
+        window.parent.postMessage(
+          {
+            score: score,
+            message: "all-test-rig-score",
+          },
+          parentOrigin
+        );
+      }
     }
   };
 
@@ -760,7 +775,26 @@ const Practice = () => {
               "mechanic_1")
             ? 500
             : stringLengths[0];
-        window.parent.postMessage({ type: "stringLengths", length }, "*");
+        let allowedOrigins = [];
+        try {
+          allowedOrigins = JSON.parse(
+            process.env.REACT_APP_PARENT_ORIGIN_URL || "[]"
+          );
+        } catch (error) {
+          console.error(
+            "Invalid JSON format in REACT_APP_PARENT_ORIGIN_URL:",
+            error
+          );
+        }
+        const parentOrigin =
+          window?.location?.ancestorOrigins?.[0] ||
+          window.parent.location.origin;
+        if (allowedOrigins.includes(parentOrigin)) {
+          window.parent.postMessage(
+            { type: "stringLengths", length },
+            parentOrigin
+          );
+        }
       }
     }
   }, [questions[currentQuestion]]);

@@ -432,7 +432,7 @@ export const MessageDialog = ({
 MessageDialog.propTypes = {
   closeDialog: PropTypes.func,
   dontShowHeader: PropTypes.bool,
-  isError: PropTypes.any,
+  isError: PropTypes.bool,
   message: PropTypes.string,
 };
 
@@ -452,7 +452,26 @@ export const ProfileHeader = ({
   const handleProfileBack = () => {
     try {
       if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-        window.parent.postMessage({ type: "restore-iframe-content" }, "*");
+        let allowedOrigins = [];
+        try {
+          allowedOrigins = JSON.parse(
+            process.env.REACT_APP_PARENT_ORIGIN_URL || "[]"
+          );
+        } catch (error) {
+          console.error(
+            "Invalid JSON format in REACT_APP_PARENT_ORIGIN_URL:",
+            error
+          );
+        }
+        const parentOrigin =
+          window?.location?.ancestorOrigins?.[0] ||
+          window.parent.location.origin;
+        if (allowedOrigins.includes(parentOrigin)) {
+          window.parent.postMessage(
+            { type: "restore-iframe-content" },
+            parentOrigin
+          );
+        }
         navigate("/");
       } else {
         navigate("/discover-start");
@@ -723,7 +742,7 @@ const Assesment = ({ discoverStart }) => {
   let username;
   if (localStorage.getItem("token") !== null) {
     let jwtToken = localStorage.getItem("token");
-    let userDetails = jwtDecode(jwtToken);
+    const userDetails = jwtDecode(jwtToken);
     username = userDetails.student_name;
     setLocalData("profileName", username);
   }
@@ -823,14 +842,38 @@ const Assesment = ({ discoverStart }) => {
 
   const { virtualId } = useSelector((state) => state.user);
 
-  const [isVideoOpen, setIsVideoOpen] = useState(false);
-
   const handleOpenVideo = () => {
-    setIsVideoOpen(true);
-  };
+    if (process.env.REACT_APP_SHOW_HELP_VIDEO === "true") {
+      let allowedOrigins = [];
+      try {
+        allowedOrigins = JSON.parse(
+          process.env.REACT_APP_PARENT_ORIGIN_URL || "[]"
+        );
+      } catch (error) {
+        console.error(
+          "Invalid JSON format in REACT_APP_PARENT_ORIGIN_URL:",
+          error
+        );
+      }
 
-  const handleCloseVideo = () => {
-    setIsVideoOpen(false);
+      const parentOrigin =
+        window?.location?.ancestorOrigins?.[0] || window.parent.location.origin;
+
+      if (allowedOrigins.includes(parentOrigin)) {
+        try {
+          window.parent.postMessage(
+            {
+              message: "help-video-link",
+            },
+            parentOrigin
+          );
+        } catch (error) {
+          console.error("Error sending postMessage:", error);
+        }
+      } else {
+        console.warn(`Parent origin "${parentOrigin}" is not allowed.`);
+      }
+    }
   };
 
   const navigate = useNavigate();
@@ -1040,48 +1083,6 @@ const Assesment = ({ discoverStart }) => {
           </Box>
         </MainLayout>
       )}
-      {/* Video Modal */}
-      <Dialog
-        open={isVideoOpen}
-        onClose={handleCloseVideo}
-        maxWidth="lg"
-        fullWidth
-      >
-        <Box
-          sx={{
-            position: "relative",
-            width: "100%",
-            paddingTop: "56.25%", // Maintain 16:9 aspect ratio
-            backgroundColor: "black", // Optional: Ensure a dark background
-          }}
-        >
-          <iframe
-            src={process.env.REACT_APP_SHOW_HELP_VIDEO_LINK}
-            title="YouTube video"
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-            }}
-          />
-        </Box>
-        <IconButton
-          onClick={handleCloseVideo}
-          sx={{
-            position: "absolute",
-            top: 8,
-            right: 8,
-            zIndex: 1,
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      </Dialog>
     </>
   );
 };
