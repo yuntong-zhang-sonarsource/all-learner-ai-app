@@ -1,9 +1,9 @@
-name: ALL tn staging Deployment
+name: ALL tn staging hosur Deployment
 
 on:
   push:
     branches:
-      - all-1.3-tn-staging-hotfix
+      - all-1.3-hosur
 
 jobs:
   deploy:
