@@ -82,7 +82,13 @@ const Mechanics2 = ({ page, setPage }) => {
                 width: "100px",
               }}
             >
-              <img src={speak} alt="speak" height="15px" />
+              <img
+                src={speak}
+                alt="speak"
+                width="15"
+                height="15"
+                loading="lazy"
+              />
               <span style={{ marginLeft: "4px" }}>Speak</span>
             </Button>
           </Box>
@@ -117,8 +123,8 @@ const Mechanics2 = ({ page, setPage }) => {
 };
 
 Mechanics2.propTypes = {
-  page: PropTypes.number,
-  setPage: PropTypes.func,
+  page: PropTypes.number.isRequired,
+  setPage: PropTypes.func.isRequired,
 };
 
 export default Mechanics2;

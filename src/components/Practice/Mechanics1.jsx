@@ -112,7 +112,13 @@ const Mechanics1 = ({ page, setPage }) => {
                 width: "100px",
               }}
             >
-              <img src={speak} alt="speak" height="15px" />
+              <img
+                src={speak}
+                alt="speak"
+                width="15"
+                height="15"
+                loading="lazy"
+              />
               <span style={{ marginLeft: "4px", fontFamily: "Quicksand" }}>
                 Speak
               </span>
@@ -139,7 +145,13 @@ const Mechanics1 = ({ page, setPage }) => {
               }}
             >
               <span style={{ marginRight: "4px" }}>Next</span>
-              <img src={arrow} alt="arrow" height="15px" />
+              <img
+                src={arrow}
+                alt="arrow"
+                width="15"
+                height="15"
+                loading="lazy"
+              />
             </Button>
           </Box>
         </Box>
