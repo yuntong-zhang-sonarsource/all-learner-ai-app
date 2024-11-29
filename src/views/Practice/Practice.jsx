@@ -14,7 +14,6 @@ import {
 import axios from "axios";
 import WordsOrImage from "../../components/Mechanism/WordsOrImage";
 import { uniqueId } from "../../services/utilService";
-import useSound from "use-sound";
 import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
 import { splitGraphemes } from "split-graphemes";
 import { Typography } from "@mui/material";
@@ -214,7 +213,7 @@ const Practice = () => {
         {
           userId: virtualId,
           sessionId: sessionId,
-          milestone: isShowCase ? "showcase" : `practice`,
+          milestone: isShowCase ? "showcase" : "practice",
           lesson: currentPracticeStep,
           progress: isShowCase ? showcasePercentage : currentPracticeProgress,
           language: lang,
@@ -254,7 +253,7 @@ const Practice = () => {
               user_id: virtualId,
               totalSyllableCount: totalSyllableCount,
               language: localStorage.getItem("lang"),
-              is_mechanics: mechanism && mechanism?.id ? true : false,
+              is_mechanics: mechanism?.id,
             }
           );
           const { data: getSetData } = getSetResultRes;
@@ -283,7 +282,7 @@ const Practice = () => {
                 {
                   userId: virtualId,
                   sessionId: sessionId,
-                  milestone: `practice`,
+                  milestone: "practice",
                   lesson: "0",
                   progress: 0,
                   language: lang,
@@ -310,7 +309,7 @@ const Practice = () => {
           {
             userId: virtualId,
             sessionId: sessionId,
-            milestone: `practice`,
+            milestone: "practice",
             lesson: newPracticeStep,
             progress: currentPracticeProgress,
             language: lang,
@@ -720,7 +719,7 @@ const Practice = () => {
         );
         if (isMatched) {
           return (
-            <React.Fragment key={index}>
+            <React.Fragment key={word}>
               <Typography
                 variant="h5"
                 component="h4"
@@ -750,7 +749,7 @@ const Practice = () => {
                 fontFamily: "Quicksand",
                 lineHeight: "50px",
               }}
-              key={index}
+              key={word}
             >
               {word + " "}
             </Typography>
@@ -805,10 +804,7 @@ const Practice = () => {
         <WordsOrImage
           {...{
             level: !isShowCase && level,
-            header:
-              questions[currentQuestion]?.contentType === "image"
-                ? `Guess the below image`
-                : `Speak the below ${questions[currentQuestion]?.contentType}`,
+            header: getHeader(questions[currentQuestion]?.contentType),
             words: questions[currentQuestion]?.contentSourceData?.[0]?.text,
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
@@ -818,7 +814,6 @@ const Practice = () => {
             storyLine,
             handleNext,
             type: questions[currentQuestion]?.contentType,
-            // image: elephant,
             enableNext,
             showTimer: false,
             points,
@@ -826,9 +821,7 @@ const Practice = () => {
             currentStep: currentQuestion + 1,
             progressData,
             showProgress: true,
-            background:
-              isShowCase &&
-              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            background: getBackground(isShowCase),
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
@@ -858,12 +851,10 @@ const Practice = () => {
           setPage={setPage}
           {...{
             level: !isShowCase && level,
-            header:
-              mechanism.name === "fillInTheBlank"
-                ? "Fill in the blank"
-                : questions[currentQuestion]?.contentType === "image"
-                ? `Guess the below image`
-                : `Speak the below ${questions[currentQuestion]?.contentType}`,
+            header: getHeader(
+              mechanism.name,
+              questions[currentQuestion]?.contentType
+            ),
             parentWords: questions[currentQuestion]?.mechanics_data?.[0]?.text,
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
@@ -873,14 +864,8 @@ const Practice = () => {
             setVoiceAnimate,
             storyLine,
             handleNext,
-            image: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
-                questions[currentQuestion]?.mechanics_data[0]?.image_url
-              : null,
-            audio: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
-                questions[currentQuestion]?.mechanics_data[0]?.audio_url
-              : null,
+            image: getImageUrl(questions[currentQuestion]?.mechanics_data),
+            audio: getAudioUrl(questions[currentQuestion]?.mechanics_data),
             enableNext,
             showTimer: false,
             points,
@@ -888,23 +873,17 @@ const Practice = () => {
             currentStep: currentQuestion + 1,
             progressData,
             showProgress: true,
-            background:
-              isShowCase &&
-              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            background: getBackground(isShowCase),
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
             isShowCase,
             handleBack: !isShowCase && handleBack,
             setEnableNext,
-            allWords:
-              questions?.map((elem) => elem?.contentSourceData?.[0]?.text) ||
-              [],
+            allWords: getAllWords(questions),
             loading,
             setOpenMessageDialog,
-            options: questions[currentQuestion]?.mechanics_data
-              ? questions[currentQuestion]?.mechanics_data[0]?.options
-              : [],
+            options: getOptions(questions[currentQuestion]?.mechanics_data),
           }}
         />
       );
@@ -915,10 +894,7 @@ const Practice = () => {
           setPage={setPage}
           {...{
             level: !isShowCase && level,
-            header:
-              questions[currentQuestion]?.contentType === "image"
-                ? `Guess the below image`
-                : `Speak the below ${questions[currentQuestion]?.contentType}`,
+            header: getHeader(questions[currentQuestion]?.contentType),
             parentWords:
               questions[currentQuestion]?.contentSourceData?.[0]?.text,
             contentType: currentContentType,
@@ -929,7 +905,6 @@ const Practice = () => {
             storyLine,
             handleNext,
             type: "word",
-            // image: elephant,
             enableNext,
             showTimer: false,
             points,
@@ -937,9 +912,7 @@ const Practice = () => {
             currentStep: currentQuestion + 1,
             progressData,
             showProgress: true,
-            background:
-              isShowCase &&
-              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            background: getBackground(isShowCase),
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
@@ -952,15 +925,10 @@ const Practice = () => {
         />
       );
     } else if (mechanism.name === "readTheImage") {
-      const options = questions[currentQuestion]?.mechanics_data
-        ? questions[currentQuestion]?.mechanics_data[0]?.options
-        : [];
-      const audioLink =
-        options && options.length > 0
-          ? options.find((option) => option.isAns === true)?.audio_url || null
-          : null;
-
+      const options = getOptions(questions[currentQuestion]?.mechanics_data);
+      const audioLink = getAudioLink(options);
       const mechanics_data = questions[currentQuestion]?.mechanics_data;
+
       return (
         <Mechanics5
           page={page}
@@ -969,14 +937,15 @@ const Practice = () => {
             level: !isShowCase && level,
             header:
               "Look at the picture and speak the correct answer from below",
-            parentWords: mechanics_data
-              ? mechanics_data[0].text
-              : questions[currentQuestion]?.contentSourceData?.[0]?.text,
+            parentWords: getParentWords(
+              mechanics_data,
+              questions[currentQuestion]
+            ),
             contentType: currentContentType,
-            question_audio: mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
-                mechanics_data[0].audio_url
-              : questions[currentQuestion]?.contentSourceData?.[0]?.audio_url,
+            question_audio: getQuestionAudio(
+              mechanics_data,
+              questions[currentQuestion]
+            ),
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
             options: options,
@@ -986,15 +955,8 @@ const Practice = () => {
             storyLine,
             handleNext,
             type: "word",
-            image: mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
-                mechanics_data[0]?.image_url
-              : null,
-
-            audio: mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
-                audioLink
-              : null,
+            image: getImageUrl(mechanics_data),
+            audio: getAudioUrl(mechanics_data, audioLink),
             enableNext,
             showTimer: false,
             points,
@@ -1002,9 +964,7 @@ const Practice = () => {
             currentStep: currentQuestion + 1,
             progressData,
             showProgress: true,
-            background:
-              isShowCase &&
-              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            background: getBackground(isShowCase),
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
@@ -1047,11 +1007,7 @@ const Practice = () => {
             setVoiceAnimate,
             storyLine,
             handleNext,
-            // image: elephant,
-            audio: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
-                questions[currentQuestion]?.mechanics_data[0]?.audio_url
-              : null,
+            audio: getAudioUrl(questions[currentQuestion]?.mechanics_data),
             enableNext,
             showTimer: false,
             points,
@@ -1059,18 +1015,14 @@ const Practice = () => {
             currentStep: currentQuestion + 1,
             progressData,
             showProgress: true,
-            background:
-              isShowCase &&
-              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            background: getBackground(isShowCase),
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
             isShowCase,
             handleBack: !isShowCase && handleBack,
             setEnableNext,
-            allWords:
-              questions?.map((elem) => elem?.contentSourceData?.[0]?.text) ||
-              [],
+            allWords: getAllWords(questions),
             loading,
             setOpenMessageDialog,
           }}
@@ -1086,12 +1038,10 @@ const Practice = () => {
           setPage={setPage}
           {...{
             level: !isShowCase && level,
-            header:
-              mechanism.name === "fillInTheBlank"
-                ? "Fill in the blank"
-                : questions[currentQuestion]?.contentType === "image"
-                ? `Guess the below image`
-                : `Speak the below ${questions[currentQuestion]?.contentType}`,
+            header: getHeader(
+              mechanism.name,
+              questions[currentQuestion]?.contentType
+            ),
             parentWords:
               questions[currentQuestion]?.contentSourceData?.[0]?.text,
             contentType: currentContentType,
@@ -1102,14 +1052,8 @@ const Practice = () => {
             setVoiceAnimate,
             storyLine,
             handleNext,
-            image: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
-                questions[currentQuestion]?.mechanics_data[0]?.image_url
-              : null,
-            audio: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
-                questions[currentQuestion]?.mechanics_data[0]?.audio_url
-              : null,
+            image: getImageUrl(questions[currentQuestion]?.mechanics_data),
+            audio: getAudioUrl(questions[currentQuestion]?.mechanics_data),
             enableNext,
             showTimer: false,
             points,
@@ -1117,23 +1061,17 @@ const Practice = () => {
             currentStep: currentQuestion + 1,
             progressData,
             showProgress: true,
-            background:
-              isShowCase &&
-              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            background: getBackground(isShowCase),
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
             isShowCase,
             handleBack: !isShowCase && handleBack,
             setEnableNext,
-            allWords:
-              questions?.map((elem) => elem?.contentSourceData?.[0]?.text) ||
-              [],
+            allWords: getAllWords(questions),
             loading,
             setOpenMessageDialog,
-            options: questions[currentQuestion]?.mechanics_data
-              ? questions[currentQuestion]?.mechanics_data[0]?.options
-              : [],
+            options: getOptions(questions[currentQuestion]?.mechanics_data),
           }}
         />
       );
@@ -1142,6 +1080,62 @@ const Practice = () => {
     }
   };
 
+  const getHeader = (mechanismName, contentType) => {
+    if (mechanismName === "fillInTheBlank") {
+      return "Fill in the blank";
+    } else if (contentType === "image") {
+      return "Guess the below image";
+    } else {
+      return `Speak the below ${contentType}`;
+    }
+  };
+
+  const getBackground = (isShowCase) => {
+    return isShowCase
+      ? "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)"
+      : undefined;
+  };
+
+  const getImageUrl = (mechanicsData) => {
+    return mechanicsData
+      ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/${mechanicsData[0]?.image_url}`
+      : null;
+  };
+
+  const getAudioUrl = (mechanicsData, audioLink) => {
+    if (mechanicsData) {
+      return `${
+        process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL
+      }/mechanics_audios/${audioLink || mechanicsData[0]?.audio_url}`;
+    }
+    return null;
+  };
+
+  const getAllWords = (questions) => {
+    return questions?.map((elem) => elem?.contentSourceData?.[0]?.text) || [];
+  };
+
+  const getOptions = (mechanicsData) => {
+    return mechanicsData ? mechanicsData[0]?.options : [];
+  };
+
+  const getAudioLink = (options) => {
+    return options && options.length > 0
+      ? options.find((option) => option.isAns === true)?.audio_url || null
+      : null;
+  };
+
+  const getParentWords = (mechanicsData, question) => {
+    return mechanicsData
+      ? mechanicsData[0].text
+      : question?.contentSourceData?.[0]?.text;
+  };
+
+  const getQuestionAudio = (mechanicsData, question) => {
+    return mechanicsData
+      ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/${mechanicsData[0].audio_url}`
+      : question?.contentSourceData?.[0]?.audio_url;
+  };
   return (
     <>
       {!!openMessageDialog && (

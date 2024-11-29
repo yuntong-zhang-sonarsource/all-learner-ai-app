@@ -9,9 +9,6 @@ import practicebg2 from "../../assets/images/practice-bg2.svg";
 import practicebg3 from "../../assets/images/practice-bg3.svg";
 import gameWon from "../../assets/images/gameWon.svg";
 import gameLost from "../../assets/images/gameLost.svg";
-import correctImage from "../../assets/correct.svg";
-import wrongImage from "../../assets/wrong.svg";
-import turtleImage from "../../assets/turtle.svg";
 import clouds from "../../assets/images/clouds.svg";
 import catLoading from "../../assets/images/catLoading.gif";
 import textureImage from "../../assets/images/textureImage.png";
@@ -359,7 +356,7 @@ const MainLayout = (props) => {
                     const showGreen = step + 1 <= currentStep;
                     return (
                       <Box
-                        key={index}
+                        key={step}
                         index={index}
                         sx={{
                           height: "8px",
@@ -384,14 +381,14 @@ const MainLayout = (props) => {
                     <Box display={"flex"}>
                       {[...Array(Math.max(0, redLivesToShow) || 0).keys()]?.map(
                         (elem) => (
-                          <Diamond />
+                          <Diamond key={elem} />
                         )
                       )}
 
                       {[
                         ...Array(Math.max(0, blackLivesToShow) || 0).keys(),
                       ]?.map((elem) => (
-                        <HeartBlack />
+                        <HeartBlack key={elem} />
                       ))}
                     </Box>
                     <span
@@ -833,7 +830,7 @@ const MainLayout = (props) => {
                                 props.pageName === "m5") &&
                                 storedData?.map((elem, index) => (
                                   <Stack
-                                    key={index}
+                                    key={elem}
                                     justifyContent={"start"}
                                     alignItems={"center"}
                                     direction={"row"}
@@ -1184,24 +1181,46 @@ const MainLayout = (props) => {
 };
 
 MainLayout.propTypes = {
-  contentType: PropTypes.string,
-  handleBack: PropTypes.func,
-  disableScreen: PropTypes.bool,
-  isShowCase: PropTypes.bool,
-  showProgress: PropTypes.bool,
-  setOpenLangModal: PropTypes.func,
-  setOpenTestModal: PropTypes.func,
-  points: PropTypes.number,
-  handleNext: PropTypes.any,
+  level: PropTypes.number,
+  handleNext: PropTypes.func,
   enableNext: PropTypes.bool,
   showNext: PropTypes.bool,
   showTimer: PropTypes.bool,
   nextLessonAndHome: PropTypes.bool,
+  cardBackground: PropTypes.string,
+  backgroundImage: PropTypes.string,
+  points: PropTypes.number,
+  progressData: PropTypes.shape({
+    currentPracticeStep: PropTypes.number,
+    currentPracticeProgress: PropTypes.number,
+  }),
+  showProgress: PropTypes.bool,
+  setOpenLangModal: PropTypes.func,
+  setOpenTestModal: PropTypes.func,
+  lang: PropTypes.string,
+  handleBack: PropTypes.func,
+  disableScreen: PropTypes.bool,
+  isShowCase: PropTypes.bool,
   startShowCase: PropTypes.bool,
+  contentType: PropTypes.string,
+  percentage: PropTypes.number,
+  fluency: PropTypes.bool,
   setStartShowCase: PropTypes.func,
+  livesData: PropTypes.shape({
+    blackLivesToShow: PropTypes.number,
+    redLivesToShow: PropTypes.number,
+    lives: PropTypes.number,
+  }),
+  gameOverData: PropTypes.shape({
+    userWon: PropTypes.bool,
+  }),
   loading: PropTypes.bool,
   storedData: PropTypes.array,
   resetStoredData: PropTypes.func,
+  steps: PropTypes.number,
+  currentStep: PropTypes.number,
+  background: PropTypes.string,
+  children: PropTypes.node,
   pageName: PropTypes.string,
 };
 

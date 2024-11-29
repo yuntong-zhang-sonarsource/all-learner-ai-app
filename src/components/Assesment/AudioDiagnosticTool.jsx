@@ -4,6 +4,7 @@ import record from "../.././assets/mic.png";
 import { StopButton } from "../../utils/constants";
 import { Box } from "@mui/material";
 import { Line } from "react-chartjs-2";
+import PropTypes from "prop-types";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -422,11 +423,20 @@ function AudioDiagnosticTool() {
     );
   };
 
+  TestSection.propTypes = {
+    title: PropTypes.string.isRequired,
+    isRecording: PropTypes.bool.isRequired,
+    startRecording: PropTypes.func.isRequired,
+    stopRecording: PropTypes.func.isRequired,
+    record: PropTypes.string.isRequired,
+    testIndex: PropTypes.number.isRequired,
+    currentIndex: PropTypes.number.isRequired,
+    loading: PropTypes.bool.isRequired,
+  };
+
   const RecordingButton = ({ startRecording, record }) => (
-    <div
+    <button
       onClick={startRecording}
-      role="button"
-      tabIndex="0"
       onKeyDown={(e) => {
         if (e.key === "Enter") {
           startRecording();
@@ -434,9 +444,13 @@ function AudioDiagnosticTool() {
       }}
     >
       <img src={record} alt="Record" style={{ height: "50px" }} />
-    </div>
+    </button>
   );
 
+  RecordingButton.propTypes = {
+    startRecording: PropTypes.func.isRequired,
+    record: PropTypes.string.isRequired,
+  };
   return (
     <div
       style={{

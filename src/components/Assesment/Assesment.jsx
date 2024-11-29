@@ -1,13 +1,6 @@
 import MainLayout from "../Layouts.jsx/MainLayout";
 import assessmentBackground from "../../assets/images/assessmentBackground.png";
-import {
-  Box,
-  Grid,
-  IconButton,
-  Tooltip,
-  Typography,
-  Dialog,
-} from "@mui/material";
+import { Box, Grid, IconButton, Tooltip, Typography } from "@mui/material";
 import LogoutImg from "../../assets/images/logout.svg";
 import { styled } from "@mui/material/styles";
 import {
@@ -24,7 +17,6 @@ import practicebg from "../../assets/images/practice-bg.svg";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import HelpLogo from "../../assets/help.png";
-import CloseIcon from "@mui/icons-material/Close";
 
 import axios from "axios";
 // import { useDispatch } from 'react-redux';
@@ -311,6 +303,9 @@ export const TestModal = ({ setOpenTestModal }) => {
     </Box>
   );
 };
+TestModal.propTypes = {
+  setOpenTestModal: PropTypes.func,
+};
 
 export const MessageDialog = ({
   message,
@@ -573,7 +568,7 @@ export const ProfileHeader = ({
               >
                 <img
                   src={profilePic}
-                  alt="Profile picture"
+                  alt="Profile"
                   style={{ height: "30px" }}
                   width="30" // Set width attribute
                   height="30" // Set height attribute
@@ -646,7 +641,7 @@ export const ProfileHeader = ({
               }
             >
               <Box sx={{ position: "relative", cursor: "pointer" }}>
-                <div
+                <button
                   style={{
                     display: "inline-flex",
                     justifyContent: "center",
@@ -660,6 +655,7 @@ export const ProfileHeader = ({
                     cursor: "pointer",
                     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                     transition: "background-color 0.3s, transform 0.3s",
+                    border: "none",
                   }}
                   onMouseEnter={(e) => {
                     e.target.style.transform = "scale(1.1)";
@@ -667,7 +663,6 @@ export const ProfileHeader = ({
                   onMouseLeave={(e) => {
                     e.target.style.transform = "scale(1)";
                   }}
-                  role="button"
                   tabIndex="0"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -678,7 +673,7 @@ export const ProfileHeader = ({
                   <span style={{ fontWeight: "bold", marginBottom: "2px" }}>
                     ?
                   </span>
-                </div>
+                </button>
               </Box>
             </Box>
             <Box
@@ -736,6 +731,7 @@ ProfileHeader.propTypes = {
   handleBack: PropTypes.func,
   profileName: PropTypes.string,
   lang: PropTypes.string,
+  setOpenTestModal: PropTypes.func,
 };
 
 const Assesment = ({ discoverStart }) => {
