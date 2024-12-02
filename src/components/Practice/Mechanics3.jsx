@@ -1,5 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
-import HomophonesFinder from "homophones";
+import { Box, Grid, Typography, Modal } from "@mui/material";
 import React, { createRef, useEffect, useState } from "react";
 import {
   AudioBarColoredSvg,
@@ -8,14 +7,12 @@ import {
   PlayAudioButton,
   StopAudioButton,
   getLocalData,
-  randomizeArray,
 } from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import correctSound from "../../assets/audio/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 import removeSound from "../../assets/audio/remove.wav";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
-import { Modal } from "@mui/material";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import CloseIcon from "@mui/icons-material/Close";
 

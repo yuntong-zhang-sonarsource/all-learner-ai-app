@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import axios from "axios";
-import calcCER from "../../node_modules/character-error-rate/index";
+import calcCER from "character-error-rate";
 import s1 from "../assets/audio/S1.m4a";
 import s2 from "../assets/audio/S2.m4a";
 import s3 from "../assets/audio/S3.m4a";
@@ -386,8 +386,6 @@ function VoiceAnalyser(props) {
           );
         }
       }
-
-      //console.log('dataaaa', data);
 
       // if (responseText.toLowerCase() === originalText.toLowerCase()) {
       //   setIsMatching(true);
