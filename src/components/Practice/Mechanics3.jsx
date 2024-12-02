@@ -15,6 +15,7 @@ import removeSound from "../../assets/audio/remove.wav";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import CloseIcon from "@mui/icons-material/Close";
+import PropTypes from "prop-types";
 
 // TODO: update it as per File name OR update file name as per export variable name
 const Mechanics2 = ({
@@ -46,15 +47,12 @@ const Mechanics2 = ({
   disableScreen,
   isShowCase,
   handleBack,
-  allWords,
   setEnableNext,
   loading,
   setOpenMessageDialog,
   options,
   audio,
 }) => {
-  const [words, setWords] = useState([]);
-  const [sentences, setSentences] = useState([]);
   const [zoomOpen, setZoomOpen] = useState(false);
   const [selectedWord, setSelectedWord] = useState("");
   // const [loading, setLoading] = useState(false);
@@ -520,6 +518,41 @@ const Mechanics2 = ({
       </Box> */}
     </MainLayout>
   );
+};
+
+Mechanics2.propTypes = {
+  page: PropTypes.number.isRequired,
+  setPage: PropTypes.func.isRequired,
+  handleNext: PropTypes.func.isRequired,
+  header: PropTypes.string,
+  image: PropTypes.string,
+  setVoiceText: PropTypes.func.isRequired,
+  setRecordedAudio: PropTypes.func.isRequired,
+  setVoiceAnimate: PropTypes.func.isRequired,
+  enableNext: PropTypes.bool,
+  showTimer: PropTypes.bool,
+  points: PropTypes.number,
+  currentStep: PropTypes.number.isRequired,
+  isDiscover: PropTypes.bool,
+  showProgress: PropTypes.bool,
+  callUpdateLearner: PropTypes.bool,
+  disableScreen: PropTypes.bool,
+  isShowCase: PropTypes.bool,
+  handleBack: PropTypes.func.isRequired,
+  setEnableNext: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+  setOpenMessageDialog: PropTypes.func.isRequired,
+  playTeacherAudio: PropTypes.func.isRequired,
+  background: PropTypes.bool,
+  type: PropTypes.any,
+  storyLine: PropTypes.number,
+  steps: PropTypes.number,
+  contentId: PropTypes.any,
+  contentType: PropTypes.string,
+  level: PropTypes.any,
+  progressData: PropTypes.object,
+  options: PropTypes.any,
+  audio: PropTypes.string,
 };
 
 export default Mechanics2;

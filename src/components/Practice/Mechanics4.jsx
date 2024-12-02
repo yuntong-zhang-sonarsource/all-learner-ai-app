@@ -12,7 +12,7 @@ import correctSound from "../../assets/audio/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 import addSound from "../../assets/audio/add.mp3";
 import removeSound from "../../assets/audio/remove.wav";
-import { splitGraphemes } from "split-graphemes";
+import PropTypes from "prop-types";
 
 const Mechanics4 = ({
   page,
@@ -358,6 +358,41 @@ const Mechanics4 = ({
       }
     </MainLayout>
   );
+};
+
+Mechanics4.propTypes = {
+  page: PropTypes.number.isRequired,
+  setPage: PropTypes.func.isRequired,
+  handleNext: PropTypes.func.isRequired,
+  header: PropTypes.string,
+  image: PropTypes.string,
+  parentWords: PropTypes.string,
+  setVoiceText: PropTypes.func.isRequired,
+  setRecordedAudio: PropTypes.func.isRequired,
+  setVoiceAnimate: PropTypes.func.isRequired,
+  enableNext: PropTypes.bool,
+  showTimer: PropTypes.bool,
+  points: PropTypes.number,
+  currentStep: PropTypes.number.isRequired,
+  isDiscover: PropTypes.bool,
+  showProgress: PropTypes.bool,
+  callUpdateLearner: PropTypes.bool,
+  disableScreen: PropTypes.bool,
+  isShowCase: PropTypes.bool,
+  handleBack: PropTypes.func.isRequired,
+  setEnableNext: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+  setOpenMessageDialog: PropTypes.func.isRequired,
+  playTeacherAudio: PropTypes.func.isRequired,
+  background: PropTypes.bool,
+  type: PropTypes.any,
+  storyLine: PropTypes.number,
+  steps: PropTypes.number,
+  contentId: PropTypes.any,
+  contentType: PropTypes.string,
+  level: PropTypes.any,
+  progressData: PropTypes.object,
+  audio: PropTypes.string,
 };
 
 export default Mechanics4;
