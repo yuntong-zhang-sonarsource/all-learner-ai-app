@@ -349,7 +349,6 @@ const MainLayout = (props) => {
                     return (
                       <Box
                         key={step}
-                        index={index}
                         sx={{
                           height: "8px",
                           width: `${100 / steps}%`,

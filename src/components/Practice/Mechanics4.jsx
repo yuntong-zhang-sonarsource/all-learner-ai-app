@@ -385,12 +385,13 @@ Mechanics4.propTypes = {
   setOpenMessageDialog: PropTypes.func.isRequired,
   playTeacherAudio: PropTypes.func.isRequired,
   background: PropTypes.bool,
-  type: PropTypes.any,
+  type: PropTypes.oneOf(["word", "image"]).isRequired,
   storyLine: PropTypes.number,
   steps: PropTypes.number,
-  contentId: PropTypes.any,
+  contentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
   contentType: PropTypes.string,
-  level: PropTypes.any,
+  level: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   progressData: PropTypes.object,
   audio: PropTypes.string,
 };

@@ -719,7 +719,7 @@ const Practice = () => {
         );
         if (isMatched) {
           return (
-            <React.Fragment key={word}>
+            <React.Fragment key={`${word}-${index}`}>
               <Typography
                 variant="h5"
                 component="h4"
