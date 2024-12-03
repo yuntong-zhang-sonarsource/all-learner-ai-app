@@ -131,8 +131,6 @@ const MainLayout = (props) => {
   const [audioPlaying, setAudioPlaying] = useState(null);
   const audioRefs = useRef([]);
 
-  //console.log('Main Layout Array', storedData, pageName);
-
   const handleAudioPlay = (index) => {
     const audioElem = audioRefs.current[index];
 
@@ -208,12 +206,22 @@ const MainLayout = (props) => {
   const blackLivesToShow =
     livesData?.blackLivesToShow > 0 ? livesData?.blackLivesToShow : 0;
 
-  const redLivesToShow =
-    livesData?.redLivesToShow !== undefined
-      ? livesData?.redLivesToShow > 0
-        ? livesData?.redLivesToShow
-        : 0
-      : livesData?.lives;
+  let redLivesToShow;
+  if (livesData?.redLivesToShow !== undefined) {
+    redLivesToShow =
+      livesData.redLivesToShow > 0 ? livesData.redLivesToShow : 0;
+  } else {
+    redLivesToShow = livesData?.lives;
+  }
+
+  function getLeftPosition(level) {
+    const positions = {
+      1: "3px",
+      2: "40px",
+      3: "78px",
+    };
+    return positions[level] || "78px"; // Default to "78px" if LEVEL is not 1, 2, or 3
+  }
 
   const navigate = useNavigate();
   return (
@@ -227,14 +235,7 @@ const MainLayout = (props) => {
           sx={{
             position: "absolute",
             bottom: "70px",
-            left:
-              LEVEL === 1
-                ? "3px"
-                : LEVEL === 2
-                ? "40px"
-                : LEVEL === 3
-                ? "78px"
-                : "78px",
+            left: getLeftPosition(LEVEL),
           }}
         >
           <img
@@ -450,6 +451,17 @@ const MainLayout = (props) => {
                             }}
                           >
                             {practiceSteps.map((elem, i) => {
+                              let backgroundColor;
+
+                              if (currentPracticeStep > i) {
+                                backgroundColor =
+                                  "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)";
+                              } else if (currentPracticeStep === i) {
+                                backgroundColor =
+                                  "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)";
+                              } else {
+                                backgroundColor = "rgba(0, 0, 0, 0.04)";
+                              }
                               return (
                                 <Box
                                   key={i}
@@ -466,12 +478,7 @@ const MainLayout = (props) => {
                                       md: "28px",
                                       lg: "36px",
                                     },
-                                    background:
-                                      currentPracticeStep > i
-                                        ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
-                                        : currentPracticeStep === i
-                                        ? "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)"
-                                        : "rgba(0, 0, 0, 0.04)",
+                                    background: backgroundColor,
                                     ml: {
                                       xs: 0.5,
                                       sm: 0.5,
@@ -999,6 +1006,17 @@ const MainLayout = (props) => {
                               }}
                             >
                               {practiceSteps.map((elem, i) => {
+                                let backgroundStyle;
+
+                                if (currentPracticeStep > i) {
+                                  backgroundStyle =
+                                    "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)";
+                                } else if (currentPracticeStep === i) {
+                                  backgroundStyle =
+                                    "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)";
+                                } else {
+                                  backgroundStyle = "rgba(0, 0, 0, 0.04)";
+                                }
                                 return (
                                   <Box
                                     key={i}
@@ -1011,12 +1029,7 @@ const MainLayout = (props) => {
                                         md: "28px",
                                         lg: "36px",
                                       },
-                                      background:
-                                        currentPracticeStep > i
-                                          ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
-                                          : currentPracticeStep === i
-                                          ? "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)"
-                                          : "rgba(0, 0, 0, 0.04)",
+                                      background: backgroundStyle,
                                       ml: {
                                         md: 1.5,
                                         lg: 2,

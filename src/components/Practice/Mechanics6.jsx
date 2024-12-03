@@ -28,7 +28,6 @@ const Mechanics2 = ({
   setVoiceText,
   setRecordedAudio,
   setVoiceAnimate,
-  storyLine,
   enableNext,
   showTimer,
   points,
@@ -478,7 +477,6 @@ const Mechanics2 = ({
             setVoiceText={setVoiceText}
             setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
-            storyLine={storyLine}
             dontShowListen={true}
             // updateStory={updateStory}
             originalText={parentWords}
@@ -539,7 +537,6 @@ Mechanics2.propTypes = {
   playTeacherAudio: PropTypes.func.isRequired,
   background: PropTypes.bool,
   type: PropTypes.oneOf(["word", "image"]).isRequired,
-  storyLine: PropTypes.number,
   steps: PropTypes.number,
   contentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     .isRequired,

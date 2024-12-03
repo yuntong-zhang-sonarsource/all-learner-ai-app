@@ -726,7 +726,6 @@ const Assesment = ({ discoverStart }) => {
   const handleRedirect = () => {
     const profileName = getLocalData("profileName");
     if (!username && !profileName && !virtualId && level === 0) {
-      // alert("please add username in query param");
       setOpenMessageDialog({
         message: "please add username in query param",
         isError: true,

@@ -16,7 +16,6 @@ const WordsOrImage = ({
   setVoiceText,
   setRecordedAudio,
   setVoiceAnimate,
-  storyLine,
   enableNext,
   showTimer,
   points,
@@ -260,7 +259,6 @@ const WordsOrImage = ({
             updateStoredData={updateStoredData}
             setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
-            storyLine={storyLine}
             dontShowListen={type === "image" || isDiscover}
             // updateStory={updateStory}
             originalText={words}
@@ -318,7 +316,6 @@ WordsOrImage.propTypes = {
   background: PropTypes.bool,
   type: PropTypes.any,
   words: PropTypes.any,
-  storyLine: PropTypes.number,
   steps: PropTypes.number,
   contentId: PropTypes.any,
   contentType: PropTypes.string,

@@ -32,7 +32,6 @@ const Mechanics5 = ({
   setVoiceText,
   setRecordedAudio,
   setVoiceAnimate,
-  storyLine,
   contentId,
   contentType,
   callUpdateLearner,
@@ -386,7 +385,6 @@ const Mechanics5 = ({
           setVoiceText={setVoiceText}
           setRecordedAudio={setRecordedAudio}
           setVoiceAnimate={setVoiceAnimate}
-          storyLine={storyLine}
           dontShowListen={type === "image" || isDiscover}
           isShowCase={isShowCase || isDiscover}
           originalText={
@@ -457,7 +455,6 @@ Mechanics5.propTypes = {
   setIsNextButtonCalled: PropTypes.func,
   background: PropTypes.bool,
   type: PropTypes.any,
-  storyLine: PropTypes.number,
   steps: PropTypes.number,
   contentId: PropTypes.any,
   contentType: PropTypes.string,

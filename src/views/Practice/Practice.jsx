@@ -26,11 +26,9 @@ const Practice = () => {
   const [page, setPage] = useState("");
   const [recordedAudio, setRecordedAudio] = useState("");
   const [voiceText, setVoiceText] = useState("");
-  const [storyLine, setStoryLine] = useState(0);
   const [voiceAnimate, setVoiceAnimate] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const navigate = useNavigate();
-  const [assessmentResponse, setAssessmentResponse] = useState(undefined);
   const [currentContentType, setCurrentContentType] = useState("");
   const [currentCollectionId, setCurrentCollectionId] = useState("");
   const [points, setPoints] = useState(0);
@@ -44,7 +42,6 @@ const Practice = () => {
   const [disableScreen, setDisableScreen] = useState(false);
   const [mechanism, setMechanism] = useState("");
 
-  // const [play] = useSound(LevelCompleteAudio);
   const [livesData, setLivesData] = useState();
   const [gameOverData, setGameOverData] = useState();
   const [loading, setLoading] = useState();
@@ -360,7 +357,6 @@ const Practice = () => {
         setCurrentCollectionId(resGetContent?.data?.content?.[0]?.collectionId);
 
         // TODO: not required - not using this anywhere
-        setAssessmentResponse(resGetContent);
 
         setCurrentQuestion(0);
 
@@ -520,7 +516,6 @@ const Practice = () => {
       setCurrentContentType(currentGetContent.criteria);
 
       setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
-      setAssessmentResponse(resWord);
 
       localStorage.setItem("storyTitle", resWord?.name);
 
@@ -622,7 +617,6 @@ const Practice = () => {
       quesArr = [...quesArr, ...(resWord?.data?.content || [])];
       setCurrentContentType(currentGetContent.criteria);
       setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
-      setAssessmentResponse(resWord);
 
       localStorage.setItem("storyTitle", resWord?.name);
       setQuestions(quesArr);
@@ -811,7 +805,6 @@ const Practice = () => {
             setVoiceText,
             setRecordedAudio,
             setVoiceAnimate,
-            storyLine,
             handleNext,
             type: questions[currentQuestion]?.contentType,
             enableNext,
@@ -862,7 +855,6 @@ const Practice = () => {
             type: mechanism.name,
             setRecordedAudio,
             setVoiceAnimate,
-            storyLine,
             handleNext,
             image: getImageUrl(questions[currentQuestion]?.mechanics_data),
             audio: getAudioUrl(questions[currentQuestion]?.mechanics_data),
@@ -902,7 +894,6 @@ const Practice = () => {
             setVoiceText,
             setRecordedAudio,
             setVoiceAnimate,
-            storyLine,
             handleNext,
             type: "word",
             enableNext,
@@ -952,7 +943,6 @@ const Practice = () => {
             correctness: mechanics_data ? mechanics_data[0]?.correctness : null,
             setRecordedAudio,
             setVoiceAnimate,
-            storyLine,
             handleNext,
             type: "word",
             image: getImageUrl(mechanics_data),
@@ -1005,7 +995,6 @@ const Practice = () => {
             type: mechanism.name,
             setRecordedAudio,
             setVoiceAnimate,
-            storyLine,
             handleNext,
             audio: getAudioUrl(questions[currentQuestion]?.mechanics_data),
             enableNext,
@@ -1050,7 +1039,6 @@ const Practice = () => {
             type: mechanism.name,
             setRecordedAudio,
             setVoiceAnimate,
-            storyLine,
             handleNext,
             image: getImageUrl(questions[currentQuestion]?.mechanics_data),
             audio: getAudioUrl(questions[currentQuestion]?.mechanics_data),

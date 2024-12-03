@@ -19,7 +19,6 @@ const SpeakSentenceComponent = () => {
   const navigate = useNavigate();
   const [recordedAudio, setRecordedAudio] = useState("");
   const [voiceText, setVoiceText] = useState("");
-  const [storyLine, setStoryLine] = useState(0);
   const [assessmentResponse, setAssessmentResponse] = useState(undefined);
   const [currentContentType, setCurrentContentType] = useState("");
   const [currentCollectionId, setCurrentCollectionId] = useState("");
@@ -31,7 +30,6 @@ const SpeakSentenceComponent = () => {
   const [assesmentCount, setAssesmentcount] = useState(0);
   const [initialAssesment, setInitialAssesment] = useState(true);
   const [disableScreen, setDisableScreen] = useState(false);
-  // const [play] = useSound(LevelCompleteAudio);
   const [openMessageDialog, setOpenMessageDialog] = useState("");
   const [totalSyllableCount, setTotalSyllableCount] = useState("");
   const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
@@ -51,12 +49,10 @@ const SpeakSentenceComponent = () => {
       setDisableScreen(true);
       callConfettiAndPlay();
       setTimeout(() => {
-        // alert();
         setOpenMessageDialog({
           message:
             "You have successfully completed assessment " + assesmentCount,
         });
-        // setDisableScreen(false);
       }, 1200);
     }
   }, [currentQuestion]);
@@ -83,7 +79,6 @@ const SpeakSentenceComponent = () => {
 
   useEffect(() => {
     if (voiceText === "error") {
-      // alert("");
       setOpenMessageDialog({
         message: "Sorry I couldn't hear a voice. Could you please speak again?",
         isError: true,
@@ -146,7 +141,6 @@ const SpeakSentenceComponent = () => {
         setPoints(pointsRes?.data?.result?.totalLanguagePoints || 0);
       } else {
         send(1);
-        // setPoints(localStorage.getItem("currentLessonScoreCount"));
       }
 
       await axios.post(
@@ -311,11 +305,6 @@ const SpeakSentenceComponent = () => {
     const destination =
       process.env.REACT_APP_IS_APP_IFRAME === "true" ? "/" : "/discover-start";
     navigate(destination);
-    // if (process.env.REACT_APP_IS_APP_IFRAME === 'true') {
-    //   navigate("/");
-    // } else {
-    //   navigate("/discover-start")
-    // }
   };
   return (
     <>
@@ -343,7 +332,6 @@ const SpeakSentenceComponent = () => {
           setVoiceText,
           setRecordedAudio,
           setVoiceAnimate,
-          storyLine,
           handleNext,
           type: questions[currentQuestion]?.contentType,
           image: elephant,
