@@ -57,7 +57,6 @@ const Mechanics2 = ({
   const [selectedWord, setSelectedWord] = useState("");
   // const [loading, setLoading] = useState(false);
   const [shake, setShake] = useState(false);
-  const [wordToFill, setWordToFill] = useState("");
   const [disabledWords, setDisabledWords] = useState(false);
   const [answer, setAnswer] = useState({
     text: "",
@@ -258,19 +257,32 @@ const Mechanics2 = ({
             >
               <Box sx={{ position: "relative", cursor: "zoom-in" }}>
                 {image && (
-                  <img
+                  <button
                     onClick={() => setZoomOpen(true)}
-                    src={image}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") setZoomOpen(true);
+                    }}
                     style={{
                       borderRadius: "20px",
-                      maxWidth: "100%",
-                      height: "clamp(150px, 20vw, 220px)",
+                      padding: 0, // Remove default padding
+                      border: "none", // Remove default border
+                      background: "none", // Remove default background
                     }}
-                    alt=""
-                    width="300" // Set explicit width
-                    height="220"
-                    loading="lazy"
-                  />
+                    aria-label="Zoom image"
+                  >
+                    <img
+                      src={image}
+                      style={{
+                        borderRadius: "20px",
+                        maxWidth: "100%",
+                        height: "clamp(150px, 20vw, 220px)",
+                      }}
+                      alt="Zoomable content"
+                      width="300"
+                      height="220"
+                      loading="lazy"
+                    />
+                  </button>
                 )}
 
                 {/* Subtle gradient overlay across the top */}
@@ -526,6 +538,7 @@ Mechanics2.propTypes = {
   handleNext: PropTypes.func.isRequired,
   header: PropTypes.string,
   image: PropTypes.string,
+  parentWords: PropTypes.string,
   setVoiceText: PropTypes.func.isRequired,
   setRecordedAudio: PropTypes.func.isRequired,
   setVoiceAnimate: PropTypes.func.isRequired,
