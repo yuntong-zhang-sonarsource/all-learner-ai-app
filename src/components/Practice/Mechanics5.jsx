@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, Grid, Radio } from "@mui/material";
+import { Box, Grid, Radio, Modal } from "@mui/material";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import { PlayAudioButton, StopAudioButton } from "../../utils/constants";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import PropTypes from "prop-types";
-import { Modal } from "@mui/material";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -184,16 +183,25 @@ const Mechanics5 = ({
         <Grid item xs={4} position="relative">
           {/* Image with full-width gradient overlay on top */}
           <Box sx={{ position: "relative", cursor: "zoom-in" }}>
-            <img
-              src={image}
+            <button
+              onClick={() => setZoomOpen(true)}
               style={{
-                borderRadius: "20px",
-                maxWidth: "100%",
-                height: "250px",
+                border: "none",
+                padding: 0,
+                background: "none",
+                cursor: "pointer",
               }}
-              alt="contentImage"
-              onClick={() => setZoomOpen(true)} // Open modal on click
-            />
+            >
+              <img
+                src={image}
+                style={{
+                  borderRadius: "20px",
+                  maxWidth: "100%",
+                  height: "250px",
+                }}
+                alt="contentImage"
+              />
+            </button>
 
             {/* Subtle gradient overlay across the top */}
             <Box
@@ -392,7 +400,7 @@ const Mechanics5 = ({
           handleNext={handleNext}
           selectedOption={options[selectedOption]}
           correctness={correctness}
-          audioLink={audio ? audio : null}
+          audioLink={audio || null}
           {...{
             contentId,
             contentType,

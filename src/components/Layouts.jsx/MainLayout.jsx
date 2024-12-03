@@ -183,7 +183,7 @@ const MainLayout = (props) => {
   }, [startShowCase, isShowCase, gameOverData]);
 
   let currentPracticeStep = progressData?.currentPracticeStep;
-  let currentPracticeProgress = progressData?.currentPracticeProgress || 0;
+  // let currentPracticeProgress = progressData?.currentPracticeProgress || 0;
 
   const sectionStyle = {
     width: "100%",

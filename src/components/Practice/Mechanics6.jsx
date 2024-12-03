@@ -14,6 +14,7 @@ import MainLayout from "../Layouts.jsx/MainLayout";
 import correctSound from "../../assets/audio/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
+import PropTypes from "prop-types";
 
 const Mechanics2 = ({
   page,
@@ -327,7 +328,7 @@ const Mechanics2 = ({
               />
             </Box>
             {sentences?.map((elem, index) => (
-              <React.Fragment key={index}>
+              <React.Fragment key={elem}>
                 {elem === "dash" ? (
                   <Box
                     sx={{
@@ -510,6 +511,42 @@ const Mechanics2 = ({
       </Box> */}
     </MainLayout>
   );
+};
+
+Mechanics2.propTypes = {
+  page: PropTypes.number.isRequired,
+  setPage: PropTypes.func.isRequired,
+  handleNext: PropTypes.func.isRequired,
+  header: PropTypes.string,
+  image: PropTypes.string,
+  parentWords: PropTypes.string,
+  setVoiceText: PropTypes.func.isRequired,
+  setRecordedAudio: PropTypes.func.isRequired,
+  setVoiceAnimate: PropTypes.func.isRequired,
+  enableNext: PropTypes.bool,
+  showTimer: PropTypes.bool,
+  points: PropTypes.number,
+  currentStep: PropTypes.number.isRequired,
+  isDiscover: PropTypes.bool,
+  showProgress: PropTypes.bool,
+  callUpdateLearner: PropTypes.bool,
+  disableScreen: PropTypes.bool,
+  isShowCase: PropTypes.bool,
+  handleBack: PropTypes.func.isRequired,
+  setEnableNext: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+  setOpenMessageDialog: PropTypes.func.isRequired,
+  playTeacherAudio: PropTypes.func.isRequired,
+  background: PropTypes.bool,
+  type: PropTypes.oneOf(["word", "image"]).isRequired,
+  storyLine: PropTypes.number,
+  steps: PropTypes.number,
+  contentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
+  contentType: PropTypes.string,
+  level: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  progressData: PropTypes.object,
+  allWords: PropTypes.any,
 };
 
 export default Mechanics2;

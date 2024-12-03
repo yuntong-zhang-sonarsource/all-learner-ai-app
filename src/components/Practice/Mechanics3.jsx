@@ -396,8 +396,8 @@ const Mechanics2 = ({
                 {answer?.text !== "" ? (
                   <>
                     {parentWords?.split(/_+/)[0]}
-                    <span
-                      className={!answer.isAns && shake ? "shakeImage" : ""}
+                    <button
+                      onClick={handleRemoveWord}
                       style={{
                         color: answer.isAns ? "#58CC02" : "#C30303",
                         border: answer.isAns
@@ -411,10 +411,11 @@ const Mechanics2 = ({
                         cursor: "pointer",
                         display: "inline-block",
                       }}
-                      onClick={handleRemoveWord}
+                      className={!answer.isAns && shake ? "shakeImage" : ""}
+                      aria-label={`Remove word: ${answer.text}`} // Accessibility improvement
                     >
                       {answer?.text}
-                    </span>
+                    </button>
                     {parentWords?.split(/_+/)[1]}
                   </>
                 ) : (
@@ -502,7 +503,7 @@ const Mechanics2 = ({
             originalText={parentWords}
             enableNext={enableNext}
             handleNext={handleNext}
-            audioLink={audio ? audio : null}
+            audioLink={audio || null}
             {...{
               contentId,
               contentType,

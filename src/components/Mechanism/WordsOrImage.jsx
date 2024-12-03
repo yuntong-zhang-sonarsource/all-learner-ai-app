@@ -49,7 +49,6 @@ const WordsOrImage = ({
   setIsNextButtonCalled,
 }) => {
   const audioRef = createRef(null);
-  const [duration, setDuration] = useState(0);
   const [isReady, setIsReady] = useState(false);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -86,7 +85,6 @@ const WordsOrImage = ({
       setIsPlaying(true);
     }
   };
-  const [currrentProgress, setCurrrentProgress] = useState(0);
 
   return (
     <MainLayout
@@ -161,15 +159,11 @@ const WordsOrImage = ({
               <audio
                 ref={audioRef}
                 preload="metadata"
-                onDurationChange={(e) => setDuration(e.currentTarget.duration)}
                 onCanPlay={(e) => {
                   setIsReady(true);
                 }}
                 onPlaying={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
-                onTimeUpdate={(e) => {
-                  setCurrrentProgress(e.currentTarget.currentTime);
-                }}
               >
                 <source type="audio/mp3" src={v11} />
               </audio>
@@ -189,9 +183,7 @@ const WordsOrImage = ({
                     marginLeft: "20px",
                     marginTop: "5px",
                   }}
-                  onClick={() => {
-                    togglePlayPause();
-                  }}
+                  onClick={togglePlayPause}
                 >
                   {isReady && (
                     <>

@@ -341,7 +341,7 @@ const Mechanics4 = ({
             handleNext={handleNext}
             enableNext={enableNext}
             originalText={parentWords}
-            audioLink={audio ? audio : null}
+            audioLink={audio || null}
             {...{
               contentId,
               contentType,
@@ -385,7 +385,7 @@ Mechanics4.propTypes = {
   setOpenMessageDialog: PropTypes.func.isRequired,
   playTeacherAudio: PropTypes.func.isRequired,
   background: PropTypes.bool,
-  type: PropTypes.oneOf(["word", "image"]).isRequired,
+  type: PropTypes.any,
   storyLine: PropTypes.number,
   steps: PropTypes.number,
   contentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])

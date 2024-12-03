@@ -120,27 +120,35 @@ const AudioRecorder = (props) => {
                       {!props.isShowCase && (
                         <Box>
                           {!props.pauseAudio ? (
-                            <div
-                              onClick={() => {
-                                props.playAudio(true);
+                            <button
+                              onClick={() => props.playAudio(true)}
+                              style={{
+                                background: "none",
+                                border: "none",
+                                cursor: "pointer",
+                                padding: 0,
                               }}
+                              aria-label="Play audio" // Accessibility improvement
                             >
-                              <Box sx={{ cursor: "pointer" }}>
-                                <ListenButton />
-                              </Box>
-                            </div>
+                              <ListenButton />
+                            </button>
                           ) : (
-                            <Box
-                              sx={{ cursor: "pointer" }}
-                              onClick={() => {
-                                props.playAudio(false);
+                            <button
+                              onClick={() => props.playAudio(false)}
+                              style={{
+                                background: "none",
+                                border: "none",
+                                cursor: "pointer",
+                                padding: 0,
                               }}
+                              aria-label="Stop audio" // Accessibility improvement
                             >
                               <StopButton />
-                            </Box>
+                            </button>
                           )}
                         </Box>
                       )}
+
                       <Box
                         sx={{
                           marginLeft: props.isShowCase ? "" : "35px",
@@ -148,23 +156,37 @@ const AudioRecorder = (props) => {
                         }}
                       >
                         {props.recordedAudio ? (
-                          <img
+                          <button
                             onClick={() =>
                               props.playRecordedAudio(
                                 !props.isStudentAudioPlaying
                               )
                             }
-                            style={{ height: "70px" }}
-                            src={
+                            style={{
+                              background: "none",
+                              border: "none",
+                              padding: 0,
+                              cursor: "pointer",
+                            }}
+                            aria-label={
                               props.isStudentAudioPlaying
-                                ? pauseButton
-                                : playButton
-                            }
-                            alt={props.isStudentAudioPlaying ? "Pause" : "Play"}
-                          />
-                        ) : (
-                          <Box></Box>
-                        )}
+                                ? "Pause audio"
+                                : "Play audio"
+                            } // Accessibility improvement
+                          >
+                            <img
+                              style={{ height: "70px" }}
+                              src={
+                                props.isStudentAudioPlaying
+                                  ? pauseButton
+                                  : playButton
+                              }
+                              alt={
+                                props.isStudentAudioPlaying ? "Pause" : "Play"
+                              }
+                            />
+                          </button>
+                        ) : null}
                       </Box>
                     </>
                   )}
