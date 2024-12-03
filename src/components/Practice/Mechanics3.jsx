@@ -199,6 +199,7 @@ const Mechanics2 = ({
                 onTimeUpdate={(e) => {
                   setCurrrentProgress(e.currentTarget.currentTime);
                 }}
+                crossorigin="anonymous"
               >
                 <source
                   type="audio/mp3"
