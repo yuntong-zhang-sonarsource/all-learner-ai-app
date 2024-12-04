@@ -1185,10 +1185,10 @@ const MainLayout = (props) => {
 };
 
 MainLayout.propTypes = {
-  level: PropTypes.number,
+  level: PropTypes.any,
   handleNext: PropTypes.func,
   contentType: PropTypes.string,
-  handleBack: PropTypes.func,
+  handleBack: PropTypes.any,
   disableScreen: PropTypes.bool,
   isShowCase: PropTypes.bool,
   showProgress: PropTypes.bool,

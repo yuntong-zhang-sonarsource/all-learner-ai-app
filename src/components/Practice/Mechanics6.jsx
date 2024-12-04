@@ -535,7 +535,7 @@ Mechanics2.propTypes = {
   loading: PropTypes.bool,
   setOpenMessageDialog: PropTypes.func.isRequired,
   playTeacherAudio: PropTypes.func.isRequired,
-  background: PropTypes.bool,
+  background: PropTypes.string,
   type: PropTypes.oneOf(["word", "image"]).isRequired,
   steps: PropTypes.number,
   contentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])

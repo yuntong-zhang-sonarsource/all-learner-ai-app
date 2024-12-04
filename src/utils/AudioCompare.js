@@ -219,7 +219,7 @@ AudioRecorder.propTypes = {
   setEnableNext: PropTypes.func,
   recordedAudio: PropTypes.string,
   setRecordedAudio: PropTypes.func,
-  originalText: PropTypes.string.isRequired,
+  originalText: PropTypes.string,
   showOnlyListen: PropTypes.bool,
   dontShowListen: PropTypes.bool,
   isShowCase: PropTypes.bool,

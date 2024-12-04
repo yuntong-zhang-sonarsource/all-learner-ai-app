@@ -443,7 +443,7 @@ const Mechanics2 = ({
               (elem, ind) =>
                 answer?.text !== elem.text && (
                   <Box
-                    key={elem}
+                    key={elem.text}
                     className={`${
                       type === "audio" && selectedWord === elem
                         ? selectedWord === parentWords
@@ -558,7 +558,7 @@ Mechanics2.propTypes = {
   loading: PropTypes.bool,
   setOpenMessageDialog: PropTypes.func.isRequired,
   playTeacherAudio: PropTypes.func.isRequired,
-  background: PropTypes.bool,
+  background: PropTypes.string,
   type: PropTypes.oneOf(["audio", "fillInTheBlank"]).isRequired,
   storyLine: PropTypes.number.isRequired,
   steps: PropTypes.number,

@@ -20,7 +20,6 @@ const Mechanics4 = ({
   setVoiceText,
   setRecordedAudio,
   setVoiceAnimate,
-  storyLine,
   type,
   handleNext,
   background,
@@ -141,13 +140,57 @@ const Mechanics4 = ({
       }
     }
   };
+  const determineAnswer = () => {
+    if (selectedWords?.length !== wordsAfterSplit?.length) {
+      return "";
+    }
+    return selectedWords?.join(" ") === parentWords ? "correct" : "wrong";
+  };
 
-  const answer =
-    selectedWords?.length !== wordsAfterSplit?.length
-      ? ""
-      : selectedWords?.join(" ") === parentWords
-      ? "correct"
-      : "wrong";
+  const answer = determineAnswer();
+
+  const getClassName = (answer, shake) => {
+    if (answer === "wrong") {
+      return `audioSelectedWrongWord ${shake ? "shakeImage" : ""}`;
+    }
+    return "";
+  };
+
+  const getStyles = (answer, type, words, selectedWords) => {
+    const border = (() => {
+      if (answer !== "wrong") {
+        if (answer === "correct") return "none";
+        if (!words.length && selectedWords.length && type === "word")
+          return "2px solid #1897DE"; // Blue border for specific condition
+        return "2px solid rgba(51, 63, 97, 0.15)";
+      }
+      return ""; // Default light border
+    })();
+
+    const color = (() => {
+      if (type === "word") {
+        if (answer === "correct") return "#58CC02";
+        if (answer === "wrong") return "#C30303";
+        return "#1897DE"; // Default color
+      }
+      return answer === "wrong" ? "#C30303" : "#333F61";
+    })();
+
+    const marginLeft = type === "word" ? 0 : answer !== "correct" ? "20px" : 0;
+
+    return {
+      borderRadius: "12px",
+      padding: "5px 10px",
+      border,
+      color,
+      fontWeight: type === "word" ? 600 : 700,
+      fontSize: "clamp(1.5rem, 3.5vw, 2.5rem)",
+      fontFamily: "Quicksand",
+      cursor: "pointer",
+      backgroundColor: "white",
+      marginLeft,
+    };
+  };
 
   return (
     <MainLayout
@@ -211,46 +254,16 @@ const Mechanics4 = ({
           }}
         >
           {selectedWords?.map((elem) => (
-            <span
+            <button
+              key={elem}
               onClick={() => handleWords(elem, true)}
-              className={
-                answer === "wrong"
-                  ? `audioSelectedWrongWord ${shake ? "shakeImage" : ""}`
-                  : ""
-              }
-              style={{
-                borderRadius: "12px",
-                padding: "5px 10px 5px 10px",
-                border:
-                  answer != "wrong"
-                    ? answer === "correct"
-                      ? "none" // No border if the answer is correct
-                      : answer === "wrong"
-                      ? "2px solid #C30303" // Red border if the answer is wrong
-                      : !words.length && selectedWords.length && type === "word"
-                      ? "2px solid #1897DE" // Blue border for some specific condition
-                      : "2px solid rgba(51, 63, 97, 0.15)"
-                    : "", // Default light border,
-                color:
-                  type === "word"
-                    ? answer === "correct"
-                      ? "#58CC02"
-                      : answer === "wrong"
-                      ? "#C30303"
-                      : "#1897DE"
-                    : answer === "wrong"
-                    ? "#C30303"
-                    : "#333F61",
-                fontWeight: type === "word" ? 600 : 700,
-                fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)",
-                fontFamily: "Quicksand",
-                cursor: "pointer",
-                marginLeft:
-                  type === "word" ? 0 : answer != "correct" ? "20px" : 0,
-              }}
+              onKeyDown={(e) => e.key === "Enter" && handleWords(elem, true)}
+              className={getClassName(answer, shake)}
+              style={getStyles(answer, type, words, selectedWords)}
+              type="button"
             >
               {elem}
-            </span>
+            </button>
           ))}
         </Box>
       </Box>
@@ -335,7 +348,6 @@ const Mechanics4 = ({
             setVoiceText={setVoiceText}
             setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
-            storyLine={storyLine}
             dontShowListen={type === "image" || isDiscover}
             // updateStory={updateStory}
             handleNext={handleNext}
@@ -384,9 +396,8 @@ Mechanics4.propTypes = {
   loading: PropTypes.bool,
   setOpenMessageDialog: PropTypes.func.isRequired,
   playTeacherAudio: PropTypes.func.isRequired,
-  background: PropTypes.bool,
+  background: PropTypes.string,
   type: PropTypes.any,
-  storyLine: PropTypes.number,
   steps: PropTypes.number,
   contentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     .isRequired,

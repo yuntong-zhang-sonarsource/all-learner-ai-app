@@ -50,7 +50,7 @@ const Practice = () => {
   const [openMessageDialog, setOpenMessageDialog] = useState("");
   const lang = getLocalData("lang");
   const [totalSyllableCount, setTotalSyllableCount] = useState("");
-  const [percentage, setPercentage] = useState("");
+  const [percentage, setPercentage] = useState(0);
   const [fluency, setFluency] = useState(false);
   const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
 
@@ -296,7 +296,7 @@ const Practice = () => {
 
         let quesArr = [];
 
-        if (newPracticeStep === 10) {
+        if (newPracticeStep == 10) {
           newPracticeStep = 0;
           currentPracticeProgress = 0;
         }
@@ -314,7 +314,7 @@ const Practice = () => {
           }
         );
 
-        if (newPracticeStep === 0 || newPracticeStep === 5 || isGameOver) {
+        if (newPracticeStep == 0 || newPracticeStep == 5 || isGameOver) {
           gameOver();
           return;
         }
@@ -1063,7 +1063,7 @@ const Practice = () => {
           }}
         />
       );
-    } else if (page === 1) {
+    } else if (page == 1) {
       return <Mechanics2 page={page} setPage={setPage} />;
     }
   };
