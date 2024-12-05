@@ -8,11 +8,6 @@ let playSessionId;
 let url;
 let isBuddyLogin = checkTokenInLocalStorage();
 
-if (localStorage.getItem("token") !== null) {
-  let jwtToken = localStorage.getItem("token");
-  const userDetails = jwtDecode(jwtToken);
-}
-
 function checkTokenInLocalStorage() {
   const token = localStorage.getItem("buddyToken");
   return !!token; // Returns true if token is present, false if token is null or undefined

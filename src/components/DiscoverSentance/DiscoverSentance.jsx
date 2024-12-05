@@ -87,7 +87,6 @@ const SpeakSentenceComponent = () => {
       setEnableNext(false);
     }
     if (voiceText == "success") {
-      // go_to_result(voiceText);
       setVoiceText("");
     }
     //eslint-disable-next-line
@@ -240,18 +239,6 @@ const SpeakSentenceComponent = () => {
           currentContentType === "Word"
         ) {
           navigate("/discover-end");
-
-          // const char = assessmentResponse?.data?.data?.find(
-          //   (elem) => elem.category === "Char"
-          // );
-          // const resCharPagination = await axios.get(
-          //   `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/content-service/v1/content/pagination?page=1&limit=5&collectionId=${char?.content?.[0]?.collectionId}`
-          // );
-          // setCurrentContentType("Char");
-          // setCurrentCollectionId(char?.content?.[0]?.collectionId);
-          // setCurrentQuestion(0);
-          // let quesArr = [...(resCharPagination?.data?.data || [])];
-          // setQuestions(quesArr);
         } else {
           navigate("/discover-end");
         }
@@ -265,12 +252,6 @@ const SpeakSentenceComponent = () => {
     (async () => {
       let quesArr = [];
       try {
-        // const resSentence = await axios.get(`${process.env.REACT_APP_LEARNER_AI_APP_HOST}/scores/GetContent/sentence/${UserID}`);
-        // quesArr = [...quesArr, ...(resSentence?.data?.content?.splice(0, 5) || [])];
-        // const resWord = await axios.get(`${process.env.REACT_APP_LEARNER_AI_APP_HOST}/scores/GetContent/word/${UserID}`);
-        // quesArr = [...quesArr, ...(resWord?.data?.content?.splice(0, 5) || [])];
-        // const resPara = await axios.get(`${process.env.REACT_APP_LEARNER_AI_APP_HOST}/scores/GetContent/paragraph/${UserID}`);
-        // quesArr = [...quesArr, ...(resPara?.data?.content || [])];
         const lang = getLocalData("lang");
         const resAssessment = await axios.post(
           `${process.env.REACT_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_ASSESSMENT}`,
@@ -292,8 +273,6 @@ const SpeakSentenceComponent = () => {
         setAssessmentResponse(resAssessment);
         localStorage.setItem("storyTitle", sentences?.name);
         quesArr = [...quesArr, ...(resPagination?.data?.data || [])];
-        // quesArr[1].contentType = 'image';
-        // quesArr[0].contentType = 'phonics';
         console.log("quesArr", quesArr);
         setQuestions(quesArr);
       } catch (error) {
