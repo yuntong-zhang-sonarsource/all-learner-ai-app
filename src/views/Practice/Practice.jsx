@@ -334,7 +334,7 @@ const Practice = () => {
               : "")
         );
 
-        //TODO: required only for S1 and S2
+        //Need: required only for S1 and S2
 
         setTotalSyllableCount(resGetContent?.data?.totalSyllableCount);
         setLivesData({
@@ -351,16 +351,16 @@ const Practice = () => {
           currentPracticeStep === 3 || currentPracticeStep === 8;
         setIsShowCase(showcaseLevel);
 
-        // TODO: API returns contents if 200 status
+        // Need: API returns contents if 200 status
         quesArr = [...quesArr, ...(resGetContent?.data?.content || [])];
         setCurrentContentType(resGetContent?.data?.content?.[0]?.contentType);
         setCurrentCollectionId(resGetContent?.data?.content?.[0]?.collectionId);
 
-        // TODO: not required - not using this anywhere
+        // Need: not required - not using this anywhere
 
         setCurrentQuestion(0);
 
-        // TODO: not required - we are geting this data from API
+        // Need: not required - we are geting this data from API
         practiceProgress[virtualId] = {
           currentQuestion: newQuestionIndex,
           currentPracticeProgress,
@@ -372,7 +372,7 @@ const Practice = () => {
 
         setQuestions(quesArr);
 
-        // TODO: needs to revisit this logic
+        // Need: needs to revisit this logic
         setTimeout(() => {
           setMechanism(currentGetContent.mechanism);
         }, 1000);
@@ -438,7 +438,7 @@ const Practice = () => {
         `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${virtualId}?language=${lang}`
       );
 
-      // TODO: validate the getMilestoneDetails API return
+      // Need: validate the getMilestoneDetails API return
 
       setLocalData(
         "getMilestone",
@@ -456,13 +456,13 @@ const Practice = () => {
         `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_LESSON_PROGRESS_BY_ID}/${virtualId}?language=${lang}`
       );
 
-      // TODO: Handle Error for lessons - no lesson progress - starting point should be P1
+      // Need: Handle Error for lessons - no lesson progress - starting point should be P1
 
       const getPointersDetails = await axios.get(
         `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
       );
 
-      // TODO: Just Opss icon - we are trying to fetch the score for you
+      // Need: Just Opss icon - we are trying to fetch the score for you
       setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
 
       let userState = Number.isInteger(
@@ -471,7 +471,7 @@ const Practice = () => {
         ? Number(resLessons.data?.result?.result?.lesson)
         : 0;
 
-      // TODO: revisit this - looks like not required
+      // Need: revisit this - looks like not required
       let practiceProgress = getLocalData("practiceProgress");
       practiceProgress = practiceProgress ? JSON.parse(practiceProgress) : {};
 
@@ -501,7 +501,7 @@ const Practice = () => {
             : "")
       );
 
-      // TODO: handle error if resWord is empty
+      // Need: handle error if resWord is empty
 
       setTotalSyllableCount(resWord?.data?.totalSyllableCount);
       setLivesData({

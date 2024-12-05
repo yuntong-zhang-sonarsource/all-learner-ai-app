@@ -17,7 +17,7 @@ import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
 
-// TODO: update it as per File name OR update file name as per export variable name
+// Need: update it as per File name OR update file name as per export variable name
 const Mechanics2 = ({
   page,
   setPage,
@@ -54,8 +54,7 @@ const Mechanics2 = ({
   audio,
 }) => {
   const [zoomOpen, setZoomOpen] = useState(false);
-  const [selectedWord, setSelectedWord] = useState("");
-  // const [loading, setLoading] = useState(false);
+  const [selectedWord] = useState("");
   const [shake, setShake] = useState(false);
   const [disabledWords, setDisabledWords] = useState(false);
   const [answer, setAnswer] = useState({
@@ -66,8 +65,6 @@ const Mechanics2 = ({
   });
 
   const lang = getLocalData("lang");
-
-  //console.log('Mechanics3', answer);
 
   useEffect(() => {
     if (!enableNext) {
@@ -97,7 +94,7 @@ const Mechanics2 = ({
     setEnableNext(false);
   };
 
-  // TODO: Constants declaration Need to move up
+  // Need: Constants declaration Need to move up
   const audioRef = createRef(null);
   const [duration, setDuration] = useState(0);
   const [isReady, setIsReady] = React.useState(false);
@@ -116,11 +113,31 @@ const Mechanics2 = ({
     }
   };
 
-  // TODO: all the constants declaration Need to move up
+  // Need: all the constants declaration Need to move up
   const [currrentProgress, setCurrrentProgress] = React.useState(0);
   const progressBarWidth = Number.isNaN(currrentProgress / duration)
     ? 0
     : currrentProgress / duration;
+
+  const getClassName = (type, selectedWord, elem, parentWords, shake) => {
+    if (type !== "audio" || selectedWord !== elem) {
+      return "";
+    }
+    if (selectedWord === parentWords) {
+      return "audioSelectedWord";
+    }
+    return shake
+      ? "audioSelectedWrongWord shakeImage"
+      : "audioSelectedWrongWord";
+  };
+
+  // Utility function to determine the text color
+  const getTextColor = (type, selectedWord, elem, parentWords) => {
+    if (type === "audio" && selectedWord === elem) {
+      return selectedWord === parentWords ? "#58CC02" : "#C30303";
+    }
+    return "#333F61";
+  };
 
   return (
     <MainLayout
@@ -444,15 +461,13 @@ const Mechanics2 = ({
                 answer?.text !== elem.text && (
                   <Box
                     key={elem.text}
-                    className={`${
-                      type === "audio" && selectedWord === elem
-                        ? selectedWord === parentWords
-                          ? `audioSelectedWord`
-                          : `audioSelectedWrongWord ${
-                              shake ? "shakeImage" : ""
-                            }`
-                        : ""
-                    }`}
+                    className={getClassName(
+                      type,
+                      selectedWord,
+                      elem,
+                      parentWords,
+                      shake
+                    )}
                     onClick={() => handleAnswerFillInTheBlank(elem)}
                     sx={{
                       textAlign: "center",
@@ -473,12 +488,12 @@ const Mechanics2 = ({
                   >
                     <span
                       style={{
-                        color:
-                          type === "audio" && selectedWord === elem
-                            ? selectedWord === parentWords
-                              ? "#58CC02"
-                              : "#C30303"
-                            : "#333F61",
+                        color: getTextColor(
+                          type,
+                          selectedWord,
+                          elem,
+                          parentWords
+                        ),
                         fontWeight: 600,
                         fontSize: "30px", // Responsive font size
                         fontFamily: "Quicksand",
