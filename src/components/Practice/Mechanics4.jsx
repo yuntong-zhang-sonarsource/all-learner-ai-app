@@ -241,18 +241,23 @@ const Mechanics4 = ({
             paddingX: type === "word" ? 0 : "20px",
           }}
         >
-          {selectedWords?.map((elem) => (
-            <button
-              key={elem}
-              onClick={() => handleWords(elem, true)}
-              onKeyDown={(e) => e.key === "Enter" && handleWords(elem, true)}
-              className={getClassName(answer, shake)}
-              style={getStyles(answer, type, words, selectedWords)}
-              type="button"
-            >
-              {elem}
-            </button>
-          ))}
+          {selectedWords?.map((elem) => {
+            const className = getClassName(answer, shake);
+            const style = getStyles(answer, type, words, selectedWords);
+
+            return (
+              <button
+                key={elem}
+                onClick={() => handleWords(elem, true)}
+                onKeyDown={(e) => e.key === "Enter" && handleWords(elem, true)}
+                className={className}
+                style={style}
+                type="button"
+              >
+                {elem}
+              </button>
+            );
+          })}
         </Box>
       </Box>
       <Box

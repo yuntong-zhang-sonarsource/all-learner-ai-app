@@ -486,6 +486,16 @@ function VoiceAnalyser(props) {
     }
   };
 
+  const getThreshold = (totalSyllables) => {
+    // Returns the threshold based on total syllables.
+    if (totalSyllables <= 100) return 30;
+    if (totalSyllables <= 150) return 25;
+    if (totalSyllables <= 175) return 20;
+    if (totalSyllables <= 250) return 15;
+    if (totalSyllables <= 500) return 10;
+    return 5; // For totalSyllables > 500
+  };
+
   const handlePercentageForLife = (
     percentage, // subsessionTargetsCount
     contentType,
@@ -495,26 +505,16 @@ function VoiceAnalyser(props) {
     try {
       if (livesData) {
         let totalSyllables = livesData?.totalTargets;
-        if (language === "en") {
+        if (language === "en" && totalSyllables > 50) {
           // Need: need to check why this is 50
-          if (totalSyllables > 50) {
-            totalSyllables = 50;
-          }
+          totalSyllables = 50;
         }
         // Calculate the current percentage based on total targets.
         percentage = Math.round((percentage / totalSyllables) * 100);
 
         // Define the total number of lives and adjust the threshold based on syllables.
         const totalLives = 5;
-        let threshold = 30; // Default threshold
-
-        // Adjust the threshold based on total syllables.
-        if (totalSyllables <= 100) threshold = 30;
-        else if (totalSyllables > 100 && totalSyllables <= 150) threshold = 25;
-        else if (totalSyllables > 150 && totalSyllables <= 175) threshold = 20;
-        else if (totalSyllables > 175 && totalSyllables <= 250) threshold = 15;
-        else if (totalSyllables > 250 && totalSyllables <= 500) threshold = 10;
-        else if (totalSyllables > 500) threshold = 5;
+        const threshold = getThreshold(totalSyllables);
 
         // Calculate lives lost based on percentage.
         let livesLost = Math.floor(percentage / (threshold / totalLives));
