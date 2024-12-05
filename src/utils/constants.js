@@ -4220,8 +4220,19 @@ const AllLanguages = [
   { name: "English-Offline", lang: "en", symbol: "A", offline: true },
   { name: "हिंदी", lang: "hi", symbol: "क", offline: false },
   { name: "ಕನ್ನಡ", lang: "kn", symbol: "ಕ", offline: false },
+  { name: "ಕನ್ನಡ offline", lang: "kn", symbol: "ಕ", offline: true },
   { name: "తెలుగు", lang: "te", symbol: "ఈ", offline: false },
   { name: "ગુજરાતી", lang: "gu", symbol: "ગુ", offline: false },
+];
+
+export const offlineModelsInfo = [
+  {
+    modelName: "english",
+    lang: "en",
+    modelURL: "./models/ggml-model-whisper-base.en-q5_1.bin",
+  },
+  { modelName: "kannada", lang: "kn", modelURL: "/models/kannada.quant.onnx" },
+  { modelName: "tamil", lang: "ta", modelURL: "/models/tamil.quant.onnx" },
 ];
 
 const appLanguages = process.env.REACT_APP_LANGUAGES

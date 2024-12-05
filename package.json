@@ -31,6 +31,7 @@
     "ffmpeg": "^0.0.4",
     "fuzzball": "^2.1.2",
     "homophones": "^1.0.1",
+    "indicasr-wasm": "file:asr-utils/pkg",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "memoize-one": "^6.0.0",

@@ -50,6 +50,7 @@ import cryPanda from "../../assets/images/cryPanda.svg";
 import { uniqueId } from "../../services/utilService";
 import ProgressOverlay from "../CommonComponent/ProgressOverlay";
 import { end } from "../../services/telementryService";
+import { offlineModelsInfo } from "../../utils/constants";
 
 export const LanguageModal = ({
   lang,
@@ -157,12 +158,19 @@ export const LanguageModal = ({
   };
 
   // Function to load model
-  const loadModel = async () => {
+  const loadModel = async (selectedLang) => {
     setLoading(true);
     try {
       await openDB();
-      const modelName = "en-model";
-      const modelURL = "./models/ggml-model-whisper-base.en-q5_1.bin";
+      let modelName = "";
+      let modelURL = "";
+
+      offlineModelsInfo.map((modelInfoElement) => {
+        if (modelInfoElement.lang === selectedLang) {
+          modelName = modelInfoElement.modelName;
+          modelURL = modelInfoElement.modelURL;
+        }
+      });
 
       const stored = await isModelStored(modelName);
       if (!stored) {
@@ -315,7 +323,7 @@ export const LanguageModal = ({
               setLang(selectedLang);
               setOpenLangModal(false);
               if (isOfflineModel) {
-                loadModel();
+                loadModel(selectedLang);
               }
             }}
             sx={{
@@ -894,6 +902,38 @@ const Assesment = ({ discoverStart }) => {
     }
   };
 
+  const loadModelIndic = async (modelName) => {
+    try {
+      let transaction;
+      let store;
+      let request;
+      try {
+        transaction = await db.transaction(["models"], "readonly");
+        store = transaction.objectStore("models");
+        request = await store.get(modelName);
+      } catch (error) {
+        console.error("Error accessing IndexedDB:", error);
+        return;
+      }
+
+      request.onsuccess = async () => {
+        const modelData = request.result;
+        window.offlineSession = await window.ort.InferenceSession.create(
+          modelData
+        );
+        console.log("Session created", window.offlineSession);
+      };
+
+      request.onerror = (err) => {
+        console.error(`Error to get model data: ${err}`);
+      };
+
+      console.log(`Created model session`);
+    } catch (error) {
+      console.error("Error storing model in IndexedDB:", error);
+    }
+  };
+
   // Function to store model in IndexedDB
   const storeModel = async (modelName, modelURL) => {
     try {
@@ -936,12 +976,19 @@ const Assesment = ({ discoverStart }) => {
   };
 
   // Function to load model
-  const loadModel = async () => {
+  const loadModel = async (lang) => {
     setLoading(true);
     try {
       await openDB();
-      const modelName = "en-model";
-      const modelURL = "./models/ggml-model-whisper-base.en-q5_1.bin";
+      let modelName = "";
+      let modelURL = "";
+
+      offlineModelsInfo.map((modelInfoElement) => {
+        if (modelInfoElement.lang === lang) {
+          modelName = modelInfoElement.modelName;
+          modelURL = modelInfoElement.modelURL;
+        }
+      });
 
       const stored = await isModelStored(modelName);
       if (!stored) {
@@ -980,19 +1027,30 @@ const Assesment = ({ discoverStart }) => {
     });
   };
 
-  const handleRedirect = async () => {
+  const handleRedirect = async (lang) => {
     if (localStorage.getItem("isOfflineModel") === "true") {
-      const modelName = "en-model";
+      let modelName = "";
+
+      offlineModelsInfo.map((modelInfoElement) => {
+        if (modelInfoElement.lang === lang) {
+          modelName = modelInfoElement.modelName;
+        }
+      });
+
       await openDB();
       const stored = await isModelStored(modelName);
       if (stored) {
         console.log(`Model ${modelName} is already stored in IndexedDB`);
       } else {
         alert(`you have to download en-offline model`);
-        await loadModel();
+        await loadModel(lang);
         return;
       }
-      await loadModelWhisper(modelName);
+      if (lang === "en") {
+        await loadModelWhisper(modelName);
+      } else {
+        await loadModelIndic(modelName);
+      }
     }
     const profileName = getLocalData("profileName");
     if (!username && !profileName && !virtualId && level === 0) {
@@ -1115,7 +1173,9 @@ const Assesment = ({ discoverStart }) => {
                   cursor: "pointer",
                   boxShadow: `3px 3px 10px ${levelConfig[level].color}80`,
                 }}
-                onClick={handleRedirect}
+                onClick={async () => {
+                  await handleRedirect(lang);
+                }}
               >
                 <span
                   style={{
@@ -1205,7 +1265,9 @@ const Assesment = ({ discoverStart }) => {
                   cursor: "pointer",
                   mt: { xs: 1, md: 2 },
                 }}
-                onClick={handleRedirect}
+                onClick={async () => {
+                  handleRedirect(lang);
+                }}
               >
                 <StartAssessmentButton />
               </Box>

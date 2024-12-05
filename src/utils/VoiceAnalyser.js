@@ -37,6 +37,7 @@ import useFFmpeg from "./useFFmpeg";
 import * as fuzz from "fuzzball";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import S3Client from "../config/awsS3";
+import * as wasm from "indicasr-wasm";
 /* eslint-disable */
 
 const AudioPath = {
@@ -105,6 +106,19 @@ function VoiceAnalyser(props) {
 
     console.log(recordedBlob);
 
+    const blobResponse = await fetch(recordedBlob);
+
+    // Ensure the response is OK
+    if (!blobResponse.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    // Get the Blob from the response
+    const audioBlob = await blobResponse.blob();
+
+    // Convert the Blob to ArrayBuffer
+    const arrayBuffer = await audioBlob.arrayBuffer();
+
     try {
       await ffmpeg.FS(
         "writeFile",
@@ -123,8 +137,17 @@ function VoiceAnalyser(props) {
         type: "audio/webm",
       });
 
+      const transcodedArrayBuffer = await transcodeFile(arrayBuffer, "webm");
+      console.log(transcodedArrayBuffer);
+
       if (callUpdateLearner) {
         try {
+          console.log(window.wasm);
+          const byteArray = new Uint8Array(transcodedArrayBuffer);
+          console.log(byteArray);
+          const processed_data = window.wasm.run_preprocessor(byteArray);
+          console.log("Processed data -- ", processed_data);
+
           let nonDenoisedRes = await getResponseText(nondenoisedBlob);
           nonDenoisedRes = await filterBadWords(nonDenoisedRes);
           setNonDenoisedText(nonDenoisedRes);
@@ -183,6 +206,31 @@ function VoiceAnalyser(props) {
       console.error("Error processing audio:", error);
     }
     setLoader(false);
+  };
+
+  const transcodeFile = async (fileBuffer, inputType) => {
+    // await ffmpeg.writeFile(`input.${inputType}`, new Uint8Array(fileBuffer));
+    await ffmpeg.FS(
+      "writeFile",
+      `input.${inputType}`,
+      new Uint8Array(fileBuffer)
+    );
+    // "-acodec pcm_s16le -ar 44100 -ac 2"
+    await ffmpeg.run(
+      "-i",
+      `input.${inputType}`,
+      "-acodec",
+      "pcm_s16le",
+      "-ar",
+      "16000",
+      "-ac",
+      "1",
+      "output.wav"
+    );
+
+    // @ts-ignore
+    const outData = await ffmpeg.FS("readFile", "output.wav");
+    return outData.buffer;
   };
 
   const getResponseText = async (audioBlob) => {
