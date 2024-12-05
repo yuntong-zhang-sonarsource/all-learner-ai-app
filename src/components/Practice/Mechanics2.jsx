@@ -123,7 +123,7 @@ const Mechanics2 = ({ page, setPage }) => {
 };
 
 Mechanics2.propTypes = {
-  page: PropTypes.number.isRequired,
+  page: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   setPage: PropTypes.func.isRequired,
 };
 

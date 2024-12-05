@@ -437,7 +437,7 @@ Mechanics5.propTypes = {
   showTimer: PropTypes.bool,
   points: PropTypes.number,
   currentStep: PropTypes.number.isRequired,
-  percentage: PropTypes.number,
+  percentage: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   fluency: PropTypes.bool,
   isDiscover: PropTypes.bool,
   showProgress: PropTypes.bool,

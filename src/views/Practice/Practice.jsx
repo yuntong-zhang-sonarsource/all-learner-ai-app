@@ -649,20 +649,21 @@ const Practice = () => {
     });
 
     let type = currentContentType?.toLowerCase();
-    // console.log(type, sentence, matchedChar);
     if (type === "char" || type === "word") {
       const word = splitGraphemes(words[0].toLowerCase()).filter(
         (item) => item !== "‌" && item !== "" && item !== " "
       );
       let highlightedString = [];
-      for (let i = 0; i < word.length; i++) {
+      let i = 0;
+      for (const char of word) {
         let matchFound = false;
-        for (let j = 0; j < matchedChar.length; j++) {
-          let length = splitGraphemes(matchedChar[j]).filter(
+        for (const matched of matchedChar) {
+          const length = splitGraphemes(matched).filter(
             (item) => item !== "‌" && item !== "" && item !== " "
           ).length;
           const substr = word.slice(i, i + length).join("");
-          if (substr.includes(matchedChar[j])) {
+
+          if (substr.includes(matched)) {
             highlightedString.push(
               <React.Fragment key={i}>
                 <Typography
@@ -699,11 +700,12 @@ const Practice = () => {
                   lineHeight: "50px",
                 }}
               >
-                {i === 0 ? word[i].toUpperCase() : word[i]}
+                {i === 0 ? char.toUpperCase() : char}
               </Typography>
             </React.Fragment>
           );
         }
+        i++;
       }
       return highlightedString;
     } else {
@@ -713,7 +715,7 @@ const Practice = () => {
         );
         if (isMatched) {
           return (
-            <React.Fragment key={`${word}-${index}`}>
+            <React.Fragment key={index}>
               <Typography
                 variant="h5"
                 component="h4"

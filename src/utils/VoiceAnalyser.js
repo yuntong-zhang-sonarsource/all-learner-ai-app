@@ -684,7 +684,7 @@ VoiceAnalyser.propTypes = {
   updateStoredData: PropTypes.any,
   pageName: PropTypes.string,
   selectedOption: PropTypes.bool,
-  correctness: PropTypes.bool,
+  correctness: PropTypes.object,
   audioLink: PropTypes.string,
   setLivesData: PropTypes.any,
 };

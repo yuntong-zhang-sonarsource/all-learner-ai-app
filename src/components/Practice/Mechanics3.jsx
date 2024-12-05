@@ -575,7 +575,7 @@ Mechanics2.propTypes = {
   playTeacherAudio: PropTypes.func.isRequired,
   background: PropTypes.string,
   type: PropTypes.oneOf(["audio", "fillInTheBlank"]).isRequired,
-  storyLine: PropTypes.number.isRequired,
+  storyLine: PropTypes.number,
   steps: PropTypes.number,
   contentId: PropTypes.string.isRequired,
   contentType: PropTypes.string,
