@@ -2,12 +2,6 @@ import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import MainLayout from "../Layouts.jsx/MainLayout";
-// import useSound from "use-sound";
-// import t from "../../assets/audio/t.mp3";
-// import i from "../../assets/audio/i.mp3";
-// import g from "../../assets/audio/g.mp3";
-// import e from "../../assets/audio/e.mp3";
-// import r from "../../assets/audio/r.mp3";
 import correctSound from "../../assets/audio/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 import addSound from "../../assets/audio/add.mp3";
@@ -75,8 +69,6 @@ const Mechanics4 = ({
     return words;
   }
 
-  //console.log('Mechanics4');
-
   useEffect(() => {
     let wordsArr = jumbleSentence(parentWords);
     if (parentWords) {
@@ -93,25 +85,12 @@ const Mechanics4 = ({
 
   const [selectedWords, setSelectedWords] = useState([]);
 
-  // const [tPlay] = useSound(t);
-  // const [iPlay] = useSound(i);
-  // const [gPlay] = useSound(g);
-  // const [ePlay] = useSound(e);
-  // const [rPlay] = useSound(r);
-
-  // const audioPlay = {
-  //   T: tPlay,
-  //   I: iPlay,
-  //   G: gPlay,
-  //   E: ePlay,
-  //   R: rPlay,
-  // };
   const handleWords = (word, isSelected) => {
     setShake(true);
     setTimeout(() => {
       setShake(false);
     }, 3000);
-    // audioPlay[word]();
+
     if (selectedWords?.length + 1 !== wordsAfterSplit?.length || isSelected) {
       let audio = new Audio(isSelected ? removeSound : addSound);
       audio.play();
@@ -176,7 +155,7 @@ const Mechanics4 = ({
       return answer === "wrong" ? "#C30303" : "#333F61";
     })();
 
-    const marginLeft = type === "word" ? 0 : answer !== "correct" ? "20px" : 0;
+    const marginLeft = type === "word" || answer === "correct" ? 0 : "20px";
 
     return {
       borderRadius: "12px",
@@ -190,6 +169,14 @@ const Mechanics4 = ({
       backgroundColor: "white",
       marginLeft,
     };
+  };
+
+  const getBorderColor = (answer, words, selectedWords, type) => {
+    if (answer === "correct") return "#58CC02";
+    if (answer === "wrong") return "#C30303";
+    if (!words?.length && !!selectedWords?.length && type === "word")
+      return "#1897DE";
+    return "rgba(51, 63, 97, 0.10)";
   };
 
   return (
@@ -238,15 +225,7 @@ const Mechanics4 = ({
             flexWrap: "wrap",
             alignItems: "center",
             borderRadius: "15px",
-            border: `2px solid ${
-              answer === "correct"
-                ? "#58CC02"
-                : answer === "wrong"
-                ? "#C30303"
-                : !words?.length && !!selectedWords?.length && type === "word"
-                ? "#1897DE"
-                : "rgba(51, 63, 97, 0.10)"
-            }`,
+            border: getBorderColor(answer, words, selectedWords, type),
             cursor: "pointer",
             letterSpacing: answer != "correct" ? "5px" : "normal",
             background: "#FBFBFB",

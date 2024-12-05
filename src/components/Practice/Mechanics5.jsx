@@ -118,8 +118,6 @@ const Mechanics5 = ({
     }
   };
 
-  //console.log('Mechanics5' , storedData, options);
-
   const handleOptionChange = (event, i) => {
     setSelectedOption(i); // Set the selected option index
   };

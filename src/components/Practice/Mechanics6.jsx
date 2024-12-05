@@ -53,7 +53,6 @@ const Mechanics2 = ({
   const [sentences, setSentences] = useState([]);
 
   const [selectedWord, setSelectedWord] = useState("");
-  // const [loading, setLoading] = useState(false);
   const [shake, setShake] = useState(false);
   const [wordToFill, setWordToFill] = useState("");
   const [disabledWords, setDisabledWords] = useState(false);
@@ -94,14 +93,10 @@ const Mechanics2 = ({
     initializeAudio();
   }, [contentId, parentWords]);
 
-  //console.log('Mechanics6');
-
   const getSimilarWords = async (wordForFindingHomophones) => {
     const lang = getLocalData("lang");
-    // const isFillInTheBlanks = type === "fillInTheBlank";
-    const wordToSimilar = wordForFindingHomophones
-      ? wordForFindingHomophones
-      : parentWords;
+
+    const wordToSimilar = wordForFindingHomophones || parentWords;
 
     if (lang === "en") {
       const finder = new HomophonesFinder();
@@ -145,7 +140,6 @@ const Mechanics2 = ({
         wordsArr.push(selectedWord);
       }
 
-      // if (type === "audio") {
       const isSoundCorrect = word === wordToCheck;
       let audio = new Audio(isSoundCorrect ? correctSound : wrongSound);
       if (!isSoundCorrect) {
@@ -156,7 +150,6 @@ const Mechanics2 = ({
       setTimeout(() => {
         setShake(false);
       }, 800);
-      // }
 
       setWords(wordsArr);
       setSelectedWord(word);
@@ -179,6 +172,27 @@ const Mechanics2 = ({
       audioRef.current.play();
       setIsPlaying(true);
     }
+  };
+
+  const getClassName = (type, selectedWord, elem, parentWords, shake) => {
+    if (type === "audio" && selectedWord === elem) {
+      if (selectedWord === parentWords) {
+        return "audioSelectedWord";
+      }
+      let className = "audioSelectedWrongWord";
+      if (shake) {
+        className += " shakeImage";
+      }
+      return className;
+    }
+    return "";
+  };
+
+  const getTextColor = (type, selectedWord, elem, parentWords) => {
+    if (type === "audio" && selectedWord === elem) {
+      return selectedWord === parentWords ? "#58CC02" : "#C30303";
+    }
+    return "#333F61";
   };
 
   const [currrentProgress, setCurrrentProgress] = React.useState(0);
@@ -324,6 +338,7 @@ const Mechanics2 = ({
                 src={image}
                 placeholder="image"
                 style={{ width: "100%", height: "auto", maxWidth: "200px" }}
+                alt=""
               />
             </Box>
             {sentences?.map((elem, index) => (
@@ -429,13 +444,13 @@ const Mechanics2 = ({
         {words?.map((elem) => (
           <Box
             key={elem}
-            className={`${
-              type === "audio" && selectedWord === elem
-                ? selectedWord === parentWords
-                  ? `audioSelectedWord`
-                  : `audioSelectedWrongWord ${shake ? "shakeImage" : ""}`
-                : ""
-            }`}
+            className={getClassName(
+              type,
+              selectedWord,
+              elem,
+              parentWords,
+              shake
+            )}
             onClick={() => handleWord(elem)}
             sx={{
               textAlign: "center",
@@ -454,12 +469,7 @@ const Mechanics2 = ({
           >
             <span
               style={{
-                color:
-                  type === "audio" && selectedWord === elem
-                    ? selectedWord === parentWords
-                      ? "#58CC02"
-                      : "#C30303"
-                    : "#333F61",
+                color: getTextColor(type, selectedWord, elem, parentWords),
                 fontWeight: 600,
                 fontSize: "32px",
                 fontFamily: "Quicksand",
