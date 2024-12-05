@@ -161,7 +161,7 @@ const Mechanics1 = ({ page, setPage }) => {
 };
 
 Mechanics1.propTypes = {
-  page: PropTypes.number,
+  page: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   setPage: PropTypes.func,
 };
 

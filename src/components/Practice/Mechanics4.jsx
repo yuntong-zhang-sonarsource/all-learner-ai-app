@@ -119,6 +119,7 @@ const Mechanics4 = ({
       }
     }
   };
+
   const determineAnswer = () => {
     if (selectedWords?.length !== wordsAfterSplit?.length) {
       return "";
@@ -172,10 +173,13 @@ const Mechanics4 = ({
   };
 
   const getBorderColor = (answer, words, selectedWords, type) => {
-    if (answer === "correct") return "#58CC02";
-    if (answer === "wrong") return "#C30303";
-    if (!words?.length && !!selectedWords?.length && type === "word")
+    if (answer === "correct") {
+      return "#58CC02";
+    } else if (answer === "wrong") {
+      return "#C30303";
+    } else if (!words?.length && !!selectedWords?.length && type === "word") {
       return "#1897DE";
+    }
     return "rgba(51, 63, 97, 0.10)";
   };
 
@@ -225,7 +229,12 @@ const Mechanics4 = ({
             flexWrap: "wrap",
             alignItems: "center",
             borderRadius: "15px",
-            border: getBorderColor(answer, words, selectedWords, type),
+            border: `2px solid ${getBorderColor(
+              answer,
+              words,
+              selectedWords,
+              type
+            )}`,
             cursor: "pointer",
             letterSpacing: answer != "correct" ? "5px" : "normal",
             background: "#FBFBFB",
@@ -352,7 +361,7 @@ const Mechanics4 = ({
 };
 
 Mechanics4.propTypes = {
-  page: PropTypes.number.isRequired,
+  page: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   setPage: PropTypes.func.isRequired,
   handleNext: PropTypes.func.isRequired,
   header: PropTypes.string,

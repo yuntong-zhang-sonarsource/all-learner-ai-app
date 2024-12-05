@@ -522,7 +522,7 @@ const Mechanics2 = ({
 };
 
 Mechanics2.propTypes = {
-  page: PropTypes.number.isRequired,
+  page: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   setPage: PropTypes.func.isRequired,
   handleNext: PropTypes.func.isRequired,
   header: PropTypes.string,
