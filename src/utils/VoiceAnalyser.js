@@ -71,7 +71,6 @@ function VoiceAnalyser(props) {
   const { callUpdateLearner } = props;
   const lang = getLocalData("lang");
   const { livesData, setLivesData } = props;
-  const [isMatching, setIsMatching] = useState(false);
 
   useEffect(() => {
     if (!props.enableNext) {
@@ -339,10 +338,6 @@ function VoiceAnalyser(props) {
         }
       }
 
-      setIsMatching(
-        data?.createScoreData?.session?.count_diff?.character === 0
-      );
-
       const responseEndTime = new Date().getTime();
       const responseDuration = Math.round(
         (responseEndTime - responseStartTime) / 1000
@@ -487,7 +482,6 @@ function VoiceAnalyser(props) {
   };
 
   const getThreshold = (totalSyllables) => {
-    // Returns the threshold based on total syllables.
     if (totalSyllables <= 100) return 30;
     if (totalSyllables <= 150) return 25;
     if (totalSyllables <= 175) return 20;

@@ -22,7 +22,7 @@ if (localStorage.getItem("contentSessionId") !== null) {
 }
 
 let getUrl = window.location.href;
-url = getUrl && getUrl.includes("#") && getUrl.split("#")[1].split("/")[1];
+url = getUrl?.includes("#") ? getUrl.split("#")[1]?.split("/")[1] : undefined;
 
 export const initialize = async ({ context, config, metadata }) => {
   playSessionId = uniqueId();
