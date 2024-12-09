@@ -78,6 +78,17 @@ const AudioRecorder = (props) => {
       props?.setRecordedAudio(url);
     }
   };
+
+  const renderActionButton = () => (
+    <Box
+      marginLeft={!props.dontShowListen || props.recordedAudio ? "32px" : "0px"}
+      sx={{ cursor: "pointer" }}
+      onClick={startRecording}
+    >
+      {props.recordedAudio ? <RetryIcon /> : <SpeakButton />}
+    </Box>
+  );
+
   return (
     <div>
       <div>
@@ -190,21 +201,10 @@ const AudioRecorder = (props) => {
                       </Box>
                     </>
                   )}
-
                 <div>
-                  {props?.originalText && !props.showOnlyListen && (
-                    <Box
-                      marginLeft={
-                        !props.dontShowListen || props.recordedAudio
-                          ? "32px"
-                          : "0px"
-                      }
-                      sx={{ cursor: "pointer" }}
-                      onClick={startRecording}
-                    >
-                      {!props.recordedAudio ? <SpeakButton /> : <RetryIcon />}
-                    </Box>
-                  )}
+                  {props.originalText &&
+                    !props.showOnlyListen &&
+                    renderActionButton()}
                 </div>
               </div>
             );

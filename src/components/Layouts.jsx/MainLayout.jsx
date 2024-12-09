@@ -578,28 +578,6 @@ const MainLayout = (props) => {
                         </Box>
                       </Box>
                     )}
-                    {/* <Box
-                      sx={{ display: "flex", justifyContent: "right", mr: 4 }}
-                    >
-                      {enableNext ? (
-                        <Box
-                          sx={{ cursor: "pointer" }}
-                          onClick={() => {
-                            if (props.setIsNextButtonCalled) {
-                              props.setIsNextButtonCalled(true);
-                            } else {
-                              handleNext();
-                            }
-                          }}
-                        >
-                          <NextButton />
-                        </Box>
-                      ) : (
-                        <Box sx={{ cursor: "pointer" }}>
-                          <NextButton disabled />
-                        </Box>
-                      )}
-                    </Box> */}
                   </Box>
                 )}
                 {nextLessonAndHome && (

@@ -62,7 +62,11 @@ const Mechanics2 = ({
     const initializeFillInTheBlank = async () => {
       if (type === "fillInTheBlank" && parentWords?.length) {
         let wordsArr = parentWords.split(" ");
-        let randomIndex = Math.floor(Math.random() * wordsArr.length);
+        // Generate a secure random index
+        const randomBuffer = new Uint32Array(1);
+        crypto.getRandomValues(randomBuffer);
+        const randomIndex = randomBuffer[0] % wordsArr.length;
+
         try {
           await getSimilarWords(wordsArr[randomIndex]);
           setWordToFill(wordsArr[randomIndex]);
