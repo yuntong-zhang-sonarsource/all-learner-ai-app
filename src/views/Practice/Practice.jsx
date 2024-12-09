@@ -636,116 +636,100 @@ const Practice = () => {
 
   function highlightWords(sentence, matchedChar) {
     const words = sentence.split(" ");
-    matchedChar.sort(function (str1, str2) {
-      return str2.length - str1.length;
-    });
+    matchedChar.sort((str1, str2) => str2.length - str1.length);
 
-    let type = currentContentType?.toLowerCase();
+    const type = currentContentType?.toLowerCase();
     if (type === "char" || type === "word") {
-      const word = splitGraphemes(words[0].toLowerCase()).filter(
-        (item) => item !== "‌" && item !== "" && item !== " "
-      );
-      let highlightedString = [];
-      let i = 0;
-      for (const char of word) {
-        let matchFound = false;
-        for (const matched of matchedChar) {
-          const length = splitGraphemes(matched).filter(
-            (item) => item !== "‌" && item !== "" && item !== " "
-          ).length;
-          const substr = word.slice(i, i + length).join("");
-
-          if (substr.includes(matched)) {
-            highlightedString.push(
-              <React.Fragment key={i}>
-                <Typography
-                  variant="h5"
-                  component="h4"
-                  sx={{
-                    fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
-                    fontWeight: 700,
-                    fontFamily: "Quicksand",
-                    lineHeight: "50px",
-                    background: "#FFF0BD",
-                  }}
-                >
-                  {i === 0 ? substr.toUpperCase() : substr}
-                </Typography>
-              </React.Fragment>
-            );
-            i += length - 1;
-            matchFound = true;
-            break;
-          }
-        }
-        if (!matchFound) {
-          highlightedString.push(
-            <React.Fragment key={i}>
-              <Typography
-                variant="h5"
-                component="h4"
-                sx={{
-                  color: "#333F61",
-                  fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
-                  fontWeight: 700,
-                  fontFamily: "Quicksand",
-                  lineHeight: "50px",
-                }}
-              >
-                {i === 0 ? char.toUpperCase() : char}
-              </Typography>
-            </React.Fragment>
-          );
-        }
-        i++;
-      }
-      return highlightedString;
+      return highlightCharacters(words[0], matchedChar);
     } else {
-      const highlightedSentence = words.map((word, index) => {
-        const isMatched = matchedChar.some((char) =>
-          word.toLowerCase().includes(char)
-        );
-        if (isMatched) {
-          return (
-            <React.Fragment key={index}>
-              <Typography
-                variant="h5"
-                component="h4"
-                ml={1}
-                sx={{
-                  fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
-                  fontWeight: 700,
-                  fontFamily: "Quicksand",
-                  lineHeight: "50px",
-                  background: "#FFF0BD",
-                }}
-              >
-                {word}
-              </Typography>{" "}
-            </React.Fragment>
-          );
-        } else {
-          return (
-            <Typography
-              variant="h5"
-              component="h4"
-              ml={1}
-              sx={{
-                color: "#333F61",
-                fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
-                fontWeight: 700,
-                fontFamily: "Quicksand",
-                lineHeight: "50px",
-              }}
-              key={word}
-            >
-              {word + " "}
-            </Typography>
-          );
-        }
-      });
-      return highlightedSentence;
+      return highlightSentence(words, matchedChar);
     }
+  }
+
+  function highlightCharacters(word, matchedChar) {
+    const graphemes = splitGraphemes(word.toLowerCase()).filter(isValidChar);
+    let highlightedString = [];
+    let i = 0;
+
+    while (i < graphemes.length) {
+      const match = findMatch(graphemes, matchedChar, i);
+
+      if (match) {
+        highlightedString.push(renderHighlightedText(match.substr, i, true));
+        i += match.length - 1;
+      } else {
+        highlightedString.push(renderHighlightedText(graphemes[i], i, false));
+      }
+      i++;
+    }
+
+    return highlightedString;
+  }
+
+  function findMatch(graphemes, matchedChar, index) {
+    for (const matched of matchedChar) {
+      const length = splitGraphemes(matched).filter(isValidChar).length;
+      const substr = graphemes.slice(index, index + length).join("");
+
+      if (substr.includes(matched)) {
+        return { substr, length };
+      }
+    }
+    return null;
+  }
+
+  function renderHighlightedText(content, index, isMatched) {
+    const styles = isMatched ? { background: "#FFF0BD" } : { color: "#333F61" };
+
+    return (
+      <React.Fragment key={index}>
+        <Typography
+          variant="h5"
+          component="h4"
+          sx={{
+            ...styles,
+            fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
+            fontWeight: 700,
+            fontFamily: "Quicksand",
+            lineHeight: "50px",
+          }}
+        >
+          {index === 0 ? content.toUpperCase() : content}
+        </Typography>
+      </React.Fragment>
+    );
+  }
+
+  function highlightSentence(words, matchedChar) {
+    return words.map((word, index) => {
+      const isMatched = matchedChar.some((char) =>
+        word.toLowerCase().includes(char)
+      );
+
+      return (
+        <React.Fragment key={index}>
+          <Typography
+            variant="h5"
+            component="h4"
+            ml={1}
+            sx={{
+              fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
+              fontWeight: 700,
+              fontFamily: "Quicksand",
+              lineHeight: "50px",
+              background: isMatched ? "#FFF0BD" : undefined,
+              color: isMatched ? undefined : "#333F61",
+            }}
+          >
+            {word}
+          </Typography>{" "}
+        </React.Fragment>
+      );
+    });
+  }
+
+  function isValidChar(char) {
+    return char !== "‌" && char !== "" && char !== " ";
   }
 
   useEffect(() => {
@@ -958,7 +942,6 @@ const Practice = () => {
             livesData,
             setLivesData,
             gameOverData,
-            highlightWords,
             matchedChar: !isShowCase && questions[currentQuestion]?.matchedChar,
             percentage,
             fluency,
