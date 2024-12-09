@@ -30,7 +30,6 @@ const Practice = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const navigate = useNavigate();
   const [currentContentType, setCurrentContentType] = useState("");
-  const [currentCollectionId, setCurrentCollectionId] = useState("");
   const [points, setPoints] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [enableNext, setEnableNext] = useState(false);
@@ -352,7 +351,6 @@ const Practice = () => {
         // Need: API returns contents if 200 status
         quesArr = [...quesArr, ...(resGetContent?.data?.content || [])];
         setCurrentContentType(resGetContent?.data?.content?.[0]?.contentType);
-        setCurrentCollectionId(resGetContent?.data?.content?.[0]?.collectionId);
 
         // Need: not required - not using this anywhere
 
@@ -513,8 +511,6 @@ const Practice = () => {
       quesArr = [...quesArr, ...(resWord?.data?.content || [])];
       setCurrentContentType(currentGetContent.criteria);
 
-      setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
-
       localStorage.setItem("storyTitle", resWord?.name);
 
       setQuestions(quesArr);
@@ -614,7 +610,6 @@ const Practice = () => {
       });
       quesArr = [...quesArr, ...(resWord?.data?.content || [])];
       setCurrentContentType(currentGetContent.criteria);
-      setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
 
       localStorage.setItem("storyTitle", resWord?.name);
       setQuestions(quesArr);

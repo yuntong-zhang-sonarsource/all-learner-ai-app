@@ -19,7 +19,6 @@ import React, { useEffect, useState } from "react";
 import HelpLogo from "../../assets/help.png";
 
 import axios from "axios";
-// import { useDispatch } from 'react-redux';
 import { setVirtualId } from "../../store/slices/user.slice";
 import { useDispatch, useSelector } from "react-redux";
 import desktopLevel1 from "../../assets/images/desktopLevel1.png";
@@ -593,10 +592,8 @@ const Assesment = ({ discoverStart }) => {
     username = userDetails.student_name;
     setLocalData("profileName", username);
   }
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // const [profileName, setProfileName] = useState(username);
+
   const [openMessageDialog, setOpenMessageDialog] = useState("");
-  // let lang = searchParams.get("lang") || "ta";
   const [level, setLevel] = useState("");
   const dispatch = useDispatch();
   const [openLangModal, setOpenLangModal] = useState(false);
@@ -604,8 +601,6 @@ const Assesment = ({ discoverStart }) => {
   const [points, setPoints] = useState(0);
 
   useEffect(() => {
-    // const level = getLocalData('userLevel');
-    // setLevel(level);
     setLocalData("lang", lang);
     dispatch(setVirtualId(localStorage.getItem("virtualId")));
     let contentSessionId = localStorage.getItem("contentSessionId");
