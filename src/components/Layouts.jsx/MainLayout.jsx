@@ -181,7 +181,6 @@ const MainLayout = (props) => {
   }, [startShowCase, isShowCase, gameOverData]);
 
   let currentPracticeStep = progressData?.currentPracticeStep;
-  // let currentPracticeProgress = progressData?.currentPracticeProgress || 0;
 
   const sectionStyle = {
     width: "100%",
@@ -514,67 +513,6 @@ const MainLayout = (props) => {
                               );
                             })}
                           </Box>
-                          {/* <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              ml: {
-                                xs: 10,
-                                sm: 15,
-                                lg: 25,
-                                md: 15,
-                              },
-                              mt: 2,
-                            }}
-                          >
-                            <span
-                              style={{
-                                color: "#1E2937",
-                                fontWeight: 500,
-                                lineHeight: "18px",
-                                fontSize: "14px",
-                                fontFamily: "Quicksand",
-                              }}
-                            >
-                              {"Overall Progress:"}
-                            </span>
-                            <Box
-                              sx={{
-                                height: "12px",
-                                width: {
-                                  md: "250px",
-                                  lg: "350px",
-                                },
-                                background: "#D1F8D5",
-                                borderRadius: "6px",
-                                ml: 2,
-                                position: "relative",
-                              }}
-                            >
-                              <Box
-                                sx={{
-                                  height: "12px",
-                                  width: `${currentPracticeProgress}%`,
-                                  background: "#18DE2C",
-                                  borderRadius: "6px",
-                                  position: "absolute",
-                                }}
-                              ></Box>
-                            </Box>
-                            <span
-                              style={{
-                                color: "#1E2937",
-                                fontWeight: 700,
-                                lineHeight: "18px",
-                                fontSize: "14px",
-                                fontFamily: "Quicksand",
-                                marginLeft: "10px",
-                              }}
-                            >
-                              {`${currentPracticeProgress}%`}
-                            </span>
-                          </Box> */}
                         </Box>
                       </Box>
                     )}
@@ -1042,65 +980,6 @@ const MainLayout = (props) => {
                                 );
                               })}
                             </Box>
-                            {/* <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                ml: {
-                                  lg: 25,
-                                  md: 15,
-                                },
-                                mt: 2,
-                              }}
-                            >
-                              <span
-                                style={{
-                                  color: "#1E2937",
-                                  fontWeight: 500,
-                                  lineHeight: "18px",
-                                  fontSize: "14px",
-                                  fontFamily: "Quicksand",
-                                }}
-                              >
-                                {"Overall Progress:"}
-                              </span>
-                              <Box
-                                sx={{
-                                  height: "12px",
-                                  width: {
-                                    md: "250px",
-                                    lg: "350px",
-                                  },
-                                  background: "#D1F8D5",
-                                  borderRadius: "6px",
-                                  ml: 2,
-                                  position: "relative",
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    height: "12px",
-                                    width: `${currentPracticeProgress}%`,
-                                    background: "#18DE2C",
-                                    borderRadius: "6px",
-                                    position: "absolute",
-                                  }}
-                                ></Box>
-                              </Box>
-                              <span
-                                style={{
-                                  color: "#1E2937",
-                                  fontWeight: 700,
-                                  lineHeight: "18px",
-                                  fontSize: "14px",
-                                  fontFamily: "Quicksand",
-                                  marginLeft: "10px",
-                                }}
-                              >
-                                {`${currentPracticeProgress}%`}
-                              </span>
-                            </Box> */}
                           </Box>
                         </Box>
                       )}
