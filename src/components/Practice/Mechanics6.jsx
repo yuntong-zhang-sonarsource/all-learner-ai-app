@@ -26,7 +26,6 @@ const Mechanics2 = ({
   parentWords,
   image,
   setVoiceText,
-  setRecordedAudio,
   setVoiceAnimate,
   enableNext,
   showTimer,
@@ -485,7 +484,6 @@ const Mechanics2 = ({
           <VoiceAnalyser
             pageName={"m6"}
             setVoiceText={setVoiceText}
-            setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
             dontShowListen={true}
             // updateStory={updateStory}
@@ -529,7 +527,6 @@ Mechanics2.propTypes = {
   image: PropTypes.string,
   parentWords: PropTypes.string,
   setVoiceText: PropTypes.func.isRequired,
-  setRecordedAudio: PropTypes.func.isRequired,
   setVoiceAnimate: PropTypes.func.isRequired,
   enableNext: PropTypes.bool,
   showTimer: PropTypes.bool,

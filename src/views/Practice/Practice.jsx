@@ -24,7 +24,6 @@ import Mechanics6 from "../../components/Practice/Mechanics6";
 
 const Practice = () => {
   const [page, setPage] = useState("");
-  const [recordedAudio, setRecordedAudio] = useState("");
   const [voiceText, setVoiceText] = useState("");
   const [voiceAnimate, setVoiceAnimate] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -619,11 +618,11 @@ const Practice = () => {
       setCurrentQuestion(practiceProgress[virtualId]?.currentQuestion || 0);
       setLocalData("practiceProgress", JSON.stringify(practiceProgress));
     } else {
-      if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-        navigate("/");
-      } else {
-        navigate("/discover-start");
-      }
+      let redirect =
+        process.env.REACT_APP_IS_APP_IFRAME === "true"
+          ? "/"
+          : "/discover-start";
+      navigate(redirect);
     }
   };
 
@@ -798,7 +797,6 @@ const Practice = () => {
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
-            setRecordedAudio,
             setVoiceAnimate,
             handleNext,
             type: questions[currentQuestion]?.contentType,
@@ -848,7 +846,6 @@ const Practice = () => {
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
             type: mechanism.name,
-            setRecordedAudio,
             setVoiceAnimate,
             handleNext,
             image: getImageUrl(questions[currentQuestion]?.mechanics_data),
@@ -887,7 +884,6 @@ const Practice = () => {
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
-            setRecordedAudio,
             setVoiceAnimate,
             handleNext,
             type: "word",
@@ -936,7 +932,6 @@ const Practice = () => {
             setVoiceText,
             options: options,
             correctness: mechanics_data ? mechanics_data[0]?.correctness : null,
-            setRecordedAudio,
             setVoiceAnimate,
             handleNext,
             type: "word",
@@ -988,7 +983,6 @@ const Practice = () => {
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
             type: mechanism.name,
-            setRecordedAudio,
             setVoiceAnimate,
             handleNext,
             audio: getAudioUrl(questions[currentQuestion]?.mechanics_data),
@@ -1032,7 +1026,6 @@ const Practice = () => {
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
             type: mechanism.name,
-            setRecordedAudio,
             setVoiceAnimate,
             handleNext,
             image: getImageUrl(questions[currentQuestion]?.mechanics_data),

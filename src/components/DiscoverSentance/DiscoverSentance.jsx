@@ -17,7 +17,6 @@ import { Log } from "../../services/telementryService";
 const SpeakSentenceComponent = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const navigate = useNavigate();
-  const [recordedAudio, setRecordedAudio] = useState("");
   const [voiceText, setVoiceText] = useState("");
   const [assessmentResponse, setAssessmentResponse] = useState(undefined);
   const [currentContentType, setCurrentContentType] = useState("");
@@ -309,7 +308,6 @@ const SpeakSentenceComponent = () => {
           contentType: currentContentType,
           contentId: questions[currentQuestion]?.contentId,
           setVoiceText,
-          setRecordedAudio,
           setVoiceAnimate,
           handleNext,
           type: questions[currentQuestion]?.contentType,

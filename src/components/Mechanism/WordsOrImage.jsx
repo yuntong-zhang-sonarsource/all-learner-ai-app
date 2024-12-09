@@ -14,7 +14,6 @@ const WordsOrImage = ({
   words,
   image,
   setVoiceText,
-  setRecordedAudio,
   setVoiceAnimate,
   enableNext,
   showTimer,
@@ -265,7 +264,6 @@ const WordsOrImage = ({
             pageName={"wordsorimage"}
             setVoiceText={setVoiceText}
             updateStoredData={updateStoredData}
-            setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
             dontShowListen={type === "image" || isDiscover}
             originalText={words}
@@ -297,7 +295,6 @@ WordsOrImage.propTypes = {
   header: PropTypes.string,
   image: PropTypes.string,
   setVoiceText: PropTypes.func.isRequired,
-  setRecordedAudio: PropTypes.func.isRequired,
   setVoiceAnimate: PropTypes.func.isRequired,
   enableNext: PropTypes.bool,
   showTimer: PropTypes.bool,

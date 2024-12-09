@@ -30,7 +30,6 @@ const Mechanics5 = ({
   disableScreen,
   loading,
   setVoiceText,
-  setRecordedAudio,
   setVoiceAnimate,
   contentId,
   contentType,
@@ -381,7 +380,6 @@ const Mechanics5 = ({
           pageName={"m5"}
           updateStoredData={updateStoredData}
           setVoiceText={setVoiceText}
-          setRecordedAudio={setRecordedAudio}
           setVoiceAnimate={setVoiceAnimate}
           dontShowListen={type === "image" || isDiscover}
           isShowCase={isShowCase || isDiscover}
@@ -429,7 +427,6 @@ Mechanics5.propTypes = {
   header: PropTypes.string,
   image: PropTypes.string,
   setVoiceText: PropTypes.func.isRequired,
-  setRecordedAudio: PropTypes.func.isRequired,
   setVoiceAnimate: PropTypes.func.isRequired,
   enableNext: PropTypes.bool,
   showTimer: PropTypes.bool,

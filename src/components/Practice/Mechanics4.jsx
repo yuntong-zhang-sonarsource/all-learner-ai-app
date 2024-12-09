@@ -12,7 +12,6 @@ const Mechanics4 = ({
   page,
   setPage,
   setVoiceText,
-  setRecordedAudio,
   setVoiceAnimate,
   type,
   handleNext,
@@ -339,7 +338,6 @@ const Mechanics4 = ({
           <VoiceAnalyser
             pageName={"m4"}
             setVoiceText={setVoiceText}
-            setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
             dontShowListen={type === "image" || isDiscover}
             // updateStory={updateStory}
@@ -373,7 +371,6 @@ Mechanics4.propTypes = {
   image: PropTypes.string,
   parentWords: PropTypes.string,
   setVoiceText: PropTypes.func.isRequired,
-  setRecordedAudio: PropTypes.func.isRequired,
   setVoiceAnimate: PropTypes.func.isRequired,
   enableNext: PropTypes.bool,
   showTimer: PropTypes.bool,
