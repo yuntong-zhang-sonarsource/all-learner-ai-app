@@ -52,19 +52,17 @@ const Mechanics4 = ({
   const [shake, setShake] = useState(false);
 
   function jumbleSentence(sentence) {
-    // Split the sentence into words
     const words = sentence.split(" ");
 
-    // Shuffle the words using Fisher-Yates (Durstenfeld) shuffle algorithm
     for (let i = words.length - 1; i > 0; i--) {
-      // Pick a random index from 0 to i
-      const j = Math.floor(Math.random() * (i + 1));
+      // Use crypto.getRandomValues() for secure randomness
+      const randomBuffer = new Uint32Array(1);
+      crypto.getRandomValues(randomBuffer);
+      const j = randomBuffer[0] % (i + 1);
 
-      // Swap words[i] with the element at random index
       [words[i], words[j]] = [words[j], words[i]];
     }
 
-    // Join the jumbled words back into a sentence
     return words;
   }
 
