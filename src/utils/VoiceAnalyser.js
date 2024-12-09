@@ -196,6 +196,44 @@ function VoiceAnalyser(props) {
     props.setVoiceText(apiResponse);
   }, [apiResponse]);
 
+  const uploadAudioToS3 = async (base64Data, sessionId, currentLine) => {
+    const audioFileName = `${
+      process.env.REACT_APP_CHANNEL
+    }/${sessionId}-${Date.now()}-${currentLine}.wav`;
+    const command = new PutObjectCommand({
+      Bucket: process.env.REACT_APP_AWS_S3_BUCKET_NAME,
+      Key: audioFileName,
+      Body: Uint8Array.from(window.atob(base64Data), (c) => c.charCodeAt(0)),
+      ContentType: "audio/wav",
+    });
+
+    try {
+      await S3Client.send(command);
+      return audioFileName;
+    } catch (err) {
+      console.error("Audio upload error:", err);
+      return null;
+    }
+  };
+
+  const logResponse = (audioFileName, originalText, responseText, duration) => {
+    response(
+      {
+        target:
+          process.env.REACT_APP_CAPTURE_AUDIO === "true"
+            ? `${audioFileName}`
+            : "",
+        type: "SPEAK",
+        values: [
+          { original_text: originalText },
+          { response_text: responseText },
+          { duration },
+        ],
+      },
+      "ET"
+    );
+  };
+
   const fetchASROutput = async (sourceLanguage, base64Data) => {
     try {
       const lang = getLocalData("lang");
@@ -208,6 +246,7 @@ function VoiceAnalyser(props) {
       let profanityWord = "";
       let newThresholdPercentage = 0;
       let data = {};
+      let audioFileName = "";
 
       let requestBody = {
         original_text: originalText,
@@ -263,43 +302,15 @@ function VoiceAnalyser(props) {
       );
 
       // Need: Remove false when REACT_APP_AWS_S3_BUCKET_NAME and keys added
-      let audioFileName = "";
       if (process.env.REACT_APP_CAPTURE_AUDIO === "true") {
-        let getContentId = currentLine;
-        audioFileName = `${
-          process.env.REACT_APP_CHANNEL
-        }/${sessionId}-${Date.now()}-${getContentId}.wav`;
-
-        const command = new PutObjectCommand({
-          Bucket: process.env.REACT_APP_AWS_S3_BUCKET_NAME,
-          Key: audioFileName,
-          Body: Uint8Array.from(window.atob(base64Data), (c) =>
-            c.charCodeAt(0)
-          ),
-          ContentType: "audio/wav",
-        });
-        try {
-          await S3Client.send(command);
-        } catch (err) {}
+        audioFileName = await uploadAudioToS3(
+          base64Data,
+          sessionId,
+          currentLine
+        );
       }
 
-      response(
-        {
-          // Required
-          target:
-            process.env.REACT_APP_CAPTURE_AUDIO === "true"
-              ? `${audioFileName}`
-              : "", // Required. Target of the response
-          //"qid": "", // Required. Unique assessment/question id
-          type: "SPEAK", // Required. Type of response. CHOOSE, DRAG, SELECT, MATCH, INPUT, SPEAK, WRITE
-          values: [
-            { original_text: originalText },
-            { response_text: responseText },
-            { duration: responseDuration },
-          ],
-        },
-        "ET"
-      );
+      logResponse(audioFileName, originalText, responseText, responseDuration);
 
       setApiResponse(callUpdateLearner ? data.status : "success");
 
