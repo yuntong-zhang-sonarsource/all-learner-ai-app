@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../../node_modules/axios/index";
+import axios from "axios";
 import elephant from "../../assets/images/elephant.svg";
 import {
   callConfetti,
@@ -9,7 +9,6 @@ import {
 } from "../../utils/constants";
 import WordsOrImage from "../Mechanism/WordsOrImage";
 import { uniqueId } from "../../services/utilService";
-import useSound from "use-sound";
 import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
 import config from "../../utils/urlConstants.json";
 import { MessageDialog } from "../Assesment/Assesment";
@@ -18,9 +17,7 @@ import { Log } from "../../services/telementryService";
 const SpeakSentenceComponent = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const navigate = useNavigate();
-  const [recordedAudio, setRecordedAudio] = useState("");
   const [voiceText, setVoiceText] = useState("");
-  const [storyLine, setStoryLine] = useState(0);
   const [assessmentResponse, setAssessmentResponse] = useState(undefined);
   const [currentContentType, setCurrentContentType] = useState("");
   const [currentCollectionId, setCurrentCollectionId] = useState("");
@@ -32,7 +29,6 @@ const SpeakSentenceComponent = () => {
   const [assesmentCount, setAssesmentcount] = useState(0);
   const [initialAssesment, setInitialAssesment] = useState(true);
   const [disableScreen, setDisableScreen] = useState(false);
-  // const [play] = useSound(LevelCompleteAudio);
   const [openMessageDialog, setOpenMessageDialog] = useState("");
   const [totalSyllableCount, setTotalSyllableCount] = useState("");
   const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
@@ -52,18 +48,16 @@ const SpeakSentenceComponent = () => {
       setDisableScreen(true);
       callConfettiAndPlay();
       setTimeout(() => {
-        // alert();
         setOpenMessageDialog({
           message:
             "You have successfully completed assessment " + assesmentCount,
         });
-        // setDisableScreen(false);
       }, 1200);
     }
   }, [currentQuestion]);
 
   useEffect(() => {
-    if (!(localStorage.getItem("contentSessionId") !== null)) {
+    if (localStorage.getItem("contentSessionId") === null) {
       (async () => {
         const sessionId = getLocalData("sessionId");
         const virtualId = getLocalData("virtualId");
@@ -84,7 +78,6 @@ const SpeakSentenceComponent = () => {
 
   useEffect(() => {
     if (voiceText === "error") {
-      // alert("");
       setOpenMessageDialog({
         message: "Sorry I couldn't hear a voice. Could you please speak again?",
         isError: true,
@@ -93,7 +86,6 @@ const SpeakSentenceComponent = () => {
       setEnableNext(false);
     }
     if (voiceText == "success") {
-      // go_to_result(voiceText);
       setVoiceText("");
     }
     //eslint-disable-next-line
@@ -101,13 +93,28 @@ const SpeakSentenceComponent = () => {
 
   const send = (score) => {
     if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-      window.parent.postMessage(
-        {
-          score: score,
-          message: "all-test-rig-score",
-        },
-        "*"
-      );
+      let allowedOrigins = [];
+      try {
+        allowedOrigins = JSON.parse(
+          process.env.REACT_APP_PARENT_ORIGIN_URL || "[]"
+        );
+      } catch (error) {
+        console.error(
+          "Invalid JSON format in REACT_APP_PARENT_ORIGIN_URL:",
+          error
+        );
+      }
+      const parentOrigin =
+        window?.location?.ancestorOrigins?.[0] || window.parent.location.origin;
+      if (allowedOrigins.includes(parentOrigin)) {
+        window.parent.postMessage(
+          {
+            score: score,
+            message: "all-test-rig-score",
+          },
+          parentOrigin
+        );
+      }
     }
   };
 
@@ -118,7 +125,7 @@ const SpeakSentenceComponent = () => {
     try {
       const lang = getLocalData("lang");
 
-      if (!(localStorage.getItem("contentSessionId") !== null)) {
+      if (localStorage.getItem("contentSessionId") === null) {
         const pointsRes = await axios.post(
           `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
           {
@@ -132,7 +139,6 @@ const SpeakSentenceComponent = () => {
         setPoints(pointsRes?.data?.result?.totalLanguagePoints || 0);
       } else {
         send(1);
-        // setPoints(localStorage.getItem("currentLessonScoreCount"));
       }
 
       await axios.post(
@@ -232,18 +238,6 @@ const SpeakSentenceComponent = () => {
           currentContentType === "Word"
         ) {
           navigate("/discover-end");
-
-          // const char = assessmentResponse?.data?.data?.find(
-          //   (elem) => elem.category === "Char"
-          // );
-          // const resCharPagination = await axios.get(
-          //   `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/content-service/v1/content/pagination?page=1&limit=5&collectionId=${char?.content?.[0]?.collectionId}`
-          // );
-          // setCurrentContentType("Char");
-          // setCurrentCollectionId(char?.content?.[0]?.collectionId);
-          // setCurrentQuestion(0);
-          // let quesArr = [...(resCharPagination?.data?.data || [])];
-          // setQuestions(quesArr);
         } else {
           navigate("/discover-end");
         }
@@ -257,12 +251,6 @@ const SpeakSentenceComponent = () => {
     (async () => {
       let quesArr = [];
       try {
-        // const resSentence = await axios.get(`${process.env.REACT_APP_LEARNER_AI_APP_HOST}/scores/GetContent/sentence/${UserID}`);
-        // quesArr = [...quesArr, ...(resSentence?.data?.content?.splice(0, 5) || [])];
-        // const resWord = await axios.get(`${process.env.REACT_APP_LEARNER_AI_APP_HOST}/scores/GetContent/word/${UserID}`);
-        // quesArr = [...quesArr, ...(resWord?.data?.content?.splice(0, 5) || [])];
-        // const resPara = await axios.get(`${process.env.REACT_APP_LEARNER_AI_APP_HOST}/scores/GetContent/paragraph/${UserID}`);
-        // quesArr = [...quesArr, ...(resPara?.data?.content || [])];
         const lang = getLocalData("lang");
         const resAssessment = await axios.post(
           `${process.env.REACT_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_ASSESSMENT}`,
@@ -284,8 +272,6 @@ const SpeakSentenceComponent = () => {
         setAssessmentResponse(resAssessment);
         localStorage.setItem("storyTitle", sentences?.name);
         quesArr = [...quesArr, ...(resPagination?.data?.data || [])];
-        // quesArr[1].contentType = 'image';
-        // quesArr[0].contentType = 'phonics';
         console.log("quesArr", quesArr);
         setQuestions(quesArr);
       } catch (error) {
@@ -297,11 +283,6 @@ const SpeakSentenceComponent = () => {
     const destination =
       process.env.REACT_APP_IS_APP_IFRAME === "true" ? "/" : "/discover-start";
     navigate(destination);
-    // if (process.env.REACT_APP_IS_APP_IFRAME === 'true') {
-    //   navigate("/");
-    // } else {
-    //   navigate("/discover-start")
-    // }
   };
   return (
     <>
@@ -327,9 +308,7 @@ const SpeakSentenceComponent = () => {
           contentType: currentContentType,
           contentId: questions[currentQuestion]?.contentId,
           setVoiceText,
-          setRecordedAudio,
           setVoiceAnimate,
-          storyLine,
           handleNext,
           type: questions[currentQuestion]?.contentType,
           image: elephant,

@@ -2,25 +2,17 @@ import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import MainLayout from "../Layouts.jsx/MainLayout";
-// import useSound from "use-sound";
-// import t from "../../assets/audio/t.mp3";
-// import i from "../../assets/audio/i.mp3";
-// import g from "../../assets/audio/g.mp3";
-// import e from "../../assets/audio/e.mp3";
-// import r from "../../assets/audio/r.mp3";
 import correctSound from "../../assets/audio/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 import addSound from "../../assets/audio/add.mp3";
 import removeSound from "../../assets/audio/remove.wav";
-import { splitGraphemes } from "split-graphemes";
+import PropTypes from "prop-types";
 
 const Mechanics4 = ({
   page,
   setPage,
   setVoiceText,
-  setRecordedAudio,
   setVoiceAnimate,
-  storyLine,
   type,
   handleNext,
   background,
@@ -60,23 +52,19 @@ const Mechanics4 = ({
   const [shake, setShake] = useState(false);
 
   function jumbleSentence(sentence) {
-    // Split the sentence into words
     const words = sentence.split(" ");
 
-    // Shuffle the words using Fisher-Yates (Durstenfeld) shuffle algorithm
     for (let i = words.length - 1; i > 0; i--) {
-      // Pick a random index from 0 to i
-      const j = Math.floor(Math.random() * (i + 1));
+      // Use crypto.getRandomValues() for secure randomness
+      const randomBuffer = new Uint32Array(1);
+      crypto.getRandomValues(randomBuffer);
+      const j = randomBuffer[0] % (i + 1);
 
-      // Swap words[i] with the element at random index
       [words[i], words[j]] = [words[j], words[i]];
     }
 
-    // Join the jumbled words back into a sentence
     return words;
   }
-
-  //console.log('Mechanics4');
 
   useEffect(() => {
     let wordsArr = jumbleSentence(parentWords);
@@ -94,25 +82,12 @@ const Mechanics4 = ({
 
   const [selectedWords, setSelectedWords] = useState([]);
 
-  // const [tPlay] = useSound(t);
-  // const [iPlay] = useSound(i);
-  // const [gPlay] = useSound(g);
-  // const [ePlay] = useSound(e);
-  // const [rPlay] = useSound(r);
-
-  // const audioPlay = {
-  //   T: tPlay,
-  //   I: iPlay,
-  //   G: gPlay,
-  //   E: ePlay,
-  //   R: rPlay,
-  // };
   const handleWords = (word, isSelected) => {
     setShake(true);
     setTimeout(() => {
       setShake(false);
     }, 3000);
-    // audioPlay[word]();
+
     if (selectedWords?.length + 1 !== wordsAfterSplit?.length || isSelected) {
       let audio = new Audio(isSelected ? removeSound : addSound);
       audio.play();
@@ -142,12 +117,68 @@ const Mechanics4 = ({
     }
   };
 
-  const answer =
-    selectedWords?.length !== wordsAfterSplit?.length
-      ? ""
-      : selectedWords?.join(" ") === parentWords
-      ? "correct"
-      : "wrong";
+  const determineAnswer = () => {
+    if (selectedWords?.length !== wordsAfterSplit?.length) {
+      return "";
+    }
+    return selectedWords?.join(" ") === parentWords ? "correct" : "wrong";
+  };
+
+  const answer = determineAnswer();
+
+  const getClassName = (answer, shake) => {
+    if (answer === "wrong") {
+      return `audioSelectedWrongWord ${shake ? "shakeImage" : ""}`;
+    }
+    return "";
+  };
+
+  const getStyles = (answer, type, words, selectedWords) => {
+    const border = (() => {
+      if (answer !== "wrong") {
+        if (answer === "correct") return "none";
+        if (!words.length && selectedWords.length && type === "word")
+          return "2px solid #1897DE"; // Blue border for specific condition
+        return "2px solid rgba(51, 63, 97, 0.15)";
+      }
+      return ""; // Default light border
+    })();
+
+    const color = (() => {
+      if (type === "word") {
+        if (answer === "correct") return "#58CC02";
+        if (answer === "wrong") return "#C30303";
+        return "#1897DE"; // Default color
+      }
+      return answer === "wrong" ? "#C30303" : "#333F61";
+    })();
+
+    const marginLeft = type === "word" || answer === "correct" ? 0 : "20px";
+
+    return {
+      borderRadius: "12px",
+      padding: "5px 10px",
+      border,
+      color,
+      fontWeight: type === "word" ? 600 : 700,
+      fontSize: "clamp(1.5rem, 3.5vw, 2.5rem)",
+      fontFamily: "Quicksand",
+      cursor: "pointer",
+      backgroundColor: "white",
+      marginLeft,
+    };
+  };
+
+  const getBorderColor = (answer, words, selectedWords, type) => {
+    if (answer === "correct") {
+      return "#58CC02";
+    } else if (answer === "wrong") {
+      return "#C30303";
+    } else if (!words?.length && !!selectedWords?.length && type === "word") {
+      return "#1897DE";
+    }
+    return "rgba(51, 63, 97, 0.10)";
+  };
 
   return (
     <MainLayout
@@ -195,63 +226,35 @@ const Mechanics4 = ({
             flexWrap: "wrap",
             alignItems: "center",
             borderRadius: "15px",
-            border: `2px solid ${
-              answer === "correct"
-                ? "#58CC02"
-                : answer === "wrong"
-                ? "#C30303"
-                : !words?.length && !!selectedWords?.length && type === "word"
-                ? "#1897DE"
-                : "rgba(51, 63, 97, 0.10)"
-            }`,
+            border: `2px solid ${getBorderColor(
+              answer,
+              words,
+              selectedWords,
+              type
+            )}`,
             cursor: "pointer",
             letterSpacing: answer != "correct" ? "5px" : "normal",
             background: "#FBFBFB",
             paddingX: type === "word" ? 0 : "20px",
           }}
         >
-          {selectedWords?.map((elem) => (
-            <span
-              onClick={() => handleWords(elem, true)}
-              className={
-                answer === "wrong"
-                  ? `audioSelectedWrongWord ${shake ? "shakeImage" : ""}`
-                  : ""
-              }
-              style={{
-                borderRadius: "12px",
-                padding: "5px 10px 5px 10px",
-                border:
-                  answer != "wrong"
-                    ? answer === "correct"
-                      ? "none" // No border if the answer is correct
-                      : answer === "wrong"
-                      ? "2px solid #C30303" // Red border if the answer is wrong
-                      : !words.length && selectedWords.length && type === "word"
-                      ? "2px solid #1897DE" // Blue border for some specific condition
-                      : "2px solid rgba(51, 63, 97, 0.15)"
-                    : "", // Default light border,
-                color:
-                  type === "word"
-                    ? answer === "correct"
-                      ? "#58CC02"
-                      : answer === "wrong"
-                      ? "#C30303"
-                      : "#1897DE"
-                    : answer === "wrong"
-                    ? "#C30303"
-                    : "#333F61",
-                fontWeight: type === "word" ? 600 : 700,
-                fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)",
-                fontFamily: "Quicksand",
-                cursor: "pointer",
-                marginLeft:
-                  type === "word" ? 0 : answer != "correct" ? "20px" : 0,
-              }}
-            >
-              {elem}
-            </span>
-          ))}
+          {selectedWords?.map((elem) => {
+            const className = getClassName(answer, shake);
+            const style = getStyles(answer, type, words, selectedWords);
+
+            return (
+              <button
+                key={elem}
+                onClick={() => handleWords(elem, true)}
+                onKeyDown={(e) => e.key === "Enter" && handleWords(elem, true)}
+                className={className}
+                style={style}
+                type="button"
+              >
+                {elem}
+              </button>
+            );
+          })}
         </Box>
       </Box>
       <Box
@@ -333,15 +336,13 @@ const Mechanics4 = ({
           <VoiceAnalyser
             pageName={"m4"}
             setVoiceText={setVoiceText}
-            setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
-            storyLine={storyLine}
             dontShowListen={type === "image" || isDiscover}
             // updateStory={updateStory}
             handleNext={handleNext}
             enableNext={enableNext}
             originalText={parentWords}
-            audioLink={audio ? audio : null}
+            audioLink={audio || null}
             {...{
               contentId,
               contentType,
@@ -358,6 +359,40 @@ const Mechanics4 = ({
       }
     </MainLayout>
   );
+};
+
+Mechanics4.propTypes = {
+  page: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  setPage: PropTypes.func.isRequired,
+  handleNext: PropTypes.func.isRequired,
+  header: PropTypes.string,
+  image: PropTypes.string,
+  parentWords: PropTypes.string,
+  setVoiceText: PropTypes.func.isRequired,
+  setVoiceAnimate: PropTypes.func.isRequired,
+  enableNext: PropTypes.bool,
+  showTimer: PropTypes.bool,
+  points: PropTypes.number,
+  currentStep: PropTypes.number.isRequired,
+  isDiscover: PropTypes.bool,
+  showProgress: PropTypes.bool,
+  callUpdateLearner: PropTypes.bool,
+  disableScreen: PropTypes.bool,
+  isShowCase: PropTypes.bool,
+  handleBack: PropTypes.func.isRequired,
+  setEnableNext: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+  setOpenMessageDialog: PropTypes.func.isRequired,
+  playTeacherAudio: PropTypes.func.isRequired,
+  background: PropTypes.string,
+  type: PropTypes.any,
+  steps: PropTypes.number,
+  contentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
+  contentType: PropTypes.string,
+  level: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  progressData: PropTypes.object,
+  audio: PropTypes.string,
 };
 
 export default Mechanics4;

@@ -14,7 +14,6 @@ import {
 import axios from "axios";
 import WordsOrImage from "../../components/Mechanism/WordsOrImage";
 import { uniqueId } from "../../services/utilService";
-import useSound from "use-sound";
 import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
 import { splitGraphemes } from "split-graphemes";
 import { Typography } from "@mui/material";
@@ -25,15 +24,11 @@ import Mechanics6 from "../../components/Practice/Mechanics6";
 
 const Practice = () => {
   const [page, setPage] = useState("");
-  const [recordedAudio, setRecordedAudio] = useState("");
   const [voiceText, setVoiceText] = useState("");
-  const [storyLine, setStoryLine] = useState(0);
   const [voiceAnimate, setVoiceAnimate] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const navigate = useNavigate();
-  const [assessmentResponse, setAssessmentResponse] = useState(undefined);
   const [currentContentType, setCurrentContentType] = useState("");
-  const [currentCollectionId, setCurrentCollectionId] = useState("");
   const [points, setPoints] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [enableNext, setEnableNext] = useState(false);
@@ -45,7 +40,6 @@ const Practice = () => {
   const [disableScreen, setDisableScreen] = useState(false);
   const [mechanism, setMechanism] = useState("");
 
-  // const [play] = useSound(LevelCompleteAudio);
   const [livesData, setLivesData] = useState();
   const [gameOverData, setGameOverData] = useState();
   const [loading, setLoading] = useState();
@@ -54,7 +48,7 @@ const Practice = () => {
   const [openMessageDialog, setOpenMessageDialog] = useState("");
   const lang = getLocalData("lang");
   const [totalSyllableCount, setTotalSyllableCount] = useState("");
-  const [percentage, setPercentage] = useState("");
+  const [percentage, setPercentage] = useState(0);
   const [fluency, setFluency] = useState(false);
   const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
 
@@ -113,8 +107,6 @@ const Practice = () => {
       setEnableNext(false);
     }
     if (voiceText == "success") {
-      // setEnableNext(true);
-      // go_to_result(voiceText);
       setVoiceText("");
     }
     //eslint-disable-next-line
@@ -122,13 +114,28 @@ const Practice = () => {
 
   const send = (score) => {
     if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-      window.parent.postMessage(
-        {
-          score: score,
-          message: "all-test-rig-score",
-        },
-        "*"
-      );
+      let allowedOrigins = [];
+      try {
+        allowedOrigins = JSON.parse(
+          process.env.REACT_APP_PARENT_ORIGIN_URL || "[]"
+        );
+      } catch (error) {
+        console.error(
+          "Invalid JSON format in REACT_APP_PARENT_ORIGIN_URL:",
+          error
+        );
+      }
+      const parentOrigin =
+        window?.location?.ancestorOrigins?.[0] || window.parent.location.origin;
+      if (allowedOrigins.includes(parentOrigin)) {
+        window.parent.postMessage(
+          {
+            score: score,
+            message: "all-test-rig-score",
+          },
+          parentOrigin
+        );
+      }
     }
   };
 
@@ -199,7 +206,7 @@ const Practice = () => {
         {
           userId: virtualId,
           sessionId: sessionId,
-          milestone: isShowCase ? "showcase" : `practice`,
+          milestone: isShowCase ? "showcase" : "practice",
           lesson: currentPracticeStep,
           progress: isShowCase ? showcasePercentage : currentPracticeProgress,
           language: lang,
@@ -239,7 +246,7 @@ const Practice = () => {
               user_id: virtualId,
               totalSyllableCount: totalSyllableCount,
               language: localStorage.getItem("lang"),
-              is_mechanics: mechanism && mechanism?.id ? true : false,
+              is_mechanics: mechanism?.id,
             }
           );
           const { data: getSetData } = getSetResultRes;
@@ -268,7 +275,7 @@ const Practice = () => {
                 {
                   userId: virtualId,
                   sessionId: sessionId,
-                  milestone: `practice`,
+                  milestone: "practice",
                   lesson: "0",
                   progress: 0,
                   language: lang,
@@ -285,7 +292,7 @@ const Practice = () => {
 
         let quesArr = [];
 
-        if (newPracticeStep === 10) {
+        if (newPracticeStep == 10) {
           newPracticeStep = 0;
           currentPracticeProgress = 0;
         }
@@ -295,7 +302,7 @@ const Practice = () => {
           {
             userId: virtualId,
             sessionId: sessionId,
-            milestone: `practice`,
+            milestone: "practice",
             lesson: newPracticeStep,
             progress: currentPracticeProgress,
             language: lang,
@@ -303,7 +310,7 @@ const Practice = () => {
           }
         );
 
-        if (newPracticeStep === 0 || newPracticeStep === 5 || isGameOver) {
+        if (newPracticeStep == 0 || newPracticeStep == 5 || isGameOver) {
           gameOver();
           return;
         }
@@ -323,7 +330,7 @@ const Practice = () => {
               : "")
         );
 
-        //TODO: required only for S1 and S2
+        //Need: required only for S1 and S2
 
         setTotalSyllableCount(resGetContent?.data?.totalSyllableCount);
         setLivesData({
@@ -340,17 +347,15 @@ const Practice = () => {
           currentPracticeStep === 3 || currentPracticeStep === 8;
         setIsShowCase(showcaseLevel);
 
-        // TODO: API returns contents if 200 status
+        // Need: API returns contents if 200 status
         quesArr = [...quesArr, ...(resGetContent?.data?.content || [])];
         setCurrentContentType(resGetContent?.data?.content?.[0]?.contentType);
-        setCurrentCollectionId(resGetContent?.data?.content?.[0]?.collectionId);
 
-        // TODO: not required - not using this anywhere
-        setAssessmentResponse(resGetContent);
+        // Need: not required - not using this anywhere
 
         setCurrentQuestion(0);
 
-        // TODO: not required - we are geting this data from API
+        // Need: not required - we are geting this data from API
         practiceProgress[virtualId] = {
           currentQuestion: newQuestionIndex,
           currentPracticeProgress,
@@ -362,7 +367,7 @@ const Practice = () => {
 
         setQuestions(quesArr);
 
-        // TODO: needs to revisit this logic
+        // Need: needs to revisit this logic
         setTimeout(() => {
           setMechanism(currentGetContent.mechanism);
         }, 1000);
@@ -428,7 +433,7 @@ const Practice = () => {
         `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${virtualId}?language=${lang}`
       );
 
-      // TODO: validate the getMilestoneDetails API return
+      // Need: validate the getMilestoneDetails API return
 
       setLocalData(
         "getMilestone",
@@ -446,13 +451,13 @@ const Practice = () => {
         `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_LESSON_PROGRESS_BY_ID}/${virtualId}?language=${lang}`
       );
 
-      // TODO: Handle Error for lessons - no lesson progress - starting point should be P1
+      // Need: Handle Error for lessons - no lesson progress - starting point should be P1
 
       const getPointersDetails = await axios.get(
         `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
       );
 
-      // TODO: Just Opss icon - we are trying to fetch the score for you
+      // Need: Just Opss icon - we are trying to fetch the score for you
       setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
 
       let userState = Number.isInteger(
@@ -461,7 +466,7 @@ const Practice = () => {
         ? Number(resLessons.data?.result?.result?.lesson)
         : 0;
 
-      // TODO: revisit this - looks like not required
+      // Need: revisit this - looks like not required
       let practiceProgress = getLocalData("practiceProgress");
       practiceProgress = practiceProgress ? JSON.parse(practiceProgress) : {};
 
@@ -491,7 +496,7 @@ const Practice = () => {
             : "")
       );
 
-      // TODO: handle error if resWord is empty
+      // Need: handle error if resWord is empty
 
       setTotalSyllableCount(resWord?.data?.totalSyllableCount);
       setLivesData({
@@ -504,9 +509,6 @@ const Practice = () => {
       });
       quesArr = [...quesArr, ...(resWord?.data?.content || [])];
       setCurrentContentType(currentGetContent.criteria);
-
-      setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
-      setAssessmentResponse(resWord);
 
       localStorage.setItem("storyTitle", resWord?.name);
 
@@ -607,8 +609,6 @@ const Practice = () => {
       });
       quesArr = [...quesArr, ...(resWord?.data?.content || [])];
       setCurrentContentType(currentGetContent.criteria);
-      setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
-      setAssessmentResponse(resWord);
 
       localStorage.setItem("storyTitle", resWord?.name);
       setQuestions(quesArr);
@@ -618,11 +618,11 @@ const Practice = () => {
       setCurrentQuestion(practiceProgress[virtualId]?.currentQuestion || 0);
       setLocalData("practiceProgress", JSON.stringify(practiceProgress));
     } else {
-      if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-        navigate("/");
-      } else {
-        navigate("/discover-start");
-      }
+      let redirect =
+        process.env.REACT_APP_IS_APP_IFRAME === "true"
+          ? "/"
+          : "/discover-start";
+      navigate(redirect);
     }
   };
 
@@ -641,20 +641,21 @@ const Practice = () => {
     });
 
     let type = currentContentType?.toLowerCase();
-    // console.log(type, sentence, matchedChar);
     if (type === "char" || type === "word") {
       const word = splitGraphemes(words[0].toLowerCase()).filter(
         (item) => item !== "‌" && item !== "" && item !== " "
       );
       let highlightedString = [];
-      for (let i = 0; i < word.length; i++) {
+      let i = 0;
+      for (const char of word) {
         let matchFound = false;
-        for (let j = 0; j < matchedChar.length; j++) {
-          let length = splitGraphemes(matchedChar[j]).filter(
+        for (const matched of matchedChar) {
+          const length = splitGraphemes(matched).filter(
             (item) => item !== "‌" && item !== "" && item !== " "
           ).length;
           const substr = word.slice(i, i + length).join("");
-          if (substr.includes(matchedChar[j])) {
+
+          if (substr.includes(matched)) {
             highlightedString.push(
               <React.Fragment key={i}>
                 <Typography
@@ -691,11 +692,12 @@ const Practice = () => {
                   lineHeight: "50px",
                 }}
               >
-                {i === 0 ? word[i].toUpperCase() : word[i]}
+                {i === 0 ? char.toUpperCase() : char}
               </Typography>
             </React.Fragment>
           );
         }
+        i++;
       }
       return highlightedString;
     } else {
@@ -735,7 +737,7 @@ const Practice = () => {
                 fontFamily: "Quicksand",
                 lineHeight: "50px",
               }}
-              key={index}
+              key={word}
             >
               {word + " "}
             </Typography>
@@ -760,7 +762,26 @@ const Practice = () => {
               "mechanic_1")
             ? 500
             : stringLengths[0];
-        window.parent.postMessage({ type: "stringLengths", length }, "*");
+        let allowedOrigins = [];
+        try {
+          allowedOrigins = JSON.parse(
+            process.env.REACT_APP_PARENT_ORIGIN_URL || "[]"
+          );
+        } catch (error) {
+          console.error(
+            "Invalid JSON format in REACT_APP_PARENT_ORIGIN_URL:",
+            error
+          );
+        }
+        const parentOrigin =
+          window?.location?.ancestorOrigins?.[0] ||
+          window.parent.location.origin;
+        if (allowedOrigins.includes(parentOrigin)) {
+          window.parent.postMessage(
+            { type: "stringLengths", length },
+            parentOrigin
+          );
+        }
       }
     }
   }, [questions[currentQuestion]]);
@@ -771,20 +792,14 @@ const Practice = () => {
         <WordsOrImage
           {...{
             level: !isShowCase && level,
-            header:
-              questions[currentQuestion]?.contentType === "image"
-                ? `Guess the below image`
-                : `Speak the below ${questions[currentQuestion]?.contentType}`,
+            header: getHeader(questions[currentQuestion]?.contentType),
             words: questions[currentQuestion]?.contentSourceData?.[0]?.text,
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
-            setRecordedAudio,
             setVoiceAnimate,
-            storyLine,
             handleNext,
             type: questions[currentQuestion]?.contentType,
-            // image: elephant,
             enableNext,
             showTimer: false,
             points,
@@ -792,9 +807,7 @@ const Practice = () => {
             currentStep: currentQuestion + 1,
             progressData,
             showProgress: true,
-            background:
-              isShowCase &&
-              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            background: getBackground(isShowCase),
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
@@ -824,29 +837,19 @@ const Practice = () => {
           setPage={setPage}
           {...{
             level: !isShowCase && level,
-            header:
-              mechanism.name === "fillInTheBlank"
-                ? "Fill in the blank"
-                : questions[currentQuestion]?.contentType === "image"
-                ? `Guess the below image`
-                : `Speak the below ${questions[currentQuestion]?.contentType}`,
+            header: getHeader(
+              mechanism.name,
+              questions[currentQuestion]?.contentType
+            ),
             parentWords: questions[currentQuestion]?.mechanics_data?.[0]?.text,
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
             type: mechanism.name,
-            setRecordedAudio,
             setVoiceAnimate,
-            storyLine,
             handleNext,
-            image: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
-                questions[currentQuestion]?.mechanics_data[0]?.image_url
-              : null,
-            audio: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
-                questions[currentQuestion]?.mechanics_data[0]?.audio_url
-              : null,
+            image: getImageUrl(questions[currentQuestion]?.mechanics_data),
+            audio: getAudioUrl(questions[currentQuestion]?.mechanics_data),
             enableNext,
             showTimer: false,
             points,
@@ -854,23 +857,17 @@ const Practice = () => {
             currentStep: currentQuestion + 1,
             progressData,
             showProgress: true,
-            background:
-              isShowCase &&
-              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            background: getBackground(isShowCase),
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
             isShowCase,
             handleBack: !isShowCase && handleBack,
             setEnableNext,
-            allWords:
-              questions?.map((elem) => elem?.contentSourceData?.[0]?.text) ||
-              [],
+            allWords: getAllWords(questions),
             loading,
             setOpenMessageDialog,
-            options: questions[currentQuestion]?.mechanics_data
-              ? questions[currentQuestion]?.mechanics_data[0]?.options
-              : [],
+            options: getOptions(questions[currentQuestion]?.mechanics_data),
           }}
         />
       );
@@ -881,21 +878,15 @@ const Practice = () => {
           setPage={setPage}
           {...{
             level: !isShowCase && level,
-            header:
-              questions[currentQuestion]?.contentType === "image"
-                ? `Guess the below image`
-                : `Speak the below ${questions[currentQuestion]?.contentType}`,
+            header: getHeader(questions[currentQuestion]?.contentType),
             parentWords:
               questions[currentQuestion]?.contentSourceData?.[0]?.text,
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
-            setRecordedAudio,
             setVoiceAnimate,
-            storyLine,
             handleNext,
             type: "word",
-            // image: elephant,
             enableNext,
             showTimer: false,
             points,
@@ -903,9 +894,7 @@ const Practice = () => {
             currentStep: currentQuestion + 1,
             progressData,
             showProgress: true,
-            background:
-              isShowCase &&
-              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            background: getBackground(isShowCase),
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
@@ -918,15 +907,10 @@ const Practice = () => {
         />
       );
     } else if (mechanism.name === "readTheImage") {
-      const options = questions[currentQuestion]?.mechanics_data
-        ? questions[currentQuestion]?.mechanics_data[0]?.options
-        : [];
-      const audioLink =
-        options && options.length > 0
-          ? options.find((option) => option.isAns === true)?.audio_url || null
-          : null;
-
+      const options = getOptions(questions[currentQuestion]?.mechanics_data);
+      const audioLink = getAudioLink(options);
       const mechanics_data = questions[currentQuestion]?.mechanics_data;
+
       return (
         <Mechanics5
           page={page}
@@ -935,32 +919,24 @@ const Practice = () => {
             level: !isShowCase && level,
             header:
               "Look at the picture and speak the correct answer from below",
-            parentWords: mechanics_data
-              ? mechanics_data[0].text
-              : questions[currentQuestion]?.contentSourceData?.[0]?.text,
+            parentWords: getParentWords(
+              mechanics_data,
+              questions[currentQuestion]
+            ),
             contentType: currentContentType,
-            question_audio: mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
-                mechanics_data[0].audio_url
-              : questions[currentQuestion]?.contentSourceData?.[0]?.audio_url,
+            question_audio: getQuestionAudio(
+              mechanics_data,
+              questions[currentQuestion]
+            ),
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
             options: options,
             correctness: mechanics_data ? mechanics_data[0]?.correctness : null,
-            setRecordedAudio,
             setVoiceAnimate,
-            storyLine,
             handleNext,
             type: "word",
-            image: mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
-                mechanics_data[0]?.image_url
-              : null,
-
-            audio: mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
-                audioLink
-              : null,
+            image: getImageUrl(mechanics_data),
+            audio: getAudioUrl(mechanics_data, audioLink),
             enableNext,
             showTimer: false,
             points,
@@ -968,9 +944,7 @@ const Practice = () => {
             currentStep: currentQuestion + 1,
             progressData,
             showProgress: true,
-            background:
-              isShowCase &&
-              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            background: getBackground(isShowCase),
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
@@ -1009,15 +983,9 @@ const Practice = () => {
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
             type: mechanism.name,
-            setRecordedAudio,
             setVoiceAnimate,
-            storyLine,
             handleNext,
-            // image: elephant,
-            audio: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
-                questions[currentQuestion]?.mechanics_data[0]?.audio_url
-              : null,
+            audio: getAudioUrl(questions[currentQuestion]?.mechanics_data),
             enableNext,
             showTimer: false,
             points,
@@ -1025,18 +993,14 @@ const Practice = () => {
             currentStep: currentQuestion + 1,
             progressData,
             showProgress: true,
-            background:
-              isShowCase &&
-              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            background: getBackground(isShowCase),
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
             isShowCase,
             handleBack: !isShowCase && handleBack,
             setEnableNext,
-            allWords:
-              questions?.map((elem) => elem?.contentSourceData?.[0]?.text) ||
-              [],
+            allWords: getAllWords(questions),
             loading,
             setOpenMessageDialog,
           }}
@@ -1052,30 +1016,20 @@ const Practice = () => {
           setPage={setPage}
           {...{
             level: !isShowCase && level,
-            header:
-              mechanism.name === "fillInTheBlank"
-                ? "Fill in the blank"
-                : questions[currentQuestion]?.contentType === "image"
-                ? `Guess the below image`
-                : `Speak the below ${questions[currentQuestion]?.contentType}`,
+            header: getHeader(
+              mechanism.name,
+              questions[currentQuestion]?.contentType
+            ),
             parentWords:
               questions[currentQuestion]?.contentSourceData?.[0]?.text,
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
             type: mechanism.name,
-            setRecordedAudio,
             setVoiceAnimate,
-            storyLine,
             handleNext,
-            image: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
-                questions[currentQuestion]?.mechanics_data[0]?.image_url
-              : null,
-            audio: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
-                questions[currentQuestion]?.mechanics_data[0]?.audio_url
-              : null,
+            image: getImageUrl(questions[currentQuestion]?.mechanics_data),
+            audio: getAudioUrl(questions[currentQuestion]?.mechanics_data),
             enableNext,
             showTimer: false,
             points,
@@ -1083,31 +1037,81 @@ const Practice = () => {
             currentStep: currentQuestion + 1,
             progressData,
             showProgress: true,
-            background:
-              isShowCase &&
-              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            background: getBackground(isShowCase),
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
             isShowCase,
             handleBack: !isShowCase && handleBack,
             setEnableNext,
-            allWords:
-              questions?.map((elem) => elem?.contentSourceData?.[0]?.text) ||
-              [],
+            allWords: getAllWords(questions),
             loading,
             setOpenMessageDialog,
-            options: questions[currentQuestion]?.mechanics_data
-              ? questions[currentQuestion]?.mechanics_data[0]?.options
-              : [],
+            options: getOptions(questions[currentQuestion]?.mechanics_data),
           }}
         />
       );
-    } else if (page === 1) {
+    } else if (page == 1) {
       return <Mechanics2 page={page} setPage={setPage} />;
     }
   };
 
+  const getHeader = (mechanismName, contentType) => {
+    if (mechanismName === "fillInTheBlank") {
+      return "Fill in the blank";
+    } else if (contentType === "image") {
+      return "Guess the below image";
+    } else {
+      return `Speak the below ${contentType}`;
+    }
+  };
+
+  const getBackground = (isShowCase) => {
+    return isShowCase
+      ? "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)"
+      : undefined;
+  };
+
+  const getImageUrl = (mechanicsData) => {
+    return mechanicsData
+      ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/${mechanicsData[0]?.image_url}`
+      : null;
+  };
+
+  const getAudioUrl = (mechanicsData, audioLink) => {
+    if (mechanicsData) {
+      return `${
+        process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL
+      }/mechanics_audios/${audioLink || mechanicsData[0]?.audio_url}`;
+    }
+    return null;
+  };
+
+  const getAllWords = (questions) => {
+    return questions?.map((elem) => elem?.contentSourceData?.[0]?.text) || [];
+  };
+
+  const getOptions = (mechanicsData) => {
+    return mechanicsData ? mechanicsData[0]?.options : [];
+  };
+
+  const getAudioLink = (options) => {
+    return options && options.length > 0
+      ? options.find((option) => option.isAns === true)?.audio_url || null
+      : null;
+  };
+
+  const getParentWords = (mechanicsData, question) => {
+    return mechanicsData
+      ? mechanicsData[0].text
+      : question?.contentSourceData?.[0]?.text;
+  };
+
+  const getQuestionAudio = (mechanicsData, question) => {
+    return mechanicsData
+      ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/${mechanicsData[0].audio_url}`
+      : question?.contentSourceData?.[0]?.audio_url;
+  };
   return (
     <>
       {!!openMessageDialog && (

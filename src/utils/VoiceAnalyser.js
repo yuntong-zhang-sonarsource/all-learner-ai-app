@@ -1,62 +1,18 @@
 import { useEffect, useState } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import axios from "axios";
-import calcCER from "../../node_modules/character-error-rate/index";
-import s1 from "../assets/audio/S1.m4a";
-import s2 from "../assets/audio/S2.m4a";
-import s3 from "../assets/audio/S3.m4a";
-import s4 from "../assets/audio/S4.m4a";
-import s5 from "../assets/audio/S5.m4a";
-import s6 from "../assets/audio/S6.m4a";
-import v1 from "../assets/audio/V1.m4a";
-import v10 from "../assets/audio/V10.mp3";
-import v2 from "../assets/audio/V2.m4a";
-import v3 from "../assets/audio/V3.m4a";
-import v4 from "../assets/audio/V4.m4a";
-import v5 from "../assets/audio/V5.m4a";
-import v6 from "../assets/audio/V6.m4a";
-import v7 from "../assets/audio/V7.m4a";
-import v8 from "../assets/audio/V8.m4a";
 import livesAdd from "../assets/audio/livesAdd.wav";
 import livesCut from "../assets/audio/livesCut.wav";
 import { response } from "../services/telementryService";
 import AudioCompare from "./AudioCompare";
 import PropTypes from "prop-types";
-import {
-  SpeakButton,
-  compareArrays,
-  getLocalData,
-  replaceAll,
-  NextButtonRound,
-} from "./constants";
+import { SpeakButton, getLocalData, NextButtonRound } from "./constants";
 import config from "./urlConstants.json";
 import { filterBadWords } from "./Badwords";
 import S3Client from "../config/awsS3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 /* eslint-disable */
 
-const AudioPath = {
-  1: {
-    0: v1,
-    1: v2,
-    2: v3,
-    3: v4,
-    4: v5,
-    5: v6,
-    6: v7,
-    7: v8,
-    10: v10,
-  },
-  2: {
-    0: s1,
-    1: s2,
-    2: s3,
-    3: s4,
-    4: s5,
-    5: s6,
-  },
-};
-const currentIndex = localStorage.getItem("index") || 1;
 function VoiceAnalyser(props) {
   const [loadCnt, setLoadCnt] = useState(0);
   const [loader, setLoader] = useState(false);
@@ -65,30 +21,18 @@ function VoiceAnalyser(props) {
   const [recordedAudioBase64, setRecordedAudioBase64] = useState("");
   const [audioPermission, setAudioPermission] = useState(null);
   const [apiResponse, setApiResponse] = useState("");
-  const [currentIndex, setCurrentIndex] = useState();
   const [temp_audio, set_temp_audio] = useState(null);
   const [isStudentAudioPlaying, setIsStudentAudioPlaying] = useState(false);
   const [temp_Student_audio, set_temp_Student_audio] = useState(null);
   const { callUpdateLearner } = props;
   const lang = getLocalData("lang");
   const { livesData, setLivesData } = props;
-  const [isAudioPreprocessing, setIsAudioPreprocessing] = useState(
-    process.env.REACT_APP_IS_AUDIOPREPROCESSING === "true"
-  );
-  const [isMatching, setIsMatching] = useState(false);
-
-  //console.log('audio', recordedAudio, isMatching);
 
   useEffect(() => {
     if (!props.enableNext) {
       setRecordedAudio("");
     }
   }, [props.enableNext]);
-
-  const initiateValues = async () => {
-    const currIndex = (await localStorage.getItem("index")) || 1;
-    setCurrentIndex(currIndex);
-  };
 
   useEffect(() => {
     setRecordedAudio("");
@@ -100,11 +44,15 @@ function VoiceAnalyser(props) {
     }
     const { audioLink } = props;
     try {
-      let audio = new Audio(
-        audioLink
-          ? audioLink
-          : `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${props.contentId}.wav`
-      );
+      let audioSource;
+
+      if (audioLink) {
+        audioSource = audioLink;
+      } else {
+        audioSource = `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${props.contentId}.wav`;
+      }
+      let audio = new Audio(audioSource);
+
       audio.addEventListener("canplaythrough", () => {
         set_temp_audio(audio);
         setPauseAudio(val);
@@ -189,7 +137,6 @@ function VoiceAnalyser(props) {
         setPauseAudio(false);
         props.setVoiceAnimate(false);
       };
-      //temp_audio.addEventListener("ended", () => alert("end"));
     }
     return () => {
       if (temp_audio !== null) {
@@ -199,55 +146,14 @@ function VoiceAnalyser(props) {
   }, [temp_audio]);
 
   useEffect(() => {
-    initiateValues();
-  }, []);
-
-  useEffect(() => {
     if (loadCnt === 0) {
       getpermision();
       setLoadCnt((loadCnt) => Number(loadCnt + 1));
     }
   }, [loadCnt]);
 
-  function hasVoice(base64String) {
-    // Convert base64 string to ArrayBuffer
-    const binaryString = atob(base64String);
-    const length = binaryString.length;
-    const bytes = new Uint8Array(length);
-    for (let i = 0; i < length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-
-    // Decode ArrayBuffer to audio buffer
-    const audioContext = new (window.AudioContext ||
-      window.webkitAudioContext)();
-    return new Promise((resolve) => {
-      audioContext.decodeAudioData(bytes.buffer, (buffer) => {
-        // Analyze the audio buffer to check for voice
-        const analyser = audioContext.createAnalyser();
-        analyser.fftSize = 2048;
-        const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-        const source = audioContext.createBufferSource();
-        source.buffer = buffer;
-        source.connect(analyser);
-        analyser.connect(audioContext.destination);
-
-        source.start();
-
-        // Wait for a moment and check if there is any voice
-        setTimeout(() => {
-          analyser.getByteFrequencyData(dataArray);
-          const hasVoice = dataArray.some((value) => value > 0);
-          resolve(hasVoice);
-        }, buffer.duration * 1000);
-      });
-    });
-  }
-
   useEffect(() => {
     if (recordedAudio !== "") {
-      // setLoader(true);
       let uri = recordedAudio;
       let request = new XMLHttpRequest();
       request.open("GET", uri, true);
@@ -287,48 +193,48 @@ function VoiceAnalyser(props) {
   }, [recordedAudioBase64]);
 
   useEffect(() => {
-    // props.updateStory();
     props.setVoiceText(apiResponse);
-    props.setRecordedAudio(recordedAudio);
   }, [apiResponse]);
 
-  const fetchASROutput = async (sourceLanguage, base64Data) => {
-    // let samplingrate = 30000;
-    // var myHeaders = new Headers();
-    // myHeaders.append('Content-Type', 'application/json');
-    // var payload = JSON.stringify({
-    //     config: {
-    //         language: {
-    //             sourceLanguage: sourceLanguage,
-    //         },
-    //         transcriptionFormat: {
-    //             value: 'transcript',
-    //         },
-    //         audioFormat: 'wav',
-    //         samplingRate: samplingrate,
-    //         postProcessors: null,
-    //     },
-    //     audio: [
-    //         {
-    //             audioContent: base64Data,
-    //         },
-    //     ],
-    // });
-    // var requestOptions = {
-    //     method: 'POST',
-    //     headers: myHeaders,
-    //     body: payload,
-    //     redirect: 'follow',
-    // };
-    // const apiURL = `https://asr-api.apiResponse.org/asr/v1/recognize/en`;
-    // fetch(apiURL, requestOptions)
-    //     .then((response) => response.text())
-    //     .then((result) => {
-    //         var apiResponse = JSON.parse(result);
-    //         setApiResponse(apiResponse['output'][0]['source'] != '' ? apiResponse['output'][0]['source'] : '-');
-    //         setLoader(false);
-    //     });
+  const uploadAudioToS3 = async (base64Data, sessionId, currentLine) => {
+    const audioFileName = `${
+      process.env.REACT_APP_CHANNEL
+    }/${sessionId}-${Date.now()}-${currentLine}.wav`;
+    const command = new PutObjectCommand({
+      Bucket: process.env.REACT_APP_AWS_S3_BUCKET_NAME,
+      Key: audioFileName,
+      Body: Uint8Array.from(window.atob(base64Data), (c) => c.charCodeAt(0)),
+      ContentType: "audio/wav",
+    });
 
+    try {
+      await S3Client.send(command);
+      return audioFileName;
+    } catch (err) {
+      console.error("Audio upload error:", err);
+      return null;
+    }
+  };
+
+  const logResponse = (audioFileName, originalText, responseText, duration) => {
+    response(
+      {
+        target:
+          process.env.REACT_APP_CAPTURE_AUDIO === "true"
+            ? `${audioFileName}`
+            : "",
+        type: "SPEAK",
+        values: [
+          { original_text: originalText },
+          { response_text: responseText },
+          { duration },
+        ],
+      },
+      "ET"
+    );
+  };
+
+  const fetchASROutput = async (sourceLanguage, base64Data) => {
     try {
       const lang = getLocalData("lang");
       const virtualId = getLocalData("virtualId");
@@ -340,6 +246,7 @@ function VoiceAnalyser(props) {
       let profanityWord = "";
       let newThresholdPercentage = 0;
       let data = {};
+      let audioFileName = "";
 
       let requestBody = {
         original_text: originalText,
@@ -367,7 +274,7 @@ function VoiceAnalyser(props) {
           requestBody
         );
 
-        //TODO: handle  Errors
+        //Need: handle  Errors
 
         data = updateLearnerData;
         responseText = data.responseText;
@@ -389,119 +296,21 @@ function VoiceAnalyser(props) {
         }
       }
 
-      if (responseText.toLowerCase() === originalText.toLowerCase()) {
-        setIsMatching(true);
-      } else {
-        setIsMatching(false);
-      }
-
-      //console.log('textss', recordedAudio, isMatching, responseText, originalText);
-
       const responseEndTime = new Date().getTime();
       const responseDuration = Math.round(
         (responseEndTime - responseStartTime) / 1000
       );
 
-      let texttemp = responseText.toLowerCase();
-      texttemp = replaceAll(texttemp, ".", "");
-      texttemp = replaceAll(texttemp, "'", "");
-      texttemp = replaceAll(texttemp, ",", "");
-      texttemp = replaceAll(texttemp, "!", "");
-      texttemp = replaceAll(texttemp, "|", "");
-      texttemp = replaceAll(texttemp, "?", "");
-      const studentTextArray = texttemp.split(" ");
-
-      let tempteacherText = originalText.toLowerCase();
-      tempteacherText = tempteacherText.replace(/\u00A0/g, " ");
-      tempteacherText = tempteacherText.trim();
-      tempteacherText = replaceAll(tempteacherText, ".", "");
-      tempteacherText = replaceAll(tempteacherText, "'", "");
-      tempteacherText = replaceAll(tempteacherText, ",", "");
-      tempteacherText = replaceAll(tempteacherText, "!", "");
-      tempteacherText = replaceAll(tempteacherText, "|", "");
-      tempteacherText = replaceAll(tempteacherText, "?", "");
-      const teacherTextArray = tempteacherText.split(" ");
-
-      let student_correct_words_result = [];
-      let student_incorrect_words_result = [];
-      let originalwords = teacherTextArray.length;
-      let studentswords = studentTextArray.length;
-      let wrong_words = 0;
-      let correct_words = 0;
-      let result_per_words = 0;
-
-      let word_result_array = compareArrays(teacherTextArray, studentTextArray);
-
-      for (let i = 0; i < studentTextArray.length; i++) {
-        if (teacherTextArray.includes(studentTextArray[i])) {
-          correct_words++;
-          student_correct_words_result.push(studentTextArray[i]);
-        } else {
-          wrong_words++;
-          student_incorrect_words_result.push(studentTextArray[i]);
-        }
-      }
-      //calculation method
-      if (originalwords >= studentswords) {
-        result_per_words = Math.round(
-          Number((correct_words / originalwords) * 100)
-        );
-      } else {
-        result_per_words = Math.round(
-          Number((correct_words / studentswords) * 100)
-        );
-      }
-
-      const errorRate = calcCER(responseText, tempteacherText);
-      let finalScore = 100 - errorRate * 100;
-
-      finalScore = finalScore < 0 ? 0 : finalScore;
-
-      let word_result = finalScore === 100 ? "correct" : "incorrect";
-
-      // TODO: Remove false when REACT_APP_AWS_S3_BUCKET_NAME and keys added
-      let audioFileName = "";
+      // Need: Remove false when REACT_APP_AWS_S3_BUCKET_NAME and keys added
       if (process.env.REACT_APP_CAPTURE_AUDIO === "true") {
-        let getContentId = currentLine;
-        audioFileName = `${
-          process.env.REACT_APP_CHANNEL
-        }/${sessionId}-${Date.now()}-${getContentId}.wav`;
-
-        const command = new PutObjectCommand({
-          Bucket: process.env.REACT_APP_AWS_S3_BUCKET_NAME,
-          Key: audioFileName,
-          Body: Uint8Array.from(window.atob(base64Data), (c) =>
-            c.charCodeAt(0)
-          ),
-          ContentType: "audio/wav",
-        });
-        try {
-          await S3Client.send(command);
-        } catch (err) {}
+        audioFileName = await uploadAudioToS3(
+          base64Data,
+          sessionId,
+          currentLine
+        );
       }
 
-      response(
-        {
-          // Required
-          target:
-            process.env.REACT_APP_CAPTURE_AUDIO === "true"
-              ? `${audioFileName}`
-              : "", // Required. Target of the response
-          //"qid": "", // Required. Unique assessment/question id
-          type: "SPEAK", // Required. Type of response. CHOOSE, DRAG, SELECT, MATCH, INPUT, SPEAK, WRITE
-          values: [
-            { original_text: originalText },
-            { response_text: responseText },
-            { response_correct_words_array: student_correct_words_result },
-            { response_incorrect_words_array: student_incorrect_words_result },
-            { response_word_array_result: word_result_array },
-            { response_word_result: word_result },
-            { accuracy_percentage: finalScore },
-            { duration: responseDuration },
-          ],
-        },
-        "ET"
-      );
+      logResponse(audioFileName, originalText, responseText, responseDuration);
 
       setApiResponse(callUpdateLearner ? data.status : "success");
 
@@ -540,6 +349,15 @@ function VoiceAnalyser(props) {
     }
   };
 
+  const getThreshold = (totalSyllables) => {
+    if (totalSyllables <= 100) return 30;
+    if (totalSyllables <= 150) return 25;
+    if (totalSyllables <= 175) return 20;
+    if (totalSyllables <= 250) return 15;
+    if (totalSyllables <= 500) return 10;
+    return 5; // For totalSyllables > 500
+  };
+
   const handlePercentageForLife = (
     percentage, // subsessionTargetsCount
     contentType,
@@ -549,26 +367,16 @@ function VoiceAnalyser(props) {
     try {
       if (livesData) {
         let totalSyllables = livesData?.totalTargets;
-        if (language === "en") {
-          // TODO: need to check why this is 50
-          if (totalSyllables > 50) {
-            totalSyllables = 50;
-          }
+        if (language === "en" && totalSyllables > 50) {
+          // Need: need to check why this is 50
+          totalSyllables = 50;
         }
         // Calculate the current percentage based on total targets.
         percentage = Math.round((percentage / totalSyllables) * 100);
 
         // Define the total number of lives and adjust the threshold based on syllables.
         const totalLives = 5;
-        let threshold = 30; // Default threshold
-
-        // Adjust the threshold based on total syllables.
-        if (totalSyllables <= 100) threshold = 30;
-        else if (totalSyllables > 100 && totalSyllables <= 150) threshold = 25;
-        else if (totalSyllables > 150 && totalSyllables <= 175) threshold = 20;
-        else if (totalSyllables > 175 && totalSyllables <= 250) threshold = 15;
-        else if (totalSyllables > 250 && totalSyllables <= 500) threshold = 10;
-        else if (totalSyllables > 500) threshold = 5;
+        const threshold = getThreshold(totalSyllables);
 
         // Calculate lives lost based on percentage.
         let livesLost = Math.floor(percentage / (threshold / totalLives));
@@ -631,25 +439,6 @@ function VoiceAnalyser(props) {
     }
   };
 
-  // const getpermision = () => {
-  //   navigator.getUserMedia =
-  //     navigator.getUserMedia ||
-  //     navigator.webkitGetUserMedia ||
-  //     navigator.mozGetUserMedia ||
-  //     navigator.msGetUserMedia;
-  //   navigator.getUserMedia(
-  //     { audio: true },
-  //     () => {
-  //       console.log("Permission Granted");
-  //       setAudioPermission(true);
-  //     },
-  //     () => {
-  //       console.log("Permission Denied");
-  //       setAudioPermission(false);
-  //       //alert("Microphone Permission Denied");
-  //     }
-  //   );
-  // };
   const getpermision = () => {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
@@ -659,11 +448,8 @@ function VoiceAnalyser(props) {
       .catch((error) => {
         console.log("Permission Denied");
         setAudioPermission(false);
-        //alert("Microphone Permission Denied");
       });
   };
-
-  //console.log('textss', recordedAudio, isMatching);
 
   return (
     <div>
@@ -690,7 +476,6 @@ function VoiceAnalyser(props) {
                         : props.dontShowListen
                     }
                     isShowCase={props.isShowCase}
-                    isAudioPreprocessing={isAudioPreprocessing}
                     recordedAudio={recordedAudio}
                     setEnableNext={props.setEnableNext}
                     showOnlyListen={props.showOnlyListen}
@@ -704,9 +489,6 @@ function VoiceAnalyser(props) {
                 <Box
                   sx={{ cursor: "pointer" }}
                   onClick={() => {
-                    // alert(
-                    //   "Microphone is blocked. Enable microphone to continue."
-                    // );
                     props.setOpenMessageDialog({
                       message:
                         "Microphone is blocked. Enable microphone to continue.",
@@ -757,12 +539,16 @@ VoiceAnalyser.propTypes = {
   currentLine: PropTypes.number.isRequired,
   isNextButtonCalled: PropTypes.bool,
   setVoiceAnimate: PropTypes.func.isRequired,
-  setRecordedAudio: PropTypes.func.isRequired,
+  callUpdateLearner: PropTypes.bool,
   setVoiceText: PropTypes.func.isRequired,
   livesData: PropTypes.object,
   contentId: PropTypes.string,
-  updateStoredData: PropTypes.func.isRequired,
+  updateStoredData: PropTypes.any,
   pageName: PropTypes.string,
+  selectedOption: PropTypes.bool,
+  correctness: PropTypes.object,
+  audioLink: PropTypes.string,
+  setLivesData: PropTypes.any,
 };
 
 export default VoiceAnalyser;

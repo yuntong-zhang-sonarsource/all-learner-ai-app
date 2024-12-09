@@ -14,6 +14,7 @@ import MainLayout from "../Layouts.jsx/MainLayout";
 import correctSound from "../../assets/audio/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
+import PropTypes from "prop-types";
 
 const Mechanics2 = ({
   page,
@@ -25,9 +26,7 @@ const Mechanics2 = ({
   parentWords,
   image,
   setVoiceText,
-  setRecordedAudio,
   setVoiceAnimate,
-  storyLine,
   enableNext,
   showTimer,
   points,
@@ -53,7 +52,6 @@ const Mechanics2 = ({
   const [sentences, setSentences] = useState([]);
 
   const [selectedWord, setSelectedWord] = useState("");
-  // const [loading, setLoading] = useState(false);
   const [shake, setShake] = useState(false);
   const [wordToFill, setWordToFill] = useState("");
   const [disabledWords, setDisabledWords] = useState(false);
@@ -64,7 +62,11 @@ const Mechanics2 = ({
     const initializeFillInTheBlank = async () => {
       if (type === "fillInTheBlank" && parentWords?.length) {
         let wordsArr = parentWords.split(" ");
-        let randomIndex = Math.floor(Math.random() * wordsArr.length);
+        // Generate a secure random index
+        const randomBuffer = new Uint32Array(1);
+        crypto.getRandomValues(randomBuffer);
+        const randomIndex = randomBuffer[0] % wordsArr.length;
+
         try {
           await getSimilarWords(wordsArr[randomIndex]);
           setWordToFill(wordsArr[randomIndex]);
@@ -94,14 +96,10 @@ const Mechanics2 = ({
     initializeAudio();
   }, [contentId, parentWords]);
 
-  //console.log('Mechanics6');
-
   const getSimilarWords = async (wordForFindingHomophones) => {
     const lang = getLocalData("lang");
-    // const isFillInTheBlanks = type === "fillInTheBlank";
-    const wordToSimilar = wordForFindingHomophones
-      ? wordForFindingHomophones
-      : parentWords;
+
+    const wordToSimilar = wordForFindingHomophones || parentWords;
 
     if (lang === "en") {
       const finder = new HomophonesFinder();
@@ -145,7 +143,6 @@ const Mechanics2 = ({
         wordsArr.push(selectedWord);
       }
 
-      // if (type === "audio") {
       const isSoundCorrect = word === wordToCheck;
       let audio = new Audio(isSoundCorrect ? correctSound : wrongSound);
       if (!isSoundCorrect) {
@@ -156,7 +153,6 @@ const Mechanics2 = ({
       setTimeout(() => {
         setShake(false);
       }, 800);
-      // }
 
       setWords(wordsArr);
       setSelectedWord(word);
@@ -179,6 +175,27 @@ const Mechanics2 = ({
       audioRef.current.play();
       setIsPlaying(true);
     }
+  };
+
+  const getClassName = (type, selectedWord, elem, parentWords, shake) => {
+    if (type === "audio" && selectedWord === elem) {
+      if (selectedWord === parentWords) {
+        return "audioSelectedWord";
+      }
+      let className = "audioSelectedWrongWord";
+      if (shake) {
+        className += " shakeImage";
+      }
+      return className;
+    }
+    return "";
+  };
+
+  const getTextColor = (type, selectedWord, elem, parentWords) => {
+    if (type === "audio" && selectedWord === elem) {
+      return selectedWord === parentWords ? "#58CC02" : "#C30303";
+    }
+    return "#333F61";
   };
 
   const [currrentProgress, setCurrrentProgress] = React.useState(0);
@@ -324,10 +341,11 @@ const Mechanics2 = ({
                 src={image}
                 placeholder="image"
                 style={{ width: "100%", height: "auto", maxWidth: "200px" }}
+                alt=""
               />
             </Box>
             {sentences?.map((elem, index) => (
-              <React.Fragment key={index}>
+              <React.Fragment key={elem}>
                 {elem === "dash" ? (
                   <Box
                     sx={{
@@ -429,13 +447,13 @@ const Mechanics2 = ({
         {words?.map((elem) => (
           <Box
             key={elem}
-            className={`${
-              type === "audio" && selectedWord === elem
-                ? selectedWord === parentWords
-                  ? `audioSelectedWord`
-                  : `audioSelectedWrongWord ${shake ? "shakeImage" : ""}`
-                : ""
-            }`}
+            className={getClassName(
+              type,
+              selectedWord,
+              elem,
+              parentWords,
+              shake
+            )}
             onClick={() => handleWord(elem)}
             sx={{
               textAlign: "center",
@@ -454,12 +472,7 @@ const Mechanics2 = ({
           >
             <span
               style={{
-                color:
-                  type === "audio" && selectedWord === elem
-                    ? selectedWord === parentWords
-                      ? "#58CC02"
-                      : "#C30303"
-                    : "#333F61",
+                color: getTextColor(type, selectedWord, elem, parentWords),
                 fontWeight: 600,
                 fontSize: "32px",
                 fontFamily: "Quicksand",
@@ -475,9 +488,7 @@ const Mechanics2 = ({
           <VoiceAnalyser
             pageName={"m6"}
             setVoiceText={setVoiceText}
-            setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
-            storyLine={storyLine}
             dontShowListen={true}
             // updateStory={updateStory}
             originalText={parentWords}
@@ -510,6 +521,40 @@ const Mechanics2 = ({
       </Box> */}
     </MainLayout>
   );
+};
+
+Mechanics2.propTypes = {
+  page: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  setPage: PropTypes.func.isRequired,
+  handleNext: PropTypes.func.isRequired,
+  header: PropTypes.string,
+  image: PropTypes.string,
+  parentWords: PropTypes.string,
+  setVoiceText: PropTypes.func.isRequired,
+  setVoiceAnimate: PropTypes.func.isRequired,
+  enableNext: PropTypes.bool,
+  showTimer: PropTypes.bool,
+  points: PropTypes.number,
+  currentStep: PropTypes.number.isRequired,
+  isDiscover: PropTypes.bool,
+  showProgress: PropTypes.bool,
+  callUpdateLearner: PropTypes.bool,
+  disableScreen: PropTypes.bool,
+  isShowCase: PropTypes.bool,
+  handleBack: PropTypes.func.isRequired,
+  setEnableNext: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+  setOpenMessageDialog: PropTypes.func.isRequired,
+  playTeacherAudio: PropTypes.func.isRequired,
+  background: PropTypes.string,
+  type: PropTypes.oneOf(["word", "image"]).isRequired,
+  steps: PropTypes.number,
+  contentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
+  contentType: PropTypes.string,
+  level: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  progressData: PropTypes.object,
+  allWords: PropTypes.any,
 };
 
 export default Mechanics2;

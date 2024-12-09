@@ -9,9 +9,6 @@ import practicebg2 from "../../assets/images/practice-bg2.svg";
 import practicebg3 from "../../assets/images/practice-bg3.svg";
 import gameWon from "../../assets/images/gameWon.svg";
 import gameLost from "../../assets/images/gameLost.svg";
-import correctImage from "../../assets/correct.svg";
-import wrongImage from "../../assets/wrong.svg";
-import turtleImage from "../../assets/turtle.svg";
 import clouds from "../../assets/images/clouds.svg";
 import catLoading from "../../assets/images/catLoading.gif";
 import textureImage from "../../assets/images/textureImage.png";
@@ -134,8 +131,6 @@ const MainLayout = (props) => {
   const [audioPlaying, setAudioPlaying] = useState(null);
   const audioRefs = useRef([]);
 
-  //console.log('Main Layout Array', storedData, pageName);
-
   const handleAudioPlay = (index) => {
     const audioElem = audioRefs.current[index];
 
@@ -186,7 +181,6 @@ const MainLayout = (props) => {
   }, [startShowCase, isShowCase, gameOverData]);
 
   let currentPracticeStep = progressData?.currentPracticeStep;
-  let currentPracticeProgress = progressData?.currentPracticeProgress || 0;
 
   const sectionStyle = {
     width: "100%",
@@ -211,12 +205,22 @@ const MainLayout = (props) => {
   const blackLivesToShow =
     livesData?.blackLivesToShow > 0 ? livesData?.blackLivesToShow : 0;
 
-  const redLivesToShow =
-    livesData?.redLivesToShow !== undefined
-      ? livesData?.redLivesToShow > 0
-        ? livesData?.redLivesToShow
-        : 0
-      : livesData?.lives;
+  let redLivesToShow;
+  if (livesData?.redLivesToShow !== undefined) {
+    redLivesToShow =
+      livesData.redLivesToShow > 0 ? livesData.redLivesToShow : 0;
+  } else {
+    redLivesToShow = livesData?.lives;
+  }
+
+  function getLeftPosition(level) {
+    const positions = {
+      1: "3px",
+      2: "40px",
+      3: "78px",
+    };
+    return positions[level] || "78px"; // Default to "78px" if LEVEL is not 1, 2, or 3
+  }
 
   const navigate = useNavigate();
   return (
@@ -230,19 +234,15 @@ const MainLayout = (props) => {
           sx={{
             position: "absolute",
             bottom: "70px",
-            left:
-              LEVEL === 1
-                ? "3px"
-                : LEVEL === 2
-                ? "40px"
-                : LEVEL === 3
-                ? "78px"
-                : "78px",
+            left: getLeftPosition(LEVEL),
           }}
         >
           <img
             src={levelsImages?.[LEVEL]?.backgroundAddOn}
             alt="backgroundAddOn"
+            width="30" // Set width attribute
+            height="30" // Set height attribute
+            loading="lazy" // Lazy-load the image
           />
         </Box>
       )}
@@ -348,8 +348,7 @@ const MainLayout = (props) => {
                     const showGreen = step + 1 <= currentStep;
                     return (
                       <Box
-                        key={index}
-                        index={index}
+                        key={step}
                         sx={{
                           height: "8px",
                           width: `${100 / steps}%`,
@@ -373,14 +372,14 @@ const MainLayout = (props) => {
                     <Box display={"flex"}>
                       {[...Array(Math.max(0, redLivesToShow) || 0).keys()]?.map(
                         (elem) => (
-                          <Diamond />
+                          <Diamond key={elem} />
                         )
                       )}
 
                       {[
                         ...Array(Math.max(0, blackLivesToShow) || 0).keys(),
                       ]?.map((elem) => (
-                        <HeartBlack />
+                        <HeartBlack key={elem} />
                       ))}
                     </Box>
                     <span
@@ -451,6 +450,17 @@ const MainLayout = (props) => {
                             }}
                           >
                             {practiceSteps.map((elem, i) => {
+                              let backgroundColor;
+
+                              if (currentPracticeStep > i) {
+                                backgroundColor =
+                                  "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)";
+                              } else if (currentPracticeStep === i) {
+                                backgroundColor =
+                                  "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)";
+                              } else {
+                                backgroundColor = "rgba(0, 0, 0, 0.04)";
+                              }
                               return (
                                 <Box
                                   key={i}
@@ -467,12 +477,7 @@ const MainLayout = (props) => {
                                       md: "28px",
                                       lg: "36px",
                                     },
-                                    background:
-                                      currentPracticeStep > i
-                                        ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
-                                        : currentPracticeStep === i
-                                        ? "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)"
-                                        : "rgba(0, 0, 0, 0.04)",
+                                    background: backgroundColor,
                                     ml: {
                                       xs: 0.5,
                                       sm: 0.5,
@@ -508,92 +513,9 @@ const MainLayout = (props) => {
                               );
                             })}
                           </Box>
-                          {/* <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              ml: {
-                                xs: 10,
-                                sm: 15,
-                                lg: 25,
-                                md: 15,
-                              },
-                              mt: 2,
-                            }}
-                          >
-                            <span
-                              style={{
-                                color: "#1E2937",
-                                fontWeight: 500,
-                                lineHeight: "18px",
-                                fontSize: "14px",
-                                fontFamily: "Quicksand",
-                              }}
-                            >
-                              {"Overall Progress:"}
-                            </span>
-                            <Box
-                              sx={{
-                                height: "12px",
-                                width: {
-                                  md: "250px",
-                                  lg: "350px",
-                                },
-                                background: "#D1F8D5",
-                                borderRadius: "6px",
-                                ml: 2,
-                                position: "relative",
-                              }}
-                            >
-                              <Box
-                                sx={{
-                                  height: "12px",
-                                  width: `${currentPracticeProgress}%`,
-                                  background: "#18DE2C",
-                                  borderRadius: "6px",
-                                  position: "absolute",
-                                }}
-                              ></Box>
-                            </Box>
-                            <span
-                              style={{
-                                color: "#1E2937",
-                                fontWeight: 700,
-                                lineHeight: "18px",
-                                fontSize: "14px",
-                                fontFamily: "Quicksand",
-                                marginLeft: "10px",
-                              }}
-                            >
-                              {`${currentPracticeProgress}%`}
-                            </span>
-                          </Box> */}
                         </Box>
                       </Box>
                     )}
-                    {/* <Box
-                      sx={{ display: "flex", justifyContent: "right", mr: 4 }}
-                    >
-                      {enableNext ? (
-                        <Box
-                          sx={{ cursor: "pointer" }}
-                          onClick={() => {
-                            if (props.setIsNextButtonCalled) {
-                              props.setIsNextButtonCalled(true);
-                            } else {
-                              handleNext();
-                            }
-                          }}
-                        >
-                          <NextButton />
-                        </Box>
-                      ) : (
-                        <Box sx={{ cursor: "pointer" }}>
-                          <NextButton disabled />
-                        </Box>
-                      )}
-                    </Box> */}
                   </Box>
                 )}
                 {nextLessonAndHome && (
@@ -822,7 +744,7 @@ const MainLayout = (props) => {
                                 props.pageName === "m5") &&
                                 storedData?.map((elem, index) => (
                                   <Stack
-                                    key={index}
+                                    key={elem}
                                     justifyContent={"start"}
                                     alignItems={"center"}
                                     direction={"row"}
@@ -1000,6 +922,17 @@ const MainLayout = (props) => {
                               }}
                             >
                               {practiceSteps.map((elem, i) => {
+                                let backgroundStyle;
+
+                                if (currentPracticeStep > i) {
+                                  backgroundStyle =
+                                    "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)";
+                                } else if (currentPracticeStep === i) {
+                                  backgroundStyle =
+                                    "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)";
+                                } else {
+                                  backgroundStyle = "rgba(0, 0, 0, 0.04)";
+                                }
                                 return (
                                   <Box
                                     key={i}
@@ -1012,12 +945,7 @@ const MainLayout = (props) => {
                                         md: "28px",
                                         lg: "36px",
                                       },
-                                      background:
-                                        currentPracticeStep > i
-                                          ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
-                                          : currentPracticeStep === i
-                                          ? "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)"
-                                          : "rgba(0, 0, 0, 0.04)",
+                                      background: backgroundStyle,
                                       ml: {
                                         md: 1.5,
                                         lg: 2,
@@ -1052,65 +980,6 @@ const MainLayout = (props) => {
                                 );
                               })}
                             </Box>
-                            {/* <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                ml: {
-                                  lg: 25,
-                                  md: 15,
-                                },
-                                mt: 2,
-                              }}
-                            >
-                              <span
-                                style={{
-                                  color: "#1E2937",
-                                  fontWeight: 500,
-                                  lineHeight: "18px",
-                                  fontSize: "14px",
-                                  fontFamily: "Quicksand",
-                                }}
-                              >
-                                {"Overall Progress:"}
-                              </span>
-                              <Box
-                                sx={{
-                                  height: "12px",
-                                  width: {
-                                    md: "250px",
-                                    lg: "350px",
-                                  },
-                                  background: "#D1F8D5",
-                                  borderRadius: "6px",
-                                  ml: 2,
-                                  position: "relative",
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    height: "12px",
-                                    width: `${currentPracticeProgress}%`,
-                                    background: "#18DE2C",
-                                    borderRadius: "6px",
-                                    position: "absolute",
-                                  }}
-                                ></Box>
-                              </Box>
-                              <span
-                                style={{
-                                  color: "#1E2937",
-                                  fontWeight: 700,
-                                  lineHeight: "18px",
-                                  fontSize: "14px",
-                                  fontFamily: "Quicksand",
-                                  marginLeft: "10px",
-                                }}
-                              >
-                                {`${currentPracticeProgress}%`}
-                              </span>
-                            </Box> */}
                           </Box>
                         </Box>
                       )}
@@ -1173,23 +1042,45 @@ const MainLayout = (props) => {
 };
 
 MainLayout.propTypes = {
+  level: PropTypes.any,
+  handleNext: PropTypes.func,
   contentType: PropTypes.string,
-  handleBack: PropTypes.func,
+  handleBack: PropTypes.any,
   disableScreen: PropTypes.bool,
   isShowCase: PropTypes.bool,
   showProgress: PropTypes.bool,
   setOpenLangModal: PropTypes.func,
   points: PropTypes.number,
-  handleNext: PropTypes.any,
   enableNext: PropTypes.bool,
   showNext: PropTypes.bool,
   showTimer: PropTypes.bool,
   nextLessonAndHome: PropTypes.bool,
+  cardBackground: PropTypes.string,
+  backgroundImage: PropTypes.string,
+  progressData: PropTypes.shape({
+    currentPracticeStep: PropTypes.number,
+    currentPracticeProgress: PropTypes.number,
+  }),
+  lang: PropTypes.string,
   startShowCase: PropTypes.bool,
+  percentage: PropTypes.number,
+  fluency: PropTypes.bool,
   setStartShowCase: PropTypes.func,
+  livesData: PropTypes.shape({
+    blackLivesToShow: PropTypes.number,
+    redLivesToShow: PropTypes.number,
+    lives: PropTypes.number,
+  }),
+  gameOverData: PropTypes.shape({
+    userWon: PropTypes.bool,
+  }),
   loading: PropTypes.bool,
   storedData: PropTypes.array,
   resetStoredData: PropTypes.func,
+  steps: PropTypes.number,
+  currentStep: PropTypes.number,
+  background: PropTypes.string,
+  children: PropTypes.node,
   pageName: PropTypes.string,
 };
 

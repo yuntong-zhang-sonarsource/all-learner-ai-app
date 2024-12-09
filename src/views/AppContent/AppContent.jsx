@@ -2,6 +2,7 @@ import React, { useEffect, Fragment } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import CustomizedSnackbars from "../../views/Snackbar/CustomSnackbar";
 import { getParameter } from "../../utils/constants";
+import PropTypes from "prop-types";
 
 const PrivateRoute = (props) => {
   let virtualId;
@@ -22,9 +23,6 @@ const PrivateRoute = (props) => {
   return <>{props.children}</>;
 };
 const AppContent = ({ routes }) => {
-  // const navigate = useNavigate();
-  // const location = useLocation();
-
   return (
     <Fragment>
       <CustomizedSnackbars />
@@ -43,6 +41,13 @@ const AppContent = ({ routes }) => {
       </Routes>
     </Fragment>
   );
+};
+PrivateRoute.propTypes = {
+  requiresAuth: PropTypes.bool.isRequired,
+  children: PropTypes.object.isRequired,
+};
+AppContent.propTypes = {
+  routes: PropTypes.object.isRequired,
 };
 
 export default AppContent;

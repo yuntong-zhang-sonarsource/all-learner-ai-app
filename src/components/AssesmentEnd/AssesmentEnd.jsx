@@ -1,5 +1,5 @@
 import MainLayout from "../Layouts.jsx/MainLayout";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import {
   AssesmentCompletePlane,
   AverageMood,
@@ -9,14 +9,13 @@ import {
   setLocalData,
 } from "../../utils/constants";
 import homeBackground from "../../assets/images/homeBackground.png";
-import { Typography } from "../../../node_modules/@mui/material/index";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
 import { ProfileHeader } from "../Assesment/Assesment";
 import desktopLevel5 from "../../assets/images/assesmentComplete.png";
-import config from '../../utils/urlConstants.json';
+import config from "../../utils/urlConstants.json";
 import { uniqueId } from "../../services/utilService";
 
 const AssesmentEnd = () => {
@@ -40,9 +39,9 @@ const AssesmentEnd = () => {
       setLevel(data.data.milestone_level);
       setLocalData("userLevel", data.data.milestone_level?.replace("m", ""));
       let sessionId = getLocalData("sessionId");
-      if (!sessionId){
+      if (!sessionId) {
         sessionId = uniqueId();
-        localStorage.setItem("sessionId", sessionId)
+        localStorage.setItem("sessionId", sessionId);
       }
       const getPointersDetails = await axios.get(
         `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`

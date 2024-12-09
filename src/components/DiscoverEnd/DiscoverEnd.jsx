@@ -1,19 +1,15 @@
 import { Box, Card, CardContent, IconButton, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Confetti from "react-confetti";
-import axios from "../../../node_modules/axios/index";
-import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
 import back from "../../assets/images/back-arrow.svg";
 import discoverEndLeft from "../../assets/images/discover-end-left.svg";
 import discoverEndRight from "../../assets/images/discover-end-right.svg";
 import textureImage from "../../assets/images/textureImage.png";
-import {
-  LetsStart,
-  getLocalData,
-  setLocalData,
-} from "../../utils/constants";
-import config from '../../utils/urlConstants.json';
+import { LetsStart, getLocalData, setLocalData } from "../../utils/constants";
+import config from "../../utils/urlConstants.json";
 
 const sectionStyle = {
   backgroundImage: `url(${textureImage})`,
@@ -34,7 +30,6 @@ const SpeakSentenceComponent = () => {
   const [level, setLevel] = useState("");
 
   useEffect(() => {
-    
     (async () => {
       let audio = new Audio(LevelCompleteAudio);
       audio.play();
@@ -54,10 +49,10 @@ const SpeakSentenceComponent = () => {
 
   const handleProfileBack = () => {
     try {
-      if (process.env.REACT_APP_IS_APP_IFRAME === 'true') {
-        navigate("/")
+      if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+        navigate("/");
       } else {
-        navigate("/discover-start")
+        navigate("/discover-start");
       }
     } catch (error) {
       console.error("Error posting message:", error);
@@ -77,7 +72,14 @@ const SpeakSentenceComponent = () => {
       }}
     >
       <IconButton>
-        <img src={back} alt="back" style={{ height: "30px" }} />
+        <img
+          src={back}
+          alt="back"
+          style={{ height: "30px" }}
+          width="30" // Set width attribute
+          height="30" // Set height attribute
+          loading="lazy" // Lazy-load the image
+        />
       </IconButton>
       <Card sx={sectionStyle}>
         <Box sx={{ position: "absolute", left: "3px", bottom: "0px" }}>
@@ -132,7 +134,7 @@ const SpeakSentenceComponent = () => {
           </Typography>
 
           <Box
-           onClick={() => handleProfileBack()}
+            onClick={handleProfileBack}
             sx={{
               display: "flex",
               justifyContent: "center",

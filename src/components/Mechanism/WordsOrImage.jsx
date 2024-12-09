@@ -14,9 +14,7 @@ const WordsOrImage = ({
   words,
   image,
   setVoiceText,
-  setRecordedAudio,
   setVoiceAnimate,
-  storyLine,
   enableNext,
   showTimer,
   points,
@@ -49,13 +47,10 @@ const WordsOrImage = ({
   setIsNextButtonCalled,
 }) => {
   const audioRef = createRef(null);
-  const [duration, setDuration] = useState(0);
   const [isReady, setIsReady] = useState(false);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [storedData, setStoredData] = useState([]);
-
-  //console.log('wordsORimage', words, storedData);
 
   const updateStoredData = (audio, isCorrect) => {
     if (audio && words) {
@@ -86,7 +81,143 @@ const WordsOrImage = ({
       setIsPlaying(true);
     }
   };
-  const [currrentProgress, setCurrrentProgress] = useState(0);
+
+  const renderContent = () => {
+    if (type === "image") {
+      return (
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <img
+            src={image}
+            style={{
+              maxWidth: "450px",
+              maxHeight: "130px",
+              marginBottom: "40px",
+            }}
+            alt=""
+          />
+        </Box>
+      );
+    } else if (type === "phonics") {
+      return (
+        <Box
+          position="relative"
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            mb: "40px",
+          }}
+        >
+          <Box
+            position="relative"
+            sx={{
+              minWidth: "403px",
+              borderRadius: "15px",
+              background: "rgba(255, 161, 50, 0.1)",
+              height: "88px",
+              display: "flex",
+            }}
+          >
+            <audio
+              ref={audioRef}
+              preload="metadata"
+              onCanPlay={(e) => {
+                setIsReady(true);
+              }}
+              onPlaying={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+            >
+              <source type="audio/mp3" src={v11} />
+              <track kind="captions" />
+            </audio>
+
+            <Box
+              sx={{
+                height: "88px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  cursor: "pointer",
+                  marginLeft: "20px",
+                  marginTop: "5px",
+                }}
+                onClick={togglePlayPause}
+              >
+                {isReady && (
+                  <>
+                    {isPlaying ? (
+                      <StopAudioButton color="#FFA132" />
+                    ) : (
+                      <PlayAudioButton color="#FFA132" />
+                    )}
+                  </>
+                )}
+              </Box>
+              <Typography
+                variant="h5"
+                component="h4"
+                sx={{
+                  color: "#333F61",
+                  fontSize: "44px",
+                  letterSpacing: "2.2px",
+                  lineHeight: "normal",
+                  fontWeight: 600,
+                  fontFamily: "Quicksand",
+                  marginLeft: "20px",
+                }}
+              >
+                {"REF LECTION"}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+      );
+    } else {
+      return (
+        <Box>
+          {!words && (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
+            </Box>
+          )}
+          {words && !matchedChar && (
+            <Typography
+              variant="h5"
+              component="h4"
+              sx={{
+                mb: 4,
+                color: "#333F61",
+                textAlign: "center",
+                fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
+                fontWeight: 700,
+                fontFamily: "Quicksand",
+                lineHeight: "50px",
+              }}
+            >
+              {words ? words[0].toUpperCase() + words.slice(1) : ""}
+            </Typography>
+          )}
+          {matchedChar && (
+            <Box
+              display={"flex"}
+              mb={4}
+              sx={{
+                width: "100%",
+                justifyContent: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              {highlightWords(words, matchedChar)}
+            </Box>
+          )}
+        </Box>
+      );
+    }
+  };
 
   return (
     <MainLayout
@@ -127,150 +258,14 @@ const WordsOrImage = ({
           pointerEvents: disableScreen ? "none" : "initial",
         }}
       >
-        {type === "image" ? (
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <img
-              src={image}
-              style={{
-                maxWidth: "450px",
-                maxHeight: "130px",
-                marginBottom: "40px",
-              }}
-            />
-          </Box>
-        ) : type === "phonics" ? (
-          <Box
-            position="relative"
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              mb: "40px",
-            }}
-          >
-            <Box
-              position="relative"
-              sx={{
-                minWidth: "403px",
-                borderRadius: "15px",
-                background: "rgba(255, 161, 50, 0.1)",
-                height: "88px",
-                display: "flex",
-              }}
-            >
-              <audio
-                ref={audioRef}
-                preload="metadata"
-                onDurationChange={(e) => setDuration(e.currentTarget.duration)}
-                onCanPlay={(e) => {
-                  setIsReady(true);
-                }}
-                onPlaying={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                onTimeUpdate={(e) => {
-                  setCurrrentProgress(e.currentTarget.currentTime);
-                }}
-              >
-                <source type="audio/mp3" src={v11} />
-              </audio>
-              {/* <AudioPlayerSvg color="#FFA132" /> */}
-
-              <Box
-                sx={{
-                  height: "88px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Box
-                  sx={{
-                    cursor: "pointer",
-                    marginLeft: "20px",
-                    marginTop: "5px",
-                  }}
-                  onClick={() => {
-                    togglePlayPause();
-                  }}
-                >
-                  {isReady && (
-                    <>
-                      {isPlaying ? (
-                        <StopAudioButton color="#FFA132" />
-                      ) : (
-                        <PlayAudioButton color="#FFA132" />
-                      )}
-                    </>
-                  )}
-                </Box>
-                <Typography
-                  variant="h5"
-                  component="h4"
-                  sx={{
-                    color: "#333F61",
-                    fontSize: "44px",
-                    letterSpacing: "2.2px",
-                    lineHeight: "normal",
-                    fontWeight: 600,
-                    fontFamily: "Quicksand",
-                    marginLeft: "20px",
-                  }}
-                >
-                  {"REF LECTION"}
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-        ) : (
-          <Box>
-            {!words && (
-              <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
-              </Box>
-            )}
-            {words && !matchedChar && (
-              <Typography
-                variant="h5"
-                component="h4"
-                sx={{
-                  mb: 4,
-                  color: "#333F61",
-                  textAlign: "center",
-                  fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
-                  // lineHeight: "normal",
-                  fontWeight: 700,
-                  fontFamily: "Quicksand",
-                  lineHeight: "50px",
-                }}
-              >
-                {words ? words[0].toUpperCase() + words.slice(1) : ""}
-              </Typography>
-            )}
-            {matchedChar && (
-              <Box
-                display={"flex"}
-                mb={4}
-                sx={{
-                  width: "100%",
-                  justifyContent: "center",
-                  flexWrap: "wrap",
-                }}
-              >
-                {highlightWords(words, matchedChar)}
-              </Box>
-            )}
-          </Box>
-        )}
+        {renderContent()}
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <VoiceAnalyser
             pageName={"wordsorimage"}
             setVoiceText={setVoiceText}
             updateStoredData={updateStoredData}
-            setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
-            storyLine={storyLine}
             dontShowListen={type === "image" || isDiscover}
-            // updateStory={updateStory}
             originalText={words}
             handleNext={handleNext}
             enableNext={enableNext}
@@ -294,20 +289,18 @@ const WordsOrImage = ({
     </MainLayout>
   );
 };
-
 WordsOrImage.propTypes = {
   handleNext: PropTypes.func.isRequired,
   // background: PropTypes.string,
   header: PropTypes.string,
   image: PropTypes.string,
   setVoiceText: PropTypes.func.isRequired,
-  setRecordedAudio: PropTypes.func.isRequired,
   setVoiceAnimate: PropTypes.func.isRequired,
   enableNext: PropTypes.bool,
   showTimer: PropTypes.bool,
   points: PropTypes.number,
   currentStep: PropTypes.number.isRequired,
-  percentage: PropTypes.string,
+  percentage: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   fluency: PropTypes.bool,
   isDiscover: PropTypes.bool,
   showProgress: PropTypes.bool,
@@ -326,7 +319,6 @@ WordsOrImage.propTypes = {
   background: PropTypes.bool,
   type: PropTypes.any,
   words: PropTypes.any,
-  storyLine: PropTypes.number,
   steps: PropTypes.number,
   contentId: PropTypes.any,
   contentType: PropTypes.string,

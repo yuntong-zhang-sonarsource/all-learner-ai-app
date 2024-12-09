@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, Grid, Radio } from "@mui/material";
+import { Box, Grid, Radio, Modal } from "@mui/material";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import { PlayAudioButton, StopAudioButton } from "../../utils/constants";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import PropTypes from "prop-types";
-import { Modal } from "@mui/material";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -31,16 +30,12 @@ const Mechanics5 = ({
   disableScreen,
   loading,
   setVoiceText,
-  setRecordedAudio,
   setVoiceAnimate,
-  storyLine,
   contentId,
   contentType,
   callUpdateLearner,
   isShowCase,
   setEnableNext,
-  selectedWord,
-  wordToCheck,
   setOpenMessageDialog,
   startShowCase,
   setStartShowCase,
@@ -122,8 +117,6 @@ const Mechanics5 = ({
     }
   };
 
-  //console.log('Mechanics5' , storedData, options);
-
   const handleOptionChange = (event, i) => {
     setSelectedOption(i); // Set the selected option index
   };
@@ -186,16 +179,25 @@ const Mechanics5 = ({
         <Grid item xs={4} position="relative">
           {/* Image with full-width gradient overlay on top */}
           <Box sx={{ position: "relative", cursor: "zoom-in" }}>
-            <img
-              src={image}
+            <button
+              onClick={() => setZoomOpen(true)}
               style={{
-                borderRadius: "20px",
-                maxWidth: "100%",
-                height: "250px",
+                border: "none",
+                padding: 0,
+                background: "none",
+                cursor: "pointer",
               }}
-              alt="contentImage"
-              onClick={() => setZoomOpen(true)} // Open modal on click
-            />
+            >
+              <img
+                src={image}
+                style={{
+                  borderRadius: "20px",
+                  maxWidth: "100%",
+                  height: "250px",
+                }}
+                alt="contentImage"
+              />
+            </button>
 
             {/* Subtle gradient overlay across the top */}
             <Box
@@ -378,9 +380,7 @@ const Mechanics5 = ({
           pageName={"m5"}
           updateStoredData={updateStoredData}
           setVoiceText={setVoiceText}
-          setRecordedAudio={setRecordedAudio}
           setVoiceAnimate={setVoiceAnimate}
-          storyLine={storyLine}
           dontShowListen={type === "image" || isDiscover}
           isShowCase={isShowCase || isDiscover}
           originalText={
@@ -394,7 +394,7 @@ const Mechanics5 = ({
           handleNext={handleNext}
           selectedOption={options[selectedOption]}
           correctness={correctness}
-          audioLink={audio ? audio : null}
+          audioLink={audio || null}
           {...{
             contentId,
             contentType,
@@ -427,13 +427,12 @@ Mechanics5.propTypes = {
   header: PropTypes.string,
   image: PropTypes.string,
   setVoiceText: PropTypes.func.isRequired,
-  setRecordedAudio: PropTypes.func.isRequired,
   setVoiceAnimate: PropTypes.func.isRequired,
   enableNext: PropTypes.bool,
   showTimer: PropTypes.bool,
   points: PropTypes.number,
   currentStep: PropTypes.number.isRequired,
-  percentage: PropTypes.string,
+  percentage: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   fluency: PropTypes.bool,
   isDiscover: PropTypes.bool,
   showProgress: PropTypes.bool,
@@ -449,10 +448,8 @@ Mechanics5.propTypes = {
   setOpenMessageDialog: PropTypes.func.isRequired,
   isNextButtonCalled: PropTypes.bool,
   setIsNextButtonCalled: PropTypes.func,
-  background: PropTypes.bool,
+  background: PropTypes.string,
   type: PropTypes.any,
-  words: PropTypes.any,
-  storyLine: PropTypes.number,
   steps: PropTypes.number,
   contentId: PropTypes.any,
   contentType: PropTypes.string,
@@ -461,8 +458,11 @@ Mechanics5.propTypes = {
   playTeacherAudio: PropTypes.func,
   livesData: PropTypes.any,
   gameOverData: PropTypes.any,
-  highlightWords: PropTypes.func,
-  matchedChar: PropTypes.any,
+  question_audio: PropTypes.string.isRequired,
+  parentWords: PropTypes.string.isRequired,
+  options: PropTypes.any,
+  correctness: PropTypes.bool.isRequired,
+  audio: PropTypes.string,
 };
 
 export default Mechanics5;

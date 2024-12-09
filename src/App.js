@@ -15,7 +15,7 @@ const App = () => {
   const ranonce = useRef(false);
   useEffect(() => {
     const initService = async () => {
-      var did;
+      let did;
       if (localStorage.getItem("fpDetails_v2") !== null) {
         let fpDetails_v2 = localStorage.getItem("fpDetails_v2");
         did = fpDetails_v2.result;

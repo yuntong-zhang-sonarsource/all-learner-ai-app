@@ -5,11 +5,10 @@ import { ListenButton, RetryIcon, SpeakButton, StopButton } from "./constants";
 import RecordVoiceVisualizer from "./RecordVoiceVisualizer";
 import playButton from "../../src/assets/listen.png";
 import pauseButton from "../../src/assets/pause.png";
+import PropTypes from "prop-types";
 
 const AudioRecorder = (props) => {
-  const [isRecording, setIsRecording] = useState(false);
   const [status, setStatus] = useState("");
-  const [audioBlob, setAudioBlob] = useState(null);
   const recorderRef = useRef(null);
   const mediaStreamRef = useRef(null);
 
@@ -45,8 +44,6 @@ const AudioRecorder = (props) => {
       });
 
       recorderRef.current.startRecording();
-
-      setIsRecording(true);
     } catch (err) {
       console.error("Failed to start recording:", err);
     }
@@ -59,7 +56,6 @@ const AudioRecorder = (props) => {
         const blob = recorderRef.current.getBlob();
 
         if (blob) {
-          setAudioBlob(blob);
           saveBlob(blob); // Persist the blob
         } else {
           console.error("Failed to retrieve audio blob.");
@@ -69,8 +65,6 @@ const AudioRecorder = (props) => {
         if (mediaStreamRef.current) {
           mediaStreamRef.current.getTracks().forEach((track) => track.stop());
         }
-
-        setIsRecording(false);
       });
     }
     if (props.setEnableNext) {
@@ -80,8 +74,20 @@ const AudioRecorder = (props) => {
 
   const saveBlob = (blob) => {
     const url = window.URL.createObjectURL(blob);
-    props?.setRecordedAudio(url);
+    if (props.setRecordedAudio) {
+      props?.setRecordedAudio(url);
+    }
   };
+
+  const renderActionButton = () => (
+    <Box
+      marginLeft={!props.dontShowListen || props.recordedAudio ? "32px" : "0px"}
+      sx={{ cursor: "pointer" }}
+      onClick={startRecording}
+    >
+      {props.recordedAudio ? <RetryIcon /> : <SpeakButton />}
+    </Box>
+  );
 
   return (
     <div>
@@ -125,27 +131,35 @@ const AudioRecorder = (props) => {
                       {!props.isShowCase && (
                         <Box>
                           {!props.pauseAudio ? (
-                            <div
-                              onClick={() => {
-                                props.playAudio(true);
+                            <button
+                              onClick={() => props.playAudio(true)}
+                              style={{
+                                background: "none",
+                                border: "none",
+                                cursor: "pointer",
+                                padding: 0,
                               }}
+                              aria-label="Play audio" // Accessibility improvement
                             >
-                              <Box sx={{ cursor: "pointer" }}>
-                                <ListenButton />
-                              </Box>
-                            </div>
+                              <ListenButton />
+                            </button>
                           ) : (
-                            <Box
-                              sx={{ cursor: "pointer" }}
-                              onClick={() => {
-                                props.playAudio(false);
+                            <button
+                              onClick={() => props.playAudio(false)}
+                              style={{
+                                background: "none",
+                                border: "none",
+                                cursor: "pointer",
+                                padding: 0,
                               }}
+                              aria-label="Stop audio" // Accessibility improvement
                             >
                               <StopButton />
-                            </Box>
+                            </button>
                           )}
                         </Box>
                       )}
+
                       <Box
                         sx={{
                           marginLeft: props.isShowCase ? "" : "35px",
@@ -153,41 +167,44 @@ const AudioRecorder = (props) => {
                         }}
                       >
                         {props.recordedAudio ? (
-                          <img
+                          <button
                             onClick={() =>
                               props.playRecordedAudio(
                                 !props.isStudentAudioPlaying
                               )
                             }
-                            style={{ height: "70px" }}
-                            src={
+                            style={{
+                              background: "none",
+                              border: "none",
+                              padding: 0,
+                              cursor: "pointer",
+                            }}
+                            aria-label={
                               props.isStudentAudioPlaying
-                                ? pauseButton
-                                : playButton
-                            }
-                            alt={props.isStudentAudioPlaying ? "Pause" : "Play"}
-                          />
-                        ) : (
-                          <Box></Box>
-                        )}
+                                ? "Pause audio"
+                                : "Play audio"
+                            } // Accessibility improvement
+                          >
+                            <img
+                              style={{ height: "70px" }}
+                              src={
+                                props.isStudentAudioPlaying
+                                  ? pauseButton
+                                  : playButton
+                              }
+                              alt={
+                                props.isStudentAudioPlaying ? "Pause" : "Play"
+                              }
+                            />
+                          </button>
+                        ) : null}
                       </Box>
                     </>
                   )}
-
                 <div>
-                  {props?.originalText && !props.showOnlyListen && (
-                    <Box
-                      marginLeft={
-                        !props.dontShowListen || props.recordedAudio
-                          ? "32px"
-                          : "0px"
-                      }
-                      sx={{ cursor: "pointer" }}
-                      onClick={startRecording}
-                    >
-                      {!props.recordedAudio ? <SpeakButton /> : <RetryIcon />}
-                    </Box>
-                  )}
+                  {props.originalText &&
+                    !props.showOnlyListen &&
+                    renderActionButton()}
                 </div>
               </div>
             );
@@ -196,6 +213,20 @@ const AudioRecorder = (props) => {
       </div>
     </div>
   );
+};
+
+AudioRecorder.propTypes = {
+  setEnableNext: PropTypes.func,
+  recordedAudio: PropTypes.string,
+  setRecordedAudio: PropTypes.func,
+  originalText: PropTypes.string,
+  showOnlyListen: PropTypes.bool,
+  dontShowListen: PropTypes.bool,
+  isShowCase: PropTypes.bool,
+  pauseAudio: PropTypes.bool,
+  playAudio: PropTypes.func.isRequired,
+  isStudentAudioPlaying: PropTypes.bool,
+  playRecordedAudio: PropTypes.func.isRequired,
 };
 
 export default AudioRecorder;

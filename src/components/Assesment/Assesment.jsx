@@ -1,13 +1,6 @@
 import MainLayout from "../Layouts.jsx/MainLayout";
 import assessmentBackground from "../../assets/images/assessmentBackground.png";
-import {
-  Box,
-  Grid,
-  IconButton,
-  Tooltip,
-  Typography,
-  Dialog,
-} from "../../../node_modules/@mui/material/index";
+import { Box, Grid, IconButton, Tooltip, Typography } from "@mui/material";
 import LogoutImg from "../../assets/images/logout.svg";
 import { styled } from "@mui/material/styles";
 import {
@@ -21,16 +14,13 @@ import {
   setLocalData,
 } from "../../utils/constants";
 import practicebg from "../../assets/images/practice-bg.svg";
-import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import HelpLogo from "../../assets/help.png";
-import CloseIcon from "@mui/icons-material/Close";
 
-import axios from "../../../node_modules/axios/index";
-// import { useDispatch } from 'react-redux';
+import axios from "axios";
 import { setVirtualId } from "../../store/slices/user.slice";
 import { useDispatch, useSelector } from "react-redux";
-import React from "react";
 import desktopLevel1 from "../../assets/images/desktopLevel1.png";
 import desktopLevel2 from "../../assets/images/desktopLevel2.png";
 import desktopLevel3 from "../../assets/images/desktopLevel3.jpg";
@@ -49,8 +39,14 @@ import panda from "../../assets/images/panda.svg";
 import cryPanda from "../../assets/images/cryPanda.svg";
 import { uniqueId } from "../../services/utilService";
 import { end } from "../../services/telementryService";
+import PropTypes from "prop-types";
 
 export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
+  LanguageModal.propTypes = {
+    lang: PropTypes.string.isRequired,
+    setLang: PropTypes.func.isRequired,
+    setOpenLangModal: PropTypes.func.isRequired,
+  };
   const [selectedLang, setSelectedLang] = useState(lang);
   return (
     <Box
@@ -333,6 +329,12 @@ export const MessageDialog = ({
     </Box>
   );
 };
+MessageDialog.propTypes = {
+  closeDialog: PropTypes.func,
+  dontShowHeader: PropTypes.bool,
+  isError: PropTypes.bool,
+  message: PropTypes.string,
+};
 
 export const ProfileHeader = ({
   setOpenLangModal,
@@ -349,7 +351,26 @@ export const ProfileHeader = ({
   const handleProfileBack = () => {
     try {
       if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-        window.parent.postMessage({ type: "restore-iframe-content" }, "*");
+        let allowedOrigins = [];
+        try {
+          allowedOrigins = JSON.parse(
+            process.env.REACT_APP_PARENT_ORIGIN_URL || "[]"
+          );
+        } catch (error) {
+          console.error(
+            "Invalid JSON format in REACT_APP_PARENT_ORIGIN_URL:",
+            error
+          );
+        }
+        const parentOrigin =
+          window?.location?.ancestorOrigins?.[0] ||
+          window.parent.location.origin;
+        if (allowedOrigins.includes(parentOrigin)) {
+          window.parent.postMessage(
+            { type: "restore-iframe-content" },
+            parentOrigin
+          );
+        }
         navigate("/");
       } else {
         navigate("/discover-start");
@@ -427,7 +448,14 @@ export const ProfileHeader = ({
           {handleBack && (
             <Box ml={{ xs: "10px", sm: "94px" }}>
               <IconButton onClick={handleBack}>
-                <img src={back} alt="back" style={{ height: "30px" }} />
+                <img
+                  src={back}
+                  alt="back"
+                  style={{ height: "30px" }}
+                  width="30" // Set width attribute
+                  height="30" // Set height attribute
+                  loading="lazy" // Lazy-load the image
+                />
               </IconButton>
             </Box>
           )}
@@ -444,10 +472,14 @@ export const ProfileHeader = ({
               >
                 <img
                   src={profilePic}
-                  alt="profile-pic"
+                  alt="Profile"
                   style={{ height: "30px" }}
+                  width="30" // Set width attribute
+                  height="30" // Set height attribute
+                  loading="lazy" // Lazy-load the image
                 />
               </Box>
+
               <Box ml="12px">
                 <span
                   style={{
@@ -543,19 +575,25 @@ export const ProfileHeader = ({
     </>
   );
 };
+ProfileHeader.propTypes = {
+  points: PropTypes.number,
+  setOpenLangModal: PropTypes.func,
+  handleBack: PropTypes.func,
+  profileName: PropTypes.string,
+  lang: PropTypes.string,
+  setOpenTestModal: PropTypes.func,
+};
 
 const Assesment = ({ discoverStart }) => {
   let username;
   if (localStorage.getItem("token") !== null) {
     let jwtToken = localStorage.getItem("token");
-    var userDetails = jwtDecode(jwtToken);
+    const userDetails = jwtDecode(jwtToken);
     username = userDetails.student_name;
     setLocalData("profileName", username);
   }
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // const [profileName, setProfileName] = useState(username);
+
   const [openMessageDialog, setOpenMessageDialog] = useState("");
-  // let lang = searchParams.get("lang") || "ta";
   const [level, setLevel] = useState("");
   const dispatch = useDispatch();
   const [openLangModal, setOpenLangModal] = useState(false);
@@ -563,8 +601,6 @@ const Assesment = ({ discoverStart }) => {
   const [points, setPoints] = useState(0);
 
   useEffect(() => {
-    // const level = getLocalData('userLevel');
-    // setLevel(level);
     setLocalData("lang", lang);
     dispatch(setVirtualId(localStorage.getItem("virtualId")));
     let contentSessionId = localStorage.getItem("contentSessionId");
@@ -685,7 +721,6 @@ const Assesment = ({ discoverStart }) => {
   const handleRedirect = () => {
     const profileName = getLocalData("profileName");
     if (!username && !profileName && !virtualId && level === 0) {
-      // alert("please add username in query param");
       setOpenMessageDialog({
         message: "please add username in query param",
         isError: true,
@@ -881,6 +916,10 @@ const Assesment = ({ discoverStart }) => {
       )}
     </>
   );
+};
+
+Assesment.propTypes = {
+  discoverStart: PropTypes.bool,
 };
 
 export default Assesment;
