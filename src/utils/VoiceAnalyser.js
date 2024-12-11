@@ -58,6 +58,8 @@ const AudioPath = {
 };
 const currentIndex = localStorage.getItem("index") || 1;
 function VoiceAnalyser(props) {
+  console.log("propss", props);
+
   const [loadCnt, setLoadCnt] = useState(0);
   const [loader, setLoader] = useState(false);
   const [pauseAudio, setPauseAudio] = useState(false);
@@ -256,7 +258,9 @@ function VoiceAnalyser(props) {
         reader.onload = function (e) {
           let base64Data = e.target.result.split(",")[1];
           setRecordedAudioBase64(base64Data);
-          //props.onAudioProcessed(base64Data);
+          if (props.pageName === "m7") {
+            props.onAudioProcessed(base64Data);
+          }
         };
       };
       request.send();
@@ -727,10 +731,14 @@ function VoiceAnalyser(props) {
               onClick={() => {
                 if (props.setIsNextButtonCalled) {
                   props.setIsNextButtonCalled(true);
-                  //props.onAudioProcessed("");
+                  if (props.pageName === "m7") {
+                    props.onAudioProcessed("");
+                  }
                 } else {
                   props.handleNext();
-                  //props.onAudioProcessed("");
+                  if (props.pageName === "m7") {
+                    props.onAudioProcessed("");
+                  }
                 }
               }}
             >
@@ -745,7 +753,7 @@ function VoiceAnalyser(props) {
 
 VoiceAnalyser.propTypes = {
   enableNext: PropTypes.bool.isRequired,
-  //onAudioProcessed: PropTypes.func,
+  onAudioProcessed: PropTypes.func,
   setIsNextButtonCalled: PropTypes.func,
   handleNext: PropTypes.func.isRequired,
   originalText: PropTypes.string,

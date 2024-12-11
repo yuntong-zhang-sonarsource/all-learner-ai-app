@@ -11,7 +11,7 @@ import MainLayout from "../Layouts.jsx/MainLayout";
 import clapImage from "../../assets/clap.svg";
 import bulbHint from "../../assets/hint.svg";
 import frame from "../../assets/frame.svg";
-import pencil from "../../assets/pencil.svg";
+import pencil from "../../assets/pencil.gif";
 
 import correctSound from "../../assets/audio/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
@@ -69,13 +69,13 @@ const Mechanics7 = ({
 
   const [isRecordingComplete, setIsRecordingComplete] = useState(false);
 
-  // const handleRecordingComplete = (base64Data) => {
-  //   if (base64Data) {
-  //     setIsRecordingComplete(true);
-  //   } else {
-  //     setIsRecordingComplete(false);
-  //   }
-  // };
+  const handleRecordingComplete = (base64Data) => {
+    if (base64Data) {
+      setIsRecordingComplete(true);
+    } else {
+      setIsRecordingComplete(false);
+    }
+  };
 
   useEffect(() => {
     setSelectedWords([]);
@@ -180,7 +180,9 @@ const Mechanics7 = ({
       enableNext={enableNext}
       showTimer={showTimer}
       points={points}
-      pageName={"m4"}
+      pageName={"m7"}
+      answer={answer}
+      isRecordingComplete={isRecordingComplete}
       {...{
         steps,
         currentStep,
@@ -209,7 +211,7 @@ const Mechanics7 = ({
       >
         {header}
       </div>
-      {/* {isRecordingComplete && (
+      {isRecordingComplete && (
         <Box
           sx={{
             display: "flex",
@@ -238,7 +240,7 @@ const Mechanics7 = ({
             }}
           />
         </Box>
-      )} */}
+      )}
       <Box sx={{ display: "flex", justifyContent: "center", mb: 8, mt: 2 }}>
         <Box
           sx={{
@@ -439,9 +441,9 @@ const Mechanics7 = ({
       {
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <VoiceAnalyser
-            pageName={"m4"}
+            pageName={"m7"}
             setVoiceText={setVoiceText}
-            //onAudioProcessed={handleRecordingComplete}
+            onAudioProcessed={handleRecordingComplete}
             setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
             storyLine={storyLine}

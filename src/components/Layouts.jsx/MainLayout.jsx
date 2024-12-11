@@ -129,6 +129,8 @@ const MainLayout = (props) => {
     loading,
     storedData,
     resetStoredData,
+    isRecordingComplete,
+    answer,
   } = props;
 
   const [shake, setShake] = useState(false);
@@ -163,6 +165,12 @@ const MainLayout = (props) => {
       setAudioPlaying(null);
     }
   };
+
+  useEffect(() => {
+    if (isRecordingComplete && answer) {
+      callConfettiSnow();
+    }
+  }, []);
 
   useEffect(() => {
     if (isShowCase && gameOverData) {
@@ -325,6 +333,11 @@ const MainLayout = (props) => {
                 mt: "50px",
               }}
             >
+              <Box>
+                {isRecordingComplete && answer && (
+                  <Confetti width={width} height={"600px"} />
+                )}
+              </Box>
               <CardContent
                 sx={{
                   minHeight: "100%",
@@ -1185,6 +1198,8 @@ const MainLayout = (props) => {
 MainLayout.propTypes = {
   contentType: PropTypes.string,
   handleBack: PropTypes.func,
+  isRecordingComplete: PropTypes.bool,
+  answer: PropTypes.string,
   disableScreen: PropTypes.bool,
   isShowCase: PropTypes.bool,
   showProgress: PropTypes.bool,
