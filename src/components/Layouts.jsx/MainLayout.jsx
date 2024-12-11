@@ -135,7 +135,7 @@ const MainLayout = (props) => {
   const [audioPlaying, setAudioPlaying] = useState(null);
   const audioRefs = useRef([]);
 
-  //console.log('Main Layout Array', storedData, pageName);
+  console.log("Main Layout Array", LEVEL, props.pageName);
 
   const handleAudioPlay = (index) => {
     const audioElem = audioRefs.current[index];
@@ -509,7 +509,8 @@ const MainLayout = (props) => {
                                         fontFamily: "Quicksand",
                                       }}
                                     >
-                                      {elem.name}
+                                      {/* {elem.name} */}
+                                      {LEVEL === 1 ? elem.title : elem.name}
                                     </span>
                                   )}
                                 </Box>
@@ -1053,7 +1054,8 @@ const MainLayout = (props) => {
                                           fontFamily: "Quicksand",
                                         }}
                                       >
-                                        {elem.name}
+                                        {/* {elem.name} */}
+                                        {LEVEL === 1 ? elem.title : elem.name}
                                       </span>
                                     )}
                                   </Box>

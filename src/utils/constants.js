@@ -1452,6 +1452,22 @@ export const LevelSeven = (props) => (
   </svg>
 );
 
+export const WordRedCircle = (props) => (
+  <svg
+    width={props.width || 411}
+    height={props.height || 200}
+    viewBox="0 0 411 200"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M3.02253 149.72C39.9332 241.843 394.604 194.311 409.612 108.803C433.265 -25.9514 110.563 -13.701 64.5675 30.4006C62.864 32.0339 63.1427 35.0512 64.5675 34.4024C189.212 -22.3579 416.242 13.4951 397.009 108.803C374.83 181.408 11.4522 233.349 9.97905 133.386C9.00908 67.5673 171.698 5.57303 289.387 25.337C292.906 24.5203 290.136 20.9491 286.277 20.1918C160.077 -0.900771 -24.8327 61.8263 3.02253 149.72Z"
+      fill="#FF4B4B"
+    />
+  </svg>
+);
+
 export const LevelEight = (props) => (
   <svg
     width={117}
@@ -3316,16 +3332,16 @@ export const SessionID = "13900744731701973109305";
 export const UserID = "1390074473";
 
 export const practiceSteps = [
-  { name: "P1", fullName: "Practice 1" },
-  { name: "P2", fullName: "Practice 2" },
-  { name: "P3", fullName: "Practice 3" },
-  { name: "P4", fullName: "Practice 4" },
-  { name: "S1", fullName: "Showcase 1" },
-  { name: "P5", fullName: "Practice 5" },
-  { name: "P6", fullName: "Practice 6" },
-  { name: "P7", fullName: "Practice 7" },
-  { name: "P8", fullName: "Practice 8" },
-  { name: "S2", fullName: "Showcase 2" },
+  { name: "P1", fullName: "Practice 1", title: "L1" },
+  { name: "P2", fullName: "Practice 2", title: "L2" },
+  { name: "P3", fullName: "Practice 3", title: "P1" },
+  { name: "P4", fullName: "Practice 4", title: "P2" },
+  { name: "S1", fullName: "Showcase 1", title: "S1" },
+  { name: "P5", fullName: "Practice 5", title: "L3" },
+  { name: "P6", fullName: "Practice 6", title: "L4" },
+  { name: "P7", fullName: "Practice 7", title: "P3" },
+  { name: "P8", fullName: "Practice 8", title: "P4" },
+  { name: "S2", fullName: "Showcase 2", title: "S2" },
 ];
 
 export const levelGetContent = {
@@ -3342,19 +3358,49 @@ export const levelGetContent = {
     { title: "S2", criteria: "word", template: "simple", tags: "CEFR_ENG" },
   ],
   1: [
-    { title: "P1", criteria: "word", template: "simple", tags: "CEFR_ENG" },
-    { title: "P2", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+    {
+      title: "P1",
+      criteria: "word",
+      template: "simple",
+      tags: "CEFR_ENG",
+      mechanism: { id: "mechanic_7", name: "formAWord2" },
+    },
+    {
+      title: "P2",
+      criteria: "word",
+      template: "simple",
+      tags: "CEFR_ENG",
+      mechanism: { id: "mechanic_7", name: "formAWord2" },
+    },
     { title: "P3", criteria: "word", template: "simple", tags: "CEFR_ENG" },
     { title: "P4", criteria: "word", template: "simple", tags: "CEFR_ENG" },
     { title: "S1", criteria: "word", template: "simple", tags: "CEFR_ENG" },
-    { title: "P5", criteria: "word", template: "simple", tags: "CEFR_ENG" },
-    { title: "P6", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+    {
+      title: "P5",
+      criteria: "word",
+      template: "simple",
+      tags: "CEFR_ENG",
+      mechanism: { id: "mechanic_7", name: "formAWord2" },
+    },
+    {
+      title: "P6",
+      criteria: "word",
+      template: "simple",
+      tags: "CEFR_ENG",
+      mechanism: { id: "mechanic_7", name: "formAWord2" },
+    },
     { title: "P7", criteria: "word", template: "simple", tags: "CEFR_ENG" },
     { title: "P8", criteria: "word", template: "simple", tags: "CEFR_ENG" },
     { title: "S2", criteria: "word", template: "simple", tags: "CEFR_ENG" },
   ],
   2: [
-    { title: "P1", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+    {
+      title: "P1",
+      criteria: "word",
+      template: "simple",
+      tags: "CEFR_ENG",
+      mechanism: { id: "mechanic_7", name: "formAWord2" },
+    },
     { title: "P2", criteria: "word", template: "simple", tags: "CEFR_ENG" },
     {
       title: "P3",

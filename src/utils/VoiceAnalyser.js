@@ -256,6 +256,7 @@ function VoiceAnalyser(props) {
         reader.onload = function (e) {
           let base64Data = e.target.result.split(",")[1];
           setRecordedAudioBase64(base64Data);
+          props.onAudioProcessed(base64Data);
         };
       };
       request.send();
@@ -741,6 +742,7 @@ function VoiceAnalyser(props) {
 
 VoiceAnalyser.propTypes = {
   enableNext: PropTypes.bool.isRequired,
+  onAudioProcessed: PropTypes.string,
   setIsNextButtonCalled: PropTypes.func,
   handleNext: PropTypes.func.isRequired,
   originalText: PropTypes.string,

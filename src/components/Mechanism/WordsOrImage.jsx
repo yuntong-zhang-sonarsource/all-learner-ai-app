@@ -55,7 +55,7 @@ const WordsOrImage = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [storedData, setStoredData] = useState([]);
 
-  //console.log('wordsORimage', words, storedData);
+  console.log("wordsORimage", level);
 
   const updateStoredData = (audio, isCorrect) => {
     if (audio && words) {

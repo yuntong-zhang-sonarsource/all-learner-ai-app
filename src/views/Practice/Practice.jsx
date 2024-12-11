@@ -22,6 +22,7 @@ import config from "../../utils/urlConstants.json";
 import { MessageDialog } from "../../components/Assesment/Assesment";
 import { Log } from "../../services/telementryService";
 import Mechanics6 from "../../components/Practice/Mechanics6";
+import Mechanics7 from "../../components/Practice/Mechanics7";
 
 const Practice = () => {
   const [page, setPage] = useState("");
@@ -57,6 +58,8 @@ const Practice = () => {
   const [percentage, setPercentage] = useState("");
   const [fluency, setFluency] = useState(false);
   const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
+
+  console.log("mechanism", mechanism);
 
   const gameOver = (data, isUserPass) => {
     const userWon = isUserPass;
@@ -397,6 +400,8 @@ const Practice = () => {
   };
 
   const fetchDetails = async () => {
+    console.log("calling....");
+
     let quesArr = [];
     try {
       setLoading(true);
@@ -480,6 +485,7 @@ const Practice = () => {
 
       setQuestions(quesArr);
       setMechanism(currentGetContent.mechanism);
+      console.log("mech ->", currentGetContent);
 
       let showcaseLevel = userState === 4 || userState === 9;
       setIsShowCase(showcaseLevel);
@@ -733,7 +739,7 @@ const Practice = () => {
       return (
         <WordsOrImage
           {...{
-            level: !isShowCase && level,
+            level: level,
             header:
               questions[currentQuestion]?.contentType === "image"
                 ? `Guess the below image`
@@ -850,6 +856,67 @@ const Practice = () => {
                 : `Speak the below ${questions[currentQuestion]?.contentType}`,
             parentWords:
               questions[currentQuestion]?.contentSourceData?.[0]?.text,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (mechanism.name === "formAWord2") {
+      return (
+        <Mechanics7
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below ${questions[currentQuestion]?.contentType}`,
+            parentWords: questions[currentQuestion]?.contentSourceData?.[0]
+              ?.text
+              ? [
+                  questions[
+                    currentQuestion
+                  ]?.contentSourceData?.[0]?.text?.slice(
+                    0,
+                    questions[currentQuestion]?.contentSourceData?.[0]?.text
+                      ?.length / 2
+                  ),
+                  questions[
+                    currentQuestion
+                  ]?.contentSourceData?.[0]?.text?.slice(
+                    questions[currentQuestion]?.contentSourceData?.[0]?.text
+                      ?.length / 2,
+                    questions[currentQuestion]?.contentSourceData?.[0]?.text
+                      ?.length
+                  ),
+                ].join(" ")
+              : "",
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
