@@ -256,7 +256,7 @@ function VoiceAnalyser(props) {
         reader.onload = function (e) {
           let base64Data = e.target.result.split(",")[1];
           setRecordedAudioBase64(base64Data);
-          props.onAudioProcessed(base64Data);
+          //props.onAudioProcessed(base64Data);
         };
       };
       request.send();
@@ -264,6 +264,7 @@ function VoiceAnalyser(props) {
       setLoader(false);
       setRecordedAudioBase64("");
       setApiResponse("");
+      //props.onAudioProcessed("");
     }
   }, [recordedAudio]);
 
@@ -726,8 +727,10 @@ function VoiceAnalyser(props) {
               onClick={() => {
                 if (props.setIsNextButtonCalled) {
                   props.setIsNextButtonCalled(true);
+                  //props.onAudioProcessed("");
                 } else {
                   props.handleNext();
+                  //props.onAudioProcessed("");
                 }
               }}
             >
@@ -742,7 +745,7 @@ function VoiceAnalyser(props) {
 
 VoiceAnalyser.propTypes = {
   enableNext: PropTypes.bool.isRequired,
-  onAudioProcessed: PropTypes.string,
+  //onAudioProcessed: PropTypes.func,
   setIsNextButtonCalled: PropTypes.func,
   handleNext: PropTypes.func.isRequired,
   originalText: PropTypes.string,
