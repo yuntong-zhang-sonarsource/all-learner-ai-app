@@ -4216,6 +4216,7 @@ export const levelConfig = {
 
 const AllLanguages = [
   { name: "தமிழ்", lang: "ta", symbol: "இ", offline: false },
+  { name: "தமிழ் offline", lang: "ta", symbol: "இ", offline: true },
   { name: "English", lang: "en", symbol: "A", offline: false },
   { name: "English-Offline", lang: "en", symbol: "A", offline: true },
   { name: "हिंदी", lang: "hi", symbol: "क", offline: false },
