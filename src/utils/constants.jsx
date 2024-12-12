@@ -4229,18 +4229,18 @@ export const offlineModelsInfo = [
   {
     modelName: "english",
     lang: "en",
-    modelURL: "./models/ggml-model-whisper-base.en-q5_1.bin",
+    modelURL: "./models/english.quant.bin",
   },
-  { modelName: "kannada", lang: "kn", modelURL: "/models/kannada.quant.onnx" },
-  { modelName: "tamil", lang: "ta", modelURL: "/models/tamil.quant.onnx" },
+  { modelName: "kannada", lang: "kn", modelURL: "/models/kannada.quant.onnx", vacabFileName: "kannada.vocab" ,vocabUrl: "/models/kannada.vocab"},
+  { modelName: "tamil", lang: "ta", modelURL: "/models/tamil.quant.onnx", vacabFileName: "tamil.vocab", vocabUrl: "/models/tamil.vocab" },
 ];
 
-const appLanguages = process.env.REACT_APP_LANGUAGES
-  ? JSON.parse(process.env.REACT_APP_LANGUAGES)
+const appLanguages = import.meta.env.VITE_APP_LANGUAGES
+  ? JSON.parse(import.meta.env.VITE_APP_LANGUAGES)
   : [];
 
-const offlineLanguages = process.env.REACT_APP_ASR_OFFLINE_LANGUAGUAGES
-  ? JSON.parse(process.env.REACT_APP_ASR_OFFLINE_LANGUAGUAGES)
+const offlineLanguages = import.meta.env.VITE_APP_ASR_OFFLINE_LANGUAGUAGES
+  ? JSON.parse(import.meta.env.VITE_APP_ASR_OFFLINE_LANGUAGUAGES)
   : [];
 
 export const languages = AllLanguages.filter((lang) => {

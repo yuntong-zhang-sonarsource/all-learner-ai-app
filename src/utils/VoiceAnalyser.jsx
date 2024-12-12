@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, CircularProgress } from "../../node_modules/@mui/material/index";
-import axios from "../../node_modules/axios/index";
-import calcCER from "../../node_modules/character-error-rate/index";
+import { Box, CircularProgress } from "@mui/material";
+import axios from "axios";
+import calcCER from "character-error-rate";
 import s1 from "../assets/audio/S1.m4a";
 import s2 from "../assets/audio/S2.m4a";
 import s3 from "../assets/audio/S3.m4a";
@@ -79,7 +79,7 @@ function VoiceAnalyser(props) {
   const lang = getLocalData("lang");
   const { livesData, setLivesData } = props;
   const [isAudioPreprocessing, setIsAudioPreprocessing] = useState(
-    process.env.REACT_APP_IS_AUDIOPREPROCESSING === "true"
+    import.meta.env.VITE_APP_IS_AUDIOPREPROCESSING === "true"
   );
   const [isMatching, setIsMatching] = useState(false);
 
@@ -91,6 +91,8 @@ function VoiceAnalyser(props) {
     }
   }, [props.enableNext]);
   const [nonDenoisedText, setNonDenoisedText] = useState("");
+  const [nonDenoisedTextTokens, setNonDenoisedTextTokens] = useState([]);
+  const [denoisedTextTokens, setDenoisedTextTokens] = useState([]);
   const [denoisedText, setDenoisedText] = useState("");
   const [isOfflineModel, setIsOfflineModel] = useState(
     localStorage.getItem("isOfflineModel") === "true"
@@ -103,8 +105,183 @@ function VoiceAnalyser(props) {
     //   console.log("FFmpeg is still loading...");
     //   return;
     // }
-
     console.log(recordedBlob);
+    try {
+      let nondenoisedBlob;
+      let nonDenoisedRes;
+      let newDenoisedUrl;
+
+
+      if (callUpdateLearner && isOfflineModel) {
+        try {
+          if(isOfflineModel && lang === 'en') {
+            await ffmpeg.FS(
+              "writeFile",
+              "recorded.webm",
+              await fetchFile(recordedBlob)
+            );
+    
+            let nondenoiseddata;
+            try {
+              nondenoiseddata = ffmpeg.FS("readFile", "recorded.webm");
+            } catch (error) {
+              console.error("Error reading recorded file:", error);
+              return;
+            }
+            nondenoisedBlob = new Blob([nondenoiseddata.buffer], {
+              type: "audio/webm",
+            });
+    
+            nonDenoisedRes = await getResponseText(nondenoisedBlob);
+          
+          }else{
+            const transcodedArrayBuffer = await transcodeFile(recordedBlob, "webm",false);
+        
+            const byteArray = new Uint8Array(transcodedArrayBuffer);
+                  const processed_data = wasm.run_preprocessor(byteArray);
+                  const logits = await runModel(processed_data);
+                  let vocab = window.offlineVocab;
+                  let topK = 2;
+                  const batch_size = 1;
+                  const vocab_size = vocab.length - 1;
+                  const time_steps = logits.length / (vocab_size * batch_size);
+                  const offset = Number(vocab[0]);
+                  const actual_vocab_size = Number(vocab[1]);
+              
+                  let output;
+                  if (topK > 1) {
+                    output = wasm.decode_logprobs_topk(
+                      logits,
+                      new Uint32Array([batch_size, time_steps, vocab_size]),
+                      vocab.slice(2),
+                      offset,
+                      actual_vocab_size,
+                      topK
+                    );
+                  } else {
+                    output = wasm.decode_logprobs(
+                      logits,
+                      new Uint32Array([batch_size, time_steps, vocab_size]),
+                      vocab.slice(2),
+                      offset,
+                      actual_vocab_size
+                    );
+                  }
+    
+                  console.log(output);
+                  nonDenoisedRes = output[0].text;
+                  setNonDenoisedTextTokens([...nonDenoisedTextTokens,output]);
+          }
+
+
+          nonDenoisedRes = await filterBadWords(nonDenoisedRes);
+          setNonDenoisedText(nonDenoisedRes);
+          console.log("non denoised output -- ", nonDenoisedRes);
+          console.log(fuzz.ratio(props.originalText, nonDenoisedRes));
+        } catch (error) {
+          console.error("Error getting non denoised text:", error);
+        }
+      }
+
+
+
+      let denoisedRes;
+
+
+      if (callUpdateLearner && isOfflineModel) {
+        try {
+          await ffmpeg.FS(
+            "writeFile",
+            "cb.rnnn",
+            await fetchFile(rnnoiseModelPath)
+          );
+    
+          await ffmpeg.run(
+            "-i",
+            "recorded.webm",
+            "-af",
+            "arnndn=m=cb.rnnn",
+            "output.wav"
+          );
+    
+          let data;
+          try {
+            data = ffmpeg.FS("readFile", "output.wav");
+          } catch (error) {
+            console.error("Error reading output file:", error);
+            return;
+          }
+          const denoisedBlob = new Blob([data.buffer], { type: "audio/wav" });
+          newDenoisedUrl = URL.createObjectURL(denoisedBlob);
+
+          if(isOfflineModel && lang !== 'en') {
+            const transcodedArrayBuffer = await transcodeFile(recordedBlob, "webm",true);
+        
+            const byteArray = new Uint8Array(transcodedArrayBuffer);
+                  const processed_data = wasm.run_preprocessor(byteArray);
+                  const logits = await runModel(processed_data);
+                  let vocab = window.offlineVocab;
+                  let topK = 2;
+                  const batch_size = 1;
+                  const vocab_size = vocab.length - 1;
+                  const time_steps = logits.length / (vocab_size * batch_size);
+                  const offset = Number(vocab[0]);
+                  const actual_vocab_size = Number(vocab[1]);
+              
+                  let output;
+                  if (topK > 1) {
+                    output = wasm.decode_logprobs_topk(
+                      logits,
+                      new Uint32Array([batch_size, time_steps, vocab_size]),
+                      vocab.slice(2),
+                      offset,
+                      actual_vocab_size,
+                      topK
+                    );
+                  } else {
+                    output = wasm.decode_logprobs(
+                      logits,
+                      new Uint32Array([batch_size, time_steps, vocab_size]),
+                      vocab.slice(2),
+                      offset,
+                      actual_vocab_size
+                    );
+                  }
+    
+                  denoisedRes = output[0].text;
+                  setDenoisedTextTokens([...denoisedTextTokens,output]);
+          }else{
+            denoisedRes = await getResponseText(denoisedBlob);
+          }
+
+          denoisedRes = await filterBadWords(denoisedRes);
+          setDenoisedText(denoisedRes);
+          console.log("denoised output -- ", denoisedRes);
+          console.log(fuzz.ratio(props.originalText, denoisedRes));
+        } catch (error) {
+          console.error("Error getting denoised text:", error);
+        }
+      }
+
+      if(newDenoisedUrl === undefined){
+        newDenoisedUrl = recordedBlob;
+      }
+      setRecordedAudio((prevUrl) => {
+        if (prevUrl) {
+          URL.revokeObjectURL(prevUrl); // Clean up the previous URL
+        }
+        return newDenoisedUrl;
+      });
+
+      console.log("Denoised URL:", newDenoisedUrl);
+
+    } catch (error) {
+      console.error("Error processing audio:", error);
+    }
+    setLoader(false);
+  };
+
+  const transcodeFile = async (recordedBlob, inputType, isDenoised) => {
 
     const blobResponse = await fetch(recordedBlob);
 
@@ -117,98 +294,8 @@ function VoiceAnalyser(props) {
     const audioBlob = await blobResponse.blob();
 
     // Convert the Blob to ArrayBuffer
-    const arrayBuffer = await audioBlob.arrayBuffer();
+    const fileBuffer = await audioBlob.arrayBuffer();
 
-    try {
-      await ffmpeg.FS(
-        "writeFile",
-        "recorded.webm",
-        await fetchFile(recordedBlob)
-      );
-
-      let nondenoiseddata;
-      try {
-        nondenoiseddata = ffmpeg.FS("readFile", "recorded.webm");
-      } catch (error) {
-        console.error("Error reading recorded file:", error);
-        return;
-      }
-      const nondenoisedBlob = new Blob([nondenoiseddata.buffer], {
-        type: "audio/webm",
-      });
-
-      const transcodedArrayBuffer = await transcodeFile(arrayBuffer, "webm");
-      console.log(transcodedArrayBuffer);
-
-      if (callUpdateLearner) {
-        try {
-          console.log(window.wasm);
-          const byteArray = new Uint8Array(transcodedArrayBuffer);
-          console.log(byteArray);
-          const processed_data = window.wasm.run_preprocessor(byteArray);
-          console.log("Processed data -- ", processed_data);
-
-          let nonDenoisedRes = await getResponseText(nondenoisedBlob);
-          nonDenoisedRes = await filterBadWords(nonDenoisedRes);
-          setNonDenoisedText(nonDenoisedRes);
-          console.log("non denoised output -- ", nonDenoisedRes);
-          console.log(fuzz.ratio(props.originalText, nonDenoisedRes));
-        } catch (error) {
-          console.error("Error getting non denoised text:", error);
-        }
-      }
-
-      await ffmpeg.FS(
-        "writeFile",
-        "cb.rnnn",
-        await fetchFile(rnnoiseModelPath)
-      );
-
-      await ffmpeg.run(
-        "-i",
-        "recorded.webm",
-        "-af",
-        "arnndn=m=cb.rnnn",
-        "output.wav"
-      );
-
-      let data;
-      try {
-        data = ffmpeg.FS("readFile", "output.wav");
-      } catch (error) {
-        console.error("Error reading output file:", error);
-        return;
-      }
-      const denoisedBlob = new Blob([data.buffer], { type: "audio/wav" });
-      const newDenoisedUrl = URL.createObjectURL(denoisedBlob);
-
-      if (callUpdateLearner) {
-        try {
-          let denoisedRes = await getResponseText(denoisedBlob);
-          denoisedRes = await filterBadWords(denoisedRes);
-          setDenoisedText(denoisedRes);
-          console.log("denoised output -- ", denoisedRes);
-          console.log(fuzz.ratio(props.originalText, denoisedRes));
-        } catch (error) {
-          console.error("Error getting denoised text:", error);
-        }
-      }
-
-      setRecordedAudio((prevUrl) => {
-        if (prevUrl) {
-          URL.revokeObjectURL(prevUrl); // Clean up the previous URL
-        }
-        return newDenoisedUrl;
-      });
-
-      console.log("Denoised URL:", newDenoisedUrl);
-    } catch (error) {
-      console.error("Error processing audio:", error);
-    }
-    setLoader(false);
-  };
-
-  const transcodeFile = async (fileBuffer, inputType) => {
     // await ffmpeg.writeFile(`input.${inputType}`, new Uint8Array(fileBuffer));
     await ffmpeg.FS(
       "writeFile",
@@ -216,6 +303,7 @@ function VoiceAnalyser(props) {
       new Uint8Array(fileBuffer)
     );
     // "-acodec pcm_s16le -ar 44100 -ac 2"
+    if(!isDenoised){
     await ffmpeg.run(
       "-i",
       `input.${inputType}`,
@@ -227,10 +315,52 @@ function VoiceAnalyser(props) {
       "1",
       "output.wav"
     );
+    }else{
+      await ffmpeg.run(
+        "-i",
+        `input.${inputType}`,
+        "-acodec",
+        "pcm_s16le",
+        "-ar",
+        "16000",
+        "-ac",
+        "1",
+        "-af",
+        "arnndn=m=cb.rnnn",
+        "output.wav"
+      );
+    }
 
     // @ts-ignore
     const outData = await ffmpeg.FS("readFile", "output.wav");
     return outData.buffer;
+  };
+
+  const runModel = async (data) => {
+    const data_length = data[0][0].length;
+    const i = data.length;
+    const j = data[0].length;
+    const k = data[0][0].length;
+    const arr = [];
+    for (let a = 0; a < i; a++) {
+      for (let b = 0; b < j; b++) {
+        for (let c = 0; c < k; c++) {
+          arr.push(data[a][b][c]);
+        }
+      }
+    }
+    const audio_tensor = new window.ort.Tensor(
+      "float32",
+      new Float32Array(arr),
+      [i, j, k]
+    );
+    const audio_tensor_length = new window.ort.Tensor(
+      "int64",
+      new BigInt64Array([BigInt(data_length)])
+    );
+    const feeds = { audio_signal: audio_tensor, length: audio_tensor_length };
+    const results = await window.offlineSession.run(feeds);
+    return results.logprobs.cpuData;
   };
 
   const getResponseText = async (audioBlob) => {
@@ -377,7 +507,7 @@ function VoiceAnalyser(props) {
       let audio = new Audio(
         audioLink
           ? audioLink
-          : `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${props.contentId}.wav`
+          : `${import.meta.env.VITE_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${props.contentId}.wav`
       );
       audio.crossOrigin = "anonymous";
       audio.addEventListener("canplaythrough", () => {
@@ -613,6 +743,7 @@ function VoiceAnalyser(props) {
       const responseStartTime = new Date().getTime();
       let responseText = "";
       let profanityWord = "";
+      let topkTokens
       let newThresholdPercentage = 0;
       let data = {};
 
@@ -625,8 +756,10 @@ function VoiceAnalyser(props) {
         fuzz.ratio(originalText, denoisedText)
       ) {
         response_text = nonDenoisedText;
+        topkTokens = nonDenoisedTextTokens[0] || [];
       } else {
         response_text = denoisedText;
+        topkTokens = denoisedTextTokens[0] || [];
       }
 
       let requestBody = {
@@ -644,6 +777,10 @@ function VoiceAnalyser(props) {
         contentType,
       };
 
+      if(topkTokens.length > 0) {
+      requestBody.output= topkTokens
+      }
+
       if (props.selectedOption) {
         requestBody["is_correct_choice"] = props.selectedOption?.isAns;
       }
@@ -654,7 +791,7 @@ function VoiceAnalyser(props) {
 
       if (callUpdateLearner) {
         const { data: updateLearnerData } = await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.UPDATE_LEARNER_PROFILE}/${lang}`,
+          `${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/${config.URLS.UPDATE_LEARNER_PROFILE}/${lang}`,
           requestBody
         );
 
@@ -750,16 +887,16 @@ function VoiceAnalyser(props) {
 
       let word_result = finalScore === 100 ? "correct" : "incorrect";
 
-      // TODO: Remove false when REACT_APP_AWS_S3_BUCKET_NAME and keys added
+      // TODO: Remove false when VITE_APP_AWS_S3_BUCKET_NAME and keys added
       let audioFileName = "";
-      if (process.env.REACT_APP_CAPTURE_AUDIO === "true") {
+      if (import.meta.env.VITE_APP_CAPTURE_AUDIO === "true") {
         let getContentId = currentLine;
         audioFileName = `${
-          process.env.REACT_APP_CHANNEL
+          import.meta.env.VITE_APP_CHANNEL
         }/${sessionId}-${Date.now()}-${getContentId}.wav`;
 
         const command = new PutObjectCommand({
-          Bucket: process.env.REACT_APP_AWS_S3_BUCKET_NAME,
+          Bucket: import.meta.env.VITE_APP_AWS_S3_BUCKET_NAME,
           Key: audioFileName,
           Body: Uint8Array.from(window.atob(base64Data), (c) =>
             c.charCodeAt(0)
@@ -775,7 +912,7 @@ function VoiceAnalyser(props) {
         {
           // Required
           target:
-            process.env.REACT_APP_CAPTURE_AUDIO === "true"
+            import.meta.env.VITE_APP_CAPTURE_AUDIO === "true"
               ? `${audioFileName}`
               : "", // Required. Target of the response
           //"qid": "", // Required. Unique assessment/question id

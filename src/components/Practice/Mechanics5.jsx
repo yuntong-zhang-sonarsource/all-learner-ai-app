@@ -340,7 +340,7 @@ const Mechanics5 = ({
                   onPause={() => setPlayingIndex(null)}
                 >
                   <source
-                    src={`${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/${option.audio_url}`}
+                    src={`${import.meta.env.VITE_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/${option.audio_url}`}
                     type="audio/wav"
                   />
                 </audio>

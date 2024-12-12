@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../../node_modules/axios/index";
+import axios from "axios";
 import elephant from "../../assets/images/elephant.svg";
 import {
   callConfetti,
@@ -69,7 +69,7 @@ const SpeakSentenceComponent = () => {
         const virtualId = getLocalData("virtualId");
         const lang = getLocalData("lang");
         const getPointersDetails = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
+          `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
         );
         setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
       })();
@@ -100,7 +100,7 @@ const SpeakSentenceComponent = () => {
   }, [voiceText]);
 
   const send = (score) => {
-    if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+    if (import.meta.env.VITE_APP_IS_APP_IFRAME === "true") {
       window.parent.postMessage(
         {
           score: score,
@@ -120,7 +120,7 @@ const SpeakSentenceComponent = () => {
 
       if (!(localStorage.getItem("contentSessionId") !== null)) {
         const pointsRes = await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
+          `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
           {
             userId: localStorage.getItem("virtualId"),
             sessionId: localStorage.getItem("sessionId"),
@@ -136,7 +136,7 @@ const SpeakSentenceComponent = () => {
       }
 
       await axios.post(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
+        `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
         {
           userId: localStorage.getItem("virtualId"),
           sessionId: localStorage.getItem("sessionId"),
@@ -153,7 +153,7 @@ const SpeakSentenceComponent = () => {
       } else if (currentQuestion === questions.length - 1) {
         const sub_session_id = getLocalData("sub_session_id");
         const getSetResultRes = await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_SET_RESULT}`,
+          `${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_SET_RESULT}`,
           {
             sub_session_id: sub_session_id,
             contentType: currentContentType,
@@ -168,9 +168,9 @@ const SpeakSentenceComponent = () => {
         const { data: getSetData } = getSetResultRes;
         const data = JSON.stringify(getSetData?.data);
         Log(data, "discovery", "ET");
-        if (process.env.REACT_APP_POST_LEARNER_PROGRESS === "true") {
+        if (import.meta.env.VITE_APP_POST_LEARNER_PROGRESS === "true") {
           await axios.post(
-            `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.CREATE_LEARNER_PROGRESS}`,
+            `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.CREATE_LEARNER_PROGRESS}`,
             {
               userId: localStorage.getItem("virtualId"),
               sessionId: localStorage.getItem("sessionId"),
@@ -193,7 +193,7 @@ const SpeakSentenceComponent = () => {
             (elem) => elem.category === "Sentence"
           );
           const resSentencesPagination = await axios.get(
-            `${process.env.REACT_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_PAGINATION}?page=1&limit=5&collectionId=${sentences?.[newSentencePassedCounter]?.collectionId}`
+            `${import.meta.env.VITE_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_PAGINATION}?page=1&limit=5&collectionId=${sentences?.[newSentencePassedCounter]?.collectionId}`
           );
           setCurrentContentType("Sentence");
           setTotalSyllableCount(
@@ -219,7 +219,7 @@ const SpeakSentenceComponent = () => {
             (elem) => elem.category === "Word"
           );
           const resWordsPagination = await axios.get(
-            `${process.env.REACT_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_PAGINATION}?page=1&limit=5&collectionId=${words?.collectionId}`
+            `${import.meta.env.VITE_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_PAGINATION}?page=1&limit=5&collectionId=${words?.collectionId}`
           );
           setCurrentContentType("Word");
           setTotalSyllableCount(resWordsPagination?.data?.totalSyllableCount);
@@ -237,7 +237,7 @@ const SpeakSentenceComponent = () => {
           //   (elem) => elem.category === "Char"
           // );
           // const resCharPagination = await axios.get(
-          //   `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/content-service/v1/content/pagination?page=1&limit=5&collectionId=${char?.content?.[0]?.collectionId}`
+          //   `${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/content-service/v1/content/pagination?page=1&limit=5&collectionId=${char?.content?.[0]?.collectionId}`
           // );
           // setCurrentContentType("Char");
           // setCurrentCollectionId(char?.content?.[0]?.collectionId);
@@ -257,15 +257,15 @@ const SpeakSentenceComponent = () => {
     (async () => {
       let quesArr = [];
       try {
-        // const resSentence = await axios.get(`${process.env.REACT_APP_LEARNER_AI_APP_HOST}/scores/GetContent/sentence/${UserID}`);
+        // const resSentence = await axios.get(`${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/scores/GetContent/sentence/${UserID}`);
         // quesArr = [...quesArr, ...(resSentence?.data?.content?.splice(0, 5) || [])];
-        // const resWord = await axios.get(`${process.env.REACT_APP_LEARNER_AI_APP_HOST}/scores/GetContent/word/${UserID}`);
+        // const resWord = await axios.get(`${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/scores/GetContent/word/${UserID}`);
         // quesArr = [...quesArr, ...(resWord?.data?.content?.splice(0, 5) || [])];
-        // const resPara = await axios.get(`${process.env.REACT_APP_LEARNER_AI_APP_HOST}/scores/GetContent/paragraph/${UserID}`);
+        // const resPara = await axios.get(`${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/scores/GetContent/paragraph/${UserID}`);
         // quesArr = [...quesArr, ...(resPara?.data?.content || [])];
         const lang = getLocalData("lang");
         const resAssessment = await axios.post(
-          `${process.env.REACT_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_ASSESSMENT}`,
+          `${import.meta.env.VITE_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_ASSESSMENT}`,
           {
             ...{ tags: ["ASER"], language: lang },
           }
@@ -276,7 +276,7 @@ const SpeakSentenceComponent = () => {
         );
 
         const resPagination = await axios.get(
-          `${process.env.REACT_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_PAGINATION}?page=1&limit=5&collectionId=${sentences?.collectionId}`
+          `${import.meta.env.VITE_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_PAGINATION}?page=1&limit=5&collectionId=${sentences?.collectionId}`
         );
         setCurrentContentType("Sentence");
         setTotalSyllableCount(resPagination?.data?.totalSyllableCount);
@@ -295,9 +295,9 @@ const SpeakSentenceComponent = () => {
   }, []);
   const handleBack = () => {
     const destination =
-      process.env.REACT_APP_IS_APP_IFRAME === "true" ? "/" : "/discover-start";
+      import.meta.env.VITE_APP_IS_APP_IFRAME === "true" ? "/" : "/discover-start";
     navigate(destination);
-    // if (process.env.REACT_APP_IS_APP_IFRAME === 'true') {
+    // if (import.meta.env.VITE_APP_IS_APP_IFRAME === 'true') {
     //   navigate("/");
     // } else {
     //   navigate("/discover-start")
