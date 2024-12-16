@@ -831,6 +831,7 @@ const Assesment = ({ discoverStart }) => {
                 lineHeight: { xs: "36px", md: "62px" },
                 textAlign: "center",
               }}
+              fontSize={{ md: "40px", xs: "30px" }}
             >
               {discoverStart
                 ? "Let's test your language skills"
@@ -846,6 +847,7 @@ const Assesment = ({ discoverStart }) => {
                   lineHeight: { xs: "30px", md: "50px" },
                   textAlign: "center",
                 }}
+                fontSize={{ md: "30px", xs: "20px" }}
               >
                 {level > 0
                   ? `Take the assessment to complete Level ${level}.`

@@ -544,6 +544,13 @@ const Practice = () => {
     fetchDetails();
   }, []);
 
+  // useEffect(() => {
+  //   if (state?.refresh) {
+  //     setGameOverData(undefined);
+  //     fetchDetails();
+  //   }
+  // }, [state]);
+
   const handleBack = async () => {
     if (progressData.currentPracticeStep > 0) {
       const virtualId = getLocalData("virtualId");
