@@ -1,10 +1,10 @@
-import { Box, CardContent, Typography } from "@mui/material";
-import { createRef, useState } from "react";
+import { Box, CardContent, Typography, CircularProgress } from "@mui/material";
+import { createRef, useState, useEffect } from "react";
 import v11 from "../../assets/audio/V10.mp3";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import { PlayAudioButton, StopAudioButton } from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
-import { CircularProgress } from "../../../node_modules/@mui/material/index";
+import PropTypes from "prop-types";
 
 const WordsOrImage = ({
   handleNext,
@@ -24,6 +24,8 @@ const WordsOrImage = ({
   currentStep,
   contentId,
   contentType,
+  percentage,
+  fluency,
   level,
   isDiscover,
   progressData,
@@ -41,12 +43,39 @@ const WordsOrImage = ({
   gameOverData,
   highlightWords,
   matchedChar,
+  loading,
+  setOpenMessageDialog,
+  isNextButtonCalled,
+  setIsNextButtonCalled,
 }) => {
   const audioRef = createRef(null);
   const [duration, setDuration] = useState(0);
   const [isReady, setIsReady] = useState(false);
 
   const [isPlaying, setIsPlaying] = useState(false);
+  const [storedData, setStoredData] = useState([]);
+
+  //console.log('wordsORimage', words, storedData);
+
+  const updateStoredData = (audio, isCorrect) => {
+    if (audio && words) {
+      const newEntry = {
+        selectedAnswer: words,
+        audioUrl: audio,
+        correctAnswer: isCorrect,
+      };
+
+      setStoredData((prevData) => [...prevData, newEntry]);
+    }
+  };
+
+  const resetStoredData = () => {
+    setStoredData([]);
+  };
+
+  useEffect(() => {
+    updateStoredData();
+  }, [handleNext]);
 
   const togglePlayPause = () => {
     if (isPlaying) {
@@ -57,11 +86,7 @@ const WordsOrImage = ({
       setIsPlaying(true);
     }
   };
-
   const [currrentProgress, setCurrrentProgress] = useState(0);
-  const progressBarWidth = isNaN(currrentProgress / duration)
-    ? 0
-    : currrentProgress / duration;
 
   return (
     <MainLayout
@@ -70,12 +95,18 @@ const WordsOrImage = ({
       enableNext={enableNext}
       showTimer={showTimer}
       points={points}
+      storedData={storedData}
+      resetStoredData={resetStoredData}
+      pageName={"wordsorimage"}
       {...{
         steps,
         currentStep,
         level,
         progressData,
         showProgress,
+        contentType,
+        percentage,
+        fluency,
         playTeacherAudio,
         handleBack,
         isShowCase,
@@ -84,6 +115,8 @@ const WordsOrImage = ({
         disableScreen,
         livesData,
         gameOverData,
+        loading,
+        setIsNextButtonCalled,
       }}
     >
       <CardContent
@@ -94,11 +127,10 @@ const WordsOrImage = ({
           pointerEvents: disableScreen ? "none" : "initial",
         }}
       >
-        {type == "image" ? (
+        {type === "image" ? (
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <img
               src={image}
-              alt="image"
               style={{
                 maxWidth: "450px",
                 maxHeight: "130px",
@@ -106,7 +138,7 @@ const WordsOrImage = ({
               }}
             />
           </Box>
-        ) : type == "phonics" ? (
+        ) : type === "phonics" ? (
           <Box
             position="relative"
             sx={{
@@ -177,7 +209,6 @@ const WordsOrImage = ({
                   sx={{
                     color: "#333F61",
                     fontSize: "44px",
-                    lineHeight: "normal",
                     letterSpacing: "2.2px",
                     lineHeight: "normal",
                     fontWeight: 600,
@@ -205,15 +236,15 @@ const WordsOrImage = ({
                   mb: 4,
                   color: "#333F61",
                   textAlign: "center",
-                  paddingX: "140px",
-                  lineHeight: "normal",
+                  fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
+                  // lineHeight: "normal",
                   fontWeight: 700,
                   fontFamily: "Quicksand",
                   lineHeight: "50px",
                 }}
                 fontSize={{ md: "40px", xs: "25px" }}
               >
-                {words || ""}
+                {words ? words[0].toUpperCase() + words.slice(1) : ""}
               </Typography>
             )}
             {matchedChar && (
@@ -233,29 +264,80 @@ const WordsOrImage = ({
         )}
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <VoiceAnalyser
+            pageName={"wordsorimage"}
             setVoiceText={setVoiceText}
+            updateStoredData={updateStoredData}
             setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
             storyLine={storyLine}
-            dontShowListen={type == "image" || isDiscover}
+            dontShowListen={type === "image" || isDiscover}
             // updateStory={updateStory}
             originalText={words}
+            handleNext={handleNext}
+            enableNext={enableNext}
+            isShowCase={isShowCase || isDiscover}
             {...{
               contentId,
               contentType,
               currentLine: currentStep - 1,
               playTeacherAudio,
               callUpdateLearner,
-              isShowCase,
               setEnableNext,
               livesData,
               setLivesData,
+              setOpenMessageDialog,
+              isNextButtonCalled,
+              setIsNextButtonCalled,
             }}
           />
         </Box>
       </CardContent>
     </MainLayout>
   );
+};
+
+WordsOrImage.propTypes = {
+  handleNext: PropTypes.func.isRequired,
+  // background: PropTypes.string,
+  header: PropTypes.string,
+  image: PropTypes.string,
+  setVoiceText: PropTypes.func.isRequired,
+  setRecordedAudio: PropTypes.func.isRequired,
+  setVoiceAnimate: PropTypes.func.isRequired,
+  enableNext: PropTypes.bool,
+  showTimer: PropTypes.bool,
+  points: PropTypes.number,
+  currentStep: PropTypes.number.isRequired,
+  percentage: PropTypes.string,
+  fluency: PropTypes.bool,
+  isDiscover: PropTypes.bool,
+  showProgress: PropTypes.bool,
+  callUpdateLearner: PropTypes.bool,
+  disableScreen: PropTypes.bool,
+  isShowCase: PropTypes.bool,
+  handleBack: PropTypes.func.isRequired,
+  setEnableNext: PropTypes.func.isRequired,
+  startShowCase: PropTypes.bool,
+  setStartShowCase: PropTypes.func,
+  setLivesData: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+  setOpenMessageDialog: PropTypes.func.isRequired,
+  isNextButtonCalled: PropTypes.bool,
+  setIsNextButtonCalled: PropTypes.func,
+  background: PropTypes.bool,
+  type: PropTypes.any,
+  words: PropTypes.any,
+  storyLine: PropTypes.number,
+  steps: PropTypes.number,
+  contentId: PropTypes.any,
+  contentType: PropTypes.string,
+  level: PropTypes.any,
+  progressData: PropTypes.object,
+  playTeacherAudio: PropTypes.func,
+  livesData: PropTypes.any,
+  gameOverData: PropTypes.any,
+  highlightWords: PropTypes.func,
+  matchedChar: PropTypes.any,
 };
 
 export default WordsOrImage;

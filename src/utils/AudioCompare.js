@@ -1,308 +1,201 @@
-import React, { Component } from "react";
-import AudioAnalyser from "react-audio-analyser";
-import mic from "../assets/mic.png";
-import listen from "../assets/listen.png";
-import pause from "../assets/pause.png";
-import mic_on from "../assets/mic.png";
+import React, { useState, useEffect, useRef } from "react";
+import RecordRTC from "recordrtc";
 import { Box } from "@mui/material";
 import { ListenButton, RetryIcon, SpeakButton, StopButton } from "./constants";
 import RecordVoiceVisualizer from "./RecordVoiceVisualizer";
+import playButton from "../../src/assets/listen.png";
+import pauseButton from "../../src/assets/pause.png";
 
-export default class AudioRecorderCompair extends Component {
-  MIN_DECIBELS = Number(-45);
-  constructor(props) {
-    super(props);
-    this.state = {
-      status: "",
-      pauseAudio: false,
-      soundDetected: false,
-      stopDetection: false,
+const AudioRecorder = (props) => {
+  const [isRecording, setIsRecording] = useState(false);
+  const [status, setStatus] = useState("");
+  const [audioBlob, setAudioBlob] = useState(null);
+  const recorderRef = useRef(null);
+  const mediaStreamRef = useRef(null);
+
+  useEffect(() => {
+    // Cleanup when component unmounts
+    return () => {
+      if (recorderRef.current) {
+        recorderRef.current.destroy();
+      }
+      if (mediaStreamRef.current) {
+        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+      }
     };
-  }
+  }, []);
 
-  controlAudio(status) {
-    this.setState({
-      status,
-    });
-  }
-
-  changeScheme(e) {
-    this.setState({
-      audioType: e.target.value,
-    });
-  }
-
-  componentDidMount() {
-    this.setState({
-      audioType: "audio/wav",
-    });
-  }
-
-  handleMic() {
-    if (this.props.setEnableNext) {
-      this.props.setEnableNext(false);
+  const startRecording = async () => {
+    setStatus("recording");
+    if (props.setEnableNext) {
+      props.setEnableNext(false);
     }
-
-    if (this.props.isAudioPreprocessing) {
-      this.setState({ soundDetected: false, stopDetection: false });
-      document.getElementById("startaudio_compair").click();
-      this.startSoundDetection();
-    } else {
-      document.getElementById("startaudio_compair").click();
-    }
-  }
-
-  handleStop() {
-    if (this.props.setEnableNext) {
-      this.props.setEnableNext(true);
-    }
-
-    if (this.props.isAudioPreprocessing) {
-      document.getElementById("stopaudio_compair").click();
-      this.setState({ stopDetection: true });
-    } else {
-      document.getElementById("stopaudio_compair").click();
-    }
-  }
-
-  startSoundDetection = async () => {
     try {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-        const mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.start();
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
 
-        const audioChunks = [];
-        mediaRecorder.addEventListener("dataavailable", (event) => {
-          audioChunks.push(event.data);
-        });
-
-        const audioContext = new AudioContext();
-        const audioStreamSource = audioContext.createMediaStreamSource(stream);
-        const analyser = audioContext.createAnalyser();
-        analyser.minDecibels = this.MIN_DECIBELS;
-        audioStreamSource.connect(analyser);
-
-        const bufferLength = analyser.frequencyBinCount;
-        const domainData = new Uint8Array(bufferLength);
-
-        let soundDetected = false;
-
-        const detectSound = () => {
-          if (this.state.stopDetection) {
-            return; // Stop detection if stopDetection is true
-          }
-          if (this.state.soundDetected) {
-            return;
-          }
-
-          analyser.getByteFrequencyData(domainData);
-
-          for (let i = 0; i < bufferLength; i++) {
-            const value = domainData[i];
-
-            if (domainData[i] > 0) {
-              this.setState({ soundDetected: true });
-            }
-          }
-
-          window.requestAnimationFrame(detectSound);
-        };
-
-        window.requestAnimationFrame(detectSound);
-
-        mediaRecorder.addEventListener("stop", () => {
-          const audioBlob = new Blob(audioChunks);
-          const audioUrl = URL.createObjectURL(audioBlob);
-          const audio = new Audio(audioUrl);
-          audio.play();
-
-        });
+      // Use RecordRTC with specific configurations to match the blob structure
+      recorderRef.current = new RecordRTC(stream, {
+        type: "audio",
+        mimeType: "audio/wav", // Ensuring the same MIME type as AudioRecorderCompair
+        recorderType: RecordRTC.StereoAudioRecorder, // Use StereoAudioRecorder for better compatibility
+        numberOfAudioChannels: 1, // Match the same number of audio channels
+        desiredSampRate: 16000, // Adjust the sample rate if necessary to match
+        disableLogs: true,
       });
-    } catch (error) {
-      console.error("Error accessing microphone:", error);
+
+      recorderRef.current.startRecording();
+
+      setIsRecording(true);
+    } catch (err) {
+      console.error("Failed to start recording:", err);
     }
   };
 
-  render() {
-    const { status, audioSrc, audioType, recordingInitialized } = this.state;
-    const audioProps = {
-      audioType,
-      status,
-      audioSrc,
-      timeslice: 1000, // timeslice
-      startCallback: (e) => {
-        this.setState({
-          audioSrc: "",
-        });
-        this.props.setRecordedAudio("");
-        this.setState({
-          recordingInitialized: true,
-        });
-      },
-      pauseCallback: (e) => {
-      },
-      stopCallback: (e) => {
-        let temp_audioSrc = window.URL.createObjectURL(e);
-        this.setState({
-          audioSrc: temp_audioSrc,
-        });
+  const stopRecording = () => {
+    setStatus("inactive");
+    if (recorderRef.current) {
+      recorderRef.current.stopRecording(() => {
+        const blob = recorderRef.current.getBlob();
 
-        if (!this.props.isAudioPreprocessing) {
-          this.props.setRecordedAudio(temp_audioSrc);
+        if (blob) {
+          setAudioBlob(blob);
+          saveBlob(blob); // Persist the blob
         } else {
-          if (this.state.soundDetected) {
-            this.props.setRecordedAudio(temp_audioSrc);
-          } else {
-            alert("Please Speak Louder and Clear");
-          }
+          console.error("Failed to retrieve audio blob.");
         }
 
-        this.setState({
-          recordingInitialized: false,
-        });
-      },
-      onRecordCallback: (e) => {
-      },
-      errorCallback: (err) => {
-      },
-      backgroundColor: "hsla(0, 100%, 0%, 0)",
-      strokeColor: "#73DD24",
-      /* path76 */
-    };
+        // Stop the media stream
+        if (mediaStreamRef.current) {
+          mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+        }
 
-    return (
+        setIsRecording(false);
+      });
+    }
+    if (props.setEnableNext) {
+      props.setEnableNext(true);
+    }
+  };
+
+  const saveBlob = (blob) => {
+    const url = window.URL.createObjectURL(blob);
+    props?.setRecordedAudio(url);
+  };
+
+  return (
+    <div>
       <div>
-        <div>
-          {(() => {
-            if (status === "recording" && recordingInitialized) {
-              return (
-                <div
-                  style={{
-                    display: "flex",
-                    // width: '13%',
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    margin: "0 auto",
-                  }}
+        {(() => {
+          if (status === "recording") {
+            return (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: "0 auto",
+                }}
+              >
+                <Box
+                  sx={{ cursor: "pointer", height: "38px" }}
+                  onClick={stopRecording}
                 >
-                  <Box
-                    sx={{
-                      cursor: "pointer",
-                      height: "38px",
-                    }}
-                    onClick={() => this.handleStop()}
-                  >
-                    <StopButton />
-                  </Box>
-                  <Box style={{ marginTop: "50px", marginBottom: "50px" }}>
-                    <RecordVoiceVisualizer />
-                    {/* <AudioAnalyser {...audioProps}></AudioAnalyser> */}
-                  </Box>
-                </div>
-              );
-            } else {
-              return (
-                <div
-                  style={{
-                    display: "flex",
-                    // width: '13%',
-                    justifyContent: "space-between",
-                    margin: "0 auto",
-                  }}
-                  className="game-action-button"
-                >
-                  {(!this.props.dontShowListen || this.props.recordedAudio) && (
+                  <StopButton />
+                </Box>
+                <Box style={{ marginTop: "50px", marginBottom: "50px" }}>
+                  <RecordVoiceVisualizer />
+                </Box>
+              </div>
+            );
+          } else {
+            return (
+              <div
+                style={{
+                  display: !props.showOnlyListen ? "flex" : "",
+                  justifyContent: "space-between",
+                  margin: "0 auto",
+                }}
+                className="game-action-button"
+              >
+                {props?.originalText &&
+                  (!props.dontShowListen || props.recordedAudio) && (
                     <>
-                      {!this.props.pauseAudio ? (
-                        <div
-                          onClick={() => {
-                            this.props.playAudio(true);
-                          }}
-                        >
-                          <Box sx={{ cursor: "pointer" }}>
-                            <ListenButton />
-                          </Box>
-                        </div>
-                      ) : (
-                        <>
-                          <Box
-                            sx={{ cursor: "pointer" }}
-                            onClick={() => {
-                              this.props.playAudio(false);
-                            }}
-                          >
-                            <StopButton />
-                          </Box>
-                        </>
+                      {!props.isShowCase && (
+                        <Box>
+                          {!props.pauseAudio ? (
+                            <div
+                              onClick={() => {
+                                props.playAudio(true);
+                              }}
+                            >
+                              <Box sx={{ cursor: "pointer" }}>
+                                <ListenButton />
+                              </Box>
+                            </div>
+                          ) : (
+                            <Box
+                              sx={{ cursor: "pointer" }}
+                              onClick={() => {
+                                props.playAudio(false);
+                              }}
+                            >
+                              <StopButton />
+                            </Box>
+                          )}
+                        </Box>
                       )}
+                      <Box
+                        sx={{
+                          marginLeft: props.isShowCase ? "" : "35px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {props.recordedAudio ? (
+                          <img
+                            onClick={() =>
+                              props.playRecordedAudio(
+                                !props.isStudentAudioPlaying
+                              )
+                            }
+                            style={{ height: "70px" }}
+                            src={
+                              props.isStudentAudioPlaying
+                                ? pauseButton
+                                : playButton
+                            }
+                            alt={props.isStudentAudioPlaying ? "Pause" : "Play"}
+                          />
+                        ) : (
+                          <Box></Box>
+                        )}
+                      </Box>
                     </>
                   )}
 
-                  <div>
-                    {!this.props.showOnlyListen && (
-                      <Box
-                        marginLeft={
-                          !this.props.dontShowListen || this.props.recordedAudio
-                            ? "32px"
-                            : "0px"
-                        }
-                        sx={{ cursor: "pointer" }}
-                        onClick={() => this.handleMic()}
-                      >
-                        {!this.props.recordedAudio ? (
-                          <SpeakButton />
-                        ) : (
-                          <RetryIcon />
-                        )}
-                      </Box>
-                    )}
-                    {/* <img
-                                            src={mic}
-                                            className="micimg mic_record"
-                                          
-                                            style={{
-                                                cursor: 'pointer',
-                                                padding: '5px',
-                                                height: '38px',
-                                            }}
-                                            alt="mic"
-                                        />
-                                        <div
-                                            style={{
-                                                color: 'white',
-                                                fontWeight: '600',
-                                                fontSize: '14px',
-                                            }}
-                                        >
-                                            SPEAK
-                                        </div> */}
-                  </div>
+                <div>
+                  {props?.originalText && !props.showOnlyListen && (
+                    <Box
+                      marginLeft={
+                        !props.dontShowListen || props.recordedAudio
+                          ? "32px"
+                          : "0px"
+                      }
+                      sx={{ cursor: "pointer" }}
+                      onClick={startRecording}
+                    >
+                      {!props.recordedAudio ? <SpeakButton /> : <RetryIcon />}
+                    </Box>
+                  )}
                 </div>
-              );
-            }
-          })()}
-          <AudioAnalyser {...audioProps} className="hide">
-            <div className="btn-box">
-              <br />
-              <button
-                className="btn"
-                id="startaudio_compair"
-                onClick={() => this.controlAudio("recording")}
-              >
-                Start
-              </button>
-              <button
-                className="btn"
-                id="stopaudio_compair"
-                onClick={() => this.controlAudio("inactive")}
-              >
-                Stop
-              </button>
-            </div>
-          </AudioAnalyser>
-        </div>
+              </div>
+            );
+          }
+        })()}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default AudioRecorder;

@@ -18,7 +18,7 @@ export function compareArrays(arr1, arr2) {
 
   // Iterate over each element and compare
   for (var k in arr1) {
-    if (arr2[k] == "" || arr2[k] == undefined) {
+    if (arr2[k] === "" || arr2[k] === undefined) {
       // Element not available on the same key
       words_result.push("-1");
     } else if (arr1[k] === arr2[k]) {
@@ -70,6 +70,39 @@ export const questionsList = [
     type: "paragraph",
   },
 ];
+
+export const NextButtonRound = (props) => {
+  return (
+    <svg
+      width={70}
+      height={70}
+      viewBox="0 0 54 54"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      opacity={props?.disabled && 0.3}
+    >
+      <rect width={54} height={54} rx={27} fill="url(#paint0_linear_81_347)" />
+      <path
+        d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"
+        fill="white"
+        transform="translate(10, 10) scale(2.5)" /* Make arrow bigger and keep it centered */
+      />
+      <defs>
+        <linearGradient
+          id="paint0_linear_81_347"
+          x1={0}
+          y1={27}
+          x2={54}
+          y2={27}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#E15404" />
+          <stop offset={1} stopColor="#FF9050" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+};
 
 export const NextButton = (props) => {
   return (
@@ -132,7 +165,7 @@ export const ListenButton = (props) => {
         rx="35"
         fill="url(#paint0_linear_400_1331)"
       />
-      <g clip-path="url(#clip0_400_1331)">
+      <g clipPath="url(#clip0_400_1331)">
         <path
           d="M43.374 30.1609C43.1512 29.8851 42.828 29.7091 42.4754 29.6716C42.1228 29.6341 41.7698 29.7381 41.494 29.9609C41.2181 30.1837 41.0421 30.5069 41.0046 30.8595C40.9671 31.2121 41.0712 31.5651 41.294 31.8409C41.9676 32.7568 42.3309 33.864 42.3309 35.0009C42.3309 36.1379 41.9676 37.245 41.294 38.1609C41.135 38.3569 41.0349 38.5939 41.0053 38.8445C40.9757 39.095 41.0178 39.3489 41.1267 39.5765C41.2356 39.8041 41.4069 39.9961 41.6206 40.1302C41.8343 40.2644 42.0817 40.3351 42.334 40.3343C42.5332 40.3349 42.73 40.291 42.91 40.2056C43.0899 40.1202 43.2485 39.9956 43.374 39.8409C44.4316 38.449 45.0042 36.749 45.0042 35.0009C45.0042 33.2528 44.4316 31.5528 43.374 30.1609Z"
           fill="white"
@@ -155,8 +188,8 @@ export const ListenButton = (props) => {
           y2="56.914"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#710EDC" />
-          <stop offset="1" stop-color="#A856FF" />
+          <stop stopColor="#710EDC" />
+          <stop offset="1" stopColor="#A856FF" />
         </linearGradient>
         <clipPath id="clip0_400_1331">
           <rect
@@ -2961,327 +2994,169 @@ export const AssesmentCompletePlane = (props) => (
   </svg>
 );
 
-export const HeartRed = (props) => (
-  <svg
-    width={49}
-    height={48}
-    viewBox="0 0 49 48"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <path
-      d="M7.0798 26.1109L7.08369 26.1148L21.4807 40.4285C22.9435 41.883 25.3064 41.8827 26.7691 40.428L40.8812 26.3922C43.0318 24.371 44.375 21.5338 44.375 18.3889C44.375 12.2147 39.2148 7.25 32.9 7.25C31.2173 7.25 29.6676 7.97353 28.3248 8.95339C26.9792 9.93531 25.7849 11.2156 24.7977 12.4281C24.4547 12.8495 23.7953 12.8495 23.4523 12.4281C22.4651 11.2156 21.2708 9.93531 19.9252 8.95339C18.5824 7.97353 17.0327 7.25 15.35 7.25C9.03522 7.25 3.875 12.2147 3.875 18.3889C3.875 21.3901 5.09843 24.1118 7.0798 26.1109Z"
-      fill="#E95252"
-      stroke="#60050F"
-      strokeWidth={1.5}
-      strokeLinejoin="round"
-    />
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M11.0653 29.0168L22.0094 39.8976C23.0491 40.9313 24.657 41.0466 25.8233 40.2435C25.1182 40.2641 24.4056 40.0371 23.8253 39.5576L11.0653 29.0168ZM40.1463 10.7309C38.2377 9.03562 35.6936 8.00098 32.8999 8.00098C29.9703 8.00098 27.315 10.525 25.3793 12.9026C24.7362 13.6926 23.5137 13.6926 22.8706 12.9026C21.6799 11.4401 20.217 9.92221 18.5854 8.97041C20.1212 10.0642 21.5032 11.6064 22.6436 13.0222C23.8254 14.4892 25.9166 14.4789 27.1757 13.0776C28.5907 11.5028 30.3204 10.0611 32.6248 9.75073C35.1274 9.41368 37.8626 9.62665 40.1463 10.7309Z"
-      fill="#D93F3F"
-    />
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M4.72809 19.836C5.22904 21.0286 6.02276 22.1033 7.03589 22.9982L21.1551 35.2865C22.2844 36.2694 23.9655 36.2692 25.0946 35.2862L38.9438 23.2284C40.9055 21.6176 42.125 19.3606 42.125 16.8621C42.125 12.181 37.8444 8.34775 32.4214 8.02323C32.5801 8.00854 32.7396 8.00098 32.9 8.00098C38.8233 8.00098 43.625 12.6522 43.625 18.3899C43.625 21.3191 42.3735 23.9652 40.3601 25.8538L26.2402 39.8973C25.0701 41.061 23.1798 41.0612 22.0095 39.8976L7.6125 25.5839C6.08741 24.0452 5.04676 22.0525 4.72809 19.836ZM14.8973 8.01007C17.6411 8.16437 20.1189 10.2564 21.9368 12.2184C22.1465 12.4447 22.4061 12.5967 22.6828 12.6743C20.765 10.3662 18.186 8.00098 15.35 8.00098C15.1983 8.00098 15.0474 8.00403 14.8973 8.01007Z"
-      fill="#D93F3F"
-    />
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M5.51483 22.5397C5.97561 23.273 6.53953 23.9481 7.18916 24.5496L22.1027 38.1559C23.2483 39.2011 25.0017 39.2009 26.1471 38.1555L40.7764 24.8036C41.5466 24.1407 42.2081 23.3785 42.7349 22.5404C42.1708 23.7928 41.3592 24.9166 40.3601 25.8538L26.2402 39.8973C25.0701 41.061 23.1798 41.0612 22.0095 39.8976L7.61249 25.5839C6.73982 24.7034 6.02576 23.6743 5.51483 22.5397ZM15.2185 8.00174C16.6288 8.0248 17.9757 8.56741 19.2119 9.3682C18.0136 8.54605 16.7114 8.00098 15.35 8.00098C15.3061 8.00098 15.2623 8.00123 15.2185 8.00174ZM29.0361 9.36963C30.2728 8.56806 31.6205 8.02483 33.0316 8.00174C32.9878 8.00123 32.9439 8.00098 32.9 8.00098C31.5378 8.00098 30.2349 8.54668 29.0361 9.36963Z"
-      fill="#AE2929"
-    />
-    <path
-      d="M18.9208 11.0895C20.8275 13.7111 16.2919 13.2404 13.9019 16.3474C11.9993 18.8208 10.3558 23.2833 7.96103 20.4307C5.56631 17.5781 6.14069 13.1537 9.24395 10.5486C12.3472 7.94346 17.0089 8.4605 18.9208 11.0895Z"
-      fill="#FF6D6D"
-    />
-    <path
-      d="M17.772 10.8556C18.4728 12.2572 15.8259 11.2823 13.8008 13.8923C11.6985 16.602 8.89534 19.0314 7.54741 16.602C6.48569 14.5506 7.89765 11.7114 10.7011 10.2604C13.5046 8.80946 17.0011 9.31394 17.772 10.8556Z"
-      fill="#FF968F"
-    />
-    <path
-      d="M37.3527 10.3777C38.5268 11.7865 36.1787 12.7258 34.3002 15.5435C32.7691 17.8402 28.6175 20.5894 27.021 17.8915C25.6995 15.6584 26.292 11.867 29.4479 9.91683C32.6037 7.96669 35.9229 8.66191 37.3527 10.3777Z"
-      fill="#FF6D6D"
-    />
-    <path
-      d="M36.1786 10.3782C36.9853 11.3866 35.2394 11.7871 33.5957 13.4307C31.952 15.0744 29.1893 16.4027 28.36 14.8005C27.5308 13.1983 28.6336 10.9807 30.8232 9.84739C33.0129 8.71409 35.2394 9.20413 36.1786 10.3782Z"
-      fill="#FF968F"
-    />
-    <ellipse
-      cx={31.41}
-      cy={11.5231}
-      rx={1.66681}
-      ry={1.21964}
-      transform="rotate(-27.3648 31.41 11.5231)"
-      fill="#FFD1CE"
-    />
-    <ellipse
-      cx={10.9602}
-      cy={12.1625}
-      rx={1.69653}
-      ry={1.24138}
-      transform="rotate(-27.3648 10.9602 12.1625)"
-      fill="#FFBFBB"
-    />
-    <path
-      d="M16.25 16.875C15.75 17.125 14.45 18 13.25 19.5"
-      stroke="#FFEAE9"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <circle cx={21.7426} cy={31.7205} r={0.441176} fill="#FF6060" />
-    <circle cx={19.9778} cy={32.6023} r={0.441176} fill="#FF6060" />
-    <circle cx={20.419} cy={29.5144} r={0.441176} fill="#FF6060" />
-    <circle cx={25.7132} cy={30.3972} r={0.441176} fill="#FF6060" />
-    <circle cx={26.5955} cy={31.2791} r={0.441176} fill="#FF6060" />
-    <circle cx={23.5073} cy={29.5144} r={0.441176} fill="#FF6060" />
-    <circle cx={25.4926} cy={27.9706} r={0.220588} fill="#FF6060" />
-    <circle cx={22.4043} cy={28.412} r={0.220588} fill="#FF6060" />
-    <circle cx={17.9926} cy={28.412} r={0.220588} fill="#FF6060" />
-    <circle cx={23.2868} cy={35.0292} r={0.220588} fill="#FF6060" />
-    <circle cx={24.6103} cy={34.5888} r={0.220588} fill="#FF6060" />
-    <circle cx={24.1691} cy={30.618} r={0.220588} fill="#FF6060" />
-    <circle cx={21.9632} cy={30.1766} r={0.220588} fill="#FF6060" />
-    <circle cx={16.6691} cy={29.7362} r={0.220588} fill="#FF6060" />
-    <circle cx={15.3455} cy={28.412} r={0.220588} fill="#FF6060" />
-    <circle cx={27.2573} cy={29.2938} r={0.220588} fill="#FF6060" />
-    <circle cx={29.4632} cy={28.8534} r={0.220588} fill="#FF6060" />
-    <circle cx={31.2279} cy={28.8534} r={0.220588} fill="#FF6060" />
-    <circle cx={25.7132} cy={33.0437} r={0.441176} fill="#FF6060" />
-    <circle cx={23.9485} cy={32.6031} r={0.882353} fill="#FF6060" />
-    <circle cx={21.5219} cy={34.1471} r={0.661765} fill="#FF6060" />
-    <circle cx={28.5808} cy={30.6178} r={0.661765} fill="#FF6060" />
-    <circle cx={17.9926} cy={31.0592} r={0.661765} fill="#FF6060" />
-  </svg>
-);
+export const Diamond = (props) => {
+  const milestone =
+    JSON.parse(localStorage.getItem("getMilestone")).data?.milestone_level ||
+    "m1";
+
+  // Define color mapping for each milestone
+  const colorMap = {
+    m1: "#316AB9",
+    m2: "#FF1276",
+    m3: "#ffb31f",
+    m4: "#BC00FF",
+    m5: "#37C473",
+    m6: "#F810E1",
+    m7: "#634AFF",
+    m8: "#B4CF12",
+    m9: "#00C7E2",
+  };
+
+  // Get the color based on the milestone value, defaulting to a fallback color (green) if not found
+  const heartColor = colorMap[milestone] || "#28a745"; // default to green if milestone is not m1, m2, m3, or m4
+
+  return (
+    <svg
+      height="50px"
+      width="50px"
+      version="1.1"
+      id="Layer_1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 512 512"
+      xmlSpace="preserve"
+      fill="#000000"
+      {...props}
+    >
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <polygon
+          style={{ fill: heartColor }}
+          points="423.724,75.034 512,180.966 374.634,180.966"
+        ></polygon>
+        <polygon
+          style={{ fill: heartColor }}
+          points="256,75.034 374.634,180.966 423.724,75.034"
+        ></polygon>
+        <polygon
+          style={{ fill: heartColor }}
+          points="512,180.966 256,436.966 374.634,180.966"
+        ></polygon>
+        <polygon
+          style={{ fill: heartColor }}
+          points="88.276,75.034 0,180.966 137.366,180.966"
+        ></polygon>
+        <polygon
+          style={{ fill: heartColor }}
+          points="256,75.034 137.366,180.966 88.276,75.034"
+        ></polygon>
+        <polygon
+          style={{ fill: heartColor }}
+          points="256,75.034 137.366,180.966 374.634,180.966"
+        ></polygon>
+        <polygon
+          style={{ fill: heartColor }}
+          points="137.366,180.966 256,436.966 374.634,180.966"
+        ></polygon>
+        <polygon
+          style={{ fill: heartColor }}
+          points="0,180.966 256,436.966 137.366,180.966"
+        ></polygon>
+        <g>
+          <path
+            style={{ fill: "#FFFFFF" }}
+            d="M434.955,128.531c-17.301-3.945-30.92-17.564-34.863-34.865c-0.297-1.303-2.022-1.303-2.319,0 c-3.944,17.301-17.564,30.92-34.863,34.865c-1.303,0.297-1.303,2.022,0,2.319c17.301,3.944,30.92,17.562,34.863,34.863 c0.297,1.303,2.022,1.303,2.319,0c3.944-17.301,17.564-30.92,34.863-34.863C436.257,130.552,436.257,128.828,434.955,128.531z"
+          ></path>
+          <path
+            style={{ fill: "#FFFFFF" }}
+            d="M394.522,192.124c-13.58-3.518-24.273-14.209-27.789-27.789c-0.353-1.364-2.119-1.364-2.472,0 c-3.518,13.58-14.209,24.273-27.789,27.789c-1.364,0.353-1.364,2.119,0,2.472c13.58,3.517,24.273,14.209,27.789,27.789 c0.353,1.364,2.119,1.364,2.472,0c3.517-13.581,14.209-24.273,27.789-27.789C395.887,194.242,395.887,192.477,394.522,192.124z"
+          ></path>
+        </g>
+      </g>
+    </svg>
+  );
+};
 
 export const HeartBlack = (props) => (
   <svg
-    width={49}
-    height={48}
-    viewBox="0 0 49 48"
-    fill="none"
+    height="50px"
+    width="50px"
+    version="1.1"
+    id="Layer_1"
     xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 512 512"
+    xmlSpace="preserve"
+    fill="#000000"
     {...props}
   >
-    <path
-      d="M7.8298 26.1109L7.83369 26.1148L22.2307 40.4285C23.6935 41.883 26.0564 41.8827 27.5191 40.4281L41.6312 26.3923C43.7818 24.371 45.125 21.5338 45.125 18.3889C45.125 12.2147 39.9648 7.25 33.65 7.25C31.9673 7.25 30.4176 7.97353 29.0748 8.95339C27.7292 9.93531 26.5349 11.2156 25.5477 12.4281C25.2047 12.8495 24.5453 12.8495 24.2023 12.4281C23.2151 11.2156 22.0208 9.93531 20.6752 8.95339C19.3324 7.97353 17.7827 7.25 16.1 7.25C9.78522 7.25 4.625 12.2147 4.625 18.3889C4.625 21.3901 5.84843 24.1118 7.8298 26.1109Z"
-      fill="#575757"
-      stroke="#181818"
-      strokeWidth={1.5}
-      strokeLinejoin="round"
-    />
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M11.8154 29.0169L22.7594 39.8976C23.799 40.9313 25.407 41.0466 26.5733 40.2435C25.8682 40.2641 25.1556 40.0371 24.5752 39.5576L11.8154 29.0169ZM40.8963 10.7309C38.9878 9.03563 36.4436 8.00098 33.6499 8.00098C30.7203 8.00098 28.065 10.525 26.1293 12.9026C25.4861 13.6926 24.2637 13.6926 23.6206 12.9026C22.4299 11.4401 20.9669 9.92215 19.3353 8.97036C20.8712 10.0641 22.2531 11.6064 23.3936 13.0222C24.5754 14.4892 26.6666 14.4789 27.9257 13.0776C29.3407 11.5028 31.0704 10.0611 33.3748 9.75073C35.8774 9.41368 38.6126 9.62665 40.8963 10.7309Z"
-      fill="#434343"
-    />
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M5.47803 19.836C5.97898 21.0286 6.7727 22.1033 7.78583 22.9982L21.9051 35.2865C23.0344 36.2694 24.7154 36.2692 25.8445 35.2862L39.6937 23.2284C41.6555 21.6176 42.875 19.3606 42.875 16.8621C42.875 12.181 38.5944 8.34775 33.1714 8.02323C33.33 8.00854 33.4896 8.00098 33.65 8.00098C39.5732 8.00098 44.375 12.6522 44.375 18.3899C44.375 21.3191 43.1234 23.9652 41.11 25.8538L26.9901 39.8973C25.82 41.061 23.9297 41.0612 22.7594 39.8976L8.36244 25.5839C6.83735 24.0452 5.7967 22.0525 5.47803 19.836ZM15.6472 8.01007C18.391 8.16437 20.8688 10.2564 22.6868 12.2184C22.8965 12.4447 23.1561 12.5967 23.4328 12.6743C21.5149 10.3662 18.936 8.00098 16.1 8.00098C15.9483 8.00098 15.7973 8.00403 15.6472 8.01007Z"
-      fill="#444444"
-    />
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M6.26483 22.5397C6.72561 23.273 7.28953 23.9481 7.93916 24.5496L22.8527 38.1559C23.9983 39.2011 25.7517 39.2009 26.8971 38.1555L41.5264 24.8036C42.2966 24.1407 42.9581 23.3785 43.4849 22.5403C42.9208 23.7928 42.1093 24.9166 41.1101 25.8538L26.9902 39.8973C25.8201 41.061 23.9298 41.0612 22.7595 39.8976L8.3625 25.5839C7.48982 24.7034 6.77576 23.6743 6.26483 22.5397ZM15.9685 8.00174C17.3788 8.0248 18.7257 8.5674 19.9619 9.36819C18.7636 8.54605 17.4614 8.00098 16.1 8.00098C16.0561 8.00098 16.0123 8.00123 15.9685 8.00174ZM29.7861 9.36963C31.0228 8.56806 32.3705 8.02483 33.7816 8.00174C33.7378 8.00123 33.6939 8.00098 33.65 8.00098C32.2878 8.00098 30.9849 8.54668 29.7861 9.36963Z"
-      fill="#2F2F2F"
-    />
-    <path
-      d="M19.6708 11.0895C21.5775 13.7111 17.0419 13.2404 14.6519 16.3474C12.7493 18.8208 11.1058 23.2833 8.71103 20.4307C6.31631 17.5781 6.89069 13.1537 9.99395 10.5486C13.0972 7.94346 17.7589 8.4605 19.6708 11.0895Z"
-      fill="#7B7B7B"
-    />
-    <path
-      d="M18.522 10.8556C19.2228 12.2572 16.5759 11.2823 14.5508 13.8923C12.4485 16.602 9.64534 19.0314 8.29741 16.602C7.23569 14.5506 8.64765 11.7114 11.4511 10.2604C14.2546 8.80946 17.7511 9.31395 18.522 10.8556Z"
-      fill="#9E9E9E"
-    />
-    <path
-      d="M38.1027 10.3777C39.2768 11.7865 36.9287 12.7258 35.0502 15.5435C33.5191 17.8402 29.3675 20.5894 27.771 17.8915C26.4495 15.6584 27.042 11.867 30.1979 9.91683C33.3537 7.96669 36.6729 8.66191 38.1027 10.3777Z"
-      fill="#7B7B7B"
-    />
-    <path
-      d="M36.9286 10.3782C37.7353 11.3866 35.9894 11.7871 34.3457 13.4307C32.702 15.0744 29.9393 16.4027 29.11 14.8005C28.2808 13.1983 29.3836 10.9807 31.5732 9.84739C33.7629 8.71409 35.9894 9.20414 36.9286 10.3782Z"
-      fill="#9E9E9E"
-    />
-    <ellipse
-      cx={32.16}
-      cy={11.5231}
-      rx={1.66681}
-      ry={1.21964}
-      transform="rotate(-27.3648 32.16 11.5231)"
-      fill="#E1E1E1"
-    />
-    <ellipse
-      cx={11.7102}
-      cy={12.1625}
-      rx={1.69653}
-      ry={1.24138}
-      transform="rotate(-27.3648 11.7102 12.1625)"
-      fill="#E1E1E1"
-    />
-    <path
-      d="M17 16.875C16.5 17.125 15.2 18 14 19.5"
-      stroke="white"
-      strokeWidth={1.5}
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+    <g
+      id="SVGRepo_tracerCarrier"
       strokeLinecap="round"
       strokeLinejoin="round"
-    />
-    <ellipse
-      cx={22.4926}
-      cy={32.4705}
-      rx={0.441176}
-      ry={0.441176}
-      fill="#787878"
-    />
-    <ellipse
-      cx={20.7279}
-      cy={33.3533}
-      rx={0.441176}
-      ry={0.441176}
-      fill="#787878"
-    />
-    <ellipse
-      cx={21.1691}
-      cy={30.2644}
-      rx={0.441176}
-      ry={0.441176}
-      fill="#787878"
-    />
-    <ellipse
-      cx={26.4633}
-      cy={31.1472}
-      rx={0.441176}
-      ry={0.441176}
-      fill="#787878"
-    />
-    <ellipse
-      cx={27.3456}
-      cy={32.0291}
-      rx={0.441176}
-      ry={0.441176}
-      fill="#787878"
-    />
-    <ellipse
-      cx={24.2573}
-      cy={30.2644}
-      rx={0.441176}
-      ry={0.441176}
-      fill="#787878"
-    />
-    <ellipse
-      cx={26.2426}
-      cy={28.7206}
-      rx={0.220588}
-      ry={0.220588}
-      fill="#787878"
-    />
-    <ellipse
-      cx={23.1544}
-      cy={29.162}
-      rx={0.220588}
-      ry={0.220588}
-      fill="#787878"
-    />
-    <ellipse
-      cx={18.7427}
-      cy={29.162}
-      rx={0.220588}
-      ry={0.220588}
-      fill="#787878"
-    />
-    <ellipse
-      cx={24.0368}
-      cy={35.7802}
-      rx={0.220588}
-      ry={0.220588}
-      fill="#787878"
-    />
-    <ellipse
-      cx={25.3603}
-      cy={35.3378}
-      rx={0.220588}
-      ry={0.220588}
-      fill="#787878"
-    />
-    <ellipse
-      cx={24.9191}
-      cy={31.368}
-      rx={0.220588}
-      ry={0.220588}
-      fill="#787878"
-    />
-    <ellipse
-      cx={22.7133}
-      cy={30.9266}
-      rx={0.220588}
-      ry={0.220588}
-      fill="#787878"
-    />
-    <ellipse
-      cx={17.4191}
-      cy={30.4852}
-      rx={0.220588}
-      ry={0.220588}
-      fill="#787878"
-    />
-    <ellipse
-      cx={16.0956}
-      cy={29.162}
-      rx={0.220588}
-      ry={0.220588}
-      fill="#787878"
-    />
-    <ellipse
-      cx={28.0073}
-      cy={30.0438}
-      rx={0.220588}
-      ry={0.220588}
-      fill="#787878"
-    />
-    <ellipse
-      cx={30.2133}
-      cy={29.6034}
-      rx={0.220588}
-      ry={0.220588}
-      fill="#787878"
-    />
-    <ellipse
-      cx={31.9779}
-      cy={29.6034}
-      rx={0.220588}
-      ry={0.220588}
-      fill="#787878"
-    />
-    <ellipse
-      cx={26.4632}
-      cy={33.7937}
-      rx={0.441176}
-      ry={0.441176}
-      fill="#787878"
-    />
-    <ellipse
-      cx={24.6985}
-      cy={33.3531}
-      rx={0.882353}
-      ry={0.882353}
-      fill="#787878"
-    />
-    <circle cx={22.2721} cy={34.8971} r={0.661765} fill="#787878" />
-    <circle cx={29.3309} cy={31.3678} r={0.661765} fill="#787878" />
-    <circle cx={18.7426} cy={31.8092} r={0.661765} fill="#787878" />
+    ></g>
+    <g id="SVGRepo_iconCarrier">
+      <polygon
+        style={{ fill: "#000000" }}
+        points="423.724,75.034 512,180.966 374.634,180.966"
+      ></polygon>
+      <polygon
+        style={{ fill: "#000000" }}
+        points="256,75.034 374.634,180.966 423.724,75.034"
+      ></polygon>
+      <polygon
+        style={{ fill: "#000000" }}
+        points="512,180.966 256,436.966 374.634,180.966"
+      ></polygon>
+      <polygon
+        style={{ fill: "#000000" }}
+        points="88.276,75.034 0,180.966 137.366,180.966"
+      ></polygon>
+      <polygon
+        style={{ fill: "#000000" }}
+        points="256,75.034 137.366,180.966 88.276,75.034"
+      ></polygon>
+      <polygon
+        style={{ fill: "#000000" }}
+        points="256,75.034 137.366,180.966 374.634,180.966"
+      ></polygon>
+      <polygon
+        style={{ fill: "#000000" }}
+        points="137.366,180.966 256,436.966 374.634,180.966"
+      ></polygon>
+      <polygon
+        style={{ fill: "#000000" }}
+        points="0,180.966 256,436.966 137.366,180.966"
+      ></polygon>
+      <g>
+        <path
+          style={{ fill: "#ffffff" }}
+          d="M434.955,128.531c-17.301-3.945-30.92-17.564-34.863-34.865c-0.297-1.303-2.022-1.303-2.319,0 c-3.944,17.301-17.564,30.92-34.863,34.865c-1.303,0.297-1.303,2.022,0,2.319c17.301,3.944,30.92,17.562,34.863,34.863 c0.297,1.303,2.022,1.303,2.319,0c3.944-17.301,17.564-30.92,34.863-34.863C436.257,130.552,436.257,128.828,434.955,128.531z"
+        ></path>
+        <path
+          style={{ fill: "#ffffff" }}
+          d="M394.522,192.124c-13.58-3.518-24.273-14.209-27.789-27.789c-0.353-1.364-2.119-1.364-2.472,0 c-3.518,13.58-14.209,24.273-27.789,27.789c-1.364,0.353-1.364,2.119,0,2.472c13.58,3.517,24.273,14.209,27.789,27.789 c0.353,1.364,2.119,1.364,2.472,0c3.517-13.581,14.209-24.273,27.789-27.789C395.887,194.242,395.887,192.477,394.522,192.124z"
+        ></path>
+      </g>
+    </g>
   </svg>
 );
 
+export function getParameter(key, location) {
+  if (key) {
+    const query = new URLSearchParams(location);
+    return query.get(key);
+  }
+}
+
 export const SessionID = "13900744731701973109305";
 export const UserID = "1390074473";
-export const BASE_API = "https://www.learnerai-dev.theall.ai/";
 
 export const practiceSteps = [
   { name: "P1", fullName: "Practice 1" },
@@ -3297,156 +3172,1060 @@ export const practiceSteps = [
 ];
 
 export const levelGetContent = {
-  0: [
-    { title: "P1", criteria: "char", template: "simple" },
-    { title: "P2", criteria: "char", template: "simple" },
-    { title: "P3", criteria: "char", template: "simple" },
-    { title: "P4", criteria: "char", template: "simple" },
-    { title: "S1", criteria: "word", template: "simple" },
-    { title: "P5", criteria: "word", template: "simple" },
-    { title: "P6", criteria: "word", template: "simple" },
-    { title: "P7", criteria: "word", template: "simple" },
-    { title: "P8", criteria: "word", template: "simple" },
-    { title: "S2", criteria: "word", template: "simple" },
-  ],
-  1: [
-    { title: "P1", criteria: "word", template: "simple" },
-    { title: "P2", criteria: "word", template: "simple" },
-    { title: "P3", criteria: "word", template: "simple" },
-    { title: "P4", criteria: "word", template: "simple" },
-    { title: "S1", criteria: "word", template: "simple" },
-    { title: "P5", criteria: "word", template: "simple" },
-    { title: "P6", criteria: "word", template: "simple" },
-    { title: "P7", criteria: "word", template: "simple" },
-    { title: "P8", criteria: "word", template: "simple" },
-    { title: "S2", criteria: "word", template: "simple" },
-  ],
-  2: [
-    { title: "P1", criteria: "char", template: "simple" },
-    { title: "P2", criteria: "char", template: "simple" },
-    { title: "P3", criteria: "word", template: "simple", mechanism: "audio" },
-    { title: "P4", criteria: "word", template: "simple", mechanism: "audio" },
-    { title: "S1", criteria: "word", template: "simple" },
-    { title: "P5", criteria: "word", template: "simple" },
-    { title: "P6", criteria: "word", template: "simple" },
-    { title: "P7", criteria: "word", template: "simple", mechanism: "audio" },
-    { title: "P8", criteria: "word", template: "simple", mechanism: "audio" },
-    { title: "S2", criteria: "word", template: "simple" },
-  ],
-  3: [
-    {
-      title: "P1",
-      criteria: "word",
-      template: "simple",
-      mechanism: "formAWord",
-    },
-    {
-      title: "P2",
-      criteria: "word",
-      template: "simple",
-      mechanism: "formAWord",
-    },
-    { title: "P3", criteria: "sentence", template: "simple" },
-    { title: "P4", criteria: "sentence", template: "simple" },
-    { title: "S1", criteria: "sentence", template: "simple" },
-    {
-      title: "P5",
-      criteria: "sentence",
-      template: "simple",
-      mechanism: "fillInTheBlank",
-    },
-    {
-      title: "P6",
-      criteria: "sentence",
-      template: "simple",
-      mechanism: "fillInTheBlank",
-    },
-    { title: "P7", criteria: "sentence", template: "simple" },
-    { title: "P8", criteria: "sentence", template: "simple" },
-    { title: "S2", criteria: "sentence", template: "simple" },
-  ],
-  4: [
-    { title: "P1", criteria: "word", template: "simple" },
-    { title: "P2", criteria: "word", template: "simple" },
-    { title: "P3", criteria: "sentence", template: "simple" },
-    { title: "P4", criteria: "sentence", template: "simple" },
-    { title: "S1", criteria: "sentence", template: "simple" },
-    { title: "P5", criteria: "sentence", template: "simple" },
-    { title: "P6", criteria: "sentence", template: "simple" },
-    { title: "P7", criteria: "sentence", template: "simple" },
-    { title: "P8", criteria: "sentence", template: "simple" },
-    { title: "S2", criteria: "sentence", template: "simple" },
-  ],
-  5: [
-    { title: "P1", criteria: "sentence", template: "simple" },
-    { title: "P2", criteria: "sentence", template: "simple" },
-    { title: "P3", criteria: "sentence", template: "simple" },
-    { title: "P4", criteria: "sentence", template: "simple" },
-    { title: "S1", criteria: "sentence", template: "simple" },
-    { title: "P5", criteria: "sentence", template: "simple" },
-    { title: "P6", criteria: "sentence", template: "simple" },
-    { title: "P7", criteria: "sentence", template: "simple" },
-    { title: "P8", criteria: "sentence", template: "simple" },
-    { title: "S2", criteria: "sentence", template: "simple" },
-  ],
-  6: [
-    { title: "P1", criteria: "sentence", template: "simple" },
-    { title: "P2", criteria: "sentence", template: "simple" },
-    { title: "P3", criteria: "paragraph", template: "simple" },
-    { title: "P4", criteria: "paragraph", template: "simple" },
-    { title: "S1", criteria: "paragraph", template: "simple" },
-    { title: "P5", criteria: "sentence", template: "simple" },
-    { title: "P6", criteria: "paragraph", template: "simple" },
-    { title: "P7", criteria: "paragraph", template: "simple" },
-    { title: "P8", criteria: "paragraph", template: "simple" },
-    { title: "S2", criteria: "paragraph", template: "simple" },
-  ],
-  7: [
-    { title: "P1", criteria: "sentence", template: "simple" },
-    { title: "P2", criteria: "sentence", template: "simple" },
-    { title: "P3", criteria: "paragraph", template: "simple" },
-    { title: "P4", criteria: "paragraph", template: "simple" },
-    { title: "S1", criteria: "paragraph", template: "simple" },
-    { title: "P5", criteria: "paragraph", template: "simple" },
-    { title: "P6", criteria: "paragraph", template: "simple" },
-    { title: "P7", criteria: "paragraph", template: "simple" },
-    { title: "P8", criteria: "paragraph", template: "simple" },
-    { title: "S2", criteria: "paragraph", template: "simple" },
-  ],
-  8: [
-    { title: "P1", criteria: "sentence", template: "simple" },
-    { title: "P2", criteria: "sentence", template: "simple" },
-    { title: "P3", criteria: "paragraph", template: "simple" },
-    { title: "P4", criteria: "paragraph", template: "simple" },
-    { title: "S1", criteria: "paragraph", template: "simple" },
-    { title: "P5", criteria: "paragraph", template: "simple" },
-    { title: "P6", criteria: "paragraph", template: "simple" },
-    { title: "P7", criteria: "paragraph", template: "simple" },
-    { title: "P8", criteria: "paragraph", template: "simple" },
-    { title: "S2", criteria: "paragraph", template: "simple" },
-  ],
-  9: [
-    { title: "P1", criteria: "sentence", template: "simple" },
-    { title: "P2", criteria: "sentence", template: "simple" },
-    { title: "P3", criteria: "paragraph", template: "simple" },
-    { title: "P4", criteria: "paragraph", template: "simple" },
-    { title: "S1", criteria: "paragraph", template: "simple" },
-    { title: "P5", criteria: "paragraph", template: "simple" },
-    { title: "P6", criteria: "paragraph", template: "simple" },
-    { title: "P7", criteria: "paragraph", template: "simple" },
-    { title: "P8", criteria: "paragraph", template: "simple" },
-    { title: "S2", criteria: "paragraph", template: "simple" },
-  ],
+  en: {
+    0: [
+      {
+        title: "P1",
+        criteria: "word",
+        template: "simple",
+        tags: "CEFR_ENG",
+        storyMode: true,
+      },
+      { title: "P2", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P3", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P4", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "S1", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P5", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P6", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P7", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P8", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "S2", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+    ],
+    1: [
+      {
+        title: "P1",
+        criteria: "word",
+        template: "simple",
+        tags: "CEFR_ENG",
+        storyMode: true,
+      },
+      { title: "P2", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P3", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P4", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "S1", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P5", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P6", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P7", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P8", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "S2", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+    ],
+    2: [
+      {
+        title: "P1",
+        criteria: "word",
+        template: "simple",
+        tags: "CEFR_ENG",
+        storyMode: true,
+      },
+      { title: "P2", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      {
+        title: "P3",
+        criteria: "word",
+        template: "simple",
+        tags: "CEFR_ENG",
+      },
+      {
+        title: "P4",
+        criteria: "word",
+        template: "simple",
+        tags: "CEFR_ENG",
+      },
+      { title: "S1", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P5", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      { title: "P6", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+      {
+        title: "P7",
+        criteria: "word",
+        template: "simple",
+        tags: "CEFR_ENG",
+      },
+      {
+        title: "P8",
+        criteria: "word",
+        template: "simple",
+        tags: "CEFR_ENG",
+      },
+      { title: "S2", criteria: "word", template: "simple", tags: "CEFR_ENG" },
+    ],
+    3: [
+      {
+        title: "P1",
+        criteria: "word",
+        template: "simple",
+        tags: "CEFR_ENG",
+        storyMode: true,
+      },
+      {
+        title: "P2",
+        criteria: "word",
+        template: "simple",
+        tags: "CEFR_ENG",
+      },
+      {
+        title: "P3",
+        criteria: "sentence",
+        template: "simple",
+        tags: "CEFR_ENG",
+      },
+      {
+        title: "P4",
+        criteria: "sentence",
+        template: "simple",
+        tags: "CEFR_ENG",
+        competency: "L1.1",
+        mechanism: { id: "mechanic_1", name: "fillInTheBlank" },
+      },
+      {
+        title: "S1",
+        criteria: "sentence",
+        template: "simple",
+        tags: "CEFR_ENG",
+      },
+      {
+        title: "P5",
+        criteria: "sentence",
+        template: "simple",
+      },
+      {
+        title: "P6",
+        criteria: "sentence",
+        template: "simple",
+      },
+      {
+        title: "P7",
+        criteria: "sentence",
+        template: "simple",
+        tags: "CEFR_ENG",
+      },
+      {
+        title: "P8",
+        criteria: "sentence",
+        template: "simple",
+        tags: "CEFR_ENG",
+        competency: "L1.1",
+        mechanism: { id: "mechanic_1", name: "fillInTheBlank" },
+      },
+      {
+        title: "S2",
+        criteria: "sentence",
+        template: "simple",
+        tags: "CEFR_ENG",
+      },
+    ],
+    4: [
+      {
+        title: "P1",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.1",
+        storyMode: true,
+        mechanism: { id: "mechanic_1", name: "fillInTheBlank" },
+      },
+      {
+        title: "P2",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.2",
+        mechanism: { id: "mechanic_3", name: "formASentence" },
+      },
+      {
+        title: "P3",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.1",
+        mechanism: { id: "mechanic_2", name: "readTheImage" },
+      },
+      {
+        title: "P4",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.2",
+      },
+      {
+        title: "S1",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.1, L1.2",
+        mechanism: { id: "mechanic_2", name: "readTheImage" },
+      },
+      {
+        title: "P5",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.2",
+        mechanism: { id: "mechanic_1", name: "fillInTheBlank" },
+      },
+      {
+        title: "P6",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.1",
+        mechanism: { id: "mechanic_3", name: "formASentence" },
+      },
+      {
+        title: "P7",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.2",
+        mechanism: { id: "mechanic_2", name: "readTheImage" },
+      },
+      {
+        title: "P8",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.1",
+        mechanism: { id: "mechanic_1", name: "fillInTheBlank" },
+      },
+      {
+        title: "S2",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.2",
+        mechanism: { id: "mechanic_2", name: "readTheImage" },
+      },
+    ],
+    5: [
+      {
+        title: "P1",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.5",
+        storyMode: true,
+        mechanism: { id: "mechanic_1", name: "fillInTheBlank" },
+      },
+      {
+        title: "P2",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.6",
+        mechanism: { id: "mechanic_3", name: "formASentence" },
+      },
+      {
+        title: "P3",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.5",
+        mechanism: { id: "mechanic_2", name: "readTheImage" },
+      },
+      {
+        title: "P4",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.5",
+      },
+      {
+        title: "S1",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.5, L1.6",
+        mechanism: { id: "mechanic_2", name: "readTheImage" },
+      },
+      {
+        title: "P5",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.6",
+        mechanism: { id: "mechanic_1", name: "fillInTheBlank" },
+      },
+      {
+        title: "P6",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.5",
+        mechanism: { id: "mechanic_3", name: "formASentence" },
+      },
+      {
+        title: "P7",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.6",
+        mechanism: { id: "mechanic_2", name: "readTheImage" },
+      },
+      {
+        title: "P8",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.5",
+      },
+      {
+        title: "S2",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.6",
+        mechanism: { id: "mechanic_2", name: "readTheImage" },
+      },
+    ],
+    6: [
+      {
+        title: "P1",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.3",
+        storyMode: true,
+      },
+      {
+        title: "P2",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.3",
+        storyMode: true,
+        mechanism: { id: "mechanic_1", name: "fillInTheBlank" },
+      },
+      {
+        title: "P3",
+        criteria: "paragraph",
+        template: "simple",
+      },
+      {
+        title: "P4",
+        criteria: "paragraph",
+        template: "simple",
+      },
+      {
+        title: "S1",
+        criteria: "paragraph",
+        template: "simple",
+      },
+      {
+        title: "P5",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.3",
+        storyMode: true,
+      },
+      {
+        title: "P6",
+        criteria: "paragraph",
+        template: "simple",
+      },
+      {
+        title: "P7",
+        criteria: "paragraph",
+        template: "simple",
+      },
+      {
+        title: "P8",
+        criteria: "paragraph",
+        template: "simple",
+      },
+      {
+        title: "S2",
+        criteria: "paragraph",
+        template: "simple",
+      },
+    ],
+    7: [
+      {
+        title: "P1",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.8",
+        storyMode: true,
+      },
+      {
+        title: "P2",
+        criteria: "sentence",
+        template: "simple",
+        competency: "L1.8",
+        storyMode: true,
+        mechanism: { id: "mechanic_2", name: "readTheImage" },
+      },
+      {
+        title: "P3",
+        criteria: "paragraph",
+        template: "simple",
+        competency: "L1.8",
+      },
+      {
+        title: "P4",
+        criteria: "paragraph",
+        template: "simple",
+        competency: "L1.8",
+      },
+      {
+        title: "S1",
+        criteria: "paragraph",
+        template: "simple",
+        competency: "L1.8",
+      },
+      {
+        title: "P5",
+        criteria: "paragraph",
+        template: "simple",
+        competency: "L1.8",
+        storyMode: true,
+      },
+      {
+        title: "P6",
+        criteria: "paragraph",
+        template: "simple",
+        competency: "L1.8",
+        storyMode: true,
+      },
+      {
+        title: "P7",
+        criteria: "paragraph",
+        template: "simple",
+        competency: "L1.8",
+      },
+      {
+        title: "P8",
+        criteria: "paragraph",
+        template: "simple",
+        competency: "L1.8",
+      },
+      {
+        title: "S2",
+        criteria: "paragraph",
+        template: "simple",
+        competency: "L1.8",
+      },
+    ],
+    8: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    9: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+  },
+  ta: {
+    0: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    1: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    2: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    3: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    4: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    5: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    6: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    7: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    8: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    9: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+  },
+  hi: {
+    0: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    1: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    2: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    3: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    4: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    5: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    6: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    7: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    8: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    9: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+  },
+  kn: {
+    0: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    1: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    2: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    3: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    4: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    5: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    6: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    7: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    8: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    9: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+  },
+  te: {
+    0: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    1: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    2: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    3: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    4: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    5: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    6: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    7: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    8: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    9: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+  },
+  gu: {
+    0: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    1: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    2: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "word", template: "simple" },
+      { title: "P4", criteria: "word", template: "simple" },
+      { title: "S1", criteria: "word", template: "simple" },
+      { title: "P5", criteria: "word", template: "simple" },
+      { title: "P6", criteria: "word", template: "simple" },
+      { title: "P7", criteria: "word", template: "simple" },
+      { title: "P8", criteria: "word", template: "simple" },
+      { title: "S2", criteria: "word", template: "simple" },
+    ],
+    3: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    4: [
+      { title: "P1", criteria: "word", template: "simple" },
+      { title: "P2", criteria: "word", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    5: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "sentence", template: "simple" },
+      { title: "P4", criteria: "sentence", template: "simple" },
+      { title: "S1", criteria: "sentence", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "sentence", template: "simple" },
+      { title: "P7", criteria: "sentence", template: "simple" },
+      { title: "P8", criteria: "sentence", template: "simple" },
+      { title: "S2", criteria: "sentence", template: "simple" },
+    ],
+    6: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "sentence", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    7: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    8: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+    9: [
+      { title: "P1", criteria: "sentence", template: "simple" },
+      { title: "P2", criteria: "sentence", template: "simple" },
+      { title: "P3", criteria: "paragraph", template: "simple" },
+      { title: "P4", criteria: "paragraph", template: "simple" },
+      { title: "S1", criteria: "paragraph", template: "simple" },
+      { title: "P5", criteria: "paragraph", template: "simple" },
+      { title: "P6", criteria: "paragraph", template: "simple" },
+      { title: "P7", criteria: "paragraph", template: "simple" },
+      { title: "P8", criteria: "paragraph", template: "simple" },
+      { title: "S2", criteria: "paragraph", template: "simple" },
+    ],
+  },
 };
 
 export function callConfettiSnow() {
   var duration = 3 * 1000;
   var animationEnd = Date.now() + duration;
-  var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+  // var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
-  function randomInRange(min, max) {
-    return Math.random() * (max - min) + min;
-  }
+  // function randomInRange(min, max) {
+  //   return Math.random() * (max - min) + min;
+  // }
 
   var interval = setInterval(function () {
     var timeLeft = animationEnd - Date.now();
@@ -3456,9 +4235,10 @@ export function callConfettiSnow() {
     }
 
     // since particles fall down, start a bit higher than random
-    var timeLeft = animationEnd - Date.now();
+    timeLeft = animationEnd - Date.now();
     var ticks = Math.max(200, 500 * (timeLeft / duration));
-    var skew = Math.max(0.8, skew - 0.001);
+    var skew;
+    skew = Math.max(0.8, skew - 0.001);
 
     confetti({
       particleCount: 1,
@@ -3518,12 +4298,22 @@ export const levelConfig = {
   9: { color: "#00C7E2" },
 };
 
-export const languages = [
-  { name: "Tamil", lang: "ta", symbol: "இ" },
+const AllLanguages = [
   { name: "English", lang: "en", symbol: "A" },
-  { name: "Hindi", lang: "hi", symbol: "क" },
-  ,
+  { name: "தமிழ்", lang: "ta", symbol: "இ" },
+  { name: "हिंदी", lang: "hi", symbol: "क" },
+  { name: "ಕನ್ನಡ", lang: "kn", symbol: "ಕ" },
+  { name: "తెలుగు", lang: "te", symbol: "ఈ" },
+  { name: "ગુજરાતી", lang: "gu", symbol: "ગુ" },
 ];
+
+const appLanguages = process.env.REACT_APP_LANGUAGES
+  ? JSON.parse(process.env.REACT_APP_LANGUAGES)
+  : [];
+
+export const languages = AllLanguages.filter((lang) =>
+  appLanguages.includes(lang.lang)
+);
 
 export const randomizeArray = (arr) => {
   let wordsArr = [...arr];

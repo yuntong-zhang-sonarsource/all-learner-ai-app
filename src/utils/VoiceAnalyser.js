@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Box, CircularProgress } from "../../node_modules/@mui/material/index";
-import axios from "../../node_modules/axios/index";
+import { Box, CircularProgress } from "@mui/material";
+import axios from "axios";
 import calcCER from "../../node_modules/character-error-rate/index";
 import s1 from "../assets/audio/S1.m4a";
 import s2 from "../assets/audio/S2.m4a";
@@ -19,17 +19,20 @@ import v7 from "../assets/audio/V7.m4a";
 import v8 from "../assets/audio/V8.m4a";
 import livesAdd from "../assets/audio/livesAdd.wav";
 import livesCut from "../assets/audio/livesCut.wav";
-
 import { response } from "../services/telementryService";
 import AudioCompare from "./AudioCompare";
+import PropTypes from "prop-types";
 import {
-  BASE_API,
   SpeakButton,
   compareArrays,
   getLocalData,
   replaceAll,
+  NextButtonRound,
 } from "./constants";
-// import S3Client from '../config/awsS3';
+import config from "./urlConstants.json";
+import { filterBadWords } from "./Badwords";
+import S3Client from "../config/awsS3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 /* eslint-disable */
 
 const AudioPath = {
@@ -64,12 +67,23 @@ function VoiceAnalyser(props) {
   const [apiResponse, setApiResponse] = useState("");
   const [currentIndex, setCurrentIndex] = useState();
   const [temp_audio, set_temp_audio] = useState(null);
+  const [isStudentAudioPlaying, setIsStudentAudioPlaying] = useState(false);
+  const [temp_Student_audio, set_temp_Student_audio] = useState(null);
   const { callUpdateLearner } = props;
-
+  const lang = getLocalData("lang");
   const { livesData, setLivesData } = props;
   const [isAudioPreprocessing, setIsAudioPreprocessing] = useState(
     process.env.REACT_APP_IS_AUDIOPREPROCESSING === "true"
   );
+  const [isMatching, setIsMatching] = useState(false);
+
+  //console.log('audio', recordedAudio, isMatching);
+
+  useEffect(() => {
+    if (!props.enableNext) {
+      setRecordedAudio("");
+    }
+  }, [props.enableNext]);
 
   const initiateValues = async () => {
     const currIndex = (await localStorage.getItem("index")) || 1;
@@ -80,21 +94,87 @@ function VoiceAnalyser(props) {
     setRecordedAudio("");
   }, [props.contentId]);
 
-  const playAudio = (val) => {
+  const playAudio = async (val) => {
+    if (isStudentAudioPlaying) {
+      return;
+    }
+    const { audioLink } = props;
     try {
-      var audio = new Audio(
-        recordedAudio
-          ? recordedAudio
-          : props.contentId
-          ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/Audio/${props.contentId}.wav`
-          : AudioPath[1][10]
+      let audio = new Audio(
+        audioLink
+          ? audioLink
+          : `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${props.contentId}.wav`
       );
-      set_temp_audio(audio);
-      setPauseAudio(val);
+      audio.addEventListener("canplaythrough", () => {
+        set_temp_audio(audio);
+        setPauseAudio(val);
+        if (val) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      });
+
+      audio.addEventListener("error", (e) => {
+        console.error("Audio failed to load", e);
+        setPauseAudio(false); // Set pause state to false
+        alert("Failed to load the audio. Please try again.");
+      });
+    } catch (err) {
+      console.error("An error occurred:", err);
+      alert("An unexpected error occurred while trying to play the audio.");
+    }
+  };
+
+  const playRecordedAudio = (val) => {
+    if (pauseAudio) {
+      return;
+    }
+    try {
+      const audio = new Audio(recordedAudio);
+      audio.addEventListener("canplaythrough", () => {
+        setIsStudentAudioPlaying(val);
+        set_temp_Student_audio(audio);
+        if (val) {
+          audio.play();
+          audio.onended = () => setIsStudentAudioPlaying(false);
+        } else {
+          audio.pause();
+        }
+      });
+      audio.addEventListener("error", (e) => {
+        console.error("Audio failed to load", e);
+        setIsStudentAudioPlaying(false);
+        alert("Failed to load the audio. Please try again.");
+      });
     } catch (err) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    if (temp_Student_audio !== null) {
+      if (!isStudentAudioPlaying) {
+        temp_Student_audio.pause();
+        props.setVoiceAnimate(false);
+      } else {
+        temp_Student_audio.play();
+        props.setVoiceAnimate(true);
+      }
+      temp_Student_audio.onended = function () {
+        setPauseAudio(false);
+        props.setVoiceAnimate(false);
+      };
+      temp_Student_audio.addEventListener("ended", () =>
+        setIsStudentAudioPlaying(false)
+      );
+    }
+    return () => {
+      if (temp_Student_audio !== null) {
+        temp_Student_audio.pause();
+      }
+    };
+  }, [temp_Student_audio]);
 
   useEffect(() => {
     if (temp_audio !== null) {
@@ -167,16 +247,16 @@ function VoiceAnalyser(props) {
 
   useEffect(() => {
     if (recordedAudio !== "") {
-      setLoader(true);
+      // setLoader(true);
       let uri = recordedAudio;
-      var request = new XMLHttpRequest();
+      let request = new XMLHttpRequest();
       request.open("GET", uri, true);
       request.responseType = "blob";
       request.onload = function () {
-        var reader = new FileReader();
+        let reader = new FileReader();
         reader.readAsDataURL(request.response);
         reader.onload = function (e) {
-          var base64Data = e.target.result.split(",")[1];
+          let base64Data = e.target.result.split(",")[1];
           setRecordedAudioBase64(base64Data);
         };
       };
@@ -189,11 +269,23 @@ function VoiceAnalyser(props) {
   }, [recordedAudio]);
 
   useEffect(() => {
+    if (props.isNextButtonCalled) {
+      if (recordedAudioBase64 !== "") {
+        const lang = getLocalData("lang") || "ta";
+        fetchASROutput(lang, recordedAudioBase64);
+        setLoader(true);
+      }
+    }
+  }, [props.isNextButtonCalled]);
+
+  useEffect(() => {
     if (recordedAudioBase64 !== "") {
-      const lang = getLocalData("lang") || "ta";
-      fetchASROutput(lang, recordedAudioBase64);
+      if (props.setIsNextButtonCalled) {
+        props.setIsNextButtonCalled(false);
+      }
     }
   }, [recordedAudioBase64]);
+
   useEffect(() => {
     // props.updateStory();
     props.setVoiceText(apiResponse);
@@ -245,81 +337,65 @@ function VoiceAnalyser(props) {
       const { originalText, contentType, contentId, currentLine } = props;
       const responseStartTime = new Date().getTime();
       let responseText = "";
+      let profanityWord = "";
+      let newThresholdPercentage = 0;
       let data = {};
+
+      let requestBody = {
+        original_text: originalText,
+        audio: base64Data,
+        user_id: virtualId,
+        session_id: sessionId,
+        language: lang,
+        date: new Date(),
+        sub_session_id,
+        contentId,
+        contentType,
+      };
+
+      if (props.selectedOption) {
+        requestBody["is_correct_choice"] = props.selectedOption?.isAns;
+      }
+
+      if (props.correctness) {
+        requestBody["correctness"] = props.correctness;
+      }
 
       if (callUpdateLearner) {
         const { data: updateLearnerData } = await axios.post(
-          `${BASE_API}lais/scores/updateLearnerProfile/${lang}`,
-          {
-            original_text: originalText,
-            audio: base64Data,
-            user_id: virtualId,
-            session_id: sessionId,
-            language: lang,
-            date: new Date(),
-            sub_session_id,
-            contentId,
-            contentType,
-          }
+          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.UPDATE_LEARNER_PROFILE}/${lang}`,
+          requestBody
         );
+
+        //TODO: handle  Errors
+
         data = updateLearnerData;
         responseText = data.responseText;
-
-        if (livesData) {
-          let newLivesData = {
-            ...livesData,
-            scoreData: {
-              ...livesData?.scoreData,
-              [props.currentLine]: data.createScoreData.session,
-            },
-          };
-
-          let missing_token_scores = [];
-          let confidence_scores = [];
-
-          Object.values(newLivesData.scoreData)?.forEach((elem) => {
-            // elem.missing_token_scores confidence_scores
-            elem.confidence_scores.forEach((ecs) => {
-              if (!confidence_scores.find((cs) => cs == ecs.token)) {
-                confidence_scores.push(ecs.token);
-              }
-            });
-            elem.missing_token_scores.forEach((emts) => {
-              if (!missing_token_scores.find((mts) => mts == emts.token)) {
-                missing_token_scores.push(emts.token);
-              }
-            });
+        profanityWord = await filterBadWords(data.responseText);
+        if (profanityWord !== data.responseText) {
+          props?.setOpenMessageDialog({
+            message: "Please avoid using inappropriate language.",
+            isError: true,
           });
-
-          newLivesData = {
-            ...newLivesData,
-            missing_token_scores,
-            confidence_scores,
-          };
-
-          const blackLivesToShow =
-            Math.round(
-              newLivesData?.missing_token_scores?.length /
-                newLivesData?.targetPerLive
-            ) || 0;
-          const redLivesToShow = newLivesData?.lives - blackLivesToShow;
-
-          newLivesData = {
-            ...newLivesData,
-            blackLivesToShow,
-            redLivesToShow,
-          };
-          console.log("here", newLivesData);
-          var audio = new Audio(
-            newLivesData.redLivesToShow <
-            (livesData?.redLivesToShow || livesData?.lives)
-              ? livesCut
-              : livesAdd
+        }
+        newThresholdPercentage = data?.subsessionTargetsCount || 0;
+        if (contentType.toLowerCase() !== "word") {
+          handlePercentageForLife(
+            newThresholdPercentage,
+            contentType,
+            data?.subsessionFluency,
+            lang
           );
-          audio.play();
-          setLivesData(newLivesData);
         }
       }
+
+      if (responseText.toLowerCase() === originalText.toLowerCase()) {
+        setIsMatching(true);
+      } else {
+        setIsMatching(false);
+      }
+
+      //console.log('textss', recordedAudio, isMatching, responseText, originalText);
 
       const responseEndTime = new Date().getTime();
       const responseDuration = Math.round(
@@ -353,8 +429,6 @@ function VoiceAnalyser(props) {
       let wrong_words = 0;
       let correct_words = 0;
       let result_per_words = 0;
-      let result_per_words1 = 0;
-      let occuracy_percentage = 0;
 
       let word_result_array = compareArrays(teacherTextArray, studentTextArray);
 
@@ -386,8 +460,8 @@ function VoiceAnalyser(props) {
       let word_result = finalScore === 100 ? "correct" : "incorrect";
 
       // TODO: Remove false when REACT_APP_AWS_S3_BUCKET_NAME and keys added
-      var audioFileName = "";
-      if (process.env.REACT_APP_CAPTURE_AUDIO === "true" && false) {
+      let audioFileName = "";
+      if (process.env.REACT_APP_CAPTURE_AUDIO === "true") {
         let getContentId = currentLine;
         audioFileName = `${
           process.env.REACT_APP_CHANNEL
@@ -402,7 +476,7 @@ function VoiceAnalyser(props) {
           ContentType: "audio/wav",
         });
         try {
-          const response = await S3Client.send(command);
+          await S3Client.send(command);
         } catch (err) {}
       }
 
@@ -430,12 +504,130 @@ function VoiceAnalyser(props) {
       );
 
       setApiResponse(callUpdateLearner ? data.status : "success");
+
+      if (
+        callUpdateLearner &&
+        (props.pageName === "wordsorimage" || props.pageName === "m5")
+      ) {
+        const isMatching =
+          data?.createScoreData?.session?.error_rate?.character === 0;
+        if (typeof props.updateStoredData === "function") {
+          props.updateStoredData(recordedAudio, isMatching);
+        }
+      }
+      if (props.handleNext) {
+        props.handleNext();
+        if (temp_audio !== null) {
+          temp_audio.pause();
+          setPauseAudio(false);
+        }
+      }
       setLoader(false);
+      if (props.setIsNextButtonCalled) {
+        props.setIsNextButtonCalled(false);
+      }
     } catch (error) {
       setLoader(false);
+      if (props.handleNext) {
+        props.handleNext();
+      }
+      if (props.setIsNextButtonCalled) {
+        props.setIsNextButtonCalled(false);
+      }
       setRecordedAudioBase64("");
       setApiResponse("error");
       console.log("err", error);
+    }
+  };
+
+  const handlePercentageForLife = (
+    percentage, // subsessionTargetsCount
+    contentType,
+    fluencyScore, // subsessionFluency
+    language
+  ) => {
+    try {
+      if (livesData) {
+        let totalSyllables = livesData?.totalTargets;
+        if (language === "en") {
+          // TODO: need to check why this is 50
+          if (totalSyllables > 50) {
+            totalSyllables = 50;
+          }
+        }
+        // Calculate the current percentage based on total targets.
+        percentage = Math.round((percentage / totalSyllables) * 100);
+
+        // Define the total number of lives and adjust the threshold based on syllables.
+        const totalLives = 5;
+        let threshold = 30; // Default threshold
+
+        // Adjust the threshold based on total syllables.
+        if (totalSyllables <= 100) threshold = 30;
+        else if (totalSyllables > 100 && totalSyllables <= 150) threshold = 25;
+        else if (totalSyllables > 150 && totalSyllables <= 175) threshold = 20;
+        else if (totalSyllables > 175 && totalSyllables <= 250) threshold = 15;
+        else if (totalSyllables > 250 && totalSyllables <= 500) threshold = 10;
+        else if (totalSyllables > 500) threshold = 5;
+
+        // Calculate lives lost based on percentage.
+        let livesLost = Math.floor(percentage / (threshold / totalLives));
+
+        // Check fluency criteria and adjust lives lost accordingly.
+        let meetsFluencyCriteria;
+        switch (contentType.toLowerCase()) {
+          case "word":
+            meetsFluencyCriteria = fluencyScore < 2;
+            break;
+          case "sentence":
+            meetsFluencyCriteria = fluencyScore < 6;
+            break;
+          case "paragraph":
+            meetsFluencyCriteria = fluencyScore < 10;
+            break;
+          default:
+            meetsFluencyCriteria = true; // Assume criteria met if not specified.
+        }
+
+        // If fluency criteria are not met, reduce an additional life, but ensure it doesn't exceed the total lives.
+        if (!meetsFluencyCriteria && livesLost < totalLives) {
+          livesLost = Math.min(livesLost + 1, totalLives);
+        }
+
+        // Determine the number of red and black lives to show.
+        const redLivesToShow = totalLives - livesLost;
+        let blackLivesToShow = 5;
+        if (livesLost <= 5) {
+          blackLivesToShow = livesLost;
+        }
+
+        // Prepare the new lives data.
+        let newLivesData = {
+          ...livesData,
+          blackLivesToShow,
+          redLivesToShow,
+          meetsFluencyCriteria: meetsFluencyCriteria,
+        };
+
+        // Play audio based on the change in lives.
+        const HeartGaain =
+          livesData.redLivesToShow === undefined
+            ? 5 - newLivesData.redLivesToShow
+            : livesData.redLivesToShow - newLivesData.redLivesToShow;
+        let isLiveLost;
+        if (HeartGaain > 0) {
+          isLiveLost = true;
+        } else {
+          isLiveLost = false;
+        }
+        const audio = new Audio(isLiveLost ? livesCut : livesAdd);
+        audio.play();
+
+        // Update the state or data structure with the new lives data.
+        setLivesData(newLivesData);
+      }
+    } catch (e) {
+      console.log("error", e);
     }
   };
 
@@ -470,6 +662,9 @@ function VoiceAnalyser(props) {
         //alert("Microphone Permission Denied");
       });
   };
+
+  //console.log('textss', recordedAudio, isMatching);
+
   return (
     <div>
       {loader ? (
@@ -484,17 +679,22 @@ function VoiceAnalyser(props) {
                 <>
                   <AudioCompare
                     setRecordedAudio={setRecordedAudio}
+                    originalText={props.originalText}
                     playAudio={playAudio}
                     pauseAudio={pauseAudio}
+                    playRecordedAudio={playRecordedAudio}
+                    isStudentAudioPlaying={isStudentAudioPlaying}
                     dontShowListen={
                       props.isShowCase
                         ? props.isShowCase && !recordedAudio
                         : props.dontShowListen
                     }
+                    isShowCase={props.isShowCase}
                     isAudioPreprocessing={isAudioPreprocessing}
                     recordedAudio={recordedAudio}
                     setEnableNext={props.setEnableNext}
                     showOnlyListen={props.showOnlyListen}
+                    setOpenMessageDialog={props.setOpenMessageDialog}
                   />
                   {/* <RecordVoiceVisualizer /> */}
                 </>
@@ -504,9 +704,14 @@ function VoiceAnalyser(props) {
                 <Box
                   sx={{ cursor: "pointer" }}
                   onClick={() => {
-                    alert(
-                      "Microphone is blocked. Enable microphone to continue."
-                    );
+                    // alert(
+                    //   "Microphone is blocked. Enable microphone to continue."
+                    // );
+                    props.setOpenMessageDialog({
+                      message:
+                        "Microphone is blocked. Enable microphone to continue.",
+                      isError: true,
+                    });
                   }}
                 >
                   <SpeakButton />
@@ -516,8 +721,48 @@ function VoiceAnalyser(props) {
           }
         })()
       )}
+      {!loader && (
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          {props.enableNext && (
+            <Box
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                if (props.setIsNextButtonCalled) {
+                  props.setIsNextButtonCalled(true);
+                } else {
+                  props.handleNext();
+                }
+              }}
+            >
+              <NextButtonRound />
+            </Box>
+          )}
+        </Box>
+      )}
     </div>
   );
 }
+
+VoiceAnalyser.propTypes = {
+  enableNext: PropTypes.bool.isRequired,
+  setIsNextButtonCalled: PropTypes.func,
+  handleNext: PropTypes.func.isRequired,
+  originalText: PropTypes.string,
+  isShowCase: PropTypes.bool,
+  dontShowListen: PropTypes.bool,
+  setEnableNext: PropTypes.func.isRequired,
+  showOnlyListen: PropTypes.bool,
+  setOpenMessageDialog: PropTypes.func.isRequired,
+  contentType: PropTypes.string.isRequired,
+  currentLine: PropTypes.number.isRequired,
+  isNextButtonCalled: PropTypes.bool,
+  setVoiceAnimate: PropTypes.func.isRequired,
+  setRecordedAudio: PropTypes.func.isRequired,
+  setVoiceText: PropTypes.func.isRequired,
+  livesData: PropTypes.object,
+  contentId: PropTypes.string,
+  updateStoredData: PropTypes.func.isRequired,
+  pageName: PropTypes.string,
+};
 
 export default VoiceAnalyser;

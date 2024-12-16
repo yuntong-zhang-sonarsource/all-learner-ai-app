@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import HomophonesFinder from "homophones";
 import React, { createRef, useEffect, useState } from "react";
 import {
@@ -7,15 +7,19 @@ import {
   AudioPlayerSvg,
   PlayAudioButton,
   StopAudioButton,
-  SubmitButton,
   getLocalData,
   randomizeArray,
 } from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import correctSound from "../../assets/audio/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
+import removeSound from "../../assets/audio/remove.wav";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
+import { Modal } from "@mui/material";
+import ZoomInIcon from "@mui/icons-material/ZoomIn";
+import CloseIcon from "@mui/icons-material/Close";
 
+// TODO: update it as per File name OR update file name as per export variable name
 const Mechanics2 = ({
   page,
   setPage,
@@ -47,99 +51,59 @@ const Mechanics2 = ({
   handleBack,
   allWords,
   setEnableNext,
+  loading,
+  setOpenMessageDialog,
+  options,
+  audio,
 }) => {
   const [words, setWords] = useState([]);
   const [sentences, setSentences] = useState([]);
-
+  const [zoomOpen, setZoomOpen] = useState(false);
   const [selectedWord, setSelectedWord] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [shake, setShake] = useState(false);
   const [wordToFill, setWordToFill] = useState("");
   const [disabledWords, setDisabledWords] = useState(false);
+  const [answer, setAnswer] = useState({
+    text: "",
+    audio_url: "",
+    image_url: "",
+    isAns: false,
+  });
 
-  let wordToCheck = type == "audio" ? parentWords : wordToFill;
+  const lang = getLocalData("lang");
 
-  useEffect(() => {
-    if (type == "fillInTheBlank" && parentWords?.length) {
-      let wordsArr = parentWords?.split(" ");
-      let randomIndex = Math.floor(Math.random() * wordsArr.length);
-      getSimilarWords(wordsArr[randomIndex]);
-      setWordToFill(wordsArr[randomIndex]);
-      wordsArr[randomIndex] = "dash";
-      setSentences(wordsArr);
-      setSelectedWord("");
-    }
-  }, [contentId]);
+  //console.log('Mechanics3', answer);
 
   useEffect(() => {
-    if (type == "audio" && parentWords) {
-      setDisabledWords(true);
-      setSelectedWord("");
-      getSimilarWords(parentWords);
+    if (!enableNext) {
+      setAnswer({ text: "", audio_url: "", image_url: "", isAns: false });
     }
-  }, [contentId]);
+  }, [parentWords]);
 
-  const getSimilarWords = (wordForFindingHomophones) => {
-    const lang = getLocalData("lang");
-    // const isFillInTheBlanks = type == "fillInTheBlank";
-    const wordToSimilar = wordForFindingHomophones
-      ? wordForFindingHomophones
-      : parentWords;
+  const handleAnswerFillInTheBlank = (word) => {
+    setAnswer(word);
 
-    if (lang == "en") {
-      const finder = new HomophonesFinder();
-      finder.find(wordToSimilar).then((homophones) => {
-        let wordsArr = [homophones[8], wordToSimilar, homophones[6]];
-        setWords(randomizeArray(wordsArr));
-      });
-    } else {
-      let wordsToShow = [];
-      if (type == "audio")
-        wordsToShow = allWords?.filter((elem) => elem != wordToSimilar);
-      if (type == "fillInTheBlank") {
-        wordsToShow = allWords
-          ?.join(" ")
-          ?.split(" ")
-          .filter((elem) => elem != wordToSimilar && elem.length > 2);
-      }
-
-      wordsToShow = randomizeArray(wordsToShow).slice(0, 2);
-      wordsToShow.push(wordToSimilar);
-      setWords(randomizeArray(wordsToShow));
+    const isSoundCorrect = word.isAns;
+    let audio = new Audio(isSoundCorrect ? correctSound : wrongSound);
+    if (!isSoundCorrect) {
+      setEnableNext(false);
     }
+    audio.play();
+    setShake(true);
+    setTimeout(() => {
+      setShake(false);
+    }, 800);
   };
 
-  const handleWord = (word, removeWord) => {
-    if (removeWord) {
-      setWords([...words, word]);
-      setSelectedWord("");
-    } else {
-      let wordsArr = [...words];
-
-      if (type !== "audio") {
-        let index = wordsArr?.findIndex((elem) => elem == word);
-        wordsArr?.splice(index, 1);
-      }
-
-      if (selectedWord && type !== "audio") {
-        wordsArr.push(selectedWord);
-      }
-
-      // if (type == "audio") {
-
-      var audio = new Audio(word == wordToCheck ? correctSound : wrongSound);
-      audio.play();
-      setShake(true);
-      setTimeout(() => {
-        setShake(false);
-      }, 800);
-      // }
-
-      setWords(wordsArr);
-      setSelectedWord(word);
-    }
+  const handleRemoveWord = () => {
+    let audio = new Audio(removeSound);
+    setAnswer({ text: "", audio_url: "", image_url: "", isAns: false });
+    audio.play();
+    setEnableNext(false);
   };
 
+  // TODO: Constants declaration Need to move up
   const audioRef = createRef(null);
   const [duration, setDuration] = useState(0);
   const [isReady, setIsReady] = React.useState(false);
@@ -158,27 +122,20 @@ const Mechanics2 = ({
     }
   };
 
+  // TODO: all the constants declaration Need to move up
   const [currrentProgress, setCurrrentProgress] = React.useState(0);
-  const progressBarWidth = isNaN(currrentProgress / duration)
+  const progressBarWidth = Number.isNaN(currrentProgress / duration)
     ? 0
     : currrentProgress / duration;
 
-  const handleSubmit = () => {};
-  const getEnableButton = () => {
-    if (type == "fillInTheBlank") {
-      return enableNext;
-    }
-    if (type == "audio") {
-      return selectedWord == wordToCheck;
-    }
-  };
   return (
     <MainLayout
       background={background}
       handleNext={handleNext}
-      enableNext={getEnableButton()}
+      enableNext={enableNext}
       showTimer={showTimer}
       points={points}
+      pageName={"m3"}
       {...{
         steps,
         currentStep,
@@ -188,8 +145,26 @@ const Mechanics2 = ({
         playTeacherAudio,
         handleBack,
         disableScreen,
+        loading,
       }}
     >
+      <div
+        style={{
+          left: `calc(50% - 258px / 2)`,
+          top: `calc(50% - 45px / 2 - 235.5px)`,
+          fontFamily: "Quicksand",
+          fontStyle: "normal",
+          fontWeight: 600,
+          fontSize: "36px",
+          lineHeight: "45px",
+          alignItems: "center",
+          textAlign: "center",
+          color: "#333F61",
+        }}
+      >
+        {header}
+      </div>
+
       <Box
         sx={{
           display: "flex",
@@ -198,9 +173,10 @@ const Mechanics2 = ({
           marginTop: "60px",
           letterSpacing: "5px",
           height: "100%",
+          flexWrap: "wrap",
         }}
       >
-        {type == "audio" ? (
+        {type === "audio" ? (
           <Box
             sx={{
               display: "flex",
@@ -228,7 +204,7 @@ const Mechanics2 = ({
                   type="audio/mp3"
                   src={
                     contentId
-                      ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/Audio/${contentId}.wav`
+                      ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${contentId}.wav`
                       : ""
                   }
                 />
@@ -265,95 +241,177 @@ const Mechanics2 = ({
           </Box>
         ) : (
           <>
-            {sentences?.map((elem, index) => (
-              <>
-                {elem == "dash" ? (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      marginLeft: index > 0 && "10px",
-                      minWidth: "120px",
-                      height: "80px",
-                      borderBottom: "3px solid #5F6C92",
-                      position: "relative",
+            <Grid
+              item
+              xs={4}
+              sx={{
+                position: {
+                  xs: "relative", // For extra small screens
+                  sm: "relative", // For small screens
+                  md: "relative", // For medium screens
+                  lg: "relative", // Change as needed for large screens
+                  xl: "relative", // Change as needed for extra-large screens
+                },
+                left: {
+                  xs: 0, // For extra small screens
+                  sm: 0, // For small screens
+                  md: "0px", // Adjust position for medium screens
+                  lg: "0px",
+                  xl: "0px",
+                },
+              }}
+            >
+              <Box sx={{ position: "relative", cursor: "zoom-in" }}>
+                {image && (
+                  <img
+                    onClick={() => setZoomOpen(true)}
+                    src={image}
+                    style={{
+                      borderRadius: "20px",
+                      maxWidth: "100%",
+                      height: "clamp(150px, 20vw, 220px)",
                     }}
-                  >
-                    {selectedWord && (
-                      <Box
-                        onClick={() => handleWord(selectedWord, true)}
-                        className={
-                          elem == "dash"
-                            ? selectedWord == wordToCheck
-                              ? `audioSelectedWord`
-                              : `audioSelectedWrongWord ${
-                                  shake ? "shakeImage" : ""
-                                }`
-                            : ""
-                        }
-                        sx={{
-                          textAlign: "center",
-                          px: "25px",
-                          py: "12px",
-                          background: "transparent",
-                          m: 1,
-                          textTransform: "none",
-                          borderRadius: "12px",
-                          border: `1px solid ${
-                            elem == "dash"
-                              ? selectedWord == wordToCheck
-                                ? "#58CC02"
-                                : "#C30303"
-                              : "#333F61"
-                          }`,
-                          background: "#FFF",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <span
-                          style={{
-                            color:
-                              elem == "dash"
-                                ? selectedWord == wordToCheck
-                                  ? "#58CC02"
-                                  : "#C30303"
-                                : "#333F61",
-                            fontWeight: 600,
-                            fontSize: "32px",
-                            fontFamily: "Quicksand",
-                          }}
-                        >
-                          {selectedWord}
-                        </span>
-                      </Box>
-                    )}
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      marginLeft: index > 0 && "10px",
-                    }}
-                  >
-                    <Typography
-                      variant="h5"
-                      component="h4"
-                      sx={{
-                        mb: 4,
-                        mt: 4,
-                        fontSize: "40px",
-                        color: "#303050",
-                        textAlign: "center",
-                        fontFamily: "Quicksand",
-                      }}
-                    >
-                      {elem}
-                    </Typography>
-                  </Box>
+                    alt=""
+                  />
                 )}
-              </>
-            ))}
+
+                {/* Subtle gradient overlay across the top */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: "40px", // Height of the gradient overlay
+                    background:
+                      "linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent)",
+                    borderTopLeftRadius: "20px",
+                    borderTopRightRadius: "20px",
+                    display: "flex",
+                    alignItems: "center",
+                    paddingLeft: "8px",
+                  }}
+                >
+                  {/* Zoom icon positioned in the top-left corner */}
+                  <ZoomInIcon
+                    onClick={() => setZoomOpen(true)}
+                    sx={{ color: "white", fontSize: "22px", cursor: "pointer" }}
+                  />
+                </Box>
+              </Box>
+              <Modal
+                open={zoomOpen}
+                onClose={() => setZoomOpen(false)}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Box
+                  sx={{
+                    position: "relative",
+                    outline: "none",
+                    height: "500px",
+                    width: "500px",
+                  }}
+                >
+                  {/* Subtle gradient overlay at the top of the zoomed image */}
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: "40px", // Adjust height as needed
+                      background:
+                        "linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                      paddingRight: "8px",
+                      borderTopLeftRadius: "8px",
+                      borderTopRightRadius: "8px",
+                    }}
+                  >
+                    {/* Close icon positioned within the gradient overlay */}
+                    <CloseIcon
+                      onClick={() => setZoomOpen(false)}
+                      sx={{
+                        color: "white",
+                        fontSize: "24px",
+                        cursor: "pointer",
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        borderRadius: "50%",
+                        padding: "4px",
+                      }}
+                    />
+                  </Box>
+
+                  <img
+                    src={image}
+                    alt="Zoomed content"
+                    style={{
+                      // maxWidth: "90vw",
+                      // maxHeight: "90vh",
+                      // height:"500px",
+                      width: "100%",
+                      borderRadius: "8px",
+                    }}
+                  />
+                </Box>
+              </Modal>
+            </Grid>
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                mt: { xs: "20px", sm: "40px" },
+                width: "75%",
+              }}
+            >
+              <Typography
+                variant="h5"
+                component="h4"
+                sx={{
+                  mb: { xs: 2, sm: 3, md: 4 },
+                  fontSize: { xs: "24px", sm: "32px", md: "40px" },
+                  color: "#303050",
+                  textAlign: "center",
+                  fontFamily: "Quicksand",
+                  lineHeight: "normal",
+                }}
+              >
+                {answer?.text !== "" ? (
+                  <>
+                    {parentWords?.split(/_+/)[0]}
+                    <span
+                      className={!answer.isAns && shake ? "shakeImage" : ""}
+                      style={{
+                        color: answer.isAns ? "#58CC02" : "#C30303",
+                        border: answer.isAns
+                          ? "2px solid #58CC02"
+                          : "2px solid rgb(195, 3, 3)",
+                        borderBottom: answer.isAns
+                          ? "2px solid #58CC02"
+                          : "2px solid rgb(195, 3, 3)",
+                        borderRadius: "10px",
+                        padding: "10px",
+                        cursor: "pointer",
+                        display: "inline-block",
+                      }}
+                      onClick={handleRemoveWord}
+                    >
+                      {answer?.text}
+                    </span>
+                    {parentWords?.split(/_+/)[1]}
+                  </>
+                ) : (
+                  <>{parentWords}</>
+                )}
+              </Typography>
+            </Box>
           </>
         )}
       </Box>
@@ -363,60 +421,78 @@ const Mechanics2 = ({
           justifyContent: "center",
           marginTop: "20px",
           marginBottom: "30px",
+          flexWrap: "wrap",
         }}
       >
-        {words?.map((elem) => (
-          <Box
-            className={`${
-              type == "audio" && selectedWord == elem
-                ? selectedWord == parentWords
-                  ? `audioSelectedWord`
-                  : `audioSelectedWrongWord ${shake ? "shakeImage" : ""}`
-                : ""
-            }`}
-            onClick={() => handleWord(elem)}
-            sx={{
-              textAlign: "center",
-              px: "25px",
-              py: "12px",
-              background: "transparent",
-              m: 1,
-              textTransform: "none",
-              borderRadius: "12px",
-              border: `1px solid rgba(51, 63, 97, 0.10)`,
-              background: "#FFF",
-              cursor: "pointer",
-              opacity: disabledWords ? 0.25 : 1,
-              pointerEvents: disabledWords ? "none" : "initial",
-            }}
-          >
-            <span
-              style={{
-                color:
-                  type == "audio" && selectedWord == elem
-                    ? selectedWord == parentWords
-                      ? "#58CC02"
-                      : "#C30303"
-                    : "#333F61",
-                fontWeight: 600,
-                fontSize: "32px",
-                fontFamily: "Quicksand",
-              }}
-            >
-              {elem}
-            </span>
-          </Box>
-        ))}
+        <>
+          {type === "fillInTheBlank" &&
+            Array.isArray(options) &&
+            options.map(
+              (elem, ind) =>
+                answer?.text !== elem.text && (
+                  <Box
+                    key={ind}
+                    className={`${
+                      type === "audio" && selectedWord === elem
+                        ? selectedWord === parentWords
+                          ? `audioSelectedWord`
+                          : `audioSelectedWrongWord ${
+                              shake ? "shakeImage" : ""
+                            }`
+                        : ""
+                    }`}
+                    onClick={() => handleAnswerFillInTheBlank(elem)}
+                    sx={{
+                      textAlign: "center",
+                      px: { xs: "10px", sm: "20px", md: "25px" }, // Responsive padding
+                      py: { xs: "8px", sm: "10px", md: "12px" }, // Responsive padding
+                      m: 1,
+                      textTransform: "none",
+                      borderRadius: "12px",
+                      border: `1px solid rgba(51, 63, 97, 0.10)`,
+                      background: "#FFF",
+                      cursor: "pointer",
+                      opacity: disabledWords ? 0.25 : 1,
+                      pointerEvents: disabledWords ? "none" : "initial",
+                      display: "flex", // Flex display for better alignment
+                      justifyContent: "center", // Centering text
+                      alignItems: "center", // Centering text vertically
+                    }}
+                  >
+                    <span
+                      style={{
+                        color:
+                          type === "audio" && selectedWord === elem
+                            ? selectedWord === parentWords
+                              ? "#58CC02"
+                              : "#C30303"
+                            : "#333F61",
+                        fontWeight: 600,
+                        fontSize: "30px", // Responsive font size
+                        fontFamily: "Quicksand",
+                      }}
+                    >
+                      {elem?.text}
+                    </span>
+                  </Box>
+                )
+            )}
+        </>
       </Box>
-      {selectedWord == wordToCheck && type == "fillInTheBlank" && (
+      {
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <VoiceAnalyser
             setVoiceText={setVoiceText}
+            pageName={"m3"}
             setRecordedAudio={setRecordedAudio}
             setVoiceAnimate={setVoiceAnimate}
             storyLine={storyLine}
+            dontShowListen={type === "image" || isDiscover}
             // updateStory={updateStory}
             originalText={parentWords}
+            enableNext={enableNext}
+            handleNext={handleNext}
+            audioLink={audio ? audio : null}
             {...{
               contentId,
               contentType,
@@ -425,10 +501,12 @@ const Mechanics2 = ({
               callUpdateLearner,
               isShowCase,
               setEnableNext,
+              showOnlyListen: !answer?.isAns,
+              setOpenMessageDialog,
             }}
           />
         </Box>
-      )}
+      }
       {/* <Box
         sx={{
           display: "flex",
