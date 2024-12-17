@@ -70,9 +70,32 @@ const Practice = () => {
     }
   }, [startShowCase]);
 
+  const [audioSrc, setAudioSrc] = useState(null);
+
+  useEffect(() => {
+    const preloadAudio = async () => {
+      try {
+        const response = await fetch(LevelCompleteAudio);
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setAudioSrc(audioUrl);
+      } catch (error) {
+        console.error("Error loading audio:", error);
+      }
+    };
+    preloadAudio();
+  }, []);
+
   const callConfettiAndPlay = () => {
-    let audio = new Audio(LevelCompleteAudio);
-    audio.play();
+    if (audioSrc) {
+      // Play preloaded audio if available
+      const audio = new Audio(audioSrc);
+      audio.play();
+    } else {
+      // Fallback to LevelCompleteAudio if preloaded audio is not available
+      const fallbackAudio = new Audio(LevelCompleteAudio);
+      fallbackAudio.play();
+    }
     callConfetti();
   };
 
