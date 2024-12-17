@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import RecordRTC from "recordrtc";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { ListenButton, RetryIcon, SpeakButton, StopButton } from "./constants";
 import RecordVoiceVisualizer from "./RecordVoiceVisualizer";
 import playButton from "../../src/assets/listen.png";
@@ -26,12 +26,12 @@ const AudioRecorder = (props) => {
   }, []);
 
   const startRecording = async () => {
-    setStatus("recording");
-    if (props.setEnableNext) {
-      props.setEnableNext(false);
-    }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (props.setEnableNext) {
+        props.setEnableNext(false);
+      }
+      setStatus("recording");
       mediaStreamRef.current = stream;
 
       // Use RecordRTC with specific configurations to match the blob structure
@@ -119,7 +119,8 @@ const AudioRecorder = (props) => {
                 }}
                 className="game-action-button"
               >
-                {props?.originalText &&
+                {props.enableAfterLoad &&
+                  props?.originalText &&
                   (!props.dontShowListen || props.recordedAudio) && (
                     <>
                       {!props.isShowCase && (
@@ -175,17 +176,24 @@ const AudioRecorder = (props) => {
                   )}
 
                 <div>
-                  {props?.originalText && !props.showOnlyListen && (
-                    <Box
-                      marginLeft={
-                        !props.dontShowListen || props.recordedAudio
-                          ? "32px"
-                          : "0px"
-                      }
-                      sx={{ cursor: "pointer" }}
-                      onClick={startRecording}
-                    >
-                      {!props.recordedAudio ? <SpeakButton /> : <RetryIcon />}
+                  {props.enableAfterLoad ? (
+                    props?.originalText &&
+                    !props.showOnlyListen && (
+                      <Box
+                        marginLeft={
+                          !props.dontShowListen || props.recordedAudio
+                            ? "32px"
+                            : "0px"
+                        }
+                        sx={{ cursor: "pointer" }}
+                        onClick={startRecording}
+                      >
+                        {!props.recordedAudio ? <SpeakButton /> : <RetryIcon />}
+                      </Box>
+                    )
+                  ) : (
+                    <Box sx={{ display: "flex" }}>
+                      <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
                     </Box>
                   )}
                 </div>
