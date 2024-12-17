@@ -1161,7 +1161,7 @@ const MainLayout = (props) => {
                             fontSize={{ md: "14px", xs: "10px" }}
                           >
                             {!gameOverData ? "Start Game ➜" : "Practice ➜"}
-                          </span>
+                          </Typography>
                           {/* <NextButton /> */}
                         </Box>
                       </Box>
