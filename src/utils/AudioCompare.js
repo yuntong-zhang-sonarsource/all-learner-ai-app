@@ -12,6 +12,7 @@ const AudioRecorder = (props) => {
   const [audioBlob, setAudioBlob] = useState(null);
   const recorderRef = useRef(null);
   const mediaStreamRef = useRef(null);
+  const [showLoader, setShowLoader] = useState(false);
 
   useEffect(() => {
     // Cleanup when component unmounts
@@ -53,29 +54,33 @@ const AudioRecorder = (props) => {
   };
 
   const stopRecording = () => {
-    setStatus("inactive");
-    if (recorderRef.current) {
-      recorderRef.current.stopRecording(() => {
-        const blob = recorderRef.current.getBlob();
+    setShowLoader(true);
+    setTimeout(() => {
+      setShowLoader(false);
+      setStatus("inactive");
+      if (recorderRef.current) {
+        recorderRef.current.stopRecording(() => {
+          const blob = recorderRef.current.getBlob();
 
-        if (blob) {
-          setAudioBlob(blob);
-          saveBlob(blob); // Persist the blob
-        } else {
-          console.error("Failed to retrieve audio blob.");
-        }
+          if (blob) {
+            setAudioBlob(blob);
+            saveBlob(blob); // Persist the blob
+          } else {
+            console.error("Failed to retrieve audio blob.");
+          }
 
-        // Stop the media stream
-        if (mediaStreamRef.current) {
-          mediaStreamRef.current.getTracks().forEach((track) => track.stop());
-        }
+          // Stop the media stream
+          if (mediaStreamRef.current) {
+            mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+          }
 
-        setIsRecording(false);
-      });
-    }
-    if (props.setEnableNext) {
-      props.setEnableNext(true);
-    }
+          setIsRecording(false);
+        });
+      }
+      if (props.setEnableNext) {
+        props.setEnableNext(true);
+      }
+    }, 1000);
   };
 
   const saveBlob = (blob) => {
@@ -100,6 +105,7 @@ const AudioRecorder = (props) => {
               >
                 <Box
                   sx={{ cursor: "pointer", height: "38px" }}
+                  className={showLoader ? "stopButtonLoader" : ""}
                   onClick={stopRecording}
                 >
                   <StopButton />
