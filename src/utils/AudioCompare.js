@@ -103,9 +103,9 @@ const AudioRecorder = (props) => {
                   margin: "0 auto",
                 }}
               >
+                {showLoader && <div className="loader"></div>}
                 <Box
                   sx={{ cursor: "pointer", height: "38px" }}
-                  className={showLoader ? "stopButtonLoader" : ""}
                   onClick={stopRecording}
                 >
                   <StopButton />
