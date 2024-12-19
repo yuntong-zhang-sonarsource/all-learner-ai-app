@@ -5,6 +5,7 @@ import { ListenButton, RetryIcon, SpeakButton, StopButton } from "./constants";
 import RecordVoiceVisualizer from "./RecordVoiceVisualizer";
 import playButton from "../../src/assets/listen.png";
 import pauseButton from "../../src/assets/pause.png";
+import PropTypes from "prop-types";
 
 const AudioRecorder = (props) => {
   const [isRecording, setIsRecording] = useState(false);
@@ -213,6 +214,13 @@ const AudioRecorder = (props) => {
       </div>
     </div>
   );
+};
+
+AudioRecorder.propTypes = {
+  enableAfterLoad: PropTypes.bool,
+  showOnlyListen: PropTypes.bool,
+  recordedAudio: PropTypes.string,
+  originalText: PropTypes.string,
 };
 
 export default AudioRecorder;

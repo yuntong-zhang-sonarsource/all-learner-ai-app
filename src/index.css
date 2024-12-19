@@ -6,7 +6,6 @@
   background:
     linear-gradient(rgb(80, 216, 1) 0 0) 0/0% no-repeat lightblue;
   animation: l2 1s infinite steps(10);
-  /* border: 2px solid ; */
 }
 
 @keyframes l2 {
