@@ -56,32 +56,28 @@ const AudioRecorder = (props) => {
 
   const stopRecording = () => {
     setShowLoader(true);
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setShowLoader(false);
       setStatus("inactive");
       if (recorderRef.current) {
         recorderRef.current.stopRecording(() => {
           const blob = recorderRef.current.getBlob();
-
           if (blob) {
             setAudioBlob(blob);
-            saveBlob(blob); // Persist the blob
+            saveBlob(blob);
           } else {
             console.error("Failed to retrieve audio blob.");
           }
-
-          // Stop the media stream
           if (mediaStreamRef.current) {
             mediaStreamRef.current.getTracks().forEach((track) => track.stop());
           }
-
           setIsRecording(false);
+          props.setEnableNext?.(true);
         });
       }
-      if (props.setEnableNext) {
-        props.setEnableNext(true);
-      }
     }, 1000);
+
+    return () => clearTimeout(timeoutId);
   };
 
   const saveBlob = (blob) => {
