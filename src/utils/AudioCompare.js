@@ -103,16 +103,19 @@ const AudioRecorder = (props) => {
                   margin: "0 auto",
                 }}
               >
-                {showLoader && <div className="loader"></div>}
                 <Box
                   sx={{ cursor: "pointer", height: "38px" }}
                   onClick={stopRecording}
                 >
                   <StopButton />
                 </Box>
-                <Box style={{ marginTop: "50px", marginBottom: "50px" }}>
-                  <RecordVoiceVisualizer />
-                </Box>
+                {showLoader ? (
+                  <div className="loader"></div>
+                ) : (
+                  <Box style={{ marginTop: "50px", marginBottom: "50px" }}>
+                    <RecordVoiceVisualizer />
+                  </Box>
+                )}
               </div>
             );
           } else {
