@@ -63,6 +63,7 @@ function VoiceAnalyser(props) {
   const [pauseAudio, setPauseAudio] = useState(false);
   const [recordedAudio, setRecordedAudio] = useState("");
   const [recordedAudioBase64, setRecordedAudioBase64] = useState("");
+  const [enableAfterLoad, setEnableAfterLoad] = useState(false);
   const [audioPermission, setAudioPermission] = useState(null);
   const [apiResponse, setApiResponse] = useState("");
   const [currentIndex, setCurrentIndex] = useState();
@@ -274,9 +275,18 @@ function VoiceAnalyser(props) {
         const lang = getLocalData("lang") || "ta";
         fetchASROutput(lang, recordedAudioBase64);
         setLoader(true);
+        setEnableAfterLoad(false);
+      } else {
+        alert("please record again");
       }
     }
   }, [props.isNextButtonCalled]);
+
+  useEffect(() => {
+    if (props.originalText) {
+      setEnableAfterLoad(true);
+    }
+  }, [props.originalText]);
 
   useEffect(() => {
     if (recordedAudioBase64 !== "") {
@@ -695,6 +705,7 @@ function VoiceAnalyser(props) {
                     setEnableNext={props.setEnableNext}
                     showOnlyListen={props.showOnlyListen}
                     setOpenMessageDialog={props.setOpenMessageDialog}
+                    enableAfterLoad={enableAfterLoad}
                   />
                   {/* <RecordVoiceVisualizer /> */}
                 </>
