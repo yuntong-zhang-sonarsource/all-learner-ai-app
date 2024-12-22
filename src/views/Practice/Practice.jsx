@@ -227,6 +227,10 @@ const Practice = () => {
       );
 
       if (currentQuestion === questions.length - 1 || isGameOver) {
+        // navigate or setNextPracticeLevel
+        let currentPracticeStep =
+          practiceProgress[virtualId].currentPracticeStep;
+        let isShowCase = currentPracticeStep === 4 || currentPracticeStep === 9; // P4 or P8
 
         // Set points
         if (localStorage.getItem("contentSessionId") !== null) {
@@ -247,11 +251,7 @@ const Practice = () => {
           );
           setPoints(pointsRes?.data?.result?.totalLanguagePoints || 0);
         }
-
-        // navigate or setNextPracticeLevel
-        let currentPracticeStep =
-          practiceProgress[virtualId].currentPracticeStep;
-        let isShowCase = currentPracticeStep === 4 || currentPracticeStep === 9; // P4 or P8
+        
         if (isShowCase || isGameOver) {
           // assesment
 
