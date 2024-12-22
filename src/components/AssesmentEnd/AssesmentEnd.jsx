@@ -44,10 +44,13 @@ const AssesmentEnd = () => {
         sessionId = uniqueId();
         localStorage.setItem("sessionId", sessionId)
       }
-      const getPointersDetails = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
-      );
-      setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+
+      if (localStorage.getItem("contentSessionId") !== null) {
+        const getPointersDetails = await axios.get(
+          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
+        );
+        setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+      }
     })();
     setTimeout(() => {
       setShake(false);

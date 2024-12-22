@@ -118,35 +118,18 @@ const SpeakSentenceComponent = () => {
     try {
       const lang = getLocalData("lang");
 
-      if (!(localStorage.getItem("contentSessionId") !== null)) {
-        const pointsRes = await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
-          {
-            userId: localStorage.getItem("virtualId"),
-            sessionId: localStorage.getItem("sessionId"),
-            points: 1,
-            language: lang,
-            milestone: "m0",
-          }
-        );
-        setPoints(pointsRes?.data?.result?.totalLanguagePoints || 0);
-      } else {
-        send(1);
-        // setPoints(localStorage.getItem("currentLessonScoreCount"));
-      }
-
-      await axios.post(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
-        {
-          userId: localStorage.getItem("virtualId"),
-          sessionId: localStorage.getItem("sessionId"),
-          milestone: `discoveryList/discovery/${currentCollectionId}`,
-          lesson: localStorage.getItem("storyTitle"),
-          progress: ((currentQuestion + 1) * 100) / questions.length,
-          language: lang,
-          milestoneLevel: "m0",
-        }
-      );
+      // await axios.post(
+      //   `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
+      //   {
+      //     userId: localStorage.getItem("virtualId"),
+      //     sessionId: localStorage.getItem("sessionId"),
+      //     milestone: `discoveryList/discovery/${currentCollectionId}`,
+      //     lesson: localStorage.getItem("storyTitle"),
+      //     progress: ((currentQuestion + 1) * 100) / questions.length,
+      //     language: lang,
+      //     milestoneLevel: "m0",
+      //   }
+      // );
 
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
@@ -164,6 +147,24 @@ const SpeakSentenceComponent = () => {
             language: localStorage.getItem("lang"),
           }
         );
+
+        if (!(localStorage.getItem("contentSessionId") !== null)) {
+          const pointsRes = await axios.post(
+            `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
+            {
+              userId: localStorage.getItem("virtualId"),
+              sessionId: localStorage.getItem("sessionId"),
+              points: 1,
+              language: lang,
+              milestone: "m0",
+            }
+          );
+          setPoints(pointsRes?.data?.result?.totalLanguagePoints || 0);
+        } else {
+          send(5);
+          // setPoints(localStorage.getItem("currentLessonScoreCount"));
+        }
+
         setInitialAssesment(false);
         const { data: getSetData } = getSetResultRes;
         const data = JSON.stringify(getSetData?.data);

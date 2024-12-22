@@ -6,7 +6,7 @@ import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import routes from "./routes";
 import { AppContent } from "./views";
 import theme from "./assets/styles/theme";
-import { initialize } from "./services/telementryService";
+import { initialize, end } from "./services/telementryService";
 import { startEvent } from "./services/callTelemetryIntract";
 import "@project-sunbird/telemetry-sdk/index.js";
 import { getParameter } from "./utils/constants";
@@ -70,6 +70,20 @@ const App = () => {
     };
 
     setFp();
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      window.telemetry && window.telemetry.syncEvents && window.telemetry.syncEvents();
+    };
+
+    // Add the event listener
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, []);
 
   useEffect(() => {
