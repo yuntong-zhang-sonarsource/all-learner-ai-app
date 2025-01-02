@@ -3,6 +3,7 @@ import { CsTelemetryModule } from '@project-sunbird/client-services/telemetry';
 import { uniqueId } from './utilService';
 import { jwtDecode } from '../../node_modules/jwt-decode/build/cjs/index';
 
+let startTime; // Variable to store the timestamp when the start event is raised
 let contentSessionId;
 let playSessionId;
 let url;
@@ -65,6 +66,7 @@ export const initialize = async ({ context, config, metadata }) => {
 
 export const start = (duration) => {
     try {
+        startTime = Date.now(); // Record the start time
         CsTelemetryModule.instance.telemetryService.raiseStartTelemetry({
             options: getEventOptions(),
             edata: {
@@ -114,15 +116,22 @@ export const Log = (context, pageid, telemetryMode) => {
 };
 
 export const end = (data) => {
-    CsTelemetryModule.instance.telemetryService.raiseEndTelemetry({
-        edata: {
-            type: 'content',
-            mode: 'play',
-            pageid: url,
-            summary: data?.summary || {},
-            duration: data?.duration || '000',
-        },
-    });
+    try {
+        const endTime = Date.now(); // Record the end time
+        const duration = ((endTime - startTime) / 1000).toFixed(2); // Calculate duration in seconds
+
+        CsTelemetryModule.instance.telemetryService.raiseEndTelemetry({
+            edata: {
+                type: 'content',
+                mode: 'play',
+                pageid: url,
+                summary: data?.summary || {},
+                duration: duration, // Log the calculated duration
+            },
+        });
+    } catch (error) {
+        console.error("Error in end telemetry event:", error);
+    }
 };
 
 export const interact = (telemetryMode) => {

@@ -70,9 +70,32 @@ const Practice = () => {
     }
   }, [startShowCase]);
 
+  const [audioSrc, setAudioSrc] = useState(null);
+
+  useEffect(() => {
+    const preloadAudio = async () => {
+      try {
+        const response = await fetch(LevelCompleteAudio);
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setAudioSrc(audioUrl);
+      } catch (error) {
+        console.error("Error loading audio:", error);
+      }
+    };
+    preloadAudio();
+  }, []);
+
   const callConfettiAndPlay = () => {
-    let audio = new Audio(LevelCompleteAudio);
-    audio.play();
+    if (audioSrc) {
+      // Play preloaded audio if available
+      const audio = new Audio(audioSrc);
+      audio.play();
+    } else {
+      // Fallback to LevelCompleteAudio if preloaded audio is not available
+      const fallbackAudio = new Audio(LevelCompleteAudio);
+      fallbackAudio.play();
+    }
     callConfetti();
   };
 
@@ -154,24 +177,6 @@ const Practice = () => {
 
     try {
       const lang = getLocalData("lang");
-      if (localStorage.getItem("contentSessionId") !== null) {
-        setPoints(1);
-        if (isShowCase) {
-          send(1);
-        }
-      } else {
-        const pointsRes = await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
-          {
-            userId: localStorage.getItem("virtualId"),
-            sessionId: localStorage.getItem("sessionId"),
-            points: 1,
-            language: lang,
-            milestone: `m${level}`,
-          }
-        );
-        setPoints(pointsRes?.data?.result?.totalLanguagePoints || 0);
-      }
 
       const virtualId = getLocalData("virtualId");
       const sessionId = getLocalData("sessionId");
@@ -194,18 +199,18 @@ const Practice = () => {
 
       let showcasePercentage = ((currentQuestion + 1) * 100) / questions.length;
 
-      await axios.post(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
-        {
-          userId: virtualId,
-          sessionId: sessionId,
-          milestone: isShowCase ? "showcase" : `practice`,
-          lesson: currentPracticeStep,
-          progress: isShowCase ? showcasePercentage : currentPracticeProgress,
-          language: lang,
-          milestoneLevel: `m${level}`,
-        }
-      );
+      // await axios.post(
+      //   `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
+      //   {
+      //     userId: virtualId,
+      //     sessionId: sessionId,
+      //     milestone: isShowCase ? "showcase" : `practice`,
+      //     lesson: currentPracticeStep,
+      //     progress: isShowCase ? showcasePercentage : currentPracticeProgress,
+      //     language: lang,
+      //     milestoneLevel: `m${level}`,
+      //   }
+      // );
 
       let newPracticeStep =
         currentQuestion === questions.length - 1 || isGameOver
@@ -226,6 +231,27 @@ const Practice = () => {
         let currentPracticeStep =
           practiceProgress[virtualId].currentPracticeStep;
         let isShowCase = currentPracticeStep === 4 || currentPracticeStep === 9; // P4 or P8
+
+        // Set points
+        if (localStorage.getItem("contentSessionId") !== null) {
+          setPoints(1);
+          if (isShowCase) {
+            send(5);
+          }
+        } else {
+          const pointsRes = await axios.post(
+            `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
+            {
+              userId: localStorage.getItem("virtualId"),
+              sessionId: localStorage.getItem("sessionId"),
+              points: 1,
+              language: lang,
+              milestone: `m${level}`,
+            }
+          );
+          setPoints(pointsRes?.data?.result?.totalLanguagePoints || 0);
+        }
+        
         if (isShowCase || isGameOver) {
           // assesment
 
@@ -448,12 +474,14 @@ const Practice = () => {
 
       // TODO: Handle Error for lessons - no lesson progress - starting point should be P1
 
-      const getPointersDetails = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
-      );
+      if (localStorage.getItem("contentSessionId") !== null) {
+        const getPointersDetails = await axios.get(
+          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
+        );
 
-      // TODO: Just Opss icon - we are trying to fetch the score for you
-      setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+        // TODO: Just Opss icon - we are trying to fetch the score for you
+        setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+      }
 
       let userState = Number.isInteger(
         Number(resLessons.data?.result?.result?.lesson)
