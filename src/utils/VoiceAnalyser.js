@@ -276,8 +276,6 @@ function VoiceAnalyser(props) {
         fetchASROutput(lang, recordedAudioBase64);
         setLoader(true);
         setEnableAfterLoad(false);
-      } else {
-        alert("please record again");
       }
     }
   }, [props.isNextButtonCalled]);
