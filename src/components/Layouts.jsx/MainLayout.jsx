@@ -795,7 +795,7 @@ const MainLayout = (props) => {
                         >
                           <Stack justifyContent="center" alignItems="center">
                             <img
-                              src={gameLost}
+                              src={`https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.3/src/assets/images/gameLost.svg`}
                               alt="gameLost"
                               style={{ height: 340 }}
                             />

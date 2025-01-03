@@ -75,7 +75,7 @@ const AudioRecorder = (props) => {
           props.setEnableNext?.(true);
         });
       }
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timeoutId);
   };
