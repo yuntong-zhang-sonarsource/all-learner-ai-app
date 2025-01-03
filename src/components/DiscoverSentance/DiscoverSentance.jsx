@@ -36,9 +36,36 @@ const SpeakSentenceComponent = () => {
   const [openMessageDialog, setOpenMessageDialog] = useState("");
   const [totalSyllableCount, setTotalSyllableCount] = useState("");
   const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
+  const [audioSrc, setAudioSrc] = useState(null);
+
+  useEffect(() => {
+    const preloadAudio = async () => {
+      try {
+        const response = await fetch(LevelCompleteAudio);
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setAudioSrc(audioUrl);
+      } catch (error) {
+        console.error("Error loading audio:", error);
+      }
+    };
+    preloadAudio();
+
+    return () => {
+      // Cleanup blob URL to prevent memory leaks
+      if (audioSrc) {
+        URL.revokeObjectURL(audioSrc);
+      }
+    };
+  }, []);
 
   const callConfettiAndPlay = () => {
-    let audio = new Audio(LevelCompleteAudio);
+    let audio;
+    if (audioSrc) {
+      audio = new Audio(audioSrc);
+    } else {
+      audio = new Audio(LevelCompleteAudio);
+    }
     audio.play();
     callConfetti();
   };

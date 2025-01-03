@@ -84,6 +84,13 @@ const Practice = () => {
       }
     };
     preloadAudio();
+
+    return () => {
+      // Cleanup blob URL to prevent memory leaks
+      if (audioSrc) {
+        URL.revokeObjectURL(audioSrc);
+      }
+    };
   }, []);
 
   const callConfettiAndPlay = () => {

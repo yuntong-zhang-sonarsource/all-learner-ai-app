@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
 import { ProfileHeader } from "../Assesment/Assesment";
 import desktopLevel5 from "../../assets/images/assesmentComplete.png";
-import config from '../../utils/urlConstants.json';
+import config from "../../utils/urlConstants.json";
 import { uniqueId } from "../../services/utilService";
 
 const AssesmentEnd = () => {
@@ -25,10 +25,35 @@ const AssesmentEnd = () => {
   const [previousLevel, setPreviousLevel] = useState("");
   const [points, setPoints] = useState(0);
 
+  const [audioSrc, setAudioSrc] = useState(null);
+
+  useEffect(() => {
+    const preloadAudio = async () => {
+      try {
+        const response = await fetch(LevelCompleteAudio);
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        setAudioSrc(audioUrl);
+      } catch (error) {
+        console.error("Error loading audio:", error);
+      }
+    };
+    preloadAudio();
+
+    return () => {
+      // Cleanup blob URL to prevent memory leaks
+      if (audioSrc) {
+        URL.revokeObjectURL(audioSrc);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     (async () => {
-      let audio = new Audio(LevelCompleteAudio);
-      audio.play();
+      if (audioSrc) {
+        let audio = new Audio(audioSrc);
+        audio.play();
+      }
       const virtualId = getLocalData("virtualId");
       const lang = getLocalData("lang");
       const previous_level = getLocalData("previous_level");
@@ -40,9 +65,9 @@ const AssesmentEnd = () => {
       setLevel(data.data.milestone_level);
       setLocalData("userLevel", data.data.milestone_level?.replace("m", ""));
       let sessionId = getLocalData("sessionId");
-      if (!sessionId){
+      if (!sessionId) {
         sessionId = uniqueId();
-        localStorage.setItem("sessionId", sessionId)
+        localStorage.setItem("sessionId", sessionId);
       }
       const getPointersDetails = await axios.get(
         `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
@@ -52,7 +77,7 @@ const AssesmentEnd = () => {
     setTimeout(() => {
       setShake(false);
     }, 4000);
-  }, []);
+  }, [audioSrc]);
 
   const navigate = useNavigate();
   let newLevel = level.replace("m", "");
