@@ -77,6 +77,7 @@ const Practice = () => {
     const audio = new Audio(levelCompleteAudioSrc);
     audio.play();
     callConfetti();
+    window.telemetry?.syncEvents && window.telemetry.syncEvents();
   };
 
   useEffect(() => {
