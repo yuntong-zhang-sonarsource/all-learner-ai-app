@@ -10,6 +10,7 @@ import discoverEndRight from "../../assets/images/discover-end-right.svg";
 import textureImage from "../../assets/images/textureImage.png";
 import { LetsStart, getLocalData, setLocalData } from "../../utils/constants";
 import config from "../../utils/urlConstants.json";
+import usePreloadAudio from "../../hooks/usePreloadAudio";
 
 const sectionStyle = {
   backgroundImage: `url(${textureImage})`,
@@ -28,33 +29,12 @@ const sectionStyle = {
 const SpeakSentenceComponent = () => {
   const [shake, setShake] = useState(true);
   const [level, setLevel] = useState("");
-  const [audioSrc, setAudioSrc] = useState(null);
-
-  useEffect(() => {
-    const preloadAudio = async () => {
-      try {
-        const response = await fetch(LevelCompleteAudio);
-        const audioBlob = await response.blob();
-        const audioUrl = URL.createObjectURL(audioBlob);
-        setAudioSrc(audioUrl);
-      } catch (error) {
-        console.error("Error loading audio:", error);
-      }
-    };
-    preloadAudio();
-
-    return () => {
-      // Cleanup blob URL to prevent memory leaks
-      if (audioSrc) {
-        URL.revokeObjectURL(audioSrc);
-      }
-    };
-  }, []);
+  const levelCompleteAudioSrc = usePreloadAudio(LevelCompleteAudio);
 
   useEffect(() => {
     (async () => {
-      if (audioSrc) {
-        let audio = new Audio(audioSrc);
+      if (levelCompleteAudioSrc) {
+        let audio = new Audio(levelCompleteAudioSrc);
         audio.play();
       }
       const virtualId = getLocalData("virtualId");
@@ -69,7 +49,7 @@ const SpeakSentenceComponent = () => {
     setTimeout(() => {
       setShake(false);
     }, 4000);
-  }, [audioSrc]);
+  }, [levelCompleteAudioSrc]);
 
   const handleProfileBack = () => {
     try {

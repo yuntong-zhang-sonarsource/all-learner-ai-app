@@ -18,40 +18,19 @@ import { ProfileHeader } from "../Assesment/Assesment";
 import desktopLevel5 from "../../assets/images/assesmentComplete.png";
 import config from "../../utils/urlConstants.json";
 import { uniqueId } from "../../services/utilService";
+import usePreloadAudio from "../../hooks/usePreloadAudio";
 
 const AssesmentEnd = () => {
   const [shake, setShake] = useState(true);
   const [level, setLevel] = useState("");
   const [previousLevel, setPreviousLevel] = useState("");
   const [points, setPoints] = useState(0);
-
-  const [audioSrc, setAudioSrc] = useState(null);
-
-  useEffect(() => {
-    const preloadAudio = async () => {
-      try {
-        const response = await fetch(LevelCompleteAudio);
-        const audioBlob = await response.blob();
-        const audioUrl = URL.createObjectURL(audioBlob);
-        setAudioSrc(audioUrl);
-      } catch (error) {
-        console.error("Error loading audio:", error);
-      }
-    };
-    preloadAudio();
-
-    return () => {
-      // Cleanup blob URL to prevent memory leaks
-      if (audioSrc) {
-        URL.revokeObjectURL(audioSrc);
-      }
-    };
-  }, []);
+  const levelCompleteAudioSrc = usePreloadAudio(LevelCompleteAudio);
 
   useEffect(() => {
     (async () => {
-      if (audioSrc) {
-        let audio = new Audio(audioSrc);
+      if (levelCompleteAudioSrc) {
+        let audio = new Audio(levelCompleteAudioSrc);
         audio.play();
       }
       const virtualId = getLocalData("virtualId");
@@ -77,7 +56,7 @@ const AssesmentEnd = () => {
     setTimeout(() => {
       setShake(false);
     }, 4000);
-  }, [audioSrc]);
+  }, [levelCompleteAudioSrc]);
 
   const navigate = useNavigate();
   let newLevel = level.replace("m", "");
