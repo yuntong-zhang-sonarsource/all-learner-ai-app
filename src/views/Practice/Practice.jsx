@@ -22,6 +22,7 @@ import config from "../../utils/urlConstants.json";
 import { MessageDialog } from "../../components/Assesment/Assesment";
 import { Log } from "../../services/telementryService";
 import Mechanics6 from "../../components/Practice/Mechanics6";
+import usePreloadAudio from "../../hooks/usePreloadAudio";
 
 const Practice = () => {
   const [page, setPage] = useState("");
@@ -70,32 +71,11 @@ const Practice = () => {
     }
   }, [startShowCase]);
 
-  const [audioSrc, setAudioSrc] = useState(null);
-
-  useEffect(() => {
-    const preloadAudio = async () => {
-      try {
-        const response = await fetch(LevelCompleteAudio);
-        const audioBlob = await response.blob();
-        const audioUrl = URL.createObjectURL(audioBlob);
-        setAudioSrc(audioUrl);
-      } catch (error) {
-        console.error("Error loading audio:", error);
-      }
-    };
-    preloadAudio();
-  }, []);
+  const levelCompleteAudioSrc = usePreloadAudio(LevelCompleteAudio);
 
   const callConfettiAndPlay = () => {
-    if (audioSrc) {
-      // Play preloaded audio if available
-      const audio = new Audio(audioSrc);
-      audio.play();
-    } else {
-      // Fallback to LevelCompleteAudio if preloaded audio is not available
-      const fallbackAudio = new Audio(LevelCompleteAudio);
-      fallbackAudio.play();
-    }
+    const audio = new Audio(levelCompleteAudioSrc);
+    audio.play();
     callConfetti();
   };
 

@@ -14,6 +14,7 @@ import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
 import config from "../../utils/urlConstants.json";
 import { MessageDialog } from "../Assesment/Assesment";
 import { Log } from "../../services/telementryService";
+import usePreloadAudio from "../../hooks/usePreloadAudio";
 
 const SpeakSentenceComponent = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -37,8 +38,11 @@ const SpeakSentenceComponent = () => {
   const [totalSyllableCount, setTotalSyllableCount] = useState("");
   const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
 
+  const levelCompleteAudioSrc = usePreloadAudio(LevelCompleteAudio);
+
   const callConfettiAndPlay = () => {
-    let audio = new Audio(LevelCompleteAudio);
+    let audio = new Audio(levelCompleteAudioSrc);
+
     audio.play();
     callConfetti();
   };

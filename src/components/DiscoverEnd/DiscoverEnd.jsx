@@ -8,12 +8,9 @@ import back from "../../assets/images/back-arrow.svg";
 import discoverEndLeft from "../../assets/images/discover-end-left.svg";
 import discoverEndRight from "../../assets/images/discover-end-right.svg";
 import textureImage from "../../assets/images/textureImage.png";
-import {
-  LetsStart,
-  getLocalData,
-  setLocalData,
-} from "../../utils/constants";
-import config from '../../utils/urlConstants.json';
+import { LetsStart, getLocalData, setLocalData } from "../../utils/constants";
+import config from "../../utils/urlConstants.json";
+import usePreloadAudio from "../../hooks/usePreloadAudio";
 
 const sectionStyle = {
   backgroundImage: `url(${textureImage})`,
@@ -32,12 +29,14 @@ const sectionStyle = {
 const SpeakSentenceComponent = () => {
   const [shake, setShake] = useState(true);
   const [level, setLevel] = useState("");
+  const levelCompleteAudioSrc = usePreloadAudio(LevelCompleteAudio);
 
   useEffect(() => {
-    
     (async () => {
-      let audio = new Audio(LevelCompleteAudio);
-      audio.play();
+      if (levelCompleteAudioSrc) {
+        let audio = new Audio(levelCompleteAudioSrc);
+        audio.play();
+      }
       const virtualId = getLocalData("virtualId");
       const lang = getLocalData("lang");
       const getMilestoneDetails = await axios.get(
@@ -50,14 +49,14 @@ const SpeakSentenceComponent = () => {
     setTimeout(() => {
       setShake(false);
     }, 4000);
-  }, []);
+  }, [levelCompleteAudioSrc]);
 
   const handleProfileBack = () => {
     try {
-      if (process.env.REACT_APP_IS_APP_IFRAME === 'true') {
-        navigate("/")
+      if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+        navigate("/");
       } else {
-        navigate("/discover-start")
+        navigate("/discover-start");
       }
     } catch (error) {
       console.error("Error posting message:", error);
@@ -132,7 +131,7 @@ const SpeakSentenceComponent = () => {
           </Typography>
 
           <Box
-           onClick={() => handleProfileBack()}
+            onClick={handleProfileBack}
             sx={{
               display: "flex",
               justifyContent: "center",
