@@ -18,6 +18,7 @@ import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import { Modal } from "@mui/material";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import CloseIcon from "@mui/icons-material/Close";
+import usePreloadAudio from "../../hooks/usePreloadAudio";
 
 // TODO: update it as per File name OR update file name as per export variable name
 const Mechanics2 = ({
@@ -64,6 +65,9 @@ const Mechanics2 = ({
   const [shake, setShake] = useState(false);
   const [wordToFill, setWordToFill] = useState("");
   const [disabledWords, setDisabledWords] = useState(false);
+  const correctSoundAudio = usePreloadAudio(correctSound);
+  const wrongSoundAudio = usePreloadAudio(wrongSound);
+  const removeSoundAudio = usePreloadAudio(removeSound);
   const [answer, setAnswer] = useState({
     text: "",
     audio_url: "",
@@ -85,7 +89,7 @@ const Mechanics2 = ({
     setAnswer(word);
 
     const isSoundCorrect = word.isAns;
-    let audio = new Audio(isSoundCorrect ? correctSound : wrongSound);
+    let audio = new Audio(isSoundCorrect ? correctSoundAudio : wrongSoundAudio);
     if (!isSoundCorrect) {
       setEnableNext(false);
     }
@@ -97,7 +101,7 @@ const Mechanics2 = ({
   };
 
   const handleRemoveWord = () => {
-    let audio = new Audio(removeSound);
+    let audio = new Audio(removeSoundAudio);
     setAnswer({ text: "", audio_url: "", image_url: "", isAns: false });
     audio.play();
     setEnableNext(false);

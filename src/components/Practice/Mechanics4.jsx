@@ -13,6 +13,7 @@ import wrongSound from "../../assets/audio/wrong.wav";
 import addSound from "../../assets/audio/add.mp3";
 import removeSound from "../../assets/audio/remove.wav";
 import { splitGraphemes } from "split-graphemes";
+import usePreloadAudio from "../../hooks/usePreloadAudio";
 
 const Mechanics4 = ({
   page,
@@ -51,6 +52,10 @@ const Mechanics4 = ({
   const [words, setWords] = useState(
     type === "word" ? [] : ["Friend", "She is", "My"]
   );
+  const correctSoundAudio = usePreloadAudio(correctSound);
+  const wrongSoundAudio = usePreloadAudio(wrongSound);
+  const addSoundAudio = usePreloadAudio(addSound);
+  const removeSoundAudio = usePreloadAudio(removeSound);
   const [wordsAfterSplit, setWordsAfterSplit] = useState([]);
 
   useEffect(() => {
@@ -114,7 +119,7 @@ const Mechanics4 = ({
     }, 3000);
     // audioPlay[word]();
     if (selectedWords?.length + 1 !== wordsAfterSplit?.length || isSelected) {
-      let audio = new Audio(isSelected ? removeSound : addSound);
+      let audio = new Audio(isSelected ? removeSoundAudio : addSoundAudio);
       audio.play();
       setEnableNext(false);
     }
@@ -134,8 +139,8 @@ const Mechanics4 = ({
       if (selectedWords?.length + 1 === wordsAfterSplit?.length) {
         let audio = new Audio(
           [...selectedWords, word]?.join(" ") === parentWords
-            ? correctSound
-            : wrongSound
+            ? correctSoundAudio
+            : wrongSoundAudio
         );
         audio.play();
       }
