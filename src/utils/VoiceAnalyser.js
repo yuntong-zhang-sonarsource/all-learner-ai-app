@@ -33,6 +33,7 @@ import config from "./urlConstants.json";
 import { filterBadWords } from "./Badwords";
 import S3Client from "../config/awsS3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import usePreloadAudio from "../hooks/usePreloadAudio";
 /* eslint-disable */
 
 const AudioPath = {
@@ -77,6 +78,8 @@ function VoiceAnalyser(props) {
     process.env.REACT_APP_IS_AUDIOPREPROCESSING === "true"
   );
   const [isMatching, setIsMatching] = useState(false);
+  const livesAddAudio = usePreloadAudio(livesAdd);
+  const livesCutAudio = usePreloadAudio(livesCut);
 
   //console.log('audio', recordedAudio, isMatching);
 
@@ -628,7 +631,7 @@ function VoiceAnalyser(props) {
         } else {
           isLiveLost = false;
         }
-        const audio = new Audio(isLiveLost ? livesCut : livesAdd);
+        const audio = new Audio(isLiveLost ? livesCutAudio : livesAddAudio);
         audio.play();
 
         // Update the state or data structure with the new lives data.
