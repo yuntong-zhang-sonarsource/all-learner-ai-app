@@ -452,12 +452,14 @@ const Practice = () => {
 
       // TODO: Handle Error for lessons - no lesson progress - starting point should be P1
 
-      const getPointersDetails = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
-      );
+      if (process.env.REACT_APP_IS_APP_IFRAME !== "true") {
+        const getPointersDetails = await axios.get(
+          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
+        );
 
-      // TODO: Just Opss icon - we are trying to fetch the score for you
-      setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+        // TODO: Just Opss icon - we are trying to fetch the score for you
+        setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+      }
 
       let userState = Number.isInteger(
         Number(resLessons.data?.result?.result?.lesson)

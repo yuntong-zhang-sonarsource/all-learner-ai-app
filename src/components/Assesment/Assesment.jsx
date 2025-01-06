@@ -598,11 +598,12 @@ const Assesment = ({ discoverStart }) => {
         }
 
         localStorage.setItem("lang", lang || "ta");
-        const getPointersDetails = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${usernameDetails?.data?.result?.virtualID}/${session_id}?language=${lang}`
-        );
-        setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
-
+        if (process.env.REACT_APP_IS_APP_IFRAME !== "true") {
+          const getPointersDetails = await axios.get(
+            `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${usernameDetails?.data?.result?.virtualID}/${session_id}?language=${lang}`
+          );
+          setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+        }
         dispatch(setVirtualId(usernameDetails?.data?.result?.virtualID));
       })();
     } else {
@@ -635,7 +636,7 @@ const Assesment = ({ discoverStart }) => {
           localStorage.setItem("sessionId", sessionId);
         }
 
-        if (virtualId) {
+        if (process.env.REACT_APP_IS_APP_IFRAME !== "true" && virtualId) {
           const getPointersDetails = await axios.get(
             `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
           );
