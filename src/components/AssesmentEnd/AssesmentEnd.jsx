@@ -16,19 +16,23 @@ import { useEffect, useState } from "react";
 import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
 import { ProfileHeader } from "../Assesment/Assesment";
 import desktopLevel5 from "../../assets/images/assesmentComplete.png";
-import config from '../../utils/urlConstants.json';
+import config from "../../utils/urlConstants.json";
 import { uniqueId } from "../../services/utilService";
+import usePreloadAudio from "../../hooks/usePreloadAudio";
 
 const AssesmentEnd = () => {
   const [shake, setShake] = useState(true);
   const [level, setLevel] = useState("");
   const [previousLevel, setPreviousLevel] = useState("");
   const [points, setPoints] = useState(0);
+  const levelCompleteAudioSrc = usePreloadAudio(LevelCompleteAudio);
 
   useEffect(() => {
     (async () => {
-      let audio = new Audio(LevelCompleteAudio);
-      audio.play();
+      if (levelCompleteAudioSrc) {
+        let audio = new Audio(levelCompleteAudioSrc);
+        audio.play();
+      }
       const virtualId = getLocalData("virtualId");
       const lang = getLocalData("lang");
       const previous_level = getLocalData("previous_level");
@@ -40,19 +44,21 @@ const AssesmentEnd = () => {
       setLevel(data.data.milestone_level);
       setLocalData("userLevel", data.data.milestone_level?.replace("m", ""));
       let sessionId = getLocalData("sessionId");
-      if (!sessionId){
+      if (!sessionId) {
         sessionId = uniqueId();
-        localStorage.setItem("sessionId", sessionId)
+        localStorage.setItem("sessionId", sessionId);
       }
-      const getPointersDetails = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
-      );
-      setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+      if (process.env.REACT_APP_IS_APP_IFRAME !== "true" && localStorage.getItem("contentSessionId") !== null) {
+        const getPointersDetails = await axios.get(
+          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
+        );
+        setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+      }
     })();
     setTimeout(() => {
       setShake(false);
     }, 4000);
-  }, []);
+  }, [levelCompleteAudioSrc]);
 
   const navigate = useNavigate();
   let newLevel = level.replace("m", "");
