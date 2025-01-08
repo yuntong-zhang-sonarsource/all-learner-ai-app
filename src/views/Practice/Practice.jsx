@@ -232,7 +232,7 @@ const Practice = () => {
           );
           setPoints(pointsRes?.data?.result?.totalLanguagePoints || 0);
         }
-        
+
         if (isShowCase || isGameOver) {
           // assesment
 
@@ -455,7 +455,10 @@ const Practice = () => {
 
       // TODO: Handle Error for lessons - no lesson progress - starting point should be P1
 
-      if (process.env.REACT_APP_IS_APP_IFRAME !== "true" && localStorage.getItem("contentSessionId") !== null) {
+      if (
+        process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
+        localStorage.getItem("contentSessionId") !== null
+      ) {
         const getPointersDetails = await axios.get(
           `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
         );
@@ -559,6 +562,10 @@ const Practice = () => {
   //     fetchDetails();
   //   }
   // }, [state]);
+
+  useEffect(() => {
+    localStorage.setItem("mechanism_id", (mechanism && mechanism.id) || "");
+  }, [mechanism]);
 
   const handleBack = async () => {
     if (progressData.currentPracticeStep > 0) {
