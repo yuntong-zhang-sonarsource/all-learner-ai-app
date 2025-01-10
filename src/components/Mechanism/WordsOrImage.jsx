@@ -10,6 +10,7 @@ import {
   RetryIcon,
   StopButton,
   SpeakButton,
+  NextButtonRound,
 } from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import PropTypes from "prop-types";
@@ -267,6 +268,15 @@ const WordsOrImage = ({
     startRecording(word, isSelected);
   };
 
+  const nextRecording = () => {
+    setShowListenRetryButtons(false);
+    setShowSpeakButton(true);
+    setShowStopButton(false);
+    setAnswer("");
+    handleNext();
+    //tartRecording(word, isSelected);
+  };
+
   useEffect(() => {
     if (isRecording && recognition) {
       recognition.start();
@@ -318,7 +328,7 @@ const WordsOrImage = ({
     }
   };
 
-  //console.log("wordsORimage", level, storedData, recordedText, answer);
+  //console.log("wordsORimage", level, storedData, recordedText, answer, isShowCase);
 
   return (
     <MainLayout
@@ -499,7 +509,7 @@ const WordsOrImage = ({
           </Box>
         )}
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          {level === 1 ? (
+          {level === 1 && !isShowCase ? (
             <div>
               {showSpeakButton && (
                 <Box
@@ -547,6 +557,12 @@ const WordsOrImage = ({
                     onClick={() => retryRecording(words, true)}
                   >
                     <RetryIcon />
+                  </Box>
+                  <Box
+                    sx={{ cursor: "pointer", marginLeft: "16px" }}
+                    onClick={() => nextRecording()}
+                  >
+                    <NextButtonRound />
                   </Box>
                 </div>
               )}
