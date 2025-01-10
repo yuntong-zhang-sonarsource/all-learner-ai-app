@@ -33,6 +33,7 @@ import config from "./urlConstants.json";
 import { filterBadWords } from "./Badwords";
 import S3Client from "../config/awsS3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import usePreloadAudio from "../hooks/usePreloadAudio";
 /* eslint-disable */
 
 const AudioPath = {
@@ -63,6 +64,7 @@ function VoiceAnalyser(props) {
   const [pauseAudio, setPauseAudio] = useState(false);
   const [recordedAudio, setRecordedAudio] = useState("");
   const [recordedAudioBase64, setRecordedAudioBase64] = useState("");
+  const [enableAfterLoad, setEnableAfterLoad] = useState(false);
   const [audioPermission, setAudioPermission] = useState(null);
   const [apiResponse, setApiResponse] = useState("");
   const [currentIndex, setCurrentIndex] = useState();
@@ -76,6 +78,10 @@ function VoiceAnalyser(props) {
     process.env.REACT_APP_IS_AUDIOPREPROCESSING === "true"
   );
   const [isMatching, setIsMatching] = useState(false);
+  const livesAddAudio = usePreloadAudio(livesAdd);
+  const livesCutAudio = usePreloadAudio(livesCut);
+
+  //console.log('audio', recordedAudio, isMatching);
 
   useEffect(() => {
     if (!props.enableNext) {
@@ -279,9 +285,16 @@ function VoiceAnalyser(props) {
         const lang = getLocalData("lang") || "ta";
         fetchASROutput(lang, recordedAudioBase64);
         setLoader(true);
+        setEnableAfterLoad(false);
       }
     }
   }, [props.isNextButtonCalled]);
+
+  useEffect(() => {
+    if (props.originalText) {
+      setEnableAfterLoad(true);
+    }
+  }, [props.originalText]);
 
   useEffect(() => {
     if (recordedAudioBase64 !== "") {
@@ -356,6 +369,7 @@ function VoiceAnalyser(props) {
         sub_session_id,
         contentId,
         contentType,
+        mechanics_id: localStorage.getItem("mechanism_id") || "",
       };
 
       if (props.selectedOption) {
@@ -371,6 +385,9 @@ function VoiceAnalyser(props) {
           `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.UPDATE_LEARNER_PROFILE}/${lang}`,
           requestBody
         );
+
+        //TODO: handle  Errors
+
         data = updateLearnerData;
         responseText = data.responseText;
         profanityWord = await filterBadWords(data.responseText);
@@ -391,17 +408,13 @@ function VoiceAnalyser(props) {
         }
       }
 
-      //console.log('dataaaa', data);
+      if (responseText.toLowerCase() === originalText.toLowerCase()) {
+        setIsMatching(true);
+      } else {
+        setIsMatching(false);
+      }
 
-      // if (responseText.toLowerCase() === originalText.toLowerCase()) {
-      //   setIsMatching(true);
-      // } else {
-      //   setIsMatching(false);
-      // }
-
-      setIsMatching(
-        data?.createScoreData?.session?.count_diff?.character === 0
-      );
+      //console.log('textss', recordedAudio, isMatching, responseText, originalText);
 
       const responseEndTime = new Date().getTime();
       const responseDuration = Math.round(
@@ -547,15 +560,16 @@ function VoiceAnalyser(props) {
   };
 
   const handlePercentageForLife = (
-    percentage,
+    percentage, // subsessionTargetsCount
     contentType,
-    fluencyScore,
+    fluencyScore, // subsessionFluency
     language
   ) => {
     try {
       if (livesData) {
         let totalSyllables = livesData?.totalTargets;
         if (language === "en") {
+          // TODO: need to check why this is 50
           if (totalSyllables > 50) {
             totalSyllables = 50;
           }
@@ -625,7 +639,7 @@ function VoiceAnalyser(props) {
         } else {
           isLiveLost = false;
         }
-        const audio = new Audio(isLiveLost ? livesCut : livesAdd);
+        const audio = new Audio(isLiveLost ? livesCutAudio : livesAddAudio);
         audio.play();
 
         // Update the state or data structure with the new lives data.
@@ -668,6 +682,8 @@ function VoiceAnalyser(props) {
       });
   };
 
+  //console.log('textss', recordedAudio, isMatching);
+
   return (
     <div>
       {loader ? (
@@ -698,6 +714,7 @@ function VoiceAnalyser(props) {
                     setEnableNext={props.setEnableNext}
                     showOnlyListen={props.showOnlyListen}
                     setOpenMessageDialog={props.setOpenMessageDialog}
+                    enableAfterLoad={enableAfterLoad}
                   />
                   {/* <RecordVoiceVisualizer /> */}
                 </>

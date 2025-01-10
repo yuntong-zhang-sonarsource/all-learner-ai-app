@@ -18,7 +18,9 @@ import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import { Modal } from "@mui/material";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import CloseIcon from "@mui/icons-material/Close";
+import usePreloadAudio from "../../hooks/usePreloadAudio";
 
+// TODO: update it as per File name OR update file name as per export variable name
 const Mechanics2 = ({
   page,
   setPage,
@@ -63,6 +65,9 @@ const Mechanics2 = ({
   const [shake, setShake] = useState(false);
   const [wordToFill, setWordToFill] = useState("");
   const [disabledWords, setDisabledWords] = useState(false);
+  const correctSoundAudio = usePreloadAudio(correctSound);
+  const wrongSoundAudio = usePreloadAudio(wrongSound);
+  const removeSoundAudio = usePreloadAudio(removeSound);
   const [answer, setAnswer] = useState({
     text: "",
     audio_url: "",
@@ -84,7 +89,7 @@ const Mechanics2 = ({
     setAnswer(word);
 
     const isSoundCorrect = word.isAns;
-    let audio = new Audio(isSoundCorrect ? correctSound : wrongSound);
+    let audio = new Audio(isSoundCorrect ? correctSoundAudio : wrongSoundAudio);
     if (!isSoundCorrect) {
       setEnableNext(false);
     }
@@ -96,12 +101,13 @@ const Mechanics2 = ({
   };
 
   const handleRemoveWord = () => {
-    let audio = new Audio(removeSound);
+    let audio = new Audio(removeSoundAudio);
     setAnswer({ text: "", audio_url: "", image_url: "", isAns: false });
     audio.play();
     setEnableNext(false);
   };
 
+  // TODO: Constants declaration Need to move up
   const audioRef = createRef(null);
   const [duration, setDuration] = useState(0);
   const [isReady, setIsReady] = React.useState(false);
@@ -120,6 +126,7 @@ const Mechanics2 = ({
     }
   };
 
+  // TODO: all the constants declaration Need to move up
   const [currrentProgress, setCurrrentProgress] = React.useState(0);
   const progressBarWidth = Number.isNaN(currrentProgress / duration)
     ? 0
@@ -252,15 +259,16 @@ const Mechanics2 = ({
                 left: {
                   xs: 0, // For extra small screens
                   sm: 0, // For small screens
-                  md: "-40px", // Adjust position for medium screens
+                  md: "0px", // Adjust position for medium screens
                   lg: "0px",
                   xl: "0px",
                 },
               }}
             >
-              <Box sx={{ position: "relative", cursor: "zoom-in" }}>
-                {image && (
+              {image?.split("/")?.[4] && (
+                <Box sx={{ position: "relative", cursor: "zoom-in" }}>
                   <img
+                    onClick={() => setZoomOpen(true)}
                     src={image}
                     style={{
                       borderRadius: "20px",
@@ -269,32 +277,36 @@ const Mechanics2 = ({
                     }}
                     alt=""
                   />
-                )}
 
-                {/* Subtle gradient overlay across the top */}
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: "40px", // Height of the gradient overlay
-                    background:
-                      "linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent)",
-                    borderTopLeftRadius: "20px",
-                    borderTopRightRadius: "20px",
-                    display: "flex",
-                    alignItems: "center",
-                    paddingLeft: "8px",
-                  }}
-                >
-                  {/* Zoom icon positioned in the top-left corner */}
-                  <ZoomInIcon
-                    onClick={() => setZoomOpen(true)}
-                    sx={{ color: "white", fontSize: "22px", cursor: "pointer" }}
-                  />
+                  {/* Subtle gradient overlay across the top */}
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: "40px", // Height of the gradient overlay
+                      background:
+                        "linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent)",
+                      borderTopLeftRadius: "20px",
+                      borderTopRightRadius: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      paddingLeft: "8px",
+                    }}
+                  >
+                    {/* Zoom icon positioned in the top-left corner */}
+                    <ZoomInIcon
+                      onClick={() => setZoomOpen(true)}
+                      sx={{
+                        color: "white",
+                        fontSize: "22px",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </Box>
                 </Box>
-              </Box>
+              )}
               <Modal
                 open={zoomOpen}
                 onClose={() => setZoomOpen(false)}

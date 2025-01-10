@@ -489,8 +489,9 @@ const WordsOrImage = ({
                   fontFamily: "Quicksand",
                   lineHeight: "50px",
                 }}
+                fontSize={{ md: "40px", xs: "25px" }}
               >
-                {words || ""}
+                {words ? words[0].toUpperCase() + words.slice(1) : ""}
               </Typography>
             )}
             {matchedChar && (

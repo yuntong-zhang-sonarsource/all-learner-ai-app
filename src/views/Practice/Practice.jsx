@@ -44,6 +44,7 @@ import Picnic from "../../assets/picnic.png";
 import Kitten from "../../assets/kitten.png";
 import Jacket from "../../assets/jacket.png";
 import { PutBucketInventoryConfigurationRequestFilterSensitiveLog } from "@aws-sdk/client-s3";
+import usePreloadAudio from "../../hooks/usePreloadAudio";
 
 const Practice = () => {
   const [page, setPage] = useState("");
@@ -63,7 +64,8 @@ const Practice = () => {
   const [currentImage, setCurrentImage] = useState({});
   const [parentWords, setParentWords] = useState({});
   const [levelOneWord, setLevelOneWord] = useState("");
-  const [level, setLevel] = useState("");
+  //const [level, setLevel] = useState("");
+  const [level, setLevel] = useState(0);
   const [isShowCase, setIsShowCase] = useState(false);
   const [startShowCase, setStartShowCase] = useState(false);
   const limit = 5;
@@ -191,10 +193,13 @@ const Practice = () => {
     }
   }, [startShowCase]);
 
+  const levelCompleteAudioSrc = usePreloadAudio(LevelCompleteAudio);
+
   const callConfettiAndPlay = () => {
-    let audio = new Audio(LevelCompleteAudio);
+    const audio = new Audio(levelCompleteAudioSrc);
     audio.play();
     callConfetti();
+    window.telemetry?.syncEvents && window.telemetry.syncEvents();
   };
 
   useEffect(() => {
@@ -275,24 +280,6 @@ const Practice = () => {
 
     try {
       const lang = getLocalData("lang");
-      if (localStorage.getItem("contentSessionId") !== null) {
-        setPoints(1);
-        if (isShowCase) {
-          send(1);
-        }
-      } else {
-        const pointsRes = await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
-          {
-            userId: localStorage.getItem("virtualId"),
-            sessionId: localStorage.getItem("sessionId"),
-            points: 1,
-            language: lang,
-            milestone: `m${level}`,
-          }
-        );
-        setPoints(pointsRes?.data?.result?.totalLanguagePoints || 0);
-      }
 
       const virtualId = getLocalData("virtualId");
       const sessionId = getLocalData("sessionId");
@@ -315,18 +302,18 @@ const Practice = () => {
 
       let showcasePercentage = ((currentQuestion + 1) * 100) / questions.length;
 
-      await axios.post(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
-        {
-          userId: virtualId,
-          sessionId: sessionId,
-          milestone: isShowCase ? "showcase" : `practice`,
-          lesson: currentPracticeStep,
-          progress: isShowCase ? showcasePercentage : currentPracticeProgress,
-          language: lang,
-          milestoneLevel: `m${level}`,
-        }
-      );
+      // await axios.post(
+      //   `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
+      //   {
+      //     userId: virtualId,
+      //     sessionId: sessionId,
+      //     milestone: isShowCase ? "showcase" : `practice`,
+      //     lesson: currentPracticeStep,
+      //     progress: isShowCase ? showcasePercentage : currentPracticeProgress,
+      //     language: lang,
+      //     milestoneLevel: `m${level}`,
+      //   }
+      // );
 
       let newPracticeStep =
         currentQuestion === questions.length - 1 || isGameOver
@@ -336,7 +323,9 @@ const Practice = () => {
       let newQuestionIndex =
         currentQuestion === questions.length - 1 ? 0 : currentQuestion + 1;
 
-      const currentGetContent = levelGetContent?.[level]?.find(
+      const currentGetContent = levelGetContent[
+        localStorage.getItem("lang") || "en"
+      ]?.[level]?.find(
         (elem) => elem.title === practiceSteps?.[newPracticeStep]?.name
       );
 
@@ -345,6 +334,27 @@ const Practice = () => {
         let currentPracticeStep =
           practiceProgress[virtualId].currentPracticeStep;
         let isShowCase = currentPracticeStep === 4 || currentPracticeStep === 9; // P4 or P8
+
+        // Set points
+        if (localStorage.getItem("contentSessionId") !== null) {
+          setPoints(1);
+          if (isShowCase) {
+            send(5);
+          }
+        } else {
+          const pointsRes = await axios.post(
+            `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
+            {
+              userId: localStorage.getItem("virtualId"),
+              sessionId: localStorage.getItem("sessionId"),
+              points: 1,
+              language: lang,
+              milestone: `m${level}`,
+            }
+          );
+          setPoints(pointsRes?.data?.result?.totalLanguagePoints || 0);
+        }
+
         if (isShowCase || isGameOver) {
           // assesment
 
@@ -358,10 +368,7 @@ const Practice = () => {
               user_id: virtualId,
               totalSyllableCount: totalSyllableCount,
               language: localStorage.getItem("lang"),
-              is_mechanics:
-                currentGetContent && currentGetContent?.mechanism?.id
-                  ? true
-                  : false,
+              is_mechanics: mechanism && mechanism?.id ? true : false,
             }
           );
           const { data: getSetData } = getSetResultRes;
@@ -437,8 +444,15 @@ const Practice = () => {
             (currentGetContent?.competency
               ? `&level_competency=${currentGetContent?.competency}`
               : "") +
-            (currentGetContent?.tags ? `&tags=${currentGetContent?.tags}` : "")
+            (currentGetContent?.tags
+              ? `&tags=${currentGetContent?.tags}`
+              : "") +
+            (currentGetContent?.storyMode
+              ? `&story_mode=${currentGetContent?.storyMode}`
+              : "")
         );
+
+        //TODO: required only for S1 and S2
 
         setTotalSyllableCount(resGetContent?.data?.totalSyllableCount);
         setLivesData({
@@ -455,11 +469,17 @@ const Practice = () => {
           currentPracticeStep === 3 || currentPracticeStep === 8;
         setIsShowCase(showcaseLevel);
 
+        // TODO: API returns contents if 200 status
         quesArr = [...quesArr, ...(resGetContent?.data?.content || [])];
         setCurrentContentType(resGetContent?.data?.content?.[0]?.contentType);
         setCurrentCollectionId(resGetContent?.data?.content?.[0]?.collectionId);
+
+        // TODO: not required - not using this anywhere
         setAssessmentResponse(resGetContent);
+
         setCurrentQuestion(0);
+
+        // TODO: not required - we are geting this data from API
         practiceProgress[virtualId] = {
           currentQuestion: newQuestionIndex,
           currentPracticeProgress,
@@ -470,11 +490,14 @@ const Practice = () => {
         localStorage.setItem("storyTitle", resGetContent?.name);
 
         setQuestions(quesArr);
+
+        // TODO: needs to revisit this logic
         setTimeout(() => {
           setMechanism(currentGetContent.mechanism);
         }, 1000);
       } else if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
+
         practiceProgress[virtualId] = {
           currentQuestion: newQuestionIndex,
           currentPracticeProgress,
@@ -535,6 +558,9 @@ const Practice = () => {
       const getMilestoneDetails = await axios.get(
         `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${virtualId}?language=${lang}`
       );
+
+      // TODO: validate the getMilestoneDetails API return
+
       setLocalData(
         "getMilestone",
         JSON.stringify({ ...getMilestoneDetails.data })
@@ -550,10 +576,20 @@ const Practice = () => {
       const resLessons = await axios.get(
         `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_LESSON_PROGRESS_BY_ID}/${virtualId}?language=${lang}`
       );
-      const getPointersDetails = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
-      );
-      setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+
+      // TODO: Handle Error for lessons - no lesson progress - starting point should be P1
+
+      if (
+        process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
+        localStorage.getItem("contentSessionId") !== null
+      ) {
+        const getPointersDetails = await axios.get(
+          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
+        );
+
+        // TODO: Just Opss icon - we are trying to fetch the score for you
+        setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+      }
 
       let userState = Number.isInteger(
         Number(resLessons.data?.result?.result?.lesson)
@@ -561,6 +597,7 @@ const Practice = () => {
         ? Number(resLessons.data?.result?.result?.lesson)
         : 0;
 
+      // TODO: revisit this - looks like not required
       let practiceProgress = getLocalData("practiceProgress");
       practiceProgress = practiceProgress ? JSON.parse(practiceProgress) : {};
 
@@ -570,7 +607,9 @@ const Practice = () => {
         currentPracticeStep: userState || 0,
       };
 
-      const currentGetContent = levelGetContent?.[level]?.find(
+      const currentGetContent = levelGetContent[
+        localStorage.getItem("lang") || "en"
+      ]?.[level]?.find(
         (elem) => elem.title === practiceSteps?.[userState].name
       );
 
@@ -582,8 +621,14 @@ const Practice = () => {
           (currentGetContent?.competency
             ? `&level_competency=${currentGetContent?.competency}`
             : "") +
-          (currentGetContent?.tags ? `&tags=${currentGetContent?.tags}` : "")
+          (currentGetContent?.tags ? `&tags=${currentGetContent?.tags}` : "") +
+          (currentGetContent?.storyMode
+            ? `&story_mode=${currentGetContent?.storyMode}`
+            : "")
       );
+
+      // TODO: handle error if resWord is empty
+
       setTotalSyllableCount(resWord?.data?.totalSyllableCount);
       setLivesData({
         ...livesData,
@@ -636,6 +681,17 @@ const Practice = () => {
     fetchDetails();
   }, []);
 
+  // useEffect(() => {
+  //   if (state?.refresh) {
+  //     setGameOverData(undefined);
+  //     fetchDetails();
+  //   }
+  // }, [state]);
+
+  useEffect(() => {
+    localStorage.setItem("mechanism_id", (mechanism && mechanism.id) || "");
+  }, [mechanism]);
+
   const handleBack = async () => {
     if (progressData.currentPracticeStep > 0) {
       const virtualId = getLocalData("virtualId");
@@ -669,7 +725,9 @@ const Practice = () => {
 
       setProgressData(practiceProgress[virtualId]);
 
-      const currentGetContent = levelGetContent?.[level]?.find(
+      const currentGetContent = levelGetContent[
+        localStorage.getItem("lang") || "en"
+      ]?.[level]?.find(
         (elem) => elem.title === practiceSteps?.[newCurrentPracticeStep].name
       );
       let quesArr = [];
@@ -681,7 +739,10 @@ const Practice = () => {
           (currentGetContent?.competency
             ? `&level_competency=${currentGetContent?.competency}`
             : "") +
-          (currentGetContent?.tags ? `&tags=${currentGetContent?.tags}` : "")
+          (currentGetContent?.tags ? `&tags=${currentGetContent?.tags}` : "") +
+          (currentGetContent?.storyMode
+            ? `&story_mode=${currentGetContent?.storyMode}`
+            : "")
       );
       setTotalSyllableCount(resWord?.data?.totalSyllableCount);
       setLivesData({
@@ -1068,7 +1129,8 @@ const Practice = () => {
           setPage={setPage}
           {...{
             level: !isShowCase && level,
-            header: "Study the picture and speak the correct answer from below",
+            header:
+              "Look at the picture and speak the correct answer from below",
             parentWords: mechanics_data
               ? mechanics_data[0].text
               : questions[currentQuestion]?.contentSourceData?.[0]?.text,
