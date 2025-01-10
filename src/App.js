@@ -8,7 +8,6 @@ import { AppContent } from "./views";
 import theme from "./assets/styles/theme";
 import { initialize, end } from "./services/telementryService";
 import { startEvent } from "./services/callTelemetryIntract";
-// import "@project-sunbird/telemetry-sdk/index.js";
 import "@tekdi/all-telemetry-sdk/index.js";
 import { getParameter } from "./utils/constants";
 
