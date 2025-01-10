@@ -8,7 +8,8 @@ import { AppContent } from "./views";
 import theme from "./assets/styles/theme";
 import { initialize, end } from "./services/telementryService";
 import { startEvent } from "./services/callTelemetryIntract";
-import "@project-sunbird/telemetry-sdk/index.js";
+// import "@project-sunbird/telemetry-sdk/index.js";
+import "@tekdi/all-telemetry-sdk/index.js";
 import { getParameter } from "./utils/constants";
 
 const App = () => {
@@ -74,7 +75,9 @@ const App = () => {
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
-      window.telemetry && window.telemetry.syncEvents && window.telemetry.syncEvents();
+      window.telemetry &&
+        window.telemetry.syncEvents &&
+        window.telemetry.syncEvents();
     };
 
     // Add the event listener
