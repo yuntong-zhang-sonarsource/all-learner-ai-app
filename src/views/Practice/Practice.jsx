@@ -23,6 +23,27 @@ import { MessageDialog } from "../../components/Assesment/Assesment";
 import { Log } from "../../services/telementryService";
 import Mechanics6 from "../../components/Practice/Mechanics6";
 import Mechanics7 from "../../components/Practice/Mechanics7";
+import Tiger from "../../assets/tiger.png";
+import Pencil from "../../assets/pencil.svg";
+import Rocket from "../../assets/rocket.png";
+import Rabbit from "../../assets/rabbit.png";
+import Apple from "../../assets/apple.png";
+import Banana from "../../assets/banana.jpeg";
+import Tomato from "../../assets/tomato.png";
+import Orange from "../../assets/orange.png";
+import Table from "../../assets/table.jpg";
+import Lemon from "../../assets/lemon.png";
+import Basket from "../../assets/Basket.png";
+import Tunnel from "../../assets/Tunnel.png";
+import Sunset from "../../assets/Sunset.png";
+import Candle from "../../assets/Candle.png";
+import Button from "../../assets/Button.png";
+import Tablet from "../../assets/Tablet.png";
+import Pocket from "../../assets/Pocket.png";
+import Picnic from "../../assets/picnic.png";
+import Kitten from "../../assets/kitten.png";
+import Jacket from "../../assets/jacket.png";
+import { PutBucketInventoryConfigurationRequestFilterSensitiveLog } from "@aws-sdk/client-s3";
 
 const Practice = () => {
   const [page, setPage] = useState("");
@@ -39,6 +60,9 @@ const Practice = () => {
   const [questions, setQuestions] = useState([]);
   const [enableNext, setEnableNext] = useState(false);
   const [progressData, setProgressData] = useState({});
+  const [currentImage, setCurrentImage] = useState({});
+  const [parentWords, setParentWords] = useState({});
+  const [levelOneWord, setLevelOneWord] = useState("");
   const [level, setLevel] = useState("");
   const [isShowCase, setIsShowCase] = useState(false);
   const [startShowCase, setStartShowCase] = useState(false);
@@ -59,7 +83,101 @@ const Practice = () => {
   const [fluency, setFluency] = useState(false);
   const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
 
-  console.log("mechanism", mechanism);
+  const levels = {
+    L1: [
+      { completeWord: "Tiger", syllable: ["Ti", "ger"], img: Tiger },
+      { completeWord: "Pencil", syllable: ["Pen", "cil"], img: Pencil },
+      { completeWord: "Rabbit", syllable: ["Rab", "bit"], img: Rabbit },
+      { completeWord: "Rocket", syllable: ["Rock", "et"], img: Rocket },
+      { completeWord: "Apple", syllable: ["Ap", "ple"], img: Apple },
+    ],
+    L2: [
+      { completeWord: "Banana", syllable: ["Ba", "nana"], img: Banana },
+      { completeWord: "Tomato", syllable: ["To", "ma", "to"], img: Tomato },
+      { completeWord: "Orange", syllable: ["Or", "ange"], img: Orange },
+      { completeWord: "Table", syllable: ["Ta", "ble"], img: Table },
+      { completeWord: "Lemon", syllable: ["Le", "mon"], img: Lemon },
+    ],
+    P1: [
+      { completeWord: "Tiger", syllable: ["Ti", "ger"] },
+      { completeWord: "Pencil", syllable: ["Pen", "cil"] },
+      { completeWord: "Rocket", syllable: ["Rock", "et"] },
+      { completeWord: "Banana", syllable: ["Ba", "na", "na"] },
+      { completeWord: "Orange", syllable: ["Or", "ange"] },
+    ],
+    P2: [
+      { completeWord: "Rabbit", syllable: ["Rab", "bit"] },
+      { completeWord: "Table", syllable: ["Ta", "ble"] },
+      { completeWord: "Lemon", syllable: ["Le", "mon"] },
+      { completeWord: "Tomato", syllable: ["To", "ma", "to"] },
+      { completeWord: "Apple", syllable: ["Ap", "ple"] },
+    ],
+    S1: [
+      { completeWord: "Tiger", syllable: ["Ti", "ger"] },
+      { completeWord: "Rocket", syllable: ["Rock", "et"] },
+      { completeWord: "Lemon", syllable: ["Le", "mon"] },
+      { completeWord: "Tomato", syllable: ["To", "ma", "to"] },
+      { completeWord: "Mango", syllable: ["Man", "go"] },
+    ],
+    L3: [
+      { completeWord: "Basket", syllable: ["Bas", "ket"], img: Basket },
+      { completeWord: "Tunnel", syllable: ["Tun", "nel"], img: Tunnel },
+      { completeWord: "Sunset", syllable: ["Sun", "set"], img: Sunset },
+      { completeWord: "Candle", syllable: ["Can", "dle"], img: Candle },
+      { completeWord: "Button", syllable: ["But", "ton"], img: Button },
+    ],
+    L4: [
+      { completeWord: "Tablet", syllable: ["Tab", "let"], img: Tablet },
+      { completeWord: "Picnic", syllable: ["Pic", "nic"], img: Picnic },
+      { completeWord: "Kitten", syllable: ["Kit", "ten"], img: Kitten },
+      { completeWord: "Jacket", syllable: ["Jack", "et"], img: Jacket },
+      { completeWord: "Pocket", syllable: ["Pock", "et"], img: Pocket },
+    ],
+    P3: [
+      { completeWord: "Basket", syllable: ["Bas", "ket"] },
+      { completeWord: "Tunnel", syllable: ["Tun", "nel"] },
+      { completeWord: "Sunset", syllable: ["Sun", "set"] },
+      { completeWord: "Candle", syllable: ["Can", "dle"] },
+      { completeWord: "Button", syllable: ["But", "ton"] },
+    ],
+    P4: [
+      { completeWord: "Pocket", syllable: ["Pock", "et"] },
+      { completeWord: "Dinner", syllable: ["Din", "ner"] },
+      { completeWord: "Tunnel", syllable: ["Tun", "nel"] },
+      { completeWord: "Sunset", syllable: ["Sun", "set"] },
+      { completeWord: "Tablet", syllable: ["Tab", "let"] },
+    ],
+    S2: [
+      { completeWord: "Basket", syllable: ["Bas", "ket"] },
+      { completeWord: "Tablet", syllable: ["Tab", "let"] },
+      { completeWord: "Sunset", syllable: ["Sun", "set"] },
+      { completeWord: "Button", syllable: ["But", "ton"] },
+      { completeWord: "Window", syllable: ["Win", "dow"] },
+    ],
+  };
+
+  useEffect(() => {
+    if (
+      progressData?.currentPracticeStep !== undefined &&
+      progressData?.currentPracticeStep !== null
+    ) {
+      console.log("ppp", progressData);
+
+      const currentLevel =
+        practiceSteps[progressData.currentPracticeStep]?.title;
+      const currentImage =
+        practiceSteps[progressData.currentPracticeStep]?.title;
+      const levelData = levels[currentLevel];
+      const levelImage = levels[currentImage];
+      const currentWord = levelData[currentQuestion];
+
+      setCurrentImage(levelImage[currentQuestion]);
+      setParentWords(currentWord.syllable.join(" "));
+      setLevelOneWord(levelImage[currentQuestion]?.completeWord);
+    }
+  }, [progressData]);
+
+  console.log("logggg", progressData, parentWords, currentImage, level);
 
   const gameOver = (data, isUserPass) => {
     const userWon = isUserPass;
@@ -744,7 +862,11 @@ const Practice = () => {
               questions[currentQuestion]?.contentType === "image"
                 ? `Guess the below image`
                 : `Speak the below ${questions[currentQuestion]?.contentType}`,
-            words: questions[currentQuestion]?.contentSourceData?.[0]?.text,
+            //words: questions[currentQuestion]?.contentSourceData?.[0]?.text,
+            words:
+              level === 1
+                ? levelOneWord
+                : questions[currentQuestion]?.contentSourceData?.[0]?.text,
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,
@@ -896,27 +1018,10 @@ const Practice = () => {
             header:
               questions[currentQuestion]?.contentType === "image"
                 ? `Guess the below image`
-                : `Speak the below ${questions[currentQuestion]?.contentType}`,
-            parentWords: questions[currentQuestion]?.contentSourceData?.[0]
-              ?.text
-              ? [
-                  questions[
-                    currentQuestion
-                  ]?.contentSourceData?.[0]?.text?.slice(
-                    0,
-                    questions[currentQuestion]?.contentSourceData?.[0]?.text
-                      ?.length / 2
-                  ),
-                  questions[
-                    currentQuestion
-                  ]?.contentSourceData?.[0]?.text?.slice(
-                    questions[currentQuestion]?.contentSourceData?.[0]?.text
-                      ?.length / 2,
-                    questions[currentQuestion]?.contentSourceData?.[0]?.text
-                      ?.length
-                  ),
-                ].join(" ")
-              : "",
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,

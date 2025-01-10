@@ -131,13 +131,16 @@ const MainLayout = (props) => {
     resetStoredData,
     isRecordingComplete,
     answer,
+    parentWords,
+    recAudio,
   } = props;
 
   const [shake, setShake] = useState(false);
   const [audioPlaying, setAudioPlaying] = useState(null);
   const audioRefs = useRef([]);
 
-  console.log("Main Layout Array", LEVEL, props.pageName);
+  //console.log("Main Layout Array", isRecordingComplete, fluency);
+  console.log("audios", parentWords, recAudio);
 
   const handleAudioPlay = (index) => {
     const audioElem = audioRefs.current[index];

@@ -58,8 +58,6 @@ const AudioPath = {
 };
 const currentIndex = localStorage.getItem("index") || 1;
 function VoiceAnalyser(props) {
-  console.log("propss", props);
-
   const [loadCnt, setLoadCnt] = useState(0);
   const [loader, setLoader] = useState(false);
   const [pauseAudio, setPauseAudio] = useState(false);
@@ -99,12 +97,15 @@ function VoiceAnalyser(props) {
       return;
     }
     const { audioLink } = props;
+    console.log("llink", audioLink);
+
     try {
       let audio = new Audio(
         audioLink
           ? audioLink
           : `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${props.contentId}.wav`
       );
+      console.log("audo", audio);
       audio.addEventListener("canplaythrough", () => {
         set_temp_audio(audio);
         setPauseAudio(val);
