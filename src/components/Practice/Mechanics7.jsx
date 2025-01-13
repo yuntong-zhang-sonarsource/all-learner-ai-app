@@ -263,7 +263,6 @@ const Mechanics7 = ({
     setTimeout(() => {
       setShake(false);
     }, 3000);
-    // audioPlay[word]();
     if (
       selectedWordsRef.current?.length + 1 !== wordsAfterSplit?.length ||
       isSelected

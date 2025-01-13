@@ -275,7 +275,6 @@ function VoiceAnalyser(props) {
       setLoader(false);
       setRecordedAudioBase64("");
       setApiResponse("");
-      //props.onAudioProcessed("");
     }
   }, [recordedAudio]);
 

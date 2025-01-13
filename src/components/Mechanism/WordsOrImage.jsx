@@ -104,10 +104,8 @@ const WordsOrImage = ({
 }) => {
   const audioRefs = createRef(null);
   const [isReady, setIsReady] = useState(false);
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [storedData, setStoredData] = useState([]);
-
   const [recognition, setRecognition] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [showSpeakButton, setShowSpeakButton] = useState(true);
@@ -125,10 +123,8 @@ const WordsOrImage = ({
 
   const initializeRecognition = () => {
     let recognitionInstance;
-
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
-
     if (SpeechRecognition) {
       recognitionInstance = new SpeechRecognition();
     } else {
@@ -260,7 +256,6 @@ const WordsOrImage = ({
         audioUrl: audio,
         correctAnswer: isCorrect,
       };
-
       setStoredData((prevData) => [...prevData, newEntry]);
     }
   };
