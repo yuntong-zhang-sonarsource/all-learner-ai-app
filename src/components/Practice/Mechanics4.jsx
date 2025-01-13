@@ -48,6 +48,8 @@ const Mechanics4 = ({
   loading,
   setOpenMessageDialog,
   audio,
+  isNextButtonCalled,
+  setIsNextButtonCalled
 }) => {
   const [words, setWords] = useState(
     type === "word" ? [] : ["Friend", "She is", "My"]
@@ -358,6 +360,8 @@ const Mechanics4 = ({
               setEnableNext,
               showOnlyListen: answer !== "correct",
               setOpenMessageDialog,
+              isNextButtonCalled,
+              setIsNextButtonCalled,
             }}
           />
         </Box>

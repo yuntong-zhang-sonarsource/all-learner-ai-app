@@ -56,6 +56,8 @@ const Mechanics2 = ({
   setOpenMessageDialog,
   options,
   audio,
+  isNextButtonCalled,
+  setIsNextButtonCalled
 }) => {
   const [words, setWords] = useState([]);
   const [sentences, setSentences] = useState([]);
@@ -511,6 +513,8 @@ const Mechanics2 = ({
               setEnableNext,
               showOnlyListen: !answer?.isAns,
               setOpenMessageDialog,
+              isNextButtonCalled,
+              setIsNextButtonCalled
             }}
           />
         </Box>
