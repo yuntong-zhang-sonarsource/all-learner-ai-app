@@ -894,6 +894,8 @@ const Practice = () => {
             options: questions[currentQuestion]?.mechanics_data
               ? questions[currentQuestion]?.mechanics_data[0]?.options
               : [],
+            isNextButtonCalled,
+            setIsNextButtonCalled,
           }}
         />
       );
@@ -937,6 +939,8 @@ const Practice = () => {
             setEnableNext,
             loading,
             setOpenMessageDialog,
+            isNextButtonCalled,
+            setIsNextButtonCalled
           }}
         />
       );
@@ -1062,6 +1066,8 @@ const Practice = () => {
               [],
             loading,
             setOpenMessageDialog,
+            isNextButtonCalled,
+            setIsNextButtonCalled
           }}
         />
       );
@@ -1123,6 +1129,8 @@ const Practice = () => {
             options: questions[currentQuestion]?.mechanics_data
               ? questions[currentQuestion]?.mechanics_data[0]?.options
               : [],
+            isNextButtonCalled,
+            setIsNextButtonCalled
           }}
         />
       );
