@@ -159,9 +159,6 @@ const Mechanics7 = ({
         const transcript = event.results[0][0].transcript;
         setIsRecording(false);
 
-        // console.log('crq', currentWordRef.current, currentWord);
-        //console.log('wordzzS', wordsRef.current, selectedWordsRef.current);
-
         handleWordsLogic(currentWordRef.current, transcript, currentIsSelected);
         setIsProcessing(false);
         setIsMicOn(false);
@@ -200,7 +197,6 @@ const Mechanics7 = ({
   }, [recognition]);
 
   const startRecording = (word, isSelected) => {
-    //console.log('wordzzR', word, isSelected, words, selectedWords);
     setRecordingStates((prev) => ({
       ...prev,
       [word]: true,
@@ -208,7 +204,6 @@ const Mechanics7 = ({
     setIsRecording(true);
     setCurrentWord(word);
     setCurrentIsSelected(isSelected);
-    // console.log('rec1', recognition, currentWord);
   };
 
   const stopRecording = (word) => {
@@ -218,7 +213,6 @@ const Mechanics7 = ({
     }));
     setIsRecording(false);
     setIsProcessing(true);
-    //console.log('rec2', recognition);
     if (recognition) {
       recognition.stop();
     }
@@ -256,63 +250,7 @@ const Mechanics7 = ({
     wordsRef.current = currentImg.syllable;
   }, [currentImg]);
 
-  const [booleanState, setBooleanState] = useState(true);
-
-  useEffect(() => {
-    if (selectedWordsRef.current.length > 0) {
-      setBooleanState(false);
-    }
-  }, [selectedWordsRef.current]);
-
-  const handleWordss = (word, isSelected) => {
-    console.log("wordz", word, isSelected, words, selectedWords);
-
-    setShake(true);
-    setTimeout(() => {
-      setShake(false);
-    }, 3000);
-
-    if (selectedWords?.length + 1 !== wordsAfterSplit?.length || isSelected) {
-      let audio = new Audio(isSelected ? removeSound : addSound);
-      audio.play();
-      setEnableNext(false);
-    }
-
-    if (isSelected) {
-      let selectedWordsArr = [...selectedWords];
-      let index = selectedWordsArr?.findIndex((elem) => elem === word);
-      selectedWordsArr?.splice(index, 1);
-      setSelectedWords(selectedWordsArr);
-      setWords([...words, word]);
-    } else {
-      let wordsArr = [...words];
-      //console.log('warray', wordsArr);
-
-      let index = wordsArr?.findIndex((elem) => elem === word);
-      wordsArr?.splice(index, 1);
-      setWords(wordsArr);
-      setSelectedWords([...selectedWords, word]);
-      //console.log('warray1', wordsArr, selectedWords);
-      if (selectedWords?.length + 1 === wordsAfterSplit?.length) {
-        let audio = new Audio(
-          [...selectedWords, word]?.join(" ") === parentWords
-            ? correctSound
-            : wrongSound
-        );
-        audio.play();
-      }
-    }
-  };
-
   const handleWordsLogic = (word, transcribedText, isSelected) => {
-    // console.log(
-    //   "wordz",
-    //   word,
-    //   transcribedText,
-    //   wordsRef.current,
-    //   selectedWordsRef.current
-    // );
-
     const matchPercentage = phoneticMatch(word, transcribedText);
 
     if (matchPercentage < 49 && !isSelected) {
@@ -383,10 +321,8 @@ const Mechanics7 = ({
     if (isMicOn) {
       stopRecording();
       setIsMicOn(false);
-      //console.log("mic off");
     } else {
       setIsMicOn(true);
-      //console.log("mic on");
     }
     startRecording(word, isSelected);
   };

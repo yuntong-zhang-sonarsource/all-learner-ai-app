@@ -162,7 +162,6 @@ const WordsOrImage = ({
         } else {
           setAnswer(true);
         }
-        //setIsProcessing(false);
         stopAudioRecording();
       };
 
