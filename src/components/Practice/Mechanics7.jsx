@@ -2,12 +2,6 @@ import { Box } from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import MainLayout from "../Layouts.jsx/MainLayout";
-
-// import useSound from "use-sound";
-// import t from "../../assets/audio/t.mp3";
-// import i from "../../assets/audio/i.mp3";
-// import g from "../../assets/audio/g.mp3";
-// import e from "../../assets/audio/e.mp3";
 import clapImage from "../../assets/hand-icon-new.svg";
 import bulbHint from "../../assets/hint.svg";
 import frame from "../../assets/frame.svg";
@@ -28,12 +22,9 @@ import { metaphone } from "metaphone";
 // }
 
 const phoneticMatch = (str1, str2) => {
-  //console.log('sss', str1, str2);
-
   const phonetic1 = metaphone(str1);
   const phonetic2 = metaphone(str2);
   const distance = levenshtein(phonetic1, phonetic2);
-  //console.log(`Phonetic 1: ${phonetic1}, Phonetic 2: ${phonetic2}`);
   const maxLength = Math.max(phonetic1.length, phonetic2.length);
   return ((maxLength - distance) / maxLength) * 100;
 };
@@ -75,8 +66,6 @@ const levenshtein = (a, b) => {
 };
 
 const Mechanics7 = ({
-  page,
-  setPage,
   setVoiceText,
   setRecordedAudio,
   setVoiceAnimate,
@@ -84,9 +73,7 @@ const Mechanics7 = ({
   type,
   handleNext,
   background,
-  header,
   parentWords = "",
-  image,
   enableNext,
   showTimer,
   points,
@@ -115,7 +102,7 @@ const Mechanics7 = ({
   const [recordingStates, setRecordingStates] = useState({});
 
   useEffect(() => {
-    if (words && words.length) {
+    if (words && words?.length) {
       setRecordingStates(
         words.reduce((acc, word) => ({ ...acc, [word]: false }), {})
       );
@@ -133,6 +120,7 @@ const Mechanics7 = ({
   const [recognition, setRecognition] = useState(null);
   const [selectedWords, setSelectedWords] = useState([]);
   const [incorrectWords, setIncorrectWords] = useState({});
+  const [isMicOn, setIsMicOn] = useState(false);
 
   const currentWordRef = useRef(currentWord);
   const currentIsSelectedRef = useRef(currentIsSelected);
@@ -148,10 +136,12 @@ const Mechanics7 = ({
 
   const initializeRecognition = () => {
     let recognitionInstance;
-    if ("webkitSpeechRecognition" in window) {
-      recognitionInstance = new window.webkitSpeechRecognition();
-    } else if ("SpeechRecognition" in window) {
-      recognitionInstance = new window.SpeechRecognition();
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      recognitionInstance = new SpeechRecognition();
     } else {
       alert("Your browser does not support Speech Recognition.");
       return;
@@ -174,13 +164,16 @@ const Mechanics7 = ({
 
         handleWordsLogic(currentWordRef.current, transcript, currentIsSelected);
         setIsProcessing(false);
+        setIsMicOn(false);
       };
 
       recognitionInstance.onerror = (event) => {
         setIsRecording(false);
         setIsProcessing(false);
+        setIsMicOn(false);
         console.error("Speech recognition error:", event.error);
         if (event.error === "no-speech") {
+          console.log("No Speech!");
         } else if (event.error === "aborted") {
           recognitionInstance.start();
         }
@@ -193,6 +186,18 @@ const Mechanics7 = ({
       setRecognition(recognitionInstance);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (recognition) {
+        recognition.onstart = null;
+        recognition.onresult = null;
+        recognition.onerror = null;
+        recognition.onend = null;
+        recognition.stop();
+      }
+    };
+  }, [recognition]);
 
   const startRecording = (word, isSelected) => {
     //console.log('wordzzR', word, isSelected, words, selectedWords);
@@ -331,25 +336,41 @@ const Mechanics7 = ({
     }
 
     if (isSelected) {
+      // Remove the word from selectedWords and add it back to words
       let selectedWordsArr = [...selectedWordsRef.current];
-      let index = selectedWordsArr?.findIndex((elem) => elem === word);
-      selectedWordsArr?.splice(index, 1);
-      setSelectedWords(selectedWordsArr);
-      selectedWordsRef.current = selectedWordsArr;
-      setWords([...wordsRef.current, word]);
-      wordsRef.current = [...wordsRef.current, word];
-    } else {
-      let wordsArr = [...wordsRef.current];
-      //console.log("warray", wordsArr);
+      let index = selectedWordsArr.findIndex((elem) => elem === word);
+      if (index !== -1) {
+        selectedWordsArr.splice(index, 1);
+        setSelectedWords(selectedWordsArr);
+        selectedWordsRef.current = selectedWordsArr;
 
-      let index = wordsArr?.findIndex((elem) => elem === word);
-      wordsArr?.splice(index, 1);
-      setWords(wordsArr);
-      setSelectedWords([...selectedWordsRef.current, word]);
-      //console.log("warray1", wordsArr, selectedWordsRef.current);
-      if (selectedWordsRef.current?.length + 1 === wordsAfterSplit?.length) {
+        // Add the word back to words only if it doesn't already exist
+        if (!wordsRef.current.includes(word)) {
+          const updatedWords = [...wordsRef.current, word];
+          setWords(updatedWords);
+          wordsRef.current = updatedWords;
+        }
+      }
+    } else {
+      // Remove the word from words and add it to selectedWords
+      let wordsArr = [...wordsRef.current];
+      let index = wordsArr.findIndex((elem) => elem === word);
+      if (index !== -1) {
+        wordsArr.splice(index, 1);
+        setWords(wordsArr);
+        wordsRef.current = wordsArr;
+      }
+
+      // Add the word to selectedWords only if it doesn't already exist
+      if (!selectedWordsRef.current.includes(word)) {
+        const updatedSelectedWords = [...selectedWordsRef.current, word];
+        setSelectedWords(updatedSelectedWords);
+        selectedWordsRef.current = updatedSelectedWords;
+      }
+
+      if (selectedWordsRef.current.length + 1 === wordsAfterSplit?.length) {
         let audio = new Audio(
-          [...selectedWordsRef.current, word]?.join(" ") === parentWords
+          [...selectedWordsRef.current, word].join(" ") === parentWords
             ? correctSound
             : wrongSound
         );
@@ -359,7 +380,14 @@ const Mechanics7 = ({
   };
 
   const handleWords = (word, isSelected) => {
-    //console.log('wordzz', word, isSelected, words, selectedWords);
+    if (isMicOn) {
+      stopRecording();
+      setIsMicOn(false);
+      //console.log("mic off");
+    } else {
+      setIsMicOn(true);
+      //console.log("mic on");
+    }
     startRecording(word, isSelected);
   };
 
@@ -408,6 +436,16 @@ const Mechanics7 = ({
 
   const getCircleHeight = (elem) => {
     return elem?.length < 3 ? 120 : 140;
+  };
+
+  const getColor = (type, isIncorrect, answer) => {
+    if (type === "word") {
+      if (isIncorrect) return "#C30303";
+      if (answer === "correct") return "#58CC02";
+      return "#1897DE";
+    }
+    if (answer === "wrong") return "#C30303";
+    return "#333F61";
   };
 
   return (
@@ -494,25 +532,23 @@ const Mechanics7 = ({
 
             const isIncorrect = incorrectWords[elem];
 
-            const colors =
-              type === "word"
-                ? isIncorrect
-                  ? "#C30303"
-                  : answer === "correct"
-                  ? "#58CC02"
-                  : "#1897DE"
-                : answer === "wrong"
-                ? "#C30303"
-                : "#333F61";
+            const colors = getColor(type, isIncorrect, answer);
 
             return (
               <span
+                role="button"
+                tabIndex={0}
                 onClick={() => handleWordsLogic(elem, "", true)}
                 className={
                   answer === "wrong"
                     ? `audioSelectedWrongWord ${shake ? "shakeImage" : ""}`
                     : ""
                 }
+                onKeyDown={(e) => {
+                  if (e.key === " ") {
+                    e.preventDefault();
+                  }
+                }}
                 style={{
                   borderRadius: "12px",
                   padding: answer === "correct" ? "0px" : "5px 10px 5px 10px",
@@ -535,6 +571,7 @@ const Mechanics7 = ({
                       fontSize: "35px",
                       fontFamily: "Quicksand",
                       marginLeft: "5px",
+                      role: "button",
                     }}
                   >
                     {remainingParts.join(" ")}
@@ -652,8 +689,6 @@ const Mechanics7 = ({
                   (!recordingStates[elem] ? (
                     <Box
                       sx={{
-                        cursor: "pointer",
-                        height: "38px",
                         marginTop: "50px",
                         position: "relative",
                         display: "flex",
@@ -677,8 +712,6 @@ const Mechanics7 = ({
                   ) : (
                     <Box
                       sx={{
-                        cursor: "pointer",
-                        height: "38px",
                         marginTop: "50px",
                         position: "relative",
                         display: "flex",

@@ -103,7 +103,6 @@ const WordsOrImage = ({
   setIsNextButtonCalled,
 }) => {
   const audioRefs = createRef(null);
-  const [duration, setDuration] = useState(0);
   const [isReady, setIsReady] = useState(false);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -111,10 +110,6 @@ const WordsOrImage = ({
 
   const [recognition, setRecognition] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [recordedText, setRecordedText] = useState("");
-  const [currentWord, setCurrentWord] = useState("");
-  const [recordingStates, setRecordingStates] = useState({});
   const [showSpeakButton, setShowSpeakButton] = useState(true);
   const [showStopButton, setShowStopButton] = useState(false);
   const [showListenRetryButtons, setShowListenRetryButtons] = useState(false);
@@ -131,10 +126,11 @@ const WordsOrImage = ({
   const initializeRecognition = () => {
     let recognitionInstance;
 
-    if ("webkitSpeechRecognition" in window) {
-      recognitionInstance = new window.webkitSpeechRecognition();
-    } else if ("SpeechRecognition" in window) {
-      recognitionInstance = new window.SpeechRecognition();
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      recognitionInstance = new SpeechRecognition();
     } else {
       alert("Your browser does not support Speech Recognition.");
       return;
@@ -152,7 +148,6 @@ const WordsOrImage = ({
 
       recognitionInstance.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
-        setRecordedText(transcript);
         setIsRecording(false);
         setShowStopButton(false);
         setShowListenRetryButtons(true);
@@ -167,22 +162,21 @@ const WordsOrImage = ({
         } else {
           setAnswer(true);
         }
-        setIsProcessing(false);
+        //setIsProcessing(false);
         stopAudioRecording();
       };
 
       recognitionInstance.onerror = (event) => {
         setIsRecording(false);
-        setIsProcessing(false);
         console.error("Speech recognition error:", event.error);
         if (event.error === "no-speech") {
+          console.log("No Speech!");
         } else if (event.error === "aborted") {
           recognitionInstance.start();
         }
       };
 
       recognitionInstance.onend = () => {
-        setIsProcessing(false);
         stopAudioRecording();
       };
 
@@ -218,27 +212,16 @@ const WordsOrImage = ({
     }
   };
 
-  useEffect(() => {
-    if (recordedAudioBlob) {
-      const audioURL = URL.createObjectURL(recordedAudioBlob);
-    }
-  }, [recordedAudioBlob]);
-
   const startRecording = (word, isSelected) => {
-    setRecordingStates((prev) => ({ ...prev, [word]: true }));
     setIsRecording(true);
     setShowSpeakButton(false);
     setShowStopButton(true);
-    setRecordedText("");
-    setCurrentWord(word);
     currentWordRef.current = word;
     currentIsSelected.current = isSelected;
   };
 
   const stopRecording = (word) => {
-    setRecordingStates((prev) => ({ ...prev, [word]: false }));
     setIsRecording(false);
-    setIsProcessing(true);
     setShowStopButton(false);
     setShowListenRetryButtons(true);
     if (recognition) {
@@ -300,7 +283,6 @@ const WordsOrImage = ({
       setIsPlaying(true);
     }
   };
-  const [currrentProgress, setCurrrentProgress] = useState(0);
 
   const playAudio = () => {
     if (recordedAudioBlob && audioRef.current) {
@@ -317,8 +299,6 @@ const WordsOrImage = ({
     if (answer === false) return "red";
     return "#333F61";
   };
-
-  //console.log("wordsORimage", level, storedData, recordedText, answer, isShowCase);
 
   return (
     <MainLayout
@@ -393,15 +373,11 @@ const WordsOrImage = ({
               <audio
                 ref={audioRefs}
                 preload="metadata"
-                onDurationChange={(e) => setDuration(e.currentTarget.duration)}
                 onCanPlay={(e) => {
                   setIsReady(true);
                 }}
                 onPlaying={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
-                onTimeUpdate={(e) => {
-                  setCurrrentProgress(e.currentTarget.currentTime);
-                }}
               >
                 <source type="audio/mp3" src={v11} />
               </audio>
@@ -479,12 +455,13 @@ const WordsOrImage = ({
                 display={"flex"}
                 mb={4}
                 sx={{
+                  color: "red",
                   width: "100%",
                   justifyContent: "center",
                   flexWrap: "wrap",
                 }}
               >
-                {highlightWords(words, matchedChar)}
+                {highlightWords(words, matchedChar, getAnswerColor(answer))}
               </Box>
             )}
           </Box>

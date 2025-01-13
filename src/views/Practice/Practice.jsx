@@ -14,7 +14,6 @@ import {
 import axios from "axios";
 import WordsOrImage from "../../components/Mechanism/WordsOrImage";
 import { uniqueId } from "../../services/utilService";
-import useSound from "use-sound";
 import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
 import { splitGraphemes } from "split-graphemes";
 import { Typography } from "@mui/material";
@@ -64,7 +63,6 @@ const Practice = () => {
   const [currentImage, setCurrentImage] = useState({});
   const [parentWords, setParentWords] = useState({});
   const [levelOneWord, setLevelOneWord] = useState("");
-  //const [level, setLevel] = useState("");
   const [level, setLevel] = useState(0);
   const [isShowCase, setIsShowCase] = useState(false);
   const [startShowCase, setStartShowCase] = useState(false);
@@ -72,7 +70,6 @@ const Practice = () => {
   const [disableScreen, setDisableScreen] = useState(false);
   const [mechanism, setMechanism] = useState("");
 
-  // const [play] = useSound(LevelCompleteAudio);
   const [livesData, setLivesData] = useState();
   const [gameOverData, setGameOverData] = useState();
   const [loading, setLoading] = useState();
@@ -163,8 +160,6 @@ const Practice = () => {
       progressData?.currentPracticeStep !== undefined &&
       progressData?.currentPracticeStep !== null
     ) {
-      //console.log("ppp", progressData);
-
       const currentLevel =
         practiceSteps[progressData.currentPracticeStep]?.title;
       const currentImage =
@@ -178,8 +173,6 @@ const Practice = () => {
       setLevelOneWord(levelImage[currentQuestion]?.completeWord);
     }
   }, [progressData]);
-
-  //console.log("logggg", progressData, parentWords, currentImage, level);
 
   const gameOver = (data, isUserPass) => {
     const userWon = isUserPass;
@@ -210,7 +203,6 @@ const Practice = () => {
       Number(currentPracticeStep + 1) > 0 &&
       currentQuestion === 0 &&
       !fromBack
-      // !state?.refresh
     ) {
       setDisableScreen(true);
       callConfettiAndPlay();
@@ -239,11 +231,8 @@ const Practice = () => {
       setEnableNext(false);
     }
     if (voiceText == "success") {
-      // setEnableNext(true);
-      // go_to_result(voiceText);
       setVoiceText("");
     }
-    //eslint-disable-next-line
   }, [voiceText]);
 
   const send = (score) => {
@@ -302,19 +291,6 @@ const Practice = () => {
 
       let showcasePercentage = ((currentQuestion + 1) * 100) / questions.length;
 
-      // await axios.post(
-      //   `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
-      //   {
-      //     userId: virtualId,
-      //     sessionId: sessionId,
-      //     milestone: isShowCase ? "showcase" : `practice`,
-      //     lesson: currentPracticeStep,
-      //     progress: isShowCase ? showcasePercentage : currentPracticeProgress,
-      //     language: lang,
-      //     milestoneLevel: `m${level}`,
-      //   }
-      // );
-
       let newPracticeStep =
         currentQuestion === questions.length - 1 || isGameOver
           ? currentPracticeStep + 1
@@ -330,12 +306,10 @@ const Practice = () => {
       );
 
       if (currentQuestion === questions.length - 1 || isGameOver) {
-        // navigate or setNextPracticeLevel
         let currentPracticeStep =
           practiceProgress[virtualId].currentPracticeStep;
         let isShowCase = currentPracticeStep === 4 || currentPracticeStep === 9; // P4 or P8
 
-        // Set points
         if (localStorage.getItem("contentSessionId") !== null) {
           setPoints(1);
           if (isShowCase) {
@@ -356,8 +330,6 @@ const Practice = () => {
         }
 
         if (isShowCase || isGameOver) {
-          // assesment
-
           const sub_session_id = getLocalData("sub_session_id");
           const getSetResultRes = await axios.post(
             `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_SET_RESULT}`,
@@ -541,8 +513,6 @@ const Practice = () => {
   };
 
   const fetchDetails = async () => {
-    //console.log("calling....");
-
     let quesArr = [];
     try {
       setLoading(true);
@@ -648,7 +618,6 @@ const Practice = () => {
 
       setQuestions(quesArr);
       setMechanism(currentGetContent.mechanism);
-      //console.log("mech ->", currentGetContent);
 
       let showcaseLevel = userState === 4 || userState === 9;
       setIsShowCase(showcaseLevel);
@@ -680,13 +649,6 @@ const Practice = () => {
   useEffect(() => {
     fetchDetails();
   }, []);
-
-  // useEffect(() => {
-  //   if (state?.refresh) {
-  //     setGameOverData(undefined);
-  //     fetchDetails();
-  //   }
-  // }, [state]);
 
   useEffect(() => {
     localStorage.setItem("mechanism_id", (mechanism && mechanism.id) || "");
@@ -782,14 +744,13 @@ const Practice = () => {
     }
   }, [livesData]);
 
-  function highlightWords(sentence, matchedChar) {
+  function highlightWords(sentence, matchedChar, color) {
     const words = sentence.split(" ");
     matchedChar.sort(function (str1, str2) {
       return str2.length - str1.length;
     });
 
     let type = currentContentType?.toLowerCase();
-    // console.log(type, sentence, matchedChar);
     if (type === "char" || type === "word") {
       const word = splitGraphemes(words[0].toLowerCase()).filter(
         (item) => item !== "‌" && item !== "" && item !== " "
@@ -814,6 +775,7 @@ const Practice = () => {
                     fontFamily: "Quicksand",
                     lineHeight: "50px",
                     background: "#FFF0BD",
+                    color: color,
                   }}
                 >
                   {i === 0 ? substr.toUpperCase() : substr}
@@ -832,7 +794,7 @@ const Practice = () => {
                 variant="h5"
                 component="h4"
                 sx={{
-                  color: "#333F61",
+                  color: color,
                   fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
                   fontWeight: 700,
                   fontFamily: "Quicksand",
@@ -923,7 +885,6 @@ const Practice = () => {
               questions[currentQuestion]?.contentType === "image"
                 ? `Guess the below image`
                 : `Speak the below ${questions[currentQuestion]?.contentType}`,
-            //words: questions[currentQuestion]?.contentSourceData?.[0]?.text,
             words:
               level === 1
                 ? levelOneWord

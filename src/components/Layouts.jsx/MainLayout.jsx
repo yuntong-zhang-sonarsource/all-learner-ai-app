@@ -8,10 +8,6 @@ import practicebg from "../../assets/images/practice-bg.svg";
 import practicebg2 from "../../assets/images/practice-bg2.svg";
 import practicebg3 from "../../assets/images/practice-bg3.svg";
 import gameWon from "../../assets/images/gameWon.svg";
-import gameLost from "../../assets/images/gameLost.svg";
-import correctImage from "../../assets/correct.svg";
-import wrongImage from "../../assets/wrong.svg";
-import turtleImage from "../../assets/turtle.svg";
 import clouds from "../../assets/images/clouds.svg";
 import catLoading from "../../assets/images/catLoading.gif";
 import textureImage from "../../assets/images/textureImage.png";
@@ -130,8 +126,6 @@ const MainLayout = (props) => {
     resetStoredData,
     isRecordingComplete,
     answer,
-    parentWords,
-    recAudio,
   } = props;
 
   const [shake, setShake] = useState(false);
@@ -245,7 +239,6 @@ const MainLayout = (props) => {
     backgroundPosition: "center center",
     backgroundRepeat: "no-repeat",
     minHeight: "100vh",
-    // padding: "30px 100px",
     display: "flex",
     paddingTop: { md: "0px", xs: "20px" },
     justifyContent: "center",
@@ -531,7 +524,6 @@ const MainLayout = (props) => {
                                         fontFamily: "Quicksand",
                                       }}
                                     >
-                                      {/* {elem.name} */}
                                       {LEVEL === 1 ? elem.title : elem.name}
                                     </span>
                                   )}
@@ -614,7 +606,7 @@ const MainLayout = (props) => {
                 mt: "50px",
               }}
             >
-              <Box>{shake && <Confetti width={width} height={"600px"} />}</Box>
+              <Box>{shake && <Confetti width={width} height={"602px"} />}</Box>
               <CardContent
                 sx={{
                   width: "82vw",
@@ -992,7 +984,6 @@ const MainLayout = (props) => {
                                           fontFamily: "Quicksand",
                                         }}
                                       >
-                                        {/* {elem.name} */}
                                         {LEVEL === 1 ? elem.title : elem.name}
                                       </span>
                                     )}
