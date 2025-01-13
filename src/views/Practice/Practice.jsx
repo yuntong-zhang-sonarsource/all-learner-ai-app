@@ -22,6 +22,7 @@ import config from "../../utils/urlConstants.json";
 import { MessageDialog } from "../../components/Assesment/Assesment";
 import { Log } from "../../services/telementryService";
 import Mechanics6 from "../../components/Practice/Mechanics6";
+import usePreloadAudio from "../../hooks/usePreloadAudio";
 
 const Practice = () => {
   const [page, setPage] = useState("");
@@ -70,10 +71,13 @@ const Practice = () => {
     }
   }, [startShowCase]);
 
+  const levelCompleteAudioSrc = usePreloadAudio(LevelCompleteAudio);
+
   const callConfettiAndPlay = () => {
-    let audio = new Audio(LevelCompleteAudio);
+    const audio = new Audio(levelCompleteAudioSrc);
     audio.play();
     callConfetti();
+    window.telemetry?.syncEvents && window.telemetry.syncEvents();
   };
 
   useEffect(() => {
@@ -154,24 +158,6 @@ const Practice = () => {
 
     try {
       const lang = getLocalData("lang");
-      if (localStorage.getItem("contentSessionId") !== null) {
-        setPoints(1);
-        if (isShowCase) {
-          send(1);
-        }
-      } else {
-        const pointsRes = await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
-          {
-            userId: localStorage.getItem("virtualId"),
-            sessionId: localStorage.getItem("sessionId"),
-            points: 1,
-            language: lang,
-            milestone: `m${level}`,
-          }
-        );
-        setPoints(pointsRes?.data?.result?.totalLanguagePoints || 0);
-      }
 
       const virtualId = getLocalData("virtualId");
       const sessionId = getLocalData("sessionId");
@@ -194,18 +180,18 @@ const Practice = () => {
 
       let showcasePercentage = ((currentQuestion + 1) * 100) / questions.length;
 
-      await axios.post(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
-        {
-          userId: virtualId,
-          sessionId: sessionId,
-          milestone: isShowCase ? "showcase" : `practice`,
-          lesson: currentPracticeStep,
-          progress: isShowCase ? showcasePercentage : currentPracticeProgress,
-          language: lang,
-          milestoneLevel: `m${level}`,
-        }
-      );
+      // await axios.post(
+      //   `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
+      //   {
+      //     userId: virtualId,
+      //     sessionId: sessionId,
+      //     milestone: isShowCase ? "showcase" : `practice`,
+      //     lesson: currentPracticeStep,
+      //     progress: isShowCase ? showcasePercentage : currentPracticeProgress,
+      //     language: lang,
+      //     milestoneLevel: `m${level}`,
+      //   }
+      // );
 
       let newPracticeStep =
         currentQuestion === questions.length - 1 || isGameOver
@@ -226,6 +212,27 @@ const Practice = () => {
         let currentPracticeStep =
           practiceProgress[virtualId].currentPracticeStep;
         let isShowCase = currentPracticeStep === 4 || currentPracticeStep === 9; // P4 or P8
+
+        // Set points
+        if (localStorage.getItem("contentSessionId") !== null) {
+          setPoints(1);
+          if (isShowCase) {
+            send(5);
+          }
+        } else {
+          const pointsRes = await axios.post(
+            `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
+            {
+              userId: localStorage.getItem("virtualId"),
+              sessionId: localStorage.getItem("sessionId"),
+              points: 1,
+              language: lang,
+              milestone: `m${level}`,
+            }
+          );
+          setPoints(pointsRes?.data?.result?.totalLanguagePoints || 0);
+        }
+
         if (isShowCase || isGameOver) {
           // assesment
 
@@ -448,12 +455,17 @@ const Practice = () => {
 
       // TODO: Handle Error for lessons - no lesson progress - starting point should be P1
 
-      const getPointersDetails = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
-      );
+      if (
+        process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
+        localStorage.getItem("contentSessionId") !== null
+      ) {
+        const getPointersDetails = await axios.get(
+          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
+        );
 
-      // TODO: Just Opss icon - we are trying to fetch the score for you
-      setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+        // TODO: Just Opss icon - we are trying to fetch the score for you
+        setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+      }
 
       let userState = Number.isInteger(
         Number(resLessons.data?.result?.result?.lesson)
@@ -550,6 +562,10 @@ const Practice = () => {
   //     fetchDetails();
   //   }
   // }, [state]);
+
+  useEffect(() => {
+    localStorage.setItem("mechanism_id", (mechanism && mechanism.id) || "");
+  }, [mechanism]);
 
   const handleBack = async () => {
     if (progressData.currentPracticeStep > 0) {
@@ -878,6 +894,8 @@ const Practice = () => {
             options: questions[currentQuestion]?.mechanics_data
               ? questions[currentQuestion]?.mechanics_data[0]?.options
               : [],
+            isNextButtonCalled,
+            setIsNextButtonCalled,
           }}
         />
       );
@@ -921,6 +939,8 @@ const Practice = () => {
             setEnableNext,
             loading,
             setOpenMessageDialog,
+            isNextButtonCalled,
+            setIsNextButtonCalled
           }}
         />
       );
@@ -1046,6 +1066,8 @@ const Practice = () => {
               [],
             loading,
             setOpenMessageDialog,
+            isNextButtonCalled,
+            setIsNextButtonCalled
           }}
         />
       );
@@ -1107,6 +1129,8 @@ const Practice = () => {
             options: questions[currentQuestion]?.mechanics_data
               ? questions[currentQuestion]?.mechanics_data[0]?.options
               : [],
+            isNextButtonCalled,
+            setIsNextButtonCalled
           }}
         />
       );
