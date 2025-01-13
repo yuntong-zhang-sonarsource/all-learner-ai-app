@@ -163,7 +163,7 @@ const Practice = () => {
       progressData?.currentPracticeStep !== undefined &&
       progressData?.currentPracticeStep !== null
     ) {
-      console.log("ppp", progressData);
+      //console.log("ppp", progressData);
 
       const currentLevel =
         practiceSteps[progressData.currentPracticeStep]?.title;
@@ -179,7 +179,7 @@ const Practice = () => {
     }
   }, [progressData]);
 
-  console.log("logggg", progressData, parentWords, currentImage, level);
+  //console.log("logggg", progressData, parentWords, currentImage, level);
 
   const gameOver = (data, isUserPass) => {
     const userWon = isUserPass;
@@ -541,7 +541,7 @@ const Practice = () => {
   };
 
   const fetchDetails = async () => {
-    console.log("calling....");
+    //console.log("calling....");
 
     let quesArr = [];
     try {
@@ -648,7 +648,7 @@ const Practice = () => {
 
       setQuestions(quesArr);
       setMechanism(currentGetContent.mechanism);
-      console.log("mech ->", currentGetContent);
+      //console.log("mech ->", currentGetContent);
 
       let showcaseLevel = userState === 4 || userState === 9;
       setIsShowCase(showcaseLevel);
