@@ -5,65 +5,12 @@ import MainLayout from "../Layouts.jsx/MainLayout";
 import clapImage from "../../assets/hand-icon-new.svg";
 import bulbHint from "../../assets/hint.svg";
 import frame from "../../assets/frame.svg";
-import pencil from "../../assets/pencil.gif";
-
 import correctSound from "../../assets/audio/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 import addSound from "../../assets/audio/add.mp3";
 import removeSound from "../../assets/audio/remove.wav";
-import { splitGraphemes } from "split-graphemes";
 import { WordRedCircle, StopButton, SpeakButton } from "../../utils/constants";
-import { metaphone } from "metaphone";
-// JSON TO MAKE IT WORK
-// {
-//   criteria: "word",
-//   template: "simple",
-//   mechanism: { id: "mechanic_7", name: "formAWord2" },
-// }
-
-const phoneticMatch = (str1, str2) => {
-  const phonetic1 = metaphone(str1);
-  const phonetic2 = metaphone(str2);
-  const distance = levenshtein(phonetic1, phonetic2);
-  const maxLength = Math.max(phonetic1.length, phonetic2.length);
-  return ((maxLength - distance) / maxLength) * 100;
-};
-
-const levenshtein = (a, b) => {
-  const tmp = [];
-  let i,
-    j,
-    alen = a.length,
-    blen = b.length,
-    res;
-
-  if (alen === 0) {
-    return blen;
-  }
-  if (blen === 0) {
-    return alen;
-  }
-
-  for (i = 0; i <= alen; i++) {
-    tmp[i] = [i];
-  }
-  for (j = 0; j <= blen; j++) {
-    tmp[0][j] = j;
-  }
-
-  for (i = 1; i <= alen; i++) {
-    for (j = 1; j <= blen; j++) {
-      res = a[i - 1] === b[j - 1] ? 0 : 1;
-      tmp[i][j] = Math.min(
-        tmp[i - 1][j] + 1,
-        tmp[i][j - 1] + 1,
-        tmp[i - 1][j - 1] + res
-      );
-    }
-  }
-
-  return tmp[alen][blen];
-};
+import { phoneticMatch } from "../../utils/phoneticUtils";
 
 const Mechanics7 = ({
   setVoiceText,
