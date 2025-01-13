@@ -8,26 +8,18 @@ import { AppContent } from "./views";
 import theme from "./assets/styles/theme";
 import { initialize, end } from "./services/telementryService";
 import { startEvent } from "./services/callTelemetryIntract";
-import "@project-sunbird/telemetry-sdk/index.js";
+import "@tekdi/all-telemetry-sdk/index.js";
 import { getParameter } from "./utils/constants";
 
 const App = () => {
   const ranonce = useRef(false);
   useEffect(() => {
-    const initService = async () => {
-      var did;
-      if (localStorage.getItem("fpDetails_v2") !== null) {
-        let fpDetails_v2 = localStorage.getItem("fpDetails_v2");
-        did = fpDetails_v2.result;
-      } else {
-        did = localStorage.getItem("did");
-      }
-
+    const initService = async (visitorId) => {
       await initialize({
         context: {
           mode: process.env.REACT_APP_MODE, // To identify preview used by the user to play/edit/preview
           authToken: "", // Auth key to make  api calls
-          did: did, // Unique id to identify the device or browser
+          did: localStorage.getItem("deviceId") || visitorId, // Unique id to identify the device or browser
           uid: "anonymous",
           channel: process.env.REACT_APP_CHANNEL, // Unique id of the channel(Channel ID)
           env: process.env.REACT_APP_ENV,
@@ -63,10 +55,10 @@ const App = () => {
       const fp = await FingerprintJS.load();
 
       const { visitorId } = await fp.get();
-      if (!localStorage.getItem("did")) {
-        localStorage.setItem("did", visitorId);
-      }
-      initService();
+      // //if (!localStorage.getItem("did")) {
+      //   localStorage.setItem("did", visitorId);
+      // //}
+      initService(visitorId);
     };
 
     setFp();
@@ -74,7 +66,9 @@ const App = () => {
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
-      window.telemetry && window.telemetry.syncEvents && window.telemetry.syncEvents();
+      window.telemetry &&
+        window.telemetry.syncEvents &&
+        window.telemetry.syncEvents();
     };
 
     // Add the event listener

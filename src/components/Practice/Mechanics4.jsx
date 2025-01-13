@@ -48,6 +48,8 @@ const Mechanics4 = ({
   loading,
   setOpenMessageDialog,
   audio,
+  isNextButtonCalled,
+  setIsNextButtonCalled
 }) => {
   const [words, setWords] = useState(
     type === "word" ? [] : ["Friend", "She is", "My"]
@@ -215,8 +217,9 @@ const Mechanics4 = ({
             paddingX: type === "word" ? 0 : "20px",
           }}
         >
-          {selectedWords?.map((elem) => (
+          {selectedWords?.map((elem, ind) => (
             <span
+              key={ind}
               onClick={() => handleWords(elem, true)}
               className={
                 answer === "wrong"
@@ -267,8 +270,8 @@ const Mechanics4 = ({
           mb: 3,
         }}
       >
-        {words?.map((elem) => (
-          <React.Fragment key={elem}>
+        {words?.map((elem, ind) => (
+          <React.Fragment key={ind}>
             {type === "word" ? (
               <Box
                 onClick={() => handleWords(elem)}
@@ -357,6 +360,8 @@ const Mechanics4 = ({
               setEnableNext,
               showOnlyListen: answer !== "correct",
               setOpenMessageDialog,
+              isNextButtonCalled,
+              setIsNextButtonCalled,
             }}
           />
         </Box>
