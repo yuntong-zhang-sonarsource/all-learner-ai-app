@@ -17,12 +17,9 @@ import PropTypes from "prop-types";
 import { metaphone } from "metaphone";
 
 const phoneticMatch = (str1, str2) => {
-  //console.log('sss', str1, str2);
-
   const phonetic1 = metaphone(str1);
   const phonetic2 = metaphone(str2);
   const distance = levenshtein(phonetic1, phonetic2);
-  //console.log(`Phonetic 1: ${phonetic1}, Phonetic 2: ${phonetic2}`);
   const maxLength = Math.max(phonetic1.length, phonetic2.length);
   return ((maxLength - distance) / maxLength) * 100;
 };
@@ -132,7 +129,6 @@ const WordsOrImage = ({
   let recordedChunks = [];
 
   const initializeRecognition = () => {
-    //console.log('Initializing speech recognition...');
     let recognitionInstance;
 
     if ("webkitSpeechRecognition" in window) {
@@ -151,7 +147,6 @@ const WordsOrImage = ({
       recognitionInstance.maxAlternatives = 1;
 
       recognitionInstance.onstart = () => {
-        //console.log('Speech recognition started...');
         startAudioRecording();
       };
 
@@ -161,16 +156,13 @@ const WordsOrImage = ({
         setIsRecording(false);
         setShowStopButton(false);
         setShowListenRetryButtons(true);
-        //console.log('Transcript:', transcript);
 
         const matchPercentage = phoneticMatch(
           currentWordRef.current,
           transcript
         );
-        //console.log("matching data:", matchPercentage);
 
         if (matchPercentage < 49) {
-          //console.log("Pronunciation does not match, dropping the word.");
           setAnswer(false);
         } else {
           setAnswer(true);
@@ -184,15 +176,12 @@ const WordsOrImage = ({
         setIsProcessing(false);
         console.error("Speech recognition error:", event.error);
         if (event.error === "no-speech") {
-          //console.log('No speech detected. Please speak clearly.');
         } else if (event.error === "aborted") {
-          //console.log('Speech recognition aborted. Restarting...');
           recognitionInstance.start();
         }
       };
 
       recognitionInstance.onend = () => {
-        //console.log('Speech recognition service disconnected');
         setIsProcessing(false);
         stopAudioRecording();
       };
@@ -212,7 +201,6 @@ const WordsOrImage = ({
           }
         };
         mediaRecorder.start();
-        //console.log('Audio recording started...');
       })
       .catch((error) => {
         console.error("Error accessing audio stream:", error);
@@ -224,7 +212,6 @@ const WordsOrImage = ({
       mediaRecorder.stop();
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(recordedChunks, { type: "audio/webm" });
-        //console.log('Audio Blob ready:', audioBlob);
         setRecordedAudioBlob(audioBlob);
         recordedChunks = [];
       };
@@ -233,9 +220,7 @@ const WordsOrImage = ({
 
   useEffect(() => {
     if (recordedAudioBlob) {
-      //console.log('Audio blob is stored:', recordedAudioBlob);
       const audioURL = URL.createObjectURL(recordedAudioBlob);
-      //console.log('Audio URL:', audioURL);
     }
   }, [recordedAudioBlob]);
 
@@ -274,7 +259,6 @@ const WordsOrImage = ({
     setShowStopButton(false);
     setAnswer("");
     handleNext();
-    //tartRecording(word, isSelected);
   };
 
   useEffect(() => {
@@ -326,6 +310,12 @@ const WordsOrImage = ({
         console.error("Error playing audio:", error);
       });
     }
+  };
+
+  const getAnswerColor = (answer) => {
+    if (answer === true) return "green";
+    if (answer === false) return "red";
+    return "#333F61";
   };
 
   //console.log("wordsORimage", level, storedData, recordedText, answer, isShowCase);
@@ -415,7 +405,6 @@ const WordsOrImage = ({
               >
                 <source type="audio/mp3" src={v11} />
               </audio>
-              {/* <AudioPlayerSvg color="#FFA132" /> */}
 
               <Box
                 sx={{
@@ -435,15 +424,12 @@ const WordsOrImage = ({
                     togglePlayPause();
                   }}
                 >
-                  {isReady && (
-                    <>
-                      {isPlaying ? (
-                        <StopAudioButton color="#FFA132" />
-                      ) : (
-                        <PlayAudioButton color="#FFA132" />
-                      )}
-                    </>
-                  )}
+                  {isReady &&
+                    (isPlaying ? (
+                      <StopAudioButton color={"#FFA132"} />
+                    ) : (
+                      <PlayAudioButton color={"#FFA132"} />
+                    ))}
                 </Box>
                 <Typography
                   variant="h5"
@@ -476,15 +462,9 @@ const WordsOrImage = ({
                 component="h4"
                 sx={{
                   mb: 4,
-                  color:
-                    answer === true
-                      ? "green"
-                      : answer === false
-                      ? "red"
-                      : "#333F61",
+                  color: getAnswerColor(answer),
                   textAlign: "center",
                   fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
-                  // lineHeight: "normal",
                   fontWeight: 700,
                   fontFamily: "Quicksand",
                   lineHeight: "50px",
@@ -578,7 +558,6 @@ const WordsOrImage = ({
               setVoiceAnimate={setVoiceAnimate}
               storyLine={storyLine}
               dontShowListen={type === "image" || isDiscover}
-              // updateStory={updateStory}
               originalText={words}
               handleNext={handleNext}
               enableNext={enableNext}
@@ -606,7 +585,6 @@ const WordsOrImage = ({
 
 WordsOrImage.propTypes = {
   handleNext: PropTypes.func.isRequired,
-  // background: PropTypes.string,
   header: PropTypes.string,
   image: PropTypes.string,
   setVoiceText: PropTypes.func.isRequired,

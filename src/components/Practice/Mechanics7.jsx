@@ -128,25 +128,17 @@ const Mechanics7 = ({
   const [isRecordingComplete, setIsRecordingComplete] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [recordedText, setRecordedText] = useState("");
   const [currentWord, setCurrentWord] = useState("");
   const [currentIsSelected, setCurrentIsSelected] = useState(false);
   const [recognition, setRecognition] = useState(null);
   const [selectedWords, setSelectedWords] = useState([]);
   const [incorrectWords, setIncorrectWords] = useState({});
 
-  //console.log('worrrrdss', words, incorrectWords)
-
-  // useEffect(() => {
-  //   initSpeechRecognition();
-  // }, []);
-
   const currentWordRef = useRef(currentWord);
   const currentIsSelectedRef = useRef(currentIsSelected);
   const wordsRef = useRef(words);
   const selectedWordsRef = useRef(selectedWords);
 
-  // Update refs whenever the state changes
   useEffect(() => {
     currentWordRef.current = currentWord;
     currentIsSelectedRef.current = currentIsSelected;
@@ -155,8 +147,6 @@ const Mechanics7 = ({
   }, [currentWord, currentIsSelected, words, selectedWords]);
 
   const initializeRecognition = () => {
-    //console.log('started rec...');
-
     let recognitionInstance;
     if ("webkitSpeechRecognition" in window) {
       recognitionInstance = new window.webkitSpeechRecognition();
@@ -173,18 +163,12 @@ const Mechanics7 = ({
       recognitionInstance.lang = "en-US";
       recognitionInstance.maxAlternatives = 1;
 
-      recognitionInstance.onstart = () => {
-        //console.log('Speech recognition started...');
-      };
+      recognitionInstance.onstart = () => {};
 
       recognitionInstance.onresult = (event) => {
-        //console.log('Speech recognition result:', event);
         const transcript = event.results[0][0].transcript;
-        setRecordedText(transcript);
         setIsRecording(false);
-        //console.log('transcript', transcript);
 
-        // After getting the transcribed text, we need to handle the word logic
         // console.log('crq', currentWordRef.current, currentWord);
         //console.log('wordzzS', wordsRef.current, selectedWordsRef.current);
 
@@ -197,15 +181,12 @@ const Mechanics7 = ({
         setIsProcessing(false);
         console.error("Speech recognition error:", event.error);
         if (event.error === "no-speech") {
-          //console.log('No speech detected. Please speak clearly into the microphone.');
         } else if (event.error === "aborted") {
-          //console.log('Speech recognition aborted. Restarting...');
-          recognitionInstance.start(); // Try to restart the recognition
+          recognitionInstance.start();
         }
       };
 
       recognitionInstance.onend = () => {
-        // console.log('Speech recognition service disconnected');
         setIsProcessing(false);
       };
 
@@ -220,13 +201,9 @@ const Mechanics7 = ({
       [word]: true,
     }));
     setIsRecording(true);
-    setRecordedText("");
     setCurrentWord(word);
     setCurrentIsSelected(isSelected);
     // console.log('rec1', recognition, currentWord);
-    // if (recognition) {
-    //   recognition.start();
-    // }
   };
 
   const stopRecording = (word) => {
@@ -236,7 +213,6 @@ const Mechanics7 = ({
     }));
     setIsRecording(false);
     setIsProcessing(true);
-    //console.log('Stopping recording...');
     //console.log('rec2', recognition);
     if (recognition) {
       recognition.stop();
@@ -245,7 +221,6 @@ const Mechanics7 = ({
 
   useEffect(() => {
     if (isRecording && recognition) {
-      //console.log('rec1', recognition, currentWord);
       recognition.start();
     }
   }, [isRecording, recognition, currentWord]);
@@ -270,42 +245,6 @@ const Mechanics7 = ({
 
   const [shake, setShake] = useState(false);
 
-  function jumbleSentence(sentence) {
-    // Split the sentence into words
-    const words = sentence.split(" ");
-
-    // Shuffle the words using Fisher-Yates (Durstenfeld) shuffle algorithm
-    for (let i = words.length - 1; i > 0; i--) {
-      // Pick a random index from 0 to i
-      const j = Math.floor(Math.random() * (i + 1));
-
-      // Swap words[i] with the element at random index
-      [words[i], words[j]] = [words[j], words[i]];
-    }
-
-    // Join the jumbled words back into a sentence
-    return words;
-  }
-
-  //console.log("Mechanics7", audio);
-
-  // useEffect(() => {
-  //   let wordsArr = jumbleSentence(parentWords);
-  //   console.log('wwwwwwww', wordsArr);
-
-  //   if (parentWords) {
-  //     for (let i = wordsArr.length - 1; i > 0; i--) {
-  //       let j = Math.floor(Math.random() * i);
-  //       let k = wordsArr[i];
-  //       wordsArr[i] = wordsArr[j];
-  //       wordsArr[j] = k;
-  //     }
-  //   console.log('wwwwwwww1', wordsArr)
-  //     setWordsAfterSplit(wordsArr);
-  //     setWords(wordsArr);
-  //   }
-  // }, [parentWords]);
-
   useEffect(() => {
     setWordsAfterSplit(currentImg.syllable);
     setWords(currentImg.syllable);
@@ -320,19 +259,6 @@ const Mechanics7 = ({
     }
   }, [selectedWordsRef.current]);
 
-  // const [tPlay] = useSound(t);
-  // const [iPlay] = useSound(i);
-  // const [gPlay] = useSound(g);
-  // const [ePlay] = useSound(e);
-  // const [rPlay] = useSound(r);
-
-  // const audioPlay = {
-  //   T: tPlay,
-  //   I: iPlay,
-  //   G: gPlay,
-  //   E: ePlay,
-  //   R: rPlay,
-  // };
   const handleWordss = (word, isSelected) => {
     console.log("wordz", word, isSelected, words, selectedWords);
 
@@ -340,7 +266,7 @@ const Mechanics7 = ({
     setTimeout(() => {
       setShake(false);
     }, 3000);
-    // audioPlay[word]();
+
     if (selectedWords?.length + 1 !== wordsAfterSplit?.length || isSelected) {
       let audio = new Audio(isSelected ? removeSound : addSound);
       audio.play();
@@ -383,10 +309,8 @@ const Mechanics7 = ({
     // );
 
     const matchPercentage = phoneticMatch(word, transcribedText);
-    //console.log("matching data:", matchPercentage);
 
     if (matchPercentage < 49 && !isSelected) {
-      //console.log("Pronunciation does not match, dropping the word.");
       setIncorrectWords((prevState) => ({ ...prevState, [word]: true }));
     } else {
       setIncorrectWords((prevState) => ({ ...prevState, [word]: false }));
@@ -446,6 +370,46 @@ const Mechanics7 = ({
       ? "correct"
       : "wrong";
 
+  const getBorderColor = () => {
+    if (answer === "correct") {
+      return "#58CC02";
+    } else if (answer === "wrong") {
+      return "#C30303";
+    } else if (
+      !wordsRef.current?.length &&
+      !!selectedWordsRef.current?.length &&
+      type === "word"
+    ) {
+      return "#1897DE";
+    }
+    return "rgba(51, 63, 97, 0.10)";
+  };
+
+  const getBorder = () => {
+    if (answer === "wrong") return "2px solid #C30303";
+    if (answer === "correct") return "none";
+    if (
+      !wordsRef.current.length &&
+      selectedWordsRef.current.length &&
+      type === "word"
+    ) {
+      return "2px solid #1897DE";
+    }
+    return "none";
+  };
+
+  const getMarginLeft = (wIndex) => {
+    return wIndex > 0 ? "150px!important" : undefined;
+  };
+
+  const getDynamicMarginLeft = (wIndex) => {
+    return wordsRef.current.length === 1 && wIndex === 0 ? "170px" : "0px";
+  };
+
+  const getCircleHeight = (elem) => {
+    return elem?.length < 3 ? 120 : 140;
+  };
+
   return (
     <MainLayout
       background={background}
@@ -470,22 +434,6 @@ const Mechanics7 = ({
         loading,
       }}
     >
-      {/* <div
-        style={{
-          left: `calc(50% - 258px / 2)`,
-          top: `calc(50% - 45px / 2 - 235.5px)`,
-          fontFamily: "Quicksand",
-          fontStyle: "normal",
-          fontWeight: 600,
-          fontSize: "36px",
-          lineHeight: "45px",
-          alignItems: "center",
-          textAlign: "center",
-          color: "#333F61",
-        }}
-      >
-        {header}
-      </div> */}
       {isRecordingComplete && (
         <Box
           sx={{
@@ -527,17 +475,7 @@ const Mechanics7 = ({
             flexWrap: "wrap",
             alignItems: "center",
             borderRadius: "15px",
-            border: `2px solid ${
-              answer === "correct"
-                ? "#58CC02"
-                : answer === "wrong"
-                ? "#C30303"
-                : !wordsRef.current?.length &&
-                  !!selectedWordsRef.current?.length &&
-                  type === "word"
-                ? "#1897DE"
-                : "rgba(51, 63, 97, 0.10)"
-            }`,
+            border: `2px solid ${getBorderColor()}`,
             cursor: "pointer",
             letterSpacing: answer != "correct" ? "5px" : "normal",
             background: "#FBFBFB",
@@ -556,6 +494,17 @@ const Mechanics7 = ({
 
             const isIncorrect = incorrectWords[elem];
 
+            const colors =
+              type === "word"
+                ? isIncorrect
+                  ? "#C30303"
+                  : answer === "correct"
+                  ? "#58CC02"
+                  : "#1897DE"
+                : answer === "wrong"
+                ? "#C30303"
+                : "#333F61";
+
             return (
               <span
                 onClick={() => handleWordsLogic(elem, "", true)}
@@ -567,28 +516,8 @@ const Mechanics7 = ({
                 style={{
                   borderRadius: "12px",
                   padding: answer === "correct" ? "0px" : "5px 10px 5px 10px",
-                  border:
-                    answer != "wrong"
-                      ? answer === "correct"
-                        ? "none" // No border if the answer is correct
-                        : answer === "wrong"
-                        ? "2px solid #C30303" // Red border if the answer is wrong
-                        : !wordsRef.current.length &&
-                          selectedWordsRef.current.length &&
-                          type === "word"
-                        ? "2px solid #1897DE" // Blue border for some specific condition
-                        : "none"
-                      : "", // Default light border,
-                  color:
-                    type === "word"
-                      ? isIncorrect
-                        ? "#C30303" // Red color if the word is incorrect
-                        : answer === "correct"
-                        ? "#58CC02"
-                        : "#1897DE"
-                      : answer === "wrong"
-                      ? "#C30303"
-                      : "#333F61",
+                  border: getBorder(),
+                  color: colors,
                   fontWeight: type === "word" ? 600 : 700,
                   fontSize: "35px",
                   fontFamily: "Quicksand",
@@ -624,7 +553,6 @@ const Mechanics7 = ({
             alignItems: "center",
             maskBorderWidth: 6,
             mb: 5,
-            //position: "relative",
           }}
         >
           <img
@@ -632,11 +560,7 @@ const Mechanics7 = ({
             alt="pencil"
             height={"80px"}
             style={{
-              //position: "absolute",
               zIndex: 2,
-              //top: "50%",
-              //left: "50%",
-              //transform: "translate(-50%, -50%)",
             }}
           />
         </Box>
@@ -657,10 +581,7 @@ const Mechanics7 = ({
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  marginLeft:
-                    wordsRef.current.length === 1 && wIndex === 0
-                      ? "170px"
-                      : "0px",
+                  marginLeft: getDynamicMarginLeft(wIndex),
                 }}
               >
                 <Box
@@ -684,39 +605,14 @@ const Mechanics7 = ({
                       md: "40px",
                       lg: "40px",
                     },
-                    marginLeft: wIndex > 0 ? "150px!important" : undefined,
+                    marginLeft: getMarginLeft(wIndex),
                   }}
                 >
-                  {/* <span
-                  style={{
-                    color: "white",
-                    fontWeight: 600,
-                    fontSize: {
-                      xs: "25px",
-                      sm: "35px",
-                      md: "40px",
-                      lg: "40px",
-                    },
-                    fontFamily: "Quicksand",
-                  }}
-                >
-                  {elem}
-                </span> */}
                   {wIndex == 0 && (
                     <Box sx={{ position: "absolute" }}>
-                      <WordRedCircle height={elem?.length < 3 ? 120 : 140} />
+                      <WordRedCircle height={getCircleHeight(elem)} />
                     </Box>
                   )}
-                  {/* {wIndex == 0 && (
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: "-80px",
-                    }}
-                  >
-                    <img src={clapImage} alt="clapImage" />
-                  </Box>
-                )} */}
                   {wIndex == 0 && (
                     <Box
                       sx={{
@@ -772,7 +668,7 @@ const Mechanics7 = ({
                           md: "40px",
                           lg: "50px",
                         },
-                        marginLeft: wIndex > 0 ? "150px!important" : undefined,
+                        marginLeft: getMarginLeft(wIndex),
                       }}
                       onClick={() => handleWords(elem)}
                     >
@@ -797,7 +693,7 @@ const Mechanics7 = ({
                           md: "40px",
                           lg: "50px",
                         },
-                        marginLeft: wIndex > 0 ? "150px!important" : undefined,
+                        marginLeft: getMarginLeft(wIndex),
                       }}
                       onClick={() => stopRecording(elem)}
                     >
@@ -851,7 +747,6 @@ const Mechanics7 = ({
             setVoiceAnimate={setVoiceAnimate}
             storyLine={storyLine}
             dontShowListen={type === "image" || isDiscover}
-            // updateStory={updateStory}
             handleNext={handleNext}
             enableNext={enableNext}
             originalText={parentWords}
