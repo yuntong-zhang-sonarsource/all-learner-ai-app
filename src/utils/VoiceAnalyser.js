@@ -696,6 +696,7 @@ function VoiceAnalyser(props) {
               return (
                 <>
                   <AudioCompare
+                    pageName={props.pageName}
                     setRecordedAudio={setRecordedAudio}
                     originalText={props.originalText}
                     playAudio={playAudio}
@@ -759,7 +760,10 @@ function VoiceAnalyser(props) {
                 }
               }}
             >
-              <NextButtonRound />
+              <NextButtonRound
+                height={props.pageName == "m7" ? 50 : 70}
+                width={props.pageName == "m7" ? 50 : 70}
+              />
             </Box>
           )}
         </Box>

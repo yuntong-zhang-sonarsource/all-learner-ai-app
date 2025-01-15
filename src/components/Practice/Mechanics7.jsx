@@ -47,12 +47,14 @@ const Mechanics7 = ({
     type === "word" ? [] : ["Friend", "She is", "My"]
   );
   const [recordingStates, setRecordingStates] = useState({});
+  const [completeAudio, setCompleteAudio] = useState(null);
 
   useEffect(() => {
     if (words && words?.length) {
       setRecordingStates(
         words.reduce((acc, word) => ({ ...acc, [word]: false }), {})
       );
+      setCompleteAudio(currentImg?.completeAudio);
     }
   }, [words]);
 
@@ -68,6 +70,7 @@ const Mechanics7 = ({
   const [selectedWords, setSelectedWords] = useState([]);
   const [incorrectWords, setIncorrectWords] = useState({});
   const [isMicOn, setIsMicOn] = useState(false);
+  const [syllAudios, setSyllAudios] = useState([]);
 
   const currentWordRef = useRef(currentWord);
   const currentIsSelectedRef = useRef(currentIsSelected);
@@ -175,6 +178,23 @@ const Mechanics7 = ({
     initializeRecognition();
   }, []);
 
+  const playAudio = (audioPath) => {
+    const audio = new Audio(audioPath);
+    audio.play();
+  };
+
+  const handlePlayAudio = (elem) => {
+    const matchedSyllable = syllAudios.find(
+      (syllable) => syllable.name.toLowerCase() === elem.toLowerCase()
+    );
+
+    if (matchedSyllable) {
+      playAudio(matchedSyllable.audio);
+    } else {
+      console.warn(`No audio found for the syllable: ${elem}`);
+    }
+  };
+
   const handleRecordingComplete = (base64Data) => {
     if (base64Data) {
       setIsRecordingComplete(true);
@@ -194,6 +214,7 @@ const Mechanics7 = ({
   useEffect(() => {
     setWordsAfterSplit(currentImg.syllable);
     setWords(currentImg.syllable);
+    setSyllAudios(currentImg.syllablesAudio);
     wordsRef.current = currentImg.syllable;
   }, [currentImg]);
 
@@ -317,7 +338,7 @@ const Mechanics7 = ({
   };
 
   const getCircleHeight = (elem) => {
-    return elem?.length < 3 ? 120 : 140;
+    return elem?.length < 3 ? 90 : 100;
   };
 
   const getColor = (type, isIncorrect, answer) => {
@@ -329,6 +350,8 @@ const Mechanics7 = ({
     if (answer === "wrong") return "#C30303";
     return "#333F61";
   };
+
+  console.log("audios", completeAudio, audio);
 
   return (
     <MainLayout
@@ -389,7 +412,7 @@ const Mechanics7 = ({
         <Box
           sx={{
             minWidth: "230px",
-            minHeight: "55px",
+            minHeight: "45px",
             display: "flex",
             justifyContent: "center",
             flexWrap: "wrap",
@@ -437,7 +460,7 @@ const Mechanics7 = ({
                   border: getBorder(),
                   color: colors,
                   fontWeight: type === "word" ? 600 : 700,
-                  fontSize: "35px",
+                  fontSize: "25px",
                   fontFamily: "Quicksand",
                   cursor: "pointer",
                   marginLeft:
@@ -450,7 +473,7 @@ const Mechanics7 = ({
                     style={{
                       color: "#1897DE1A",
                       fontWeight: 700,
-                      fontSize: "35px",
+                      fontSize: "25px",
                       fontFamily: "Quicksand",
                       marginLeft: "5px",
                       role: "button",
@@ -471,13 +494,13 @@ const Mechanics7 = ({
             justifyContent: "center",
             alignItems: "center",
             maskBorderWidth: 6,
-            mb: 5,
+            mb: 4,
           }}
         >
           <img
             src={currentImg.img}
             alt="pencil"
-            height={"80px"}
+            height={"120px"}
             style={{
               zIndex: 2,
             }}
@@ -489,8 +512,8 @@ const Mechanics7 = ({
           display: "flex",
           justifyContent: "center",
           flexWrap: "wrap",
-          mb: 4,
-          mt: 6,
+          mb: 2,
+          mt: 2,
         }}
       >
         {wordsRef.current?.map((elem, wIndex) => (
@@ -506,7 +529,7 @@ const Mechanics7 = ({
                 <Box
                   onClick={() => handleWords(elem)}
                   sx={{
-                    marginTop: "30px",
+                    marginTop: "10px",
                     position: "relative",
                     display: "flex",
                     justifyContent: "center",
@@ -534,12 +557,19 @@ const Mechanics7 = ({
                   )}
                   {wIndex == 0 && (
                     <Box
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        console.log("pressssss");
+
+                        handlePlayAudio(elem);
+                      }}
                       sx={{
+                        zIndex: "99999",
                         position: "absolute",
                         left:
                           wordsRef.current?.length > 1 ? "-180px" : undefined,
                         right:
-                          wordsRef.current?.length == 1 ? "-180px" : undefined,
+                          wordsRef.current?.length == 1 ? "-210px" : undefined,
                       }}
                     >
                       <img src={bulbHint} alt="bulbHint" />
@@ -550,12 +580,7 @@ const Mechanics7 = ({
                       style={{
                         color: wIndex == 0 ? "#1897DE" : "#000000",
                         fontWeight: 700,
-                        fontSize: {
-                          xs: "40px",
-                          sm: "50px",
-                          md: "60px",
-                          lg: "70px",
-                        },
+                        fontSize: "30px",
                         lineHeight: "87px",
                         letterSpacing: "2%",
                         fontFamily: "Quicksand",
@@ -568,10 +593,13 @@ const Mechanics7 = ({
                 </Box>
 
                 {wIndex === 0 &&
-                  (!recordingStates[elem] ? (
+                  (!recordingStates[elem] &&
+                  !isRecordingComplete &&
+                  !isRecording &&
+                  !isProcessing ? (
                     <Box
                       sx={{
-                        marginTop: "50px",
+                        marginTop: "30px",
                         position: "relative",
                         display: "flex",
                         justifyContent: "center",
@@ -579,22 +607,16 @@ const Mechanics7 = ({
                         height: { xs: "30px", sm: "40px", md: "50px" },
                         minWidth: { xs: "50px", sm: "60px", md: "70px" },
                         cursor: `url(${clapImage}), auto`,
-                        fontSize: {
-                          xs: "20px",
-                          sm: "30px",
-                          md: "40px",
-                          lg: "50px",
-                        },
                         marginLeft: getMarginLeft(wIndex),
                       }}
                       onClick={() => handleWords(elem)}
                     >
-                      <SpeakButton />
+                      <SpeakButton height={50} width={50} />
                     </Box>
                   ) : (
                     <Box
                       sx={{
-                        marginTop: "50px",
+                        marginTop: "30px",
                         position: "relative",
                         display: "flex",
                         justifyContent: "center",
@@ -602,17 +624,11 @@ const Mechanics7 = ({
                         height: { xs: "30px", sm: "40px", md: "50px" },
                         minWidth: { xs: "50px", sm: "60px", md: "70px" },
                         cursor: `url(${clapImage}), auto`,
-                        fontSize: {
-                          xs: "20px",
-                          sm: "30px",
-                          md: "40px",
-                          lg: "50px",
-                        },
                         marginLeft: getMarginLeft(wIndex),
                       }}
                       onClick={() => stopRecording(elem)}
                     >
-                      <StopButton />
+                      <StopButton height={50} width={50} />
                     </Box>
                   ))}
               </div>
@@ -653,7 +669,7 @@ const Mechanics7 = ({
       </Box>
 
       {!isRecording && (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: "15px" }}>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: "5px" }}>
           <VoiceAnalyser
             pageName={"m7"}
             setVoiceText={setVoiceText}
@@ -665,7 +681,7 @@ const Mechanics7 = ({
             handleNext={handleNext}
             enableNext={enableNext}
             originalText={parentWords}
-            audioLink={audio ? audio : null}
+            audioLink={audio ? audio : completeAudio}
             {...{
               contentId,
               contentType,

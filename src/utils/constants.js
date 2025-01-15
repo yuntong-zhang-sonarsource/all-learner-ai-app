@@ -74,8 +74,8 @@ export const questionsList = [
 export const NextButtonRound = (props) => {
   return (
     <svg
-      width={70}
-      height={70}
+      width={props.width || 70}
+      height={props.height || 70}
       viewBox="0 0 54 54"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -153,8 +153,8 @@ export const NextButton = (props) => {
 export const ListenButton = (props) => {
   return (
     <svg
-      width="70"
-      height="70"
+      width={props.width || 70}
+      height={props.height || 70}
       viewBox="0 0 70 70"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -206,8 +206,8 @@ export const ListenButton = (props) => {
 
 export const SpeakButton = (props) => (
   <svg
-    width={70}
-    height={70}
+    width={props.width || 70}
+    height={props.height || 70}
     viewBox="0 0 70 70"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -250,8 +250,8 @@ export const SpeakButton = (props) => (
 
 export const StopButton = (props) => (
   <svg
-    width={70}
-    height={70}
+    width={props.width || 70}
+    height={props.height || 70}
     viewBox="0 0 70 70"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -1997,8 +1997,8 @@ export const RoundTick = (props) => (
 
 export const RetryIcon = (props) => (
   <svg
-    width={70}
-    height={70}
+    width={props.width || 70}
+    height={props.height || 70}
     viewBox="0 0 70 70"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

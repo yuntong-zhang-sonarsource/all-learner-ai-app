@@ -42,6 +42,64 @@ import Pocket from "../../assets/Pocket.png";
 import Picnic from "../../assets/picnic.png";
 import Kitten from "../../assets/kitten.png";
 import Jacket from "../../assets/jacket.png";
+import Ti from "../../assets/Ti.wav";
+import Ger from "../../assets/ger.wav";
+import Pen from "../../assets/Pen.wav";
+import Cil from "../../assets/cil.wav";
+import Rab from "../../assets/Rab.wav";
+import Bit from "../../assets/bit.wav";
+import Rock from "../../assets/Rock.wav";
+import Et from "../../assets/et.wav";
+import Ap from "../../assets/Ap.wav";
+import Ple from "../../assets/ple.wav";
+import Ba from "../../assets/Ba.wav";
+import Nana from "../../assets/Na.wav";
+import To from "../../assets/To.wav";
+import Ma from "../../assets/ma.wav";
+import Or from "../../assets/Or.wav";
+import Ange from "../../assets/ange.wav";
+import Ta from "../../assets/Ta.wav";
+import Ble from "../../assets/ble.wav";
+import Le from "../../assets/Le.wav";
+import Mon from "../../assets/mon.wav";
+import Bas from "../../assets/Bas.wav";
+import Ket from "../../assets/ket.wav";
+import Tun from "../../assets/Tun.wav";
+import Nel from "../../assets/nel.wav";
+import Sun from "../../assets/Sun.wav";
+import Set from "../../assets/set.wav";
+import Can from "../../assets/Can.wav";
+import Dle from "../../assets/dle.wav";
+import But from "../../assets/But.wav";
+import Ton from "../../assets/ton.wav";
+import Tab from "../../assets/Tab.wav";
+import Let from "../../assets/let.wav";
+import Pic from "../../assets/Pic.wav";
+import Nic from "../../assets/nic.wav";
+import Kit from "../../assets/Kit.wav";
+import Ten from "../../assets/ten.wav";
+import Jack from "../../assets/Jack.wav";
+import Pock from "../../assets/Pock.wav";
+import TigerS from "../../assets/Tiger.wav";
+import PencilS from "../../assets/Pencil.wav";
+import RabbitS from "../../assets/Rabbit.wav";
+import RocketS from "../../assets/Rocket.wav";
+import AppleS from "../../assets/Apple.wav";
+import BananaS from "../../assets/Banana.wav";
+import TomatoS from "../../assets/Tomato.wav";
+import OrangeS from "../../assets/Orange.wav";
+import TableS from "../../assets/Table.wav";
+import LemonS from "../../assets/Lemon.wav";
+import BasketS from "../../assets/Basket.wav";
+import TunnelS from "../../assets/Tunnel.wav";
+import SunsetS from "../../assets/Sunset.wav";
+import CandleS from "../../assets/Candle.wav";
+import ButtonS from "../../assets/Button.wav";
+import TabletS from "../../assets/Tablet.wav";
+import PicnicS from "../../assets/Picnic.wav";
+import KittenS from "../../assets/Kitten.wav";
+import JacketS from "../../assets/Jacket.wav";
+import PocketS from "../../assets/Pocket.wav";
 import { PutBucketInventoryConfigurationRequestFilterSensitiveLog } from "@aws-sdk/client-s3";
 import usePreloadAudio from "../../hooks/usePreloadAudio";
 
@@ -84,18 +142,108 @@ const Practice = () => {
 
   const levels = {
     L1: [
-      { completeWord: "Tiger", syllable: ["Ti", "ger"], img: Tiger },
-      { completeWord: "Pencil", syllable: ["Pen", "cil"], img: Pencil },
-      { completeWord: "Rabbit", syllable: ["Rab", "bit"], img: Rabbit },
-      { completeWord: "Rocket", syllable: ["Rock", "et"], img: Rocket },
-      { completeWord: "Apple", syllable: ["Ap", "ple"], img: Apple },
+      {
+        completeWord: "Tiger",
+        syllable: ["Ti", "ger"],
+        img: Tiger,
+        syllablesAudio: [
+          { name: "Ti", audio: Ti },
+          { name: "Ger", audio: Ger },
+        ],
+        completeAudio: TigerS,
+      },
+      {
+        completeWord: "Pencil",
+        syllable: ["Pen", "cil"],
+        img: Pencil,
+        syllablesAudio: [
+          { name: "Pen", audio: Pen },
+          { name: "Cil", audio: Cil },
+        ],
+        completeAudio: PencilS,
+      },
+      {
+        completeWord: "Rabbit",
+        syllable: ["Rab", "bit"],
+        img: Rabbit,
+        syllablesAudio: [
+          { name: "Rab", audio: Rab },
+          { name: "Bit", audio: Bit },
+        ],
+        completeAudio: RabbitS,
+      },
+      {
+        completeWord: "Rocket",
+        syllable: ["Rock", "et"],
+        img: Rocket,
+        syllablesAudio: [
+          { name: "Rock", audio: Rock },
+          { name: "Et", audio: Et },
+        ],
+        completeAudio: RocketS,
+      },
+      {
+        completeWord: "Apple",
+        syllable: ["Ap", "ple"],
+        img: Apple,
+        syllablesAudio: [
+          { name: "Ap", audio: Ap },
+          { name: "Ple", audio: Ple },
+        ],
+        completeAudio: AppleS,
+      },
     ],
     L2: [
-      { completeWord: "Banana", syllable: ["Ba", "nana"], img: Banana },
-      { completeWord: "Tomato", syllable: ["To", "ma", "to"], img: Tomato },
-      { completeWord: "Orange", syllable: ["Or", "ange"], img: Orange },
-      { completeWord: "Table", syllable: ["Ta", "ble"], img: Table },
-      { completeWord: "Lemon", syllable: ["Le", "mon"], img: Lemon },
+      {
+        completeWord: "Banana",
+        syllable: ["Ba", "nana"],
+        img: Banana,
+        syllablesAudio: [
+          { name: "Ba", audio: Ba },
+          { name: "Nana", audio: Nana },
+        ],
+        completeAudio: BananaS,
+      },
+      {
+        completeWord: "Tomato",
+        syllable: ["To", "ma", "to"],
+        img: Tomato,
+        syllablesAudio: [
+          { name: "To", audio: To },
+          { name: "Ma", audio: Ma },
+        ],
+        completeAudio: TomatoS,
+      },
+      {
+        completeWord: "Orange",
+        syllable: ["Or", "ange"],
+        img: Orange,
+        syllablesAudio: [
+          { name: "Or", audio: Or },
+          { name: "Ange", audio: Ange },
+        ],
+        completeAudio: OrangeS,
+      },
+      {
+        completeWord: "Table",
+        syllable: ["Ta", "ble"],
+        img: Table,
+        syllablesAudio: [
+          { name: "Ta", audio: Ta },
+          { name: "Ble", audio: Ble },
+        ],
+        completeAudio: TableS,
+      },
+      {
+        completeWord: "Lemon",
+        syllable: ["Le", "mon"],
+        img: Lemon,
+        syllablesAudio: [
+          { name: "Le", audio: Le },
+          { name: "Mon", audio: Mon },
+        ],
+        completeAudio: LemonS,
+      },
     ],
     P1: [
       { completeWord: "Tiger", syllable: ["Ti", "ger"] },
@@ -119,18 +267,108 @@ const Practice = () => {
       { completeWord: "Mango", syllable: ["Man", "go"] },
     ],
     L3: [
-      { completeWord: "Basket", syllable: ["Bas", "ket"], img: Basket },
-      { completeWord: "Tunnel", syllable: ["Tun", "nel"], img: Tunnel },
-      { completeWord: "Sunset", syllable: ["Sun", "set"], img: Sunset },
-      { completeWord: "Candle", syllable: ["Can", "dle"], img: Candle },
-      { completeWord: "Button", syllable: ["But", "ton"], img: Button },
+      {
+        completeWord: "Basket",
+        syllable: ["Bas", "ket"],
+        img: Basket,
+        syllablesAudio: [
+          { name: "Bas", audio: Bas },
+          { name: "Ket", audio: Ket },
+        ],
+        completeAudio: BasketS,
+      },
+      {
+        completeWord: "Tunnel",
+        syllable: ["Tun", "nel"],
+        img: Tunnel,
+        syllablesAudio: [
+          { name: "Tun", audio: Tun },
+          { name: "Nel", audio: Nel },
+        ],
+        completeAudio: TunnelS,
+      },
+      {
+        completeWord: "Sunset",
+        syllable: ["Sun", "set"],
+        img: Sunset,
+        syllablesAudio: [
+          { name: "Sun", audio: Sun },
+          { name: "Set", audio: Set },
+        ],
+        completeAudio: SunsetS,
+      },
+      {
+        completeWord: "Candle",
+        syllable: ["Can", "dle"],
+        img: Candle,
+        syllablesAudio: [
+          { name: "Can", audio: Can },
+          { name: "Dle", audio: Dle },
+        ],
+        completeAudio: CandleS,
+      },
+      {
+        completeWord: "Button",
+        syllable: ["But", "ton"],
+        img: Button,
+        syllablesAudio: [
+          { name: "But", audio: But },
+          { name: "Ton", audio: Ton },
+        ],
+        completeAudio: ButtonS,
+      },
     ],
     L4: [
-      { completeWord: "Tablet", syllable: ["Tab", "let"], img: Tablet },
-      { completeWord: "Picnic", syllable: ["Pic", "nic"], img: Picnic },
-      { completeWord: "Kitten", syllable: ["Kit", "ten"], img: Kitten },
-      { completeWord: "Jacket", syllable: ["Jack", "et"], img: Jacket },
-      { completeWord: "Pocket", syllable: ["Pock", "et"], img: Pocket },
+      {
+        completeWord: "Tablet",
+        syllable: ["Tab", "let"],
+        img: Tablet,
+        syllablesAudio: [
+          { name: "Tab", audio: Tab },
+          { name: "Let", audio: Let },
+        ],
+        completeAudio: TabletS,
+      },
+      {
+        completeWord: "Picnic",
+        syllable: ["Pic", "nic"],
+        img: Picnic,
+        syllablesAudio: [
+          { name: "Pic", audio: Pic },
+          { name: "Nic", audio: Nic },
+        ],
+        completeAudio: PicnicS,
+      },
+      {
+        completeWord: "Kitten",
+        syllable: ["Kit", "ten"],
+        img: Kitten,
+        syllablesAudio: [
+          { name: "Kit", audio: Kit },
+          { name: "Ten", audio: Ten },
+        ],
+        completeAudio: KittenS,
+      },
+      {
+        completeWord: "Jacket",
+        syllable: ["Jack", "et"],
+        img: Jacket,
+        syllablesAudio: [
+          { name: "Jack", audio: Jack },
+          { name: "Et", audio: Et },
+        ],
+        completeAudio: JacketS,
+      },
+      {
+        completeWord: "Pocket",
+        syllable: ["Pock", "et"],
+        img: Pocket,
+        syllablesAudio: [
+          { name: "Pock", audio: Pock },
+          { name: "Et", audio: Et },
+        ],
+        completeAudio: PocketS,
+      },
     ],
     P3: [
       { completeWord: "Basket", syllable: ["Bas", "ket"] },
@@ -1030,7 +1268,7 @@ const Practice = () => {
             loading,
             setOpenMessageDialog,
             isNextButtonCalled,
-            setIsNextButtonCalled
+            setIsNextButtonCalled,
           }}
         />
       );
@@ -1201,7 +1439,7 @@ const Practice = () => {
             loading,
             setOpenMessageDialog,
             isNextButtonCalled,
-            setIsNextButtonCalled
+            setIsNextButtonCalled,
           }}
         />
       );
@@ -1264,7 +1502,7 @@ const Practice = () => {
               ? questions[currentQuestion]?.mechanics_data[0]?.options
               : [],
             isNextButtonCalled,
-            setIsNextButtonCalled
+            setIsNextButtonCalled,
           }}
         />
       );
