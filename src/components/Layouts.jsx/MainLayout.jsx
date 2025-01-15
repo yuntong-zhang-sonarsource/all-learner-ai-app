@@ -8,10 +8,6 @@ import practicebg from "../../assets/images/practice-bg.svg";
 import practicebg2 from "../../assets/images/practice-bg2.svg";
 import practicebg3 from "../../assets/images/practice-bg3.svg";
 import gameWon from "../../assets/images/gameWon.svg";
-import gameLost from "../../assets/images/gameLost.svg";
-import correctImage from "../../assets/correct.svg";
-import wrongImage from "../../assets/wrong.svg";
-import turtleImage from "../../assets/turtle.svg";
 import clouds from "../../assets/images/clouds.svg";
 import catLoading from "../../assets/images/catLoading.gif";
 import textureImage from "../../assets/images/textureImage.png";
@@ -128,19 +124,18 @@ const MainLayout = (props) => {
     loading,
     storedData,
     resetStoredData,
+    isRecordingComplete,
+    answer,
   } = props;
 
   const [shake, setShake] = useState(false);
   const [audioPlaying, setAudioPlaying] = useState(null);
   const audioRefs = useRef([]);
 
-  //console.log('Main Layout Array', storedData, pageName);
-
   const handleAudioPlay = (index) => {
     const audioElem = audioRefs.current[index];
 
     if (!audioElem) {
-      console.error("Audio element not found:", audioElem);
       return;
     }
 
@@ -186,12 +181,17 @@ const MainLayout = (props) => {
 
     preloadAudio();
 
-    // Cleanup cached audio URLs on unmount
     return () => {
       Object.values(audioCache).forEach((audioUrl) =>
         URL.revokeObjectURL(audioUrl)
       );
     };
+  }, []);
+
+  useEffect(() => {
+    if (isRecordingComplete && answer) {
+      callConfettiSnow();
+    }
   }, []);
 
   useEffect(() => {
@@ -229,18 +229,16 @@ const MainLayout = (props) => {
   }, [startShowCase, isShowCase, gameOverData, audioCache]);
 
   let currentPracticeStep = progressData?.currentPracticeStep;
-  let currentPracticeProgress = progressData?.currentPracticeProgress || 0;
 
   const sectionStyle = {
     width: "100%",
     backgroundImage: `url(${
       backgroundImage ? backgroundImage : levelsImages?.[LEVEL]?.background
     })`,
-    backgroundSize: "cover", // Cover the entire viewport
-    backgroundPosition: "center center", // Center the image
-    backgroundRepeat: "no-repeat", // Do not repeat the image
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+    backgroundRepeat: "no-repeat",
     minHeight: "100vh",
-    // padding: "30px 100px",
     display: "flex",
     paddingTop: { md: "0px", xs: "20px" },
     justifyContent: "center",
@@ -293,30 +291,7 @@ const MainLayout = (props) => {
           />
         </Box>
       )}
-      <Box sx={{ position: "absolute", top: "15px", right: "80px" }}>
-        {/* {showScore && (
-          <Box sx={{ position: "relative" }}>
-            <img
-              src={scoreView}
-              alt="scoreView"
-              width={"144px"}
-              height={"35px"}
-            />
-            <Box sx={{ position: "absolute", top: "6px", right: "46px" }}>
-              <span
-                style={{
-                  color: "#FFDD39",
-                  fontWeight: 700,
-                  fontSize: "18px",
-                  fontFamily: "Quicksand",
-                }}
-              >
-                {points}
-              </span>
-            </Box>
-          </Box>
-        )} */}
-      </Box>
+      <Box sx={{ position: "absolute", top: "15px", right: "80px" }}></Box>
       {loading ? (
         <Card
           sx={{
@@ -336,11 +311,7 @@ const MainLayout = (props) => {
           }}
         >
           <Box>
-            <img
-              src={catLoading}
-              alt="catLoading"
-              // sx={{ height: "58px", width: "58px" }}
-            />
+            <img src={catLoading} alt="catLoading" />
           </Box>
         </Card>
       ) : (
@@ -364,6 +335,11 @@ const MainLayout = (props) => {
                 mt: "50px",
               }}
             >
+              <Box>
+                {isRecordingComplete && answer && (
+                  <Confetti width={width} height={"600px"} />
+                )}
+              </Box>
               <CardContent
                 sx={{
                   minHeight: "100%",
@@ -548,99 +524,16 @@ const MainLayout = (props) => {
                                         fontFamily: "Quicksand",
                                       }}
                                     >
-                                      {elem.name}
+                                      {LEVEL === 1 ? elem.title : elem.name}
                                     </span>
                                   )}
                                 </Box>
                               );
                             })}
                           </Box>
-                          {/* <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              ml: {
-                                xs: 10,
-                                sm: 15,
-                                lg: 25,
-                                md: 15,
-                              },
-                              mt: 2,
-                            }}
-                          >
-                            <span
-                              style={{
-                                color: "#1E2937",
-                                fontWeight: 500,
-                                lineHeight: "18px",
-                                fontSize: "14px",
-                                fontFamily: "Quicksand",
-                              }}
-                            >
-                              {"Overall Progress:"}
-                            </span>
-                            <Box
-                              sx={{
-                                height: "12px",
-                                width: {
-                                  md: "250px",
-                                  lg: "350px",
-                                },
-                                background: "#D1F8D5",
-                                borderRadius: "6px",
-                                ml: 2,
-                                position: "relative",
-                              }}
-                            >
-                              <Box
-                                sx={{
-                                  height: "12px",
-                                  width: `${currentPracticeProgress}%`,
-                                  background: "#18DE2C",
-                                  borderRadius: "6px",
-                                  position: "absolute",
-                                }}
-                              ></Box>
-                            </Box>
-                            <span
-                              style={{
-                                color: "#1E2937",
-                                fontWeight: 700,
-                                lineHeight: "18px",
-                                fontSize: "14px",
-                                fontFamily: "Quicksand",
-                                marginLeft: "10px",
-                              }}
-                            >
-                              {`${currentPracticeProgress}%`}
-                            </span>
-                          </Box> */}
                         </Box>
                       </Box>
                     )}
-                    {/* <Box
-                      sx={{ display: "flex", justifyContent: "right", mr: 4 }}
-                    >
-                      {enableNext ? (
-                        <Box
-                          sx={{ cursor: "pointer" }}
-                          onClick={() => {
-                            if (props.setIsNextButtonCalled) {
-                              props.setIsNextButtonCalled(true);
-                            } else {
-                              handleNext();
-                            }
-                          }}
-                        >
-                          <NextButton />
-                        </Box>
-                      ) : (
-                        <Box sx={{ cursor: "pointer" }}>
-                          <NextButton disabled />
-                        </Box>
-                      )}
-                    </Box> */}
                   </Box>
                 )}
                 {nextLessonAndHome && (
@@ -678,7 +571,6 @@ const MainLayout = (props) => {
                       >
                         {"Next Lesson"}
                       </span>
-                      {/* <NextButton /> */}
                     </Box>
                     {enableNext ? (
                       <Box
@@ -714,7 +606,7 @@ const MainLayout = (props) => {
                 mt: "50px",
               }}
             >
-              <Box>{shake && <Confetti width={width} height={"600px"} />}</Box>
+              <Box>{shake && <Confetti width={width} height={"602px"} />}</Box>
               <CardContent
                 sx={{
                   width: "82vw",
@@ -1092,72 +984,13 @@ const MainLayout = (props) => {
                                           fontFamily: "Quicksand",
                                         }}
                                       >
-                                        {elem.name}
+                                        {LEVEL === 1 ? elem.title : elem.name}
                                       </span>
                                     )}
                                   </Box>
                                 );
                               })}
                             </Box>
-                            {/* <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                ml: {
-                                  lg: 25,
-                                  md: 15,
-                                },
-                                mt: 2,
-                              }}
-                            >
-                              <span
-                                style={{
-                                  color: "#1E2937",
-                                  fontWeight: 500,
-                                  lineHeight: "18px",
-                                  fontSize: "14px",
-                                  fontFamily: "Quicksand",
-                                }}
-                              >
-                                {"Overall Progress:"}
-                              </span>
-                              <Box
-                                sx={{
-                                  height: "12px",
-                                  width: {
-                                    md: "250px",
-                                    lg: "350px",
-                                  },
-                                  background: "#D1F8D5",
-                                  borderRadius: "6px",
-                                  ml: 2,
-                                  position: "relative",
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    height: "12px",
-                                    width: `${currentPracticeProgress}%`,
-                                    background: "#18DE2C",
-                                    borderRadius: "6px",
-                                    position: "absolute",
-                                  }}
-                                ></Box>
-                              </Box>
-                              <span
-                                style={{
-                                  color: "#1E2937",
-                                  fontWeight: 700,
-                                  lineHeight: "18px",
-                                  fontSize: "14px",
-                                  fontFamily: "Quicksand",
-                                  marginLeft: "10px",
-                                }}
-                              >
-                                {`${currentPracticeProgress}%`}
-                              </span>
-                            </Box> */}
                           </Box>
                         </Box>
                       )}
@@ -1205,7 +1038,6 @@ const MainLayout = (props) => {
                           >
                             {!gameOverData ? "Start Game ➜" : "Practice ➜"}
                           </Typography>
-                          {/* <NextButton /> */}
                         </Box>
                       </Box>
                     </Box>
@@ -1223,6 +1055,8 @@ const MainLayout = (props) => {
 MainLayout.propTypes = {
   contentType: PropTypes.string,
   handleBack: PropTypes.func,
+  isRecordingComplete: PropTypes.bool,
+  answer: PropTypes.string,
   disableScreen: PropTypes.bool,
   isShowCase: PropTypes.bool,
   showProgress: PropTypes.bool,

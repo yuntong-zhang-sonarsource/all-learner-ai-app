@@ -1,10 +1,20 @@
 import { Box, CardContent, Typography, CircularProgress } from "@mui/material";
-import { createRef, useState, useEffect } from "react";
+import { createRef, useState, useEffect, useRef } from "react";
 import v11 from "../../assets/audio/V10.mp3";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
-import { PlayAudioButton, StopAudioButton } from "../../utils/constants";
+import RecordVoiceVisualizer from "../../utils/RecordVoiceVisualizer";
+import {
+  PlayAudioButton,
+  StopAudioButton,
+  ListenButton,
+  RetryIcon,
+  StopButton,
+  SpeakButton,
+  NextButtonRound,
+} from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import PropTypes from "prop-types";
+import { phoneticMatch } from "../../utils/phoneticUtils";
 
 const WordsOrImage = ({
   handleNext,
@@ -48,14 +58,152 @@ const WordsOrImage = ({
   isNextButtonCalled,
   setIsNextButtonCalled,
 }) => {
-  const audioRef = createRef(null);
-  const [duration, setDuration] = useState(0);
+  const audioRefs = createRef(null);
   const [isReady, setIsReady] = useState(false);
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [storedData, setStoredData] = useState([]);
+  const [recognition, setRecognition] = useState(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [showSpeakButton, setShowSpeakButton] = useState(true);
+  const [showStopButton, setShowStopButton] = useState(false);
+  const [showListenRetryButtons, setShowListenRetryButtons] = useState(false);
+  const [answer, setAnswer] = useState(null);
+  const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
 
-  //console.log('wordsORimage', words, storedData);
+  const audioRef = useRef(null);
+  const currentWordRef = useRef(null);
+  const currentIsSelected = useRef(false);
+
+  let mediaRecorder;
+  let recordedChunks = [];
+
+  const initializeRecognition = () => {
+    let recognitionInstance;
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognitionInstance = new SpeechRecognition();
+    } else {
+      alert("Your browser does not support Speech Recognition.");
+      return;
+    }
+
+    if (recognitionInstance) {
+      recognitionInstance.continuous = true;
+      recognitionInstance.interimResults = true;
+      recognitionInstance.lang = "en-US";
+      recognitionInstance.maxAlternatives = 1;
+
+      recognitionInstance.onstart = () => {
+        startAudioRecording();
+      };
+
+      recognitionInstance.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setIsRecording(false);
+        setShowStopButton(false);
+        setShowListenRetryButtons(true);
+
+        const matchPercentage = phoneticMatch(
+          currentWordRef.current,
+          transcript
+        );
+
+        if (matchPercentage < 49) {
+          setAnswer(false);
+        } else {
+          setAnswer(true);
+        }
+        stopAudioRecording();
+      };
+
+      recognitionInstance.onerror = (event) => {
+        setIsRecording(false);
+        console.error("Speech recognition error:", event.error);
+        if (event.error === "no-speech") {
+          console.log("No Speech!");
+        } else if (event.error === "aborted") {
+          recognitionInstance.start();
+        }
+      };
+
+      recognitionInstance.onend = () => {
+        stopAudioRecording();
+      };
+
+      setRecognition(recognitionInstance);
+    }
+  };
+
+  const startAudioRecording = () => {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then((stream) => {
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+          }
+        };
+        mediaRecorder.start();
+      })
+      .catch((error) => {
+        console.error("Error accessing audio stream:", error);
+      });
+  };
+
+  const stopAudioRecording = () => {
+    if (mediaRecorder) {
+      mediaRecorder.stop();
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(recordedChunks, { type: "audio/webm" });
+        setRecordedAudioBlob(audioBlob);
+        recordedChunks = [];
+      };
+    }
+  };
+
+  const startRecording = (word, isSelected) => {
+    setIsRecording(true);
+    setShowSpeakButton(false);
+    setShowStopButton(true);
+    currentWordRef.current = word;
+    currentIsSelected.current = isSelected;
+  };
+
+  const stopRecording = (word) => {
+    setIsRecording(false);
+    setShowStopButton(false);
+    setShowListenRetryButtons(true);
+    if (recognition) {
+      recognition.stop();
+    }
+  };
+
+  const retryRecording = (word, isSelected) => {
+    setShowListenRetryButtons(false);
+    setShowSpeakButton(false);
+    setShowStopButton(true);
+    startRecording(word, isSelected);
+  };
+
+  const nextRecording = () => {
+    setShowListenRetryButtons(false);
+    setShowSpeakButton(true);
+    setShowStopButton(false);
+    setAnswer("");
+    handleNext();
+  };
+
+  useEffect(() => {
+    if (isRecording && recognition) {
+      recognition.start();
+    }
+  }, [isRecording, recognition]);
+
+  useEffect(() => {
+    initializeRecognition();
+  }, []);
 
   const updateStoredData = (audio, isCorrect) => {
     if (audio && words) {
@@ -64,7 +212,6 @@ const WordsOrImage = ({
         audioUrl: audio,
         correctAnswer: isCorrect,
       };
-
       setStoredData((prevData) => [...prevData, newEntry]);
     }
   };
@@ -79,14 +226,29 @@ const WordsOrImage = ({
 
   const togglePlayPause = () => {
     if (isPlaying) {
-      audioRef.current?.pause();
+      audioRefs.current?.pause();
       setIsPlaying(false);
     } else {
-      audioRef.current?.play();
+      audioRefs.current?.play();
       setIsPlaying(true);
     }
   };
-  const [currrentProgress, setCurrrentProgress] = useState(0);
+
+  const playAudio = () => {
+    if (recordedAudioBlob && audioRef.current) {
+      const audioBlobUrl = URL.createObjectURL(recordedAudioBlob);
+      audioRef.current.src = audioBlobUrl;
+      audioRef.current.play().catch((error) => {
+        console.error("Error playing audio:", error);
+      });
+    }
+  };
+
+  const getAnswerColor = (answer) => {
+    if (answer === true) return "green";
+    if (answer === false) return "red";
+    return "#333F61";
+  };
 
   return (
     <MainLayout
@@ -159,21 +321,16 @@ const WordsOrImage = ({
               }}
             >
               <audio
-                ref={audioRef}
+                ref={audioRefs}
                 preload="metadata"
-                onDurationChange={(e) => setDuration(e.currentTarget.duration)}
                 onCanPlay={(e) => {
                   setIsReady(true);
                 }}
                 onPlaying={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
-                onTimeUpdate={(e) => {
-                  setCurrrentProgress(e.currentTarget.currentTime);
-                }}
               >
                 <source type="audio/mp3" src={v11} />
               </audio>
-              {/* <AudioPlayerSvg color="#FFA132" /> */}
 
               <Box
                 sx={{
@@ -193,15 +350,12 @@ const WordsOrImage = ({
                     togglePlayPause();
                   }}
                 >
-                  {isReady && (
-                    <>
-                      {isPlaying ? (
-                        <StopAudioButton color="#FFA132" />
-                      ) : (
-                        <PlayAudioButton color="#FFA132" />
-                      )}
-                    </>
-                  )}
+                  {isReady &&
+                    (isPlaying ? (
+                      <StopAudioButton color={"#FFA132"} />
+                    ) : (
+                      <PlayAudioButton color={"#FFA132"} />
+                    ))}
                 </Box>
                 <Typography
                   variant="h5"
@@ -234,10 +388,9 @@ const WordsOrImage = ({
                 component="h4"
                 sx={{
                   mb: 4,
-                  color: "#333F61",
+                  color: getAnswerColor(answer),
                   textAlign: "center",
                   fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
-                  // lineHeight: "normal",
                   fontWeight: 700,
                   fontFamily: "Quicksand",
                   lineHeight: "50px",
@@ -252,44 +405,105 @@ const WordsOrImage = ({
                 display={"flex"}
                 mb={4}
                 sx={{
+                  color: "red",
                   width: "100%",
                   justifyContent: "center",
                   flexWrap: "wrap",
                 }}
               >
-                {highlightWords(words, matchedChar)}
+                {highlightWords(words, matchedChar, getAnswerColor(answer))}
               </Box>
             )}
           </Box>
         )}
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <VoiceAnalyser
-            pageName={"wordsorimage"}
-            setVoiceText={setVoiceText}
-            updateStoredData={updateStoredData}
-            setRecordedAudio={setRecordedAudio}
-            setVoiceAnimate={setVoiceAnimate}
-            storyLine={storyLine}
-            dontShowListen={type === "image" || isDiscover}
-            // updateStory={updateStory}
-            originalText={words}
-            handleNext={handleNext}
-            enableNext={enableNext}
-            isShowCase={isShowCase || isDiscover}
-            {...{
-              contentId,
-              contentType,
-              currentLine: currentStep - 1,
-              playTeacherAudio,
-              callUpdateLearner,
-              setEnableNext,
-              livesData,
-              setLivesData,
-              setOpenMessageDialog,
-              isNextButtonCalled,
-              setIsNextButtonCalled,
-            }}
-          />
+          {level === 1 && !isShowCase ? (
+            <div>
+              {showSpeakButton && (
+                <Box
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => startRecording(words, true)}
+                >
+                  <SpeakButton />
+                </Box>
+              )}
+              {showStopButton && (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    margin: "0 auto",
+                  }}
+                >
+                  <Box
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => stopRecording(words)}
+                  >
+                    <StopButton />
+                  </Box>
+                  <Box style={{ marginTop: "50px", marginBottom: "50px" }}>
+                    <RecordVoiceVisualizer />
+                  </Box>
+                </div>
+              )}
+              {showListenRetryButtons && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    margin: "0 auto",
+                  }}
+                >
+                  <Box sx={{ cursor: "pointer" }} onClick={playAudio}>
+                    <ListenButton />
+                  </Box>
+                  <Box
+                    sx={{ cursor: "pointer", marginLeft: "16px" }}
+                    onClick={() => retryRecording(words, true)}
+                  >
+                    <RetryIcon />
+                  </Box>
+                  <Box
+                    sx={{ cursor: "pointer", marginLeft: "16px" }}
+                    onClick={() => nextRecording()}
+                  >
+                    <NextButtonRound />
+                  </Box>
+                </div>
+              )}
+              <audio ref={audioRef} src={recordedAudioBlob} hidden />
+            </div>
+          ) : (
+            <VoiceAnalyser
+              pageName={"wordsorimage"}
+              setVoiceText={setVoiceText}
+              updateStoredData={updateStoredData}
+              setRecordedAudio={setRecordedAudio}
+              setVoiceAnimate={setVoiceAnimate}
+              storyLine={storyLine}
+              dontShowListen={type === "image" || isDiscover}
+              originalText={words}
+              handleNext={handleNext}
+              enableNext={enableNext}
+              isShowCase={isShowCase || isDiscover}
+              {...{
+                contentId,
+                contentType,
+                currentLine: currentStep - 1,
+                playTeacherAudio,
+                callUpdateLearner,
+                setEnableNext,
+                livesData,
+                setLivesData,
+                setOpenMessageDialog,
+                isNextButtonCalled,
+                setIsNextButtonCalled,
+              }}
+            />
+          )}
         </Box>
       </CardContent>
     </MainLayout>
@@ -298,7 +512,6 @@ const WordsOrImage = ({
 
 WordsOrImage.propTypes = {
   handleNext: PropTypes.func.isRequired,
-  // background: PropTypes.string,
   header: PropTypes.string,
   image: PropTypes.string,
   setVoiceText: PropTypes.func.isRequired,

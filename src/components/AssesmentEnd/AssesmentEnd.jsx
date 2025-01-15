@@ -48,7 +48,10 @@ const AssesmentEnd = () => {
         sessionId = uniqueId();
         localStorage.setItem("sessionId", sessionId);
       }
-      if (process.env.REACT_APP_IS_APP_IFRAME !== "true" && localStorage.getItem("contentSessionId") !== null) {
+      if (
+        process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
+        localStorage.getItem("contentSessionId") !== null
+      ) {
         const getPointersDetails = await axios.get(
           `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
         );

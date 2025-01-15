@@ -15,6 +15,8 @@ const AudioRecorder = (props) => {
   const mediaStreamRef = useRef(null);
   const [showLoader, setShowLoader] = useState(false);
 
+  console.log("pageName", props.pageName);
+
   useEffect(() => {
     // Cleanup when component unmounts
     return () => {
@@ -104,7 +106,10 @@ const AudioRecorder = (props) => {
                   sx={{ cursor: "pointer", height: "38px" }}
                   onClick={stopRecording}
                 >
-                  <StopButton />
+                  <StopButton
+                    height={props.pageName == "m7" ? 50 : 70}
+                    width={props.pageName == "m7" ? 50 : 70}
+                  />
                 </Box>
                 {showLoader ? (
                   <div className="loader"></div>
@@ -138,7 +143,10 @@ const AudioRecorder = (props) => {
                               }}
                             >
                               <Box sx={{ cursor: "pointer" }}>
-                                <ListenButton />
+                                <ListenButton
+                                  height={props.pageName == "m7" ? 50 : 70}
+                                  width={props.pageName == "m7" ? 50 : 70}
+                                />
                               </Box>
                             </div>
                           ) : (
@@ -148,7 +156,10 @@ const AudioRecorder = (props) => {
                                 props.playAudio(false);
                               }}
                             >
-                              <StopButton />
+                              <StopButton
+                                height={props.pageName == "m7" ? 50 : 70}
+                                width={props.pageName == "m7" ? 50 : 70}
+                              />
                             </Box>
                           )}
                         </Box>
@@ -166,7 +177,7 @@ const AudioRecorder = (props) => {
                                 !props.isStudentAudioPlaying
                               )
                             }
-                            style={{ height: "70px" }}
+                            style={{ height: props.pageName == "m7" ? 50 : 70 }}
                             src={
                               props.isStudentAudioPlaying
                                 ? pauseButton
@@ -194,7 +205,17 @@ const AudioRecorder = (props) => {
                         sx={{ cursor: "pointer" }}
                         onClick={startRecording}
                       >
-                        {!props.recordedAudio ? <SpeakButton /> : <RetryIcon />}
+                        {!props.recordedAudio ? (
+                          <SpeakButton
+                            height={props.pageName == "m7" ? 50 : 70}
+                            width={props.pageName == "m7" ? 50 : 70}
+                          />
+                        ) : (
+                          <RetryIcon
+                            height={props.pageName == "m7" ? 50 : 70}
+                            width={props.pageName == "m7" ? 50 : 70}
+                          />
+                        )}
                       </Box>
                     )
                   ) : (

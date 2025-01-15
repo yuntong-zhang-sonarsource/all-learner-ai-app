@@ -103,12 +103,15 @@ function VoiceAnalyser(props) {
       return;
     }
     const { audioLink } = props;
+    console.log("llink", audioLink);
+
     try {
       let audio = new Audio(
         audioLink
           ? audioLink
           : `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${props.contentId}.wav`
       );
+      console.log("audo", audio);
       audio.addEventListener("canplaythrough", () => {
         set_temp_audio(audio);
         setPauseAudio(val);
@@ -262,6 +265,9 @@ function VoiceAnalyser(props) {
         reader.onload = function (e) {
           let base64Data = e.target.result.split(",")[1];
           setRecordedAudioBase64(base64Data);
+          if (props.pageName === "m7") {
+            props.onAudioProcessed(base64Data);
+          }
         };
       };
       request.send();
@@ -690,6 +696,7 @@ function VoiceAnalyser(props) {
               return (
                 <>
                   <AudioCompare
+                    pageName={props.pageName}
                     setRecordedAudio={setRecordedAudio}
                     originalText={props.originalText}
                     playAudio={playAudio}
@@ -742,12 +749,21 @@ function VoiceAnalyser(props) {
               onClick={() => {
                 if (props.setIsNextButtonCalled) {
                   props.setIsNextButtonCalled(true);
+                  if (props.pageName === "m7") {
+                    props.onAudioProcessed("");
+                  }
                 } else {
                   props.handleNext();
+                  if (props.pageName === "m7") {
+                    props.onAudioProcessed("");
+                  }
                 }
               }}
             >
-              <NextButtonRound />
+              <NextButtonRound
+                height={props.pageName == "m7" ? 50 : 70}
+                width={props.pageName == "m7" ? 50 : 70}
+              />
             </Box>
           )}
         </Box>
@@ -758,6 +774,7 @@ function VoiceAnalyser(props) {
 
 VoiceAnalyser.propTypes = {
   enableNext: PropTypes.bool.isRequired,
+  onAudioProcessed: PropTypes.func,
   setIsNextButtonCalled: PropTypes.func,
   handleNext: PropTypes.func.isRequired,
   originalText: PropTypes.string,
