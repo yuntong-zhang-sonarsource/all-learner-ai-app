@@ -364,85 +364,146 @@ function VoiceAnalyser(props) {
   };
 
   const getResponseText = async (audioBlob) => {
-    console.log("whisper code");
-    let denoised_response_text = "";
-    let isWhisperRunning = false;
-    let audio0 = null;
-    let context = new AudioContext({
-      sampleRate: 16000,
-      channelCount: 1,
-      echoCancellation: false,
-      autoGainControl: true,
-      noiseSuppression: true,
-    });
+    // console.log("whisper code");
+    // let denoised_response_text = "";
+    // let isWhisperRunning = false;
+    // let audio0 = null;
+    // let context = new AudioContext({
+    //   sampleRate: 16000,
+    //   channelCount: 1,
+    //   echoCancellation: false,
+    //   autoGainControl: true,
+    //   noiseSuppression: true,
+    // });
 
-    window.OfflineAudioContext =
-      window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    // window.OfflineAudioContext =
+    //   window.OfflineAudioContext || window.webkitOfflineAudioContext;
 
-    window.whisperModule.set_status("");
+    // window.whisperModule.set_status("");
 
-    const blobToArrayBuffer = async (blob) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsArrayBuffer(blob);
-      });
-    };
+    // const blobToArrayBuffer = async (blob) => {
+    //   return new Promise((resolve, reject) => {
+    //     const reader = new FileReader();
+    //     reader.onloadend = () => resolve(reader.result);
+    //     reader.onerror = reject;
+    //     reader.readAsArrayBuffer(blob);
+    //   });
+    // };
 
-    let audioBuf = await blobToArrayBuffer(audioBlob);
+    // let audioBuf = await blobToArrayBuffer(audioBlob);
 
-    let audioBuffer;
-    try {
-      audioBuffer = await context.decodeAudioData(audioBuf);
-    } catch (error) {
-      console.error("Error decoding audio data:", error);
-      return "";
+    // let audioBuffer;
+    // try {
+    //   audioBuffer = await context.decodeAudioData(audioBuf);
+    // } catch (error) {
+    //   console.error("Error decoding audio data:", error);
+    //   return "";
+    // }
+
+    // var offlineContext = new OfflineAudioContext(
+    //   audioBuffer.numberOfChannels,
+    //   audioBuffer.length,
+    //   audioBuffer.sampleRate
+    // );
+    // var source = offlineContext.createBufferSource();
+    // source.buffer = audioBuffer;
+    // source.connect(offlineContext.destination);
+    // source.start(0);
+
+    // let renderedBuffer = await offlineContext.startRendering();
+    // let audio = renderedBuffer.getChannelData(0);
+    // let audioAll = new Float32Array(
+    //   audio0 == null ? audio.length : audio0.length + audio.length
+    // );
+
+    // if (audio0 != null) {
+    //   audioAll.set(audio0, 0);
+    // }
+    // audioAll.set(audio, audio0 == null ? 0 : audio0.length);
+
+    // window.whisperModule.set_audio(1, audioAll);
+
+    // let whisperStatus = "";
+
+    // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    // let checkWhisperStatus = true;
+
+    // while (checkWhisperStatus) {
+    //   whisperStatus = window.whisperModule.get_status();
+    //   if (whisperStatus === "running whisper ...") {
+    //     isWhisperRunning = true;
+    //   }
+    //   if (isWhisperRunning && whisperStatus === "waiting for audio ...") {
+    //     denoised_response_text = window.whisperModule.get_transcribed();
+    //     checkWhisperStatus = false;
+    //     break;
+    //   }
+    //   await delay(100);
+    // }
+
+    // return denoised_response_text;
+
+      // Initialize the recognizer if needed
+  let expectedSampleRate = 16000;
+
+  // Convert the Blob to an ArrayBuffer
+  const arrayBuffer = await audioBlob.arrayBuffer();
+
+  // Decode the audio data
+  const audioContext = new AudioContext();
+  const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+  let recordSampleRate = audioBuffer.sampleRate;
+
+  let recognizer_stream = window.sherpaRecognizer;
+
+  function downsampleBuffer(buffer, exportSampleRate) {
+    if (exportSampleRate === recordSampleRate) {
+      return buffer;
     }
-
-    var offlineContext = new OfflineAudioContext(
-      audioBuffer.numberOfChannels,
-      audioBuffer.length,
-      audioBuffer.sampleRate
-    );
-    var source = offlineContext.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(offlineContext.destination);
-    source.start(0);
-
-    let renderedBuffer = await offlineContext.startRendering();
-    let audio = renderedBuffer.getChannelData(0);
-    let audioAll = new Float32Array(
-      audio0 == null ? audio.length : audio0.length + audio.length
-    );
-
-    if (audio0 != null) {
-      audioAll.set(audio0, 0);
-    }
-    audioAll.set(audio, audio0 == null ? 0 : audio0.length);
-
-    window.whisperModule.set_audio(1, audioAll);
-
-    let whisperStatus = "";
-
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-    let checkWhisperStatus = true;
-
-    while (checkWhisperStatus) {
-      whisperStatus = window.whisperModule.get_status();
-      if (whisperStatus === "running whisper ...") {
-        isWhisperRunning = true;
+    var sampleRateRatio = recordSampleRate / exportSampleRate;
+    var newLength = Math.round(buffer.length / sampleRateRatio);
+    var result = new Float32Array(newLength);
+    var offsetResult = 0;
+    var offsetBuffer = 0;
+    while (offsetResult < result.length) {
+      var nextOffsetBuffer = Math.round((offsetResult + 1) * sampleRateRatio);
+      var accum = 0, count = 0;
+      for (var i = offsetBuffer; i < nextOffsetBuffer && i < buffer.length; i++) {
+        accum += buffer[i];
+        count++;
       }
-      if (isWhisperRunning && whisperStatus === "waiting for audio ...") {
-        denoised_response_text = window.whisperModule.get_transcribed();
-        checkWhisperStatus = false;
-        break;
-      }
-      await delay(100);
+      result[offsetResult] = accum / count;
+      offsetResult++;
+      offsetBuffer = nextOffsetBuffer;
     }
+    return result;
+};
 
-    return denoised_response_text;
+  // Get the audio samples from the buffer
+  let samples = audioBuffer.getChannelData(0);
+
+  samples = downsampleBuffer(samples, expectedSampleRate);
+
+  recognizer_stream = recognizer.createStream();
+
+  // Process the samples with the recognizer
+  recognizer_stream.acceptWaveform(expectedSampleRate, samples);
+
+  // Wait for the recognizer to be ready and decode the result
+  while (recognizer.isReady(recognizer_stream)) {
+    recognizer.decode(recognizer_stream);
+  }
+
+  let isEndpoint = recognizer.isEndpoint(recognizer_stream);
+
+  let result = recognizer.getResult(recognizer_stream);
+
+  console.log(result);
+
+  return result.text;
+
   };
 
   useEffect(() => {

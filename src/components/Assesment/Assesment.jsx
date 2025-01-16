@@ -353,7 +353,7 @@ export const LanguageModal = ({
             onClick={() => {
               setLang(selectedLang);
               setOpenLangModal(false);
-              if (isOfflineModel) {
+              if (isOfflineModel && selectedLang !== "en") {
                 loadModel(selectedLang);
               }
             }}
@@ -892,45 +892,45 @@ const Assesment = ({ discoverStart }) => {
 
   // Function to load model in whisper cpp module
   const loadModelWhisper = async (modelName) => {
-    try {
-      window.whisperModule.FS_unlink("whisper.bin");
-      await window.whisperModule.free(1);
-    } catch (e) {
-      console.log(e);
-    }
-    try {
-      let transaction;
-      let store;
-      let request;
-      try {
-        transaction = await db.transaction(["models"], "readonly");
-        store = transaction.objectStore("models");
-        request = await store.get(modelName);
-      } catch (error) {
-        console.error("Error accessing IndexedDB:", error);
-        return;
-      }
+    // try {
+    //   window.whisperModule.FS_unlink("whisper.bin");
+    //   await window.whisperModule.free(1);
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    // try {
+    //   let transaction;
+    //   let store;
+    //   let request;
+    //   try {
+    //     transaction = await db.transaction(["models"], "readonly");
+    //     store = transaction.objectStore("models");
+    //     request = await store.get(modelName);
+    //   } catch (error) {
+    //     console.error("Error accessing IndexedDB:", error);
+    //     return;
+    //   }
 
-      request.onsuccess = async () => {
-        const modelData = request.result;
-        let storeResponse = await window.whisperModule.FS_createDataFile(
-          "/",
-          "whisper.bin",
-          modelData,
-          true,
-          true
-        );
-        setTimeout(console.log(window.whisperModule.init("whisper.bin")), 5000);
-      };
+    //   request.onsuccess = async () => {
+    //     const modelData = request.result;
+    //     let storeResponse = await window.whisperModule.FS_createDataFile(
+    //       "/",
+    //       "whisper.bin",
+    //       modelData,
+    //       true,
+    //       true
+    //     );
+    //     setTimeout(console.log(window.whisperModule.init("whisper.bin")), 5000);
+    //   };
 
-      request.onerror = (err) => {
-        console.error(`Error to get model data: ${err}`);
-      };
+    //   request.onerror = (err) => {
+    //     console.error(`Error to get model data: ${err}`);
+    //   };
 
-      console.log(`Stored model in whisper cpp memory`);
-    } catch (error) {
-      console.error("Error storing model in IndexedDB:", error);
-    }
+    //   console.log(`Stored model in whisper cpp memory`);
+    // } catch (error) {
+    //   console.error("Error storing model in IndexedDB:", error);
+    // }
   };
 
   const loadModelIndic = async (modelName) => {
@@ -1138,12 +1138,14 @@ const Assesment = ({ discoverStart }) => {
         console.log(`Model ${modelName} is already stored in IndexedDB`);
       } else {
         alert(`you have to download en-offline model`);
+        if(lang != "en"){
         await loadModel(lang);
+        }
         return;
       }
-      if (lang === "en") {
-        await loadModelWhisper(modelName);
-      } else {
+      if (lang !== "en") {
+      //   await loadModelWhisper(modelName);
+      // } else {
         await loadModelIndic(modelName);
         await loadVocabIndic(vacabFileName);
       }
