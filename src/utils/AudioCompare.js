@@ -107,8 +107,8 @@ const AudioRecorder = (props) => {
                   onClick={stopRecording}
                 >
                   <StopButton
-                    height={props.pageName == "m7" ? 50 : 70}
-                    width={props.pageName == "m7" ? 50 : 70}
+                    height={props.pageName == "m7" ? 45 : 70}
+                    width={props.pageName == "m7" ? 45 : 70}
                   />
                 </Box>
                 {showLoader ? (
@@ -144,8 +144,8 @@ const AudioRecorder = (props) => {
                             >
                               <Box sx={{ cursor: "pointer" }}>
                                 <ListenButton
-                                  height={props.pageName == "m7" ? 50 : 70}
-                                  width={props.pageName == "m7" ? 50 : 70}
+                                  height={props.pageName == "m7" ? 45 : 70}
+                                  width={props.pageName == "m7" ? 45 : 70}
                                 />
                               </Box>
                             </div>
@@ -157,8 +157,8 @@ const AudioRecorder = (props) => {
                               }}
                             >
                               <StopButton
-                                height={props.pageName == "m7" ? 50 : 70}
-                                width={props.pageName == "m7" ? 50 : 70}
+                                height={props.pageName == "m7" ? 45 : 70}
+                                width={props.pageName == "m7" ? 45 : 70}
                               />
                             </Box>
                           )}
@@ -177,7 +177,7 @@ const AudioRecorder = (props) => {
                                 !props.isStudentAudioPlaying
                               )
                             }
-                            style={{ height: props.pageName == "m7" ? 50 : 70 }}
+                            style={{ height: props.pageName == "m7" ? 45 : 70 }}
                             src={
                               props.isStudentAudioPlaying
                                 ? pauseButton
@@ -207,13 +207,13 @@ const AudioRecorder = (props) => {
                       >
                         {!props.recordedAudio ? (
                           <SpeakButton
-                            height={props.pageName == "m7" ? 50 : 70}
-                            width={props.pageName == "m7" ? 50 : 70}
+                            height={props.pageName == "m7" ? 45 : 70}
+                            width={props.pageName == "m7" ? 45 : 70}
                           />
                         ) : (
                           <RetryIcon
-                            height={props.pageName == "m7" ? 50 : 70}
-                            width={props.pageName == "m7" ? 50 : 70}
+                            height={props.pageName == "m7" ? 45 : 70}
+                            width={props.pageName == "m7" ? 45 : 70}
                           />
                         )}
                       </Box>

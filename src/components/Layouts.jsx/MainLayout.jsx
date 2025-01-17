@@ -332,7 +332,7 @@ const MainLayout = (props) => {
                 backgroundSize: "cover",
                 boxShadow: "0px 4px 20px -1px rgba(0, 0, 0, 0.00)",
                 backdropFilter: "blur(25px)",
-                mt: "50px",
+                mt: "75px",
               }}
             >
               <Box>
@@ -420,7 +420,7 @@ const MainLayout = (props) => {
                     </span>
                   </Box>
                 )}
-              <Box sx={{ height: "120px", position: "relative" }}>
+              <Box sx={{ height: "110px", position: "relative" }}>
                 <Box sx={{ position: "absolute", left: 0, bottom: "-2px" }}>
                   <footer>{LEVEL && levelsImages?.[LEVEL]?.milestone}</footer>
                 </Box>
