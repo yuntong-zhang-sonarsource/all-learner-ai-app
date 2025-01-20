@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import clapImage from "../../assets/hand-icon-new.svg";
-import bulbHint from "../../assets/hint.svg";
+import bulbHint from "../../assets/images/hint.svg";
 import bulbHintDisabled from "../../assets/DisabledHint.svg";
 import frame from "../../assets/frame.svg";
 import correctSound from "../../assets/audio/correct.wav";
