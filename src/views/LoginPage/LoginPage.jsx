@@ -24,7 +24,7 @@ const LoginPage = () => {
       );
 
       if (usernameDetails?.data?.result?.virtualID) {
-        const newId = Date.now() + Math.floor(Math.random() * 1000);
+        const newId = crypto.randomUUID();
         localStorage.setItem("profileName", username);
         localStorage.setItem("virtualId", newId);
         navigate("/discover-start");
