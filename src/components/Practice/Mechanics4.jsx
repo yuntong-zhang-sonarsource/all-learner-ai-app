@@ -8,10 +8,10 @@ import MainLayout from "../Layouts.jsx/MainLayout";
 // import g from "../../assets/audio/g.mp3";
 // import e from "../../assets/audio/e.mp3";
 // import r from "../../assets/audio/r.mp3";
-import correctSound from "../../assets/audio/correct.wav";
+import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 import addSound from "../../assets/audio/add.mp3";
-import removeSound from "../../assets/audio/remove.wav";
+import removeSound from "../../assets/remove.wav";
 import { splitGraphemes } from "split-graphemes";
 import usePreloadAudio from "../../hooks/usePreloadAudio";
 
@@ -49,7 +49,7 @@ const Mechanics4 = ({
   setOpenMessageDialog,
   audio,
   isNextButtonCalled,
-  setIsNextButtonCalled
+  setIsNextButtonCalled,
 }) => {
   const [words, setWords] = useState(
     type === "word" ? [] : ["Friend", "She is", "My"]
