@@ -22,16 +22,16 @@ import { MessageDialog } from "../../components/Assesment/Assesment";
 import { Log } from "../../services/telementryService";
 import Mechanics6 from "../../components/Practice/Mechanics6";
 import Mechanics7 from "../../components/Practice/Mechanics7";
-import Tiger from "../../assets/tiger.png";
+import Tiger from "../../assets/Tiger.png";
 import Pencil from "../../assets/pencil.svg";
 import Rocket from "../../assets/rocket.png";
 import Rabbit from "../../assets/rabbit.png";
-import Apple from "../../assets/apple.png";
-import Banana from "../../assets/banana.jpeg";
-import Tomato from "../../assets/tomato.png";
+import Apple from "../../assets/Apple.png";
+import Banana from "../../assets/Banana.jpeg";
+import Tomato from "../../assets/Tomato.png";
 import Orange from "../../assets/orange.png";
-import Table from "../../assets/table.jpg";
-import Lemon from "../../assets/lemon.png";
+import Table from "../../assets/Table.jpg";
+import Lemon from "../../assets/Lemon.png";
 import Basket from "../../assets/Basket.png";
 import Tunnel from "../../assets/Tunnel.png";
 import Sunset from "../../assets/Sunset.png";
@@ -39,9 +39,9 @@ import Candle from "../../assets/Candle.png";
 import Button from "../../assets/Button.png";
 import Tablet from "../../assets/Tablet.png";
 import Pocket from "../../assets/Pocket.png";
-import Picnic from "../../assets/picnic.png";
-import Kitten from "../../assets/kitten.png";
-import Jacket from "../../assets/jacket.png";
+import Picnic from "../../assets/Picnic.jpg";
+import Kitten from "../../assets/Kitten.jpeg";
+import Jacket from "../../assets/Jacket.png";
 import Ti from "../../assets/Ti.wav";
 import Ger from "../../assets/ger.wav";
 import Pen from "../../assets/Pen.wav";
@@ -195,24 +195,24 @@ const Practice = () => {
     ],
     L2: [
       {
-        completeWord: "Banana",
-        syllable: ["Ba", "nana"],
-        img: Banana,
+        completeWord: "Candle",
+        syllable: ["Can", "dle"],
+        img: Candle,
         syllablesAudio: [
-          { name: "Ba", audio: Ba },
-          { name: "Nana", audio: Nana },
+          { name: "Can", audio: Can },
+          { name: "Dle", audio: Dle },
         ],
-        completeAudio: BananaS,
+        completeAudio: CandleS,
       },
       {
-        completeWord: "Tomato",
-        syllable: ["To", "ma", "to"],
-        img: Tomato,
+        completeWord: "Tablet",
+        syllable: ["Tab", "let"],
+        img: Tablet,
         syllablesAudio: [
-          { name: "To", audio: To },
-          { name: "Ma", audio: Ma },
+          { name: "Tab", audio: Tab },
+          { name: "Let", audio: Let },
         ],
-        completeAudio: TomatoS,
+        completeAudio: TabletS,
       },
       {
         completeWord: "Orange",
