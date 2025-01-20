@@ -148,9 +148,7 @@ const Mechanics7 = ({
   }, [recognition]);
 
   const startRecording = (word, isSelected) => {
-    if (recognition) {
-      recognition.stop();
-    }
+    //console.log('recs', recognition);
     setRecordingStates((prev) => ({
       ...prev,
       [word]: true,
