@@ -24,9 +24,11 @@ const LoginPage = () => {
       );
 
       if (usernameDetails?.data?.result?.virtualID) {
-        const newId = crypto.randomUUID();
         localStorage.setItem("profileName", username);
-        localStorage.setItem("virtualId", newId);
+        localStorage.setItem(
+          "virtualId",
+          usernameDetails?.data?.result?.virtualID
+        );
         navigate("/discover-start");
       } else {
         alert("Enter correct username and password");
