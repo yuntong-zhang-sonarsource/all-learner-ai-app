@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Container, Typography, TextField, Button, Grid } from '@mui/material';
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Container, Typography, TextField, Button, Grid } from "@mui/material";
 import config from "../../utils/urlConstants.json";
-import './LoginPage.css'; // Import the CSS file
+import "./LoginPage.css"; // Import the CSS file
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,8 +24,9 @@ const LoginPage = () => {
       );
 
       if (usernameDetails?.data?.result?.virtualID) {
+        const newId = Date.now() + Math.floor(Math.random() * 1000);
         localStorage.setItem("profileName", username);
-        localStorage.setItem("virtualId", usernameDetails?.data?.result?.virtualID);
+        localStorage.setItem("virtualId", newId);
         navigate("/discover-start");
       } else {
         alert("Enter correct username and password");
@@ -66,7 +67,12 @@ const LoginPage = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary" fullWidth>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
                 Login
               </Button>
             </Grid>
