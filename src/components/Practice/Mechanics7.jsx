@@ -3,8 +3,9 @@ import React, { useEffect, useState, useRef } from "react";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import clapImage from "../../assets/hand-icon-new.svg";
-import bulbHint from "../../assets/hint.svg";
-import bulbHintDisabled from "../../assets/DisabledHint.svg";
+// import bulbHint from "../../assets/hint.svg";
+// import bulbHintDisabled from "../../assets/DisabledHint.svg";
+import * as Assets from "../../utils/imageAudioLinks";
 import frame from "../../assets/frame.svg";
 import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
@@ -597,8 +598,8 @@ const Mechanics7 = ({
                             !isRecording &&
                             !isProcessing
                           )
-                            ? bulbHintDisabled
-                            : bulbHint
+                            ? Assets.bulbHintDisabled
+                            : Assets.bulbHint
                         }
                         alt="bulbHint"
                       />
