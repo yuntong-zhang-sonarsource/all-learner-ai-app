@@ -114,7 +114,7 @@ export const Sunset =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/Sunset.svg";
 export const Sun =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/Sun.wav";
-export const Set =
+export const SetNew =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/set.wav";
 export const SunsetS =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/Sunset.wav";

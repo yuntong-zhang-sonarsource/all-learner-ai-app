@@ -26,9 +26,6 @@ import * as Assets from "../../utils/imageAudioLinks";
 import { PutBucketInventoryConfigurationRequestFilterSensitiveLog } from "@aws-sdk/client-s3";
 import usePreloadAudio from "../../hooks/usePreloadAudio";
 
-const Tiger =
-  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/Tiger-new.jpg";
-
 const Practice = () => {
   const [page, setPage] = useState("");
   const [recordedAudio, setRecordedAudio] = useState("");
@@ -219,7 +216,7 @@ const Practice = () => {
         img: Assets.Sunset,
         syllablesAudio: [
           { name: "Sun", audio: Assets.Sun },
-          { name: "Set", audio: Assets.Set },
+          { name: "Set", audio: Assets.SetNew },
         ],
         completeAudio: Assets.SunsetS,
       },
