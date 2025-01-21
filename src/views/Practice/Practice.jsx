@@ -22,89 +22,9 @@ import { MessageDialog } from "../../components/Assesment/Assesment";
 import { Log } from "../../services/telementryService";
 import Mechanics6 from "../../components/Practice/Mechanics6";
 import Mechanics7 from "../../components/Practice/Mechanics7";
-//Tiger from "../../assets/Tiger-new.jpg";
-import Pencil from "../../assets/pencil.svg";
-import Rocket from "../../assets/rocket.svg";
-import Rabbit from "../../assets/rabbit.svg";
-import Apple from "../../assets/Apple.svg";
-import Banana from "../../assets/Banana.svg";
-import Tomato from "../../assets/Tomato.svg";
-import Orange from "../../assets/orange.svg";
-import Table from "../../assets/Table.svg";
-import Lemon from "../../assets/Lemon.svg";
-import Basket from "../../assets/Basket.svg";
-import Tunnel from "../../assets/Tunnel.svg";
-import Sunset from "../../assets/Sunset.svg";
-import Candle from "../../assets/Candle.svg";
-import Button from "../../assets/Button.svg";
-import Tablet from "../../assets/Tablet.svg";
-import Pocket from "../../assets/Pocket.svg";
-import Picnic from "../../assets/Picnic.svg";
-import Kitten from "../../assets/Kitten.svg";
-import Jacket from "../../assets/Jacket.svg";
-import Ti from "../../assets/Ti.wav";
-import Ger from "../../assets/ger.wav";
-import Pen from "../../assets/Pen.wav";
-import Cil from "../../assets/cil.wav";
-import Rab from "../../assets/Rab.wav";
-import Bit from "../../assets/bit.wav";
-import Rock from "../../assets/Rock.wav";
-import Et from "../../assets/et.wav";
-import Ap from "../../assets/Ap.wav";
-import Ple from "../../assets/ple.wav";
-import Ba from "../../assets/Ba.wav";
-import Nana from "../../assets/Na.wav";
-import To from "../../assets/To.wav";
-import Ma from "../../assets/ma.wav";
-import Or from "../../assets/Or.wav";
-import Ange from "../../assets/ange.wav";
-import Ta from "../../assets/Ta.wav";
-import Ble from "../../assets/ble.wav";
-import Le from "../../assets/Le.wav";
-import Mon from "../../assets/mon.wav";
-import Bas from "../../assets/Bas.wav";
-import Ket from "../../assets/ket.wav";
-import Tun from "../../assets/Tun.wav";
-import Nel from "../../assets/nel.wav";
-import Sun from "../../assets/Sun.wav";
-import Set from "../../assets/set.wav";
-import Can from "../../assets/Can.wav";
-import Dle from "../../assets/dle.wav";
-import But from "../../assets/But.wav";
-import Ton from "../../assets/ton.wav";
-import Tab from "../../assets/Tab.wav";
-import Let from "../../assets/let.wav";
-import Pic from "../../assets/Pic.wav";
-import Nic from "../../assets/nic.wav";
-import Kit from "../../assets/Kit.wav";
-import Ten from "../../assets/ten.wav";
-import Jack from "../../assets/Jack.wav";
-import Pock from "../../assets/Pock.wav";
-import TigerS from "../../assets/Tiger.wav";
-import PencilS from "../../assets/Pencil.wav";
-import RabbitS from "../../assets/Rabbit.wav";
-import RocketS from "../../assets/Rocket.wav";
-import AppleS from "../../assets/Apple.wav";
-import BananaS from "../../assets/Banana.wav";
-import TomatoS from "../../assets/Tomato.wav";
-import OrangeS from "../../assets/Orange.wav";
-import TableS from "../../assets/Table.wav";
-import LemonS from "../../assets/Lemon.wav";
-import BasketS from "../../assets/Basket.wav";
-import TunnelS from "../../assets/Tunnel.wav";
-import SunsetS from "../../assets/Sunset.wav";
-import CandleS from "../../assets/Candle.wav";
-import ButtonS from "../../assets/Button.wav";
-import TabletS from "../../assets/Tablet.wav";
-import PicnicS from "../../assets/Picnic.wav";
-import KittenS from "../../assets/Kitten.wav";
-import JacketS from "../../assets/Jacket.wav";
-import PocketS from "../../assets/Pocket.wav";
+import * as Assets from "../../utils/imageAudioLinks";
 import { PutBucketInventoryConfigurationRequestFilterSensitiveLog } from "@aws-sdk/client-s3";
 import usePreloadAudio from "../../hooks/usePreloadAudio";
-
-const Tiger =
-  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/Tiger-new.jpg";
 
 const Practice = () => {
   const [page, setPage] = useState("");
@@ -148,104 +68,104 @@ const Practice = () => {
       {
         completeWord: "Tiger",
         syllable: ["Ti", "ger"],
-        img: Tiger,
+        img: Assets.Tiger,
         syllablesAudio: [
-          { name: "Ti", audio: Ti },
-          { name: "Ger", audio: Ger },
+          { name: "Ti", audio: Assets.Ti },
+          { name: "Ger", audio: Assets.Ger },
         ],
-        completeAudio: TigerS,
+        completeAudio: Assets.TigerS,
       },
       {
         completeWord: "Pencil",
         syllable: ["Pen", "cil"],
-        img: Pencil,
+        img: Assets.Pencil,
         syllablesAudio: [
-          { name: "Pen", audio: Pen },
-          { name: "Cil", audio: Cil },
+          { name: "Pen", audio: Assets.Pen },
+          { name: "Cil", audio: Assets.Cil },
         ],
-        completeAudio: PencilS,
+        completeAudio: Assets.PencilS,
       },
       {
         completeWord: "Rabbit",
         syllable: ["Rab", "bit"],
-        img: Rabbit,
+        img: Assets.Rabbit,
         syllablesAudio: [
-          { name: "Rab", audio: Rab },
-          { name: "Bit", audio: Bit },
+          { name: "Rab", audio: Assets.Rab },
+          { name: "Bit", audio: Assets.Bit },
         ],
-        completeAudio: RabbitS,
+        completeAudio: Assets.RabbitS,
       },
       {
         completeWord: "Rocket",
         syllable: ["Rock", "et"],
-        img: Rocket,
+        img: Assets.Rocket,
         syllablesAudio: [
-          { name: "Rock", audio: Rock },
-          { name: "Et", audio: Et },
+          { name: "Rock", audio: Assets.Rock },
+          { name: "Et", audio: Assets.Et },
         ],
-        completeAudio: RocketS,
+        completeAudio: Assets.RocketS,
       },
       {
         completeWord: "Apple",
         syllable: ["Ap", "ple"],
-        img: Apple,
+        img: Assets.Apple,
         syllablesAudio: [
-          { name: "Ap", audio: Ap },
-          { name: "Ple", audio: Ple },
+          { name: "Ap", audio: Assets.Ap },
+          { name: "Ple", audio: Assets.Ple },
         ],
-        completeAudio: AppleS,
+        completeAudio: Assets.AppleS,
       },
     ],
     L2: [
       {
         completeWord: "Candle",
         syllable: ["Can", "dle"],
-        img: Candle,
+        img: Assets.Candle,
         syllablesAudio: [
-          { name: "Can", audio: Can },
-          { name: "Dle", audio: Dle },
+          { name: "Can", audio: Assets.Can },
+          { name: "Dle", audio: Assets.Dle },
         ],
-        completeAudio: CandleS,
+        completeAudio: Assets.CandleS,
       },
       {
         completeWord: "Tablet",
         syllable: ["Tab", "let"],
-        img: Tablet,
+        img: Assets.Tablet,
         syllablesAudio: [
-          { name: "Tab", audio: Tab },
-          { name: "Let", audio: Let },
+          { name: "Tab", audio: Assets.Tab },
+          { name: "Let", audio: Assets.Let },
         ],
-        completeAudio: TabletS,
+        completeAudio: Assets.TabletS,
       },
       {
         completeWord: "Orange",
         syllable: ["Or", "ange"],
-        img: Orange,
+        img: Assets.Orange,
         syllablesAudio: [
-          { name: "Or", audio: Or },
-          { name: "Ange", audio: Ange },
+          { name: "Or", audio: Assets.Or },
+          { name: "Ange", audio: Assets.Ange },
         ],
-        completeAudio: OrangeS,
+        completeAudio: Assets.OrangeS,
       },
       {
         completeWord: "Table",
         syllable: ["Ta", "ble"],
-        img: Table,
+        img: Assets.Table,
         syllablesAudio: [
-          { name: "Ta", audio: Ta },
-          { name: "Ble", audio: Ble },
+          { name: "Ta", audio: Assets.Ta },
+          { name: "Ble", audio: Assets.Ble },
         ],
-        completeAudio: TableS,
+        completeAudio: Assets.TableS,
       },
       {
         completeWord: "Lemon",
         syllable: ["Le", "mon"],
-        img: Lemon,
+        img: Assets.Lemon,
         syllablesAudio: [
-          { name: "Le", audio: Le },
-          { name: "Mon", audio: Mon },
+          { name: "Le", audio: Assets.Le },
+          { name: "Mon", audio: Assets.Mon },
         ],
-        completeAudio: LemonS,
+        completeAudio: Assets.LemonS,
       },
     ],
     P1: [
@@ -273,104 +193,104 @@ const Practice = () => {
       {
         completeWord: "Basket",
         syllable: ["Bas", "ket"],
-        img: Basket,
+        img: Assets.Basket,
         syllablesAudio: [
-          { name: "Bas", audio: Bas },
-          { name: "Ket", audio: Ket },
+          { name: "Bas", audio: Assets.Bas },
+          { name: "Ket", audio: Assets.Ket },
         ],
-        completeAudio: BasketS,
+        completeAudio: Assets.BasketS,
       },
       {
         completeWord: "Tunnel",
         syllable: ["Tun", "nel"],
-        img: Tunnel,
+        img: Assets.Tunnel,
         syllablesAudio: [
-          { name: "Tun", audio: Tun },
-          { name: "Nel", audio: Nel },
+          { name: "Tun", audio: Assets.Tun },
+          { name: "Nel", audio: Assets.Nel },
         ],
-        completeAudio: TunnelS,
+        completeAudio: Assets.TunnelS,
       },
       {
         completeWord: "Sunset",
         syllable: ["Sun", "set"],
-        img: Sunset,
+        img: Assets.Sunset,
         syllablesAudio: [
-          { name: "Sun", audio: Sun },
-          { name: "Set", audio: Set },
+          { name: "Sun", audio: Assets.Sun },
+          { name: "Set", audio: Assets.SetNew },
         ],
-        completeAudio: SunsetS,
+        completeAudio: Assets.SunsetS,
       },
       {
         completeWord: "Candle",
         syllable: ["Can", "dle"],
-        img: Candle,
+        img: Assets.Candle,
         syllablesAudio: [
-          { name: "Can", audio: Can },
-          { name: "Dle", audio: Dle },
+          { name: "Can", audio: Assets.Can },
+          { name: "Dle", audio: Assets.Dle },
         ],
-        completeAudio: CandleS,
+        completeAudio: Assets.CandleS,
       },
       {
         completeWord: "Button",
         syllable: ["But", "ton"],
-        img: Button,
+        img: Assets.Button,
         syllablesAudio: [
-          { name: "But", audio: But },
-          { name: "Ton", audio: Ton },
+          { name: "But", audio: Assets.But },
+          { name: "Ton", audio: Assets.Ton },
         ],
-        completeAudio: ButtonS,
+        completeAudio: Assets.ButtonS,
       },
     ],
     L4: [
       {
         completeWord: "Tablet",
         syllable: ["Tab", "let"],
-        img: Tablet,
+        img: Assets.Tablet,
         syllablesAudio: [
-          { name: "Tab", audio: Tab },
-          { name: "Let", audio: Let },
+          { name: "Tab", audio: Assets.Tab },
+          { name: "Let", audio: Assets.Let },
         ],
-        completeAudio: TabletS,
+        completeAudio: Assets.TabletS,
       },
       {
         completeWord: "Picnic",
         syllable: ["Pic", "nic"],
-        img: Picnic,
+        img: Assets.Picnic,
         syllablesAudio: [
-          { name: "Pic", audio: Pic },
-          { name: "Nic", audio: Nic },
+          { name: "Pic", audio: Assets.Pic },
+          { name: "Nic", audio: Assets.Nic },
         ],
-        completeAudio: PicnicS,
+        completeAudio: Assets.PicnicS,
       },
       {
         completeWord: "Kitten",
         syllable: ["Kit", "ten"],
-        img: Kitten,
+        img: Assets.Kitten,
         syllablesAudio: [
-          { name: "Kit", audio: Kit },
-          { name: "Ten", audio: Ten },
+          { name: "Kit", audio: Assets.Kit },
+          { name: "Ten", audio: Assets.Ten },
         ],
-        completeAudio: KittenS,
+        completeAudio: Assets.KittenS,
       },
       {
         completeWord: "Jacket",
         syllable: ["Jack", "et"],
-        img: Jacket,
+        img: Assets.Jacket,
         syllablesAudio: [
-          { name: "Jack", audio: Jack },
-          { name: "Et", audio: Et },
+          { name: "Jack", audio: Assets.Jack },
+          { name: "Et", audio: Assets.Et },
         ],
-        completeAudio: JacketS,
+        completeAudio: Assets.JacketS,
       },
       {
         completeWord: "Pocket",
         syllable: ["Pock", "et"],
-        img: Pocket,
+        img: Assets.Pocket,
         syllablesAudio: [
-          { name: "Pock", audio: Pock },
-          { name: "Et", audio: Et },
+          { name: "Pock", audio: Assets.Pock },
+          { name: "Et", audio: Assets.Et },
         ],
-        completeAudio: PocketS,
+        completeAudio: Assets.PocketS,
       },
     ],
     P3: [
