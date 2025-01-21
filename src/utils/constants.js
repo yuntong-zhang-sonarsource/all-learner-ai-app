@@ -4305,6 +4305,7 @@ const AllLanguages = [
   { name: "ಕನ್ನಡ", lang: "kn", symbol: "ಕ" },
   { name: "తెలుగు", lang: "te", symbol: "ఈ" },
   { name: "ગુજરાતી", lang: "gu", symbol: "ગુ" },
+  { name: "ଓଡ଼ିଆ", lang: "or", symbol: "ଓ" }
 ];
 
 const appLanguages = process.env.REACT_APP_LANGUAGES
