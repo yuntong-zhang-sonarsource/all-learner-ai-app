@@ -122,19 +122,6 @@ const SpeakSentenceComponent = () => {
     try {
       const lang = getLocalData("lang");
 
-      // await axios.post(
-      //   `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
-      //   {
-      //     userId: localStorage.getItem("virtualId"),
-      //     sessionId: localStorage.getItem("sessionId"),
-      //     milestone: `discoveryList/discovery/${currentCollectionId}`,
-      //     lesson: localStorage.getItem("storyTitle"),
-      //     progress: ((currentQuestion + 1) * 100) / questions.length,
-      //     language: lang,
-      //     milestoneLevel: "m0",
-      //   }
-      // );
-
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
       } else if (currentQuestion === questions.length - 1) {
@@ -168,6 +155,19 @@ const SpeakSentenceComponent = () => {
           send(5);
           // setPoints(localStorage.getItem("currentLessonScoreCount"));
         }
+
+        await axios.post(
+          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
+          {
+            userId: localStorage.getItem("virtualId"),
+            sessionId: localStorage.getItem("sessionId"),
+            milestone: `discoveryList/discovery/${currentCollectionId}`,
+            lesson: localStorage.getItem("storyTitle"),
+            progress: ((currentQuestion + 1) * 100) / questions.length,
+            language: lang,
+            milestoneLevel: "m0",
+          }
+        );
 
         setInitialAssesment(false);
         const { data: getSetData } = getSetResultRes;
