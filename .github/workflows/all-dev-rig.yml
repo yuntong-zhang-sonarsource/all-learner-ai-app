@@ -80,7 +80,7 @@ jobs:
         run: npm run build
 
       - name: Deploy to S3 Bucket
-        run: run: aws s3 sync ./build s3://sballappliance/
+        run: aws s3 sync ./build s3://sballappliance/
 
       - name: Debug Environment Variables
         run: |
