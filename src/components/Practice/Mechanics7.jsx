@@ -12,7 +12,6 @@ import addSound from "../../assets/audio/add.mp3";
 import removeSound from "../../assets/remove.wav";
 import { WordRedCircle, StopButton, SpeakButton } from "../../utils/constants";
 import { phoneticMatch } from "../../utils/phoneticUtils";
-import TigerNew from "../../assets/listen.png";
 
 const Mechanics7 = ({
   setVoiceText,
@@ -510,14 +509,6 @@ const Mechanics7 = ({
         >
           <img
             src={currentImg?.img}
-            alt="pencil"
-            height={"85px"}
-            style={{
-              zIndex: 2,
-            }}
-          />
-          <img
-            src={TigerNew}
             alt="pencil"
             height={"85px"}
             style={{

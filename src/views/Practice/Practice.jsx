@@ -22,7 +22,7 @@ import { MessageDialog } from "../../components/Assesment/Assesment";
 import { Log } from "../../services/telementryService";
 import Mechanics6 from "../../components/Practice/Mechanics6";
 import Mechanics7 from "../../components/Practice/Mechanics7";
-import Tiger from "../../assets/Tiger-new.jpg";
+//Tiger from "../../assets/Tiger-new.jpg";
 import Pencil from "../../assets/pencil.svg";
 import Rocket from "../../assets/rocket.svg";
 import Rabbit from "../../assets/rabbit.svg";
@@ -102,6 +102,9 @@ import JacketS from "../../assets/Jacket.wav";
 import PocketS from "../../assets/Pocket.wav";
 import { PutBucketInventoryConfigurationRequestFilterSensitiveLog } from "@aws-sdk/client-s3";
 import usePreloadAudio from "../../hooks/usePreloadAudio";
+
+const Tiger =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/Tiger-new.jpg";
 
 const Practice = () => {
   const [page, setPage] = useState("");
