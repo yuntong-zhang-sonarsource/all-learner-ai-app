@@ -22,7 +22,7 @@ import { MessageDialog } from "../../components/Assesment/Assesment";
 import { Log } from "../../services/telementryService";
 import Mechanics6 from "../../components/Practice/Mechanics6";
 import Mechanics7 from "../../components/Practice/Mechanics7";
-import Tiger from "../../assets/Tiger.svg";
+import Tiger from "../../assets/Tiger-new.jpg";
 import Pencil from "../../assets/pencil.svg";
 import Rocket from "../../assets/rocket.svg";
 import Rabbit from "../../assets/rabbit.svg";
