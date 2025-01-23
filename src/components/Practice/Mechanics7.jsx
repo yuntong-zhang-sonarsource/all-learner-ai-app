@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import MainLayout from "../Layouts.jsx/MainLayout";
-import clapImage from "../../assets/hand-icon-new.svg";
+import clapImage from "../../assets/hand-ic.svg";
 // import bulbHint from "../../assets/hint.svg";
 // import bulbHintDisabled from "../../assets/DisabledHint.svg";
 import * as Assets from "../../utils/imageAudioLinks";
@@ -11,8 +11,21 @@ import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 import addSound from "../../assets/audio/add.mp3";
 import removeSound from "../../assets/remove.wav";
-import { WordRedCircle, StopButton, SpeakButton } from "../../utils/constants";
+import {
+  WordRedCircle,
+  StopButton,
+  SpeakButton,
+  ListenButton,
+} from "../../utils/constants";
 import { phoneticMatch } from "../../utils/phoneticUtils";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+
+const isChrome =
+  /Chrome/.test(navigator.userAgent) &&
+  /Google Inc/.test(navigator.vendor) &&
+  !/Edg/.test(navigator.userAgent);
 
 const Mechanics7 = ({
   setVoiceText,
@@ -60,6 +73,25 @@ const Mechanics7 = ({
     }
   }, [words]);
 
+  const {
+    transcript,
+    interimTranscript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+  const transcriptRef = useRef("");
+
+  console.table([
+    { Label: "Final Transcript", Value: transcript },
+    { Label: "Interim Transcript", Value: interimTranscript },
+    { Label: "Is Chrome", Value: isChrome },
+  ]);
+
+  useEffect(() => {
+    transcriptRef.current = transcript;
+  }, [transcript]);
+
   const [wordsAfterSplit, setWordsAfterSplit] = useState([]);
   const [recAudio, setRecAudio] = useState("");
 
@@ -78,6 +110,35 @@ const Mechanics7 = ({
   const currentIsSelectedRef = useRef(currentIsSelected);
   const wordsRef = useRef(words);
   const selectedWordsRef = useRef(selectedWords);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  const playCompleteAudio = () => {
+    if (completeAudio) {
+      audioRef.current.src = completeAudio;
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch((error) => {
+          console.error("Error playing audio:", error);
+        });
+    }
+  };
+
+  const stopCompleteAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  };
+
+  const handleAudioEnd = () => {
+    setIsPlaying(false);
+  };
 
   useEffect(() => {
     currentWordRef.current = currentWord;
@@ -150,6 +211,17 @@ const Mechanics7 = ({
 
   const startRecording = (word, isSelected) => {
     //console.log('recs', recognition);
+    if (isChrome) {
+      if (!browserSupportsSpeechRecognition) {
+        alert("Speech recognition is not supported in your browser.");
+        return;
+      }
+      resetTranscript();
+      SpeechRecognition.startListening({
+        continuous: true,
+        interimResults: true,
+      });
+    }
     setRecordingStates((prev) => ({
       ...prev,
       [word]: true,
@@ -160,25 +232,40 @@ const Mechanics7 = ({
   };
 
   const stopRecording = (word) => {
+    if (isChrome) {
+      SpeechRecognition.stopListening();
+      const finalTranscript = transcriptRef.current;
+      handleWordsLogic(
+        currentWordRef.current,
+        finalTranscript,
+        currentIsSelected
+      );
+      setIsMicOn(false);
+      setIsRecording(false);
+      setIsProcessing(false);
+    } else {
+      if (recognition) {
+        recognition.stop();
+      }
+      setIsProcessing(true);
+    }
     setRecordingStates((prev) => ({
       ...prev,
       [word]: false,
     }));
     setIsRecording(false);
-    setIsProcessing(true);
-    if (recognition) {
-      recognition.stop();
-    }
   };
 
   useEffect(() => {
-    if (isRecording && recognition) {
+    if (isRecording && recognition && recognition.state !== "recording") {
       recognition.start();
     }
   }, [isRecording, recognition, currentWord]);
 
   useEffect(() => {
-    initializeRecognition();
+    if (!isChrome) {
+      initializeRecognition();
+    }
   }, []);
 
   const playAudio = (audioPath) => {
@@ -354,7 +441,7 @@ const Mechanics7 = ({
     return "#333F61";
   };
 
-  //console.log("audios", completeAudio, audio);
+  console.log("audios", completeAudio);
 
   return (
     <MainLayout
@@ -621,7 +708,7 @@ const Mechanics7 = ({
                     </span>
                   ))}
                 </Box>
-
+                {/* 
                 {wIndex === 0 &&
                   (!recordingStates[elem] &&
                   !isRecordingComplete &&
@@ -660,7 +747,7 @@ const Mechanics7 = ({
                     >
                       <StopButton height={45} width={45} />
                     </Box>
-                  ))}
+                  ))} */}
               </div>
             ) : (
               <Box
@@ -698,7 +785,119 @@ const Mechanics7 = ({
         ))}
       </Box>
 
-      {!isRecording && (
+      {words &&
+        words.length > 0 &&
+        (!isRecordingComplete && !isRecording && !isProcessing ? (
+          <Box
+            sx={{
+              marginTop: "7px",
+              position: "relative",
+              display: "flex",
+              gap: "50px",
+              justifyContent: "center",
+              alignItems: "center",
+              //height: { xs: "30px", sm: "40px", md: "50px" },
+              minWidth: { xs: "50px", sm: "60px", md: "70px" },
+              cursor: `url(${clapImage}) 32 24, auto`,
+            }}
+          >
+            {isPlaying ? (
+              <div onClick={stopCompleteAudio}>
+                <Box
+                  sx={{
+                    marginTop: "7px",
+                    position: "relative",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                    cursor: "pointer",
+                    marginLeft: getMarginLeft(0),
+                  }}
+                >
+                  <StopButton height={45} width={45} />
+                </Box>
+              </div>
+            ) : (
+              <div onClick={playCompleteAudio}>
+                <Box
+                  sx={{
+                    marginTop: "7px",
+                    position: "relative",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                    cursor: `url(${clapImage}) 32 24, auto`,
+                    marginLeft: getMarginLeft(0),
+                  }}
+                >
+                  <ListenButton height={45} width={45} />
+                </Box>
+              </div>
+            )}
+            <Box
+              sx={{
+                marginTop: "7px",
+                position: "relative",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "90px",
+                height: "90px",
+                cursor: `url(${clapImage}) 32 24, auto`,
+                marginLeft: getMarginLeft(0),
+                backgroundColor: "#58CC0233",
+                borderRadius: "50%",
+              }}
+              onClick={() => handleWords(wordsRef?.current[0])}
+            >
+              <SpeakButton height={45} width={45} />
+            </Box>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              marginTop: "7px",
+              position: "relative",
+              display: "flex",
+              gap: "50px",
+              justifyContent: "center",
+              alignItems: "center",
+              //height: { xs: "30px", sm: "40px", md: "50px" },
+              minWidth: { xs: "50px", sm: "60px", md: "70px" },
+              cursor: `url(${clapImage}) 32 24, auto`,
+            }}
+          >
+            <Box
+              sx={{
+                marginTop: "7px",
+                position: "relative",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "90px",
+                height: "90px",
+                cursor: `url(${clapImage}) 32 24, auto`,
+                marginLeft: getMarginLeft(0),
+                backgroundColor: "#FF4B4B33",
+                borderRadius: "50%",
+              }}
+              onClick={() => stopRecording(wordsRef?.current[0])}
+            >
+              <StopButton height={45} width={45} />
+            </Box>
+          </Box>
+        ))}
+
+      <audio
+        ref={audioRef}
+        onEnded={handleAudioEnd}
+        src={completeAudio}
+        hidden
+      />
+
+      {words && words.length === 0 && !isRecording && (
         <Box sx={{ display: "flex", justifyContent: "center", mt: "2px" }}>
           <VoiceAnalyser
             pageName={"m7"}

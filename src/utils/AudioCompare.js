@@ -103,7 +103,19 @@ const AudioRecorder = (props) => {
                 }}
               >
                 <Box
-                  sx={{ cursor: "pointer", height: "38px" }}
+                  sx={{
+                    cursor: "pointer",
+                    ...(props.pageName === "m7" && {
+                      width: "90px",
+                      height: "90px",
+                      backgroundColor: "#FF4B4B33",
+                      borderRadius: "50%",
+                      position: "relative",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }),
+                  }}
                   onClick={stopRecording}
                 >
                   <StopButton
@@ -127,6 +139,8 @@ const AudioRecorder = (props) => {
                   display: !props.showOnlyListen ? "flex" : "",
                   justifyContent: "space-between",
                   margin: "0 auto",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
                 className="game-action-button"
               >
@@ -206,10 +220,25 @@ const AudioRecorder = (props) => {
                         onClick={startRecording}
                       >
                         {!props.recordedAudio ? (
-                          <SpeakButton
-                            height={props.pageName == "m7" ? 45 : 70}
-                            width={props.pageName == "m7" ? 45 : 70}
-                          />
+                          <Box
+                            sx={{
+                              ...(props.pageName === "m7" && {
+                                width: "90px",
+                                height: "90px",
+                                backgroundColor: "#58CC0233",
+                                borderRadius: "50%",
+                                position: "relative",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }),
+                            }}
+                          >
+                            <SpeakButton
+                              height={props.pageName == "m7" ? 45 : 70}
+                              width={props.pageName == "m7" ? 45 : 70}
+                            />
+                          </Box>
                         ) : (
                           <RetryIcon
                             height={props.pageName == "m7" ? 45 : 70}
