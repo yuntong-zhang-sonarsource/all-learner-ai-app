@@ -592,7 +592,6 @@ const Mechanics7 = ({
             justifyContent: "center",
             alignItems: "center",
             maskBorderWidth: 6,
-            mb: 2,
           }}
         >
           <img
@@ -610,7 +609,7 @@ const Mechanics7 = ({
           display: "flex",
           justifyContent: "center",
           flexWrap: "wrap",
-          mb: 2,
+          //mb: 2,
           mt: 2,
         }}
       >
@@ -790,7 +789,7 @@ const Mechanics7 = ({
         (!isRecordingComplete && !isRecording && !isProcessing ? (
           <Box
             sx={{
-              marginTop: "7px",
+              marginBottom: "25px",
               position: "relative",
               display: "flex",
               gap: "50px",
@@ -838,21 +837,49 @@ const Mechanics7 = ({
             )}
             <Box
               sx={{
-                marginTop: "7px",
                 position: "relative",
+                width: "90px",
+                height: "90px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                width: "90px",
-                height: "90px",
-                cursor: `url(${clapImage}) 32 24, auto`,
+                marginTop: "7px",
                 marginLeft: getMarginLeft(0),
-                backgroundColor: "#58CC0233",
-                borderRadius: "50%",
+                cursor: `url(${clapImage}) 32 24, auto`,
               }}
               onClick={() => handleWords(wordsRef?.current[0])}
             >
-              <SpeakButton height={45} width={45} />
+              <Box
+                sx={{
+                  position: "absolute",
+                  width: "90px",
+                  height: "90px",
+                  backgroundColor: "#58CC0233",
+                  borderRadius: "50%",
+                  animation: "pulse 1.2s linear infinite",
+                  "@keyframes pulse": {
+                    "0%": {
+                      transform: "scale(0.6)",
+                      opacity: 0,
+                    },
+                    "50%": {
+                      opacity: 1,
+                    },
+                    "100%": {
+                      transform: "scale(1.4)",
+                      opacity: 0,
+                    },
+                  },
+                }}
+              />
+              <Box
+                sx={{
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              >
+                <SpeakButton height={45} width={45} />
+              </Box>
             </Box>
           </Box>
         ) : (
@@ -871,21 +898,50 @@ const Mechanics7 = ({
           >
             <Box
               sx={{
-                marginTop: "7px",
                 position: "relative",
+                width: "90px",
+                height: "90px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                width: "90px",
-                height: "90px",
-                cursor: `url(${clapImage}) 32 24, auto`,
+                marginTop: "7px",
                 marginLeft: getMarginLeft(0),
-                backgroundColor: "#FF4B4B33",
+                cursor: `url(${clapImage}) 32 24, auto`,
                 borderRadius: "50%",
               }}
               onClick={() => stopRecording(wordsRef?.current[0])}
             >
-              <StopButton height={45} width={45} />
+              <Box
+                sx={{
+                  position: "absolute",
+                  width: "90px",
+                  height: "90px",
+                  backgroundColor: "#FF4B4B33",
+                  borderRadius: "50%",
+                  animation: "pulse 1.2s linear infinite",
+                  "@keyframes pulse": {
+                    "0%": {
+                      transform: "scale(0.6)",
+                      opacity: 0,
+                    },
+                    "50%": {
+                      opacity: 1,
+                    },
+                    "100%": {
+                      transform: "scale(1.4)",
+                      opacity: 0,
+                    },
+                  },
+                }}
+              />
+              <Box
+                sx={{
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              >
+                <StopButton height={45} width={45} />
+              </Box>
             </Box>
           </Box>
         ))}
@@ -898,7 +954,7 @@ const Mechanics7 = ({
       />
 
       {words && words.length === 0 && !isRecording && (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: "2px" }}>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: "15px" }}>
           <VoiceAnalyser
             pageName={"m7"}
             setVoiceText={setVoiceText}

@@ -108,7 +108,6 @@ const AudioRecorder = (props) => {
                     ...(props.pageName === "m7" && {
                       width: "90px",
                       height: "90px",
-                      backgroundColor: "#FF4B4B33",
                       borderRadius: "50%",
                       position: "relative",
                       display: "flex",
@@ -118,10 +117,42 @@ const AudioRecorder = (props) => {
                   }}
                   onClick={stopRecording}
                 >
-                  <StopButton
-                    height={props.pageName == "m7" ? 45 : 70}
-                    width={props.pageName == "m7" ? 45 : 70}
+                  <Box
+                    sx={{
+                      ...(props.pageName === "m7" && {
+                        position: "absolute",
+                        width: "90px",
+                        height: "90px",
+                        backgroundColor: "#FF4B4B33",
+                        borderRadius: "50%",
+                        animation: "pulse 1.2s linear infinite",
+                        "@keyframes pulse": {
+                          "0%": {
+                            transform: "scale(0.6)",
+                            opacity: 0,
+                          },
+                          "50%": {
+                            opacity: 1,
+                          },
+                          "100%": {
+                            transform: "scale(1.4)",
+                            opacity: 0,
+                          },
+                        },
+                      }),
+                    }}
                   />
+                  <Box
+                    sx={{
+                      position: "relative",
+                      zIndex: 1,
+                    }}
+                  >
+                    <StopButton
+                      height={props.pageName == "m7" ? 45 : 70}
+                      width={props.pageName == "m7" ? 45 : 70}
+                    />
+                  </Box>
                 </Box>
                 {showLoader ? (
                   <div className="loader"></div>
@@ -225,7 +256,6 @@ const AudioRecorder = (props) => {
                               ...(props.pageName === "m7" && {
                                 width: "90px",
                                 height: "90px",
-                                backgroundColor: "#58CC0233",
                                 borderRadius: "50%",
                                 position: "relative",
                                 display: "flex",
@@ -234,10 +264,42 @@ const AudioRecorder = (props) => {
                               }),
                             }}
                           >
-                            <SpeakButton
-                              height={props.pageName == "m7" ? 45 : 70}
-                              width={props.pageName == "m7" ? 45 : 70}
+                            <Box
+                              sx={{
+                                ...(props.pageName === "m7" && {
+                                  position: "absolute",
+                                  width: "90px",
+                                  height: "90px",
+                                  backgroundColor: "#58CC0233",
+                                  borderRadius: "50%",
+                                  animation: "pulse 1.2s linear infinite",
+                                  "@keyframes pulse": {
+                                    "0%": {
+                                      transform: "scale(0.6)",
+                                      opacity: 0,
+                                    },
+                                    "50%": {
+                                      opacity: 1,
+                                    },
+                                    "100%": {
+                                      transform: "scale(1.4)",
+                                      opacity: 0,
+                                    },
+                                  },
+                                }),
+                              }}
                             />
+                            <Box
+                              sx={{
+                                position: "relative",
+                                zIndex: 1,
+                              }}
+                            >
+                              <SpeakButton
+                                height={props.pageName == "m7" ? 45 : 70}
+                                width={props.pageName == "m7" ? 45 : 70}
+                              />
+                            </Box>
                           </Box>
                         ) : (
                           <RetryIcon
