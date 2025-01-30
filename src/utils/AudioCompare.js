@@ -87,6 +87,28 @@ const AudioRecorder = (props) => {
     props?.setRecordedAudio(url);
   };
 
+  const getPulseAnimationStyle = (color) => ({
+    position: "absolute",
+    width: "90px",
+    height: "90px",
+    backgroundColor: color,
+    borderRadius: "50%",
+    animation: "pulse 1.2s linear infinite",
+    "@keyframes pulse": {
+      "0%": {
+        transform: "scale(0.6)",
+        opacity: 0,
+      },
+      "50%": {
+        opacity: 1,
+      },
+      "100%": {
+        transform: "scale(1.4)",
+        opacity: 0,
+      },
+    },
+  });
+
   return (
     <div>
       <div>
@@ -118,29 +140,11 @@ const AudioRecorder = (props) => {
                   onClick={stopRecording}
                 >
                   <Box
-                    sx={{
-                      ...(props.pageName === "m7" && {
-                        position: "absolute",
-                        width: "90px",
-                        height: "90px",
-                        backgroundColor: "#FF4B4B33",
-                        borderRadius: "50%",
-                        animation: "pulse 1.2s linear infinite",
-                        "@keyframes pulse": {
-                          "0%": {
-                            transform: "scale(0.6)",
-                            opacity: 0,
-                          },
-                          "50%": {
-                            opacity: 1,
-                          },
-                          "100%": {
-                            transform: "scale(1.4)",
-                            opacity: 0,
-                          },
-                        },
-                      }),
-                    }}
+                    sx={
+                      props.pageName === "m7"
+                        ? getPulseAnimationStyle("#FF4B4B33")
+                        : {}
+                    }
                   />
                   <Box
                     sx={{
@@ -168,7 +172,6 @@ const AudioRecorder = (props) => {
               <div
                 style={{
                   display: !props.showOnlyListen ? "flex" : "",
-                  justifyContent: "space-between",
                   margin: "0 auto",
                   justifyContent: "center",
                   alignItems: "center",
@@ -265,29 +268,11 @@ const AudioRecorder = (props) => {
                             }}
                           >
                             <Box
-                              sx={{
-                                ...(props.pageName === "m7" && {
-                                  position: "absolute",
-                                  width: "90px",
-                                  height: "90px",
-                                  backgroundColor: "#58CC0233",
-                                  borderRadius: "50%",
-                                  animation: "pulse 1.2s linear infinite",
-                                  "@keyframes pulse": {
-                                    "0%": {
-                                      transform: "scale(0.6)",
-                                      opacity: 0,
-                                    },
-                                    "50%": {
-                                      opacity: 1,
-                                    },
-                                    "100%": {
-                                      transform: "scale(1.4)",
-                                      opacity: 0,
-                                    },
-                                  },
-                                }),
-                              }}
+                              sx={
+                                props.pageName === "m7"
+                                  ? getPulseAnimationStyle("#58CC0233")
+                                  : {}
+                              }
                             />
                             <Box
                               sx={{
