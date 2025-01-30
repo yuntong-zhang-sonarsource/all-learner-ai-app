@@ -801,7 +801,7 @@ const Mechanics7 = ({
             }}
           >
             {isPlaying ? (
-              <div onClick={stopCompleteAudio}>
+              <div>
                 <Box
                   sx={{
                     marginTop: "7px",
@@ -813,12 +813,13 @@ const Mechanics7 = ({
                     cursor: "pointer",
                     marginLeft: getMarginLeft(0),
                   }}
+                  onClick={stopCompleteAudio}
                 >
                   <StopButton height={45} width={45} />
                 </Box>
               </div>
             ) : (
-              <div onClick={playCompleteAudio}>
+              <div>
                 <Box
                   sx={{
                     marginTop: "7px",
@@ -830,6 +831,7 @@ const Mechanics7 = ({
                     cursor: `url(${clapImage}) 32 24, auto`,
                     marginLeft: getMarginLeft(0),
                   }}
+                  onClick={playCompleteAudio}
                 >
                   <ListenButton height={45} width={45} />
                 </Box>
