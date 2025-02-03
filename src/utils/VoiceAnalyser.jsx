@@ -491,12 +491,7 @@ function VoiceAnalyser(props) {
   // Process the samples with the recognizer
   recognizer_stream.acceptWaveform(expectedSampleRate, samples);
 
-  // Wait for the recognizer to be ready and decode the result
-  while (recognizer.isReady(recognizer_stream)) {
-    recognizer.decode(recognizer_stream);
-  }
-
-  let isEndpoint = recognizer.isEndpoint(recognizer_stream);
+  recognizer.decode(recognizer_stream);
 
   let result = recognizer.getResult(recognizer_stream);
 
