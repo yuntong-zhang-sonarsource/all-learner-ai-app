@@ -3,6 +3,7 @@ import Mechanics2 from "../../components/Practice/Mechanics2";
 import Mechanics3 from "../../components/Practice/Mechanics3";
 import Mechanics4 from "../../components/Practice/Mechanics4";
 import Mechanics5 from "../../components/Practice/Mechanics5";
+import BingoCard from "../../components/Practice/BingoCard";
 import { useNavigate } from "react-router-dom";
 import {
   callConfetti,
@@ -425,6 +426,8 @@ const Practice = () => {
   };
 
   const handleNext = async (isGameOver) => {
+    console.log("test");
+
     setIsNextButtonCalled(true);
     setEnableNext(false);
 
@@ -466,7 +469,15 @@ const Practice = () => {
         (elem) => elem.title === practiceSteps?.[newPracticeStep]?.name
       );
 
+      console.log("currentQuestion:", currentQuestion);
+      console.log("questions.length:", questions.length);
+      console.log("isGameOver:", isGameOver);
+      console.log("currentPracticeStep:", currentPracticeStep);
+      console.log("newPracticeStep:", newPracticeStep);
+
       if (currentQuestion === questions.length - 1 || isGameOver) {
+        console.log("Entering first if block (Game Over or Last Question)");
+
         let currentPracticeStep =
           practiceProgress[virtualId].currentPracticeStep;
         let isShowCase = currentPracticeStep === 4 || currentPracticeStep === 9; // P4 or P8
@@ -629,6 +640,8 @@ const Practice = () => {
           setMechanism(currentGetContent.mechanism);
         }, 1000);
       } else if (currentQuestion < questions.length - 1) {
+        console.log("Entering else if block (Moving to next question)");
+
         setCurrentQuestion(currentQuestion + 1);
 
         practiceProgress[virtualId] = {
@@ -638,6 +651,8 @@ const Practice = () => {
         };
         setLocalData("practiceProgress", JSON.stringify(practiceProgress));
         setProgressData(practiceProgress[virtualId]);
+      } else {
+        console.log("Neither condition matched, check values");
       }
     } catch (error) {
       console.log(error);
@@ -1198,6 +1213,50 @@ const Practice = () => {
     } else if (mechanism.name === "formAWord2") {
       return (
         <Mechanics7
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (mechanism.name === "bingoCard") {
+      return (
+        <BingoCard
           page={page}
           setPage={setPage}
           {...{
