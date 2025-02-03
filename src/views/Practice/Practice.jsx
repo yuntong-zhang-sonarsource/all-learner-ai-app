@@ -426,8 +426,6 @@ const Practice = () => {
   };
 
   const handleNext = async (isGameOver) => {
-    console.log("test");
-
     setIsNextButtonCalled(true);
     setEnableNext(false);
 
@@ -469,15 +467,7 @@ const Practice = () => {
         (elem) => elem.title === practiceSteps?.[newPracticeStep]?.name
       );
 
-      console.log("currentQuestion:", currentQuestion);
-      console.log("questions.length:", questions.length);
-      console.log("isGameOver:", isGameOver);
-      console.log("currentPracticeStep:", currentPracticeStep);
-      console.log("newPracticeStep:", newPracticeStep);
-
       if (currentQuestion === questions.length - 1 || isGameOver) {
-        console.log("Entering first if block (Game Over or Last Question)");
-
         let currentPracticeStep =
           practiceProgress[virtualId].currentPracticeStep;
         let isShowCase = currentPracticeStep === 4 || currentPracticeStep === 9; // P4 or P8
@@ -640,8 +630,6 @@ const Practice = () => {
           setMechanism(currentGetContent.mechanism);
         }, 1000);
       } else if (currentQuestion < questions.length - 1) {
-        console.log("Entering else if block (Moving to next question)");
-
         setCurrentQuestion(currentQuestion + 1);
 
         practiceProgress[virtualId] = {
@@ -651,8 +639,6 @@ const Practice = () => {
         };
         setLocalData("practiceProgress", JSON.stringify(practiceProgress));
         setProgressData(practiceProgress[virtualId]);
-      } else {
-        console.log("Neither condition matched, check values");
       }
     } catch (error) {
       console.log(error);

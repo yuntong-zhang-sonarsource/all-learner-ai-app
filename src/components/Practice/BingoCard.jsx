@@ -1,66 +1,6 @@
 import React, { useState, useEffect } from "react";
-import monkeyImg from "../../assets/Monkey.svg";
-import RocketAudio from "../../assets/rocketAudio.wav";
-import BasketAudio from "../../assets/basketAudio.wav";
-import PencilAudio from "../../assets/pencilAudio.wav";
-import SunsetAudio from "../../assets/sunsetAudio.wav";
-import LemonAudio from "../../assets/lemonAudio.wav";
-import DinnerAudio from "../../assets/dinnerAudio.wav";
-import PaperAudio from "../../assets/PaperAudio.wav";
-import TigerAudio from "../../assets/TigerAudio.wav";
-import HappyAudio from "../../assets/HappyAudio.wav";
-import PuppetAudio from "../../assets/PuppetAudio.wav";
-import TicketAudio from "../../assets/TicketAudio.wav";
-import JacketAudio from "../../assets/JacketAudio.wav";
-import CandleAudio from "../../assets/CandleAudio.wav";
-import FlowerAudio from "../../assets/FlowerAudio.wav";
-import BottleAudio from "../../assets/BottleAudio.wav";
-import ButtonAudio from "../../assets/ButtonAudio.wav";
-import LaptopAudio from "../../assets/LaptopAudio.wav";
-import PillowAudio from "../../assets/PillowAudio.wav";
-import TabletAudio from "../../assets/TabletAudio.wav";
-import GardenAudio from "../../assets/GardenAudio.wav";
-import WinterAudio from "../../assets/WinterAudio.wav";
-import TurtleAudio from "../../assets/TurtleAudio.wav";
-import RabbitAudio from "../../assets/RabbitAudio.wav";
-import HungryAudio from "../../assets/HungryAudio.wav";
-import bottleImg from "../../assets/bottleImg.jpg";
-import buttonImg from "../../assets/buttonImg.png";
-import laptopImg from "../../assets/laptopImg.png";
-import pillowImg from "../../assets/pillowImg.png";
-import candleImg from "../../assets/candleImg.jpeg";
-import flowerImg from "../../assets/flowerImg.jpeg";
-import tabletImg from "../../assets/tabletImg.png";
-import gardenImg from "../../assets/gardenImg.png";
-import winterImg from "../../assets/winterImg.png";
-import turtleImg from "../../assets/turtleImg.png";
-import rabbitImg from "../../assets/rabbitImg.jpeg";
-import hungryImg from "../../assets/hungryImg.png";
-import hintImg from "../../assets/HintButton.svg";
-import startImg from "../../assets/play-button.svg";
-import resetImg from "../../assets/ResetButton.svg";
-import cloudText from "../../assets/cloudText.png";
-import rockImg from "../../assets/Cloud.png";
-import rocketImg from "../../assets/rocketImg.svg";
-import lemonImg from "../../assets/lemonImg.svg";
-import basketImg from "../../assets/basketImg.svg";
-import sunsetImg from "../../assets/sunsetImg.svg";
-import dinnerImg from "../../assets/dinnerImg.svg";
-import pencilImg from "../../assets/pencilImg.svg";
-import paperImg from "../../assets/paperImg.png";
-import happyImg from "../../assets/happyImg.jpeg";
-import tigerImg from "../../assets/tigerImg.jpeg";
-import puppetImg from "../../assets/puppetImg.png";
-import ticketImg from "../../assets/ticketImg.png";
-import jacketImg from "../../assets/jacketImg.jpg";
-import etImg from "../../assets/win.svg";
-import wrongWordImg from "../../assets/wrongWord.svg";
-import textCoinsImg from "../../assets/100.svg";
-import emptyImg from "../../assets/Empty.svg";
+import * as Assets from "../../utils/imageAudioLinks";
 import Confetti from "react-confetti";
-import coinssImg from "../../assets/Coinss.svg";
-import chillarImg from "../../assets/chillar.png";
-import nextImg from "../../assets/next.png";
 import { practiceSteps, getLocalData } from "../../utils/constants";
 
 const BingoCard = ({
@@ -157,12 +97,12 @@ const BingoCard = ({
         "NER",
       ],
       imageAudioMap: {
-        ROCKET: { image: rocketImg, audio: RocketAudio },
-        PENCIL: { image: pencilImg, audio: PencilAudio },
-        DINNER: { image: dinnerImg, audio: DinnerAudio },
-        SUNSET: { image: sunsetImg, audio: SunsetAudio },
-        BASKET: { image: basketImg, audio: BasketAudio },
-        LEMON: { image: lemonImg, audio: LemonAudio },
+        ROCKET: { image: Assets.rocketImg, audio: Assets.RocketAudio },
+        PENCIL: { image: Assets.pencilImg, audio: Assets.PencilAudio },
+        DINNER: { image: Assets.dinnerImg, audio: Assets.DinnerAudio },
+        SUNSET: { image: Assets.sunsetImg, audio: Assets.SunsetAudio },
+        BASKET: { image: Assets.basketImg, audio: Assets.BasketAudio },
+        LEMON: { image: Assets.lemonImg, audio: Assets.LemonAudio },
       },
       arrM: ["ROCKET", "PENCIL", "DINNER", "SUNSET", "BASKET", "LEMON"],
     },
@@ -182,12 +122,12 @@ const BingoCard = ({
         "ETS",
       ],
       imageAudioMap: {
-        PAPER: { image: paperImg, audio: PaperAudio },
-        HAPPY: { image: happyImg, audio: HappyAudio },
-        TIGER: { image: tigerImg, audio: TigerAudio },
-        PUPPET: { image: puppetImg, audio: PuppetAudio },
-        TICKET: { image: ticketImg, audio: TicketAudio },
-        JACKETS: { image: jacketImg, audio: JacketAudio },
+        PAPER: { image: Assets.paperImg, audio: Assets.PaperAudio },
+        HAPPY: { image: Assets.happyImg, audio: Assets.HappyAudio },
+        TIGER: { image: Assets.tigerImg, audio: Assets.TigerAudio },
+        PUPPET: { image: Assets.puppetImg, audio: Assets.PuppetAudio },
+        TICKET: { image: Assets.ticketImg, audio: Assets.TicketAudio },
+        JACKETS: { image: Assets.jacketImg, audio: Assets.JacketAudio },
       },
       arrM: ["PAPER", "HAPPY", "TIGER", "PUPPET", "TICKET", "JACKETS"],
     },
@@ -207,12 +147,12 @@ const BingoCard = ({
         "ER",
       ],
       imageAudioMap: {
-        BOTTLE: { image: bottleImg, audio: BottleAudio },
-        BUTTON: { image: buttonImg, audio: ButtonAudio },
-        LAPTOP: { image: laptopImg, audio: LaptopAudio },
-        PILLOW: { image: pillowImg, audio: PillowAudio },
-        CANDLE: { image: candleImg, audio: CandleAudio },
-        FLOWER: { image: flowerImg, audio: FlowerAudio },
+        BOTTLE: { image: Assets.bottleImg, audio: Assets.BottleAudio },
+        BUTTON: { image: Assets.buttonImg, audio: Assets.ButtonAudio },
+        LAPTOP: { image: Assets.laptopImg, audio: Assets.LaptopAudio },
+        PILLOW: { image: Assets.pillowImg, audio: Assets.PillowAudio },
+        CANDLE: { image: Assets.candleImg, audio: Assets.CandleAudio },
+        FLOWER: { image: Assets.flowerImg, audio: Assets.FlowerAudio },
       },
       arrM: ["BOTTLE", "BUTTON", "LAPTOP", "PILLOW", "CANDLE", "FLOWER"],
     },
@@ -232,12 +172,12 @@ const BingoCard = ({
         "GRY",
       ],
       imageAudioMap: {
-        TABLET: { image: tabletImg, audio: TabletAudio },
-        GARDEN: { image: gardenImg, audio: GardenAudio },
-        WINTER: { image: winterImg, audio: WinterAudio },
-        TURTLE: { image: turtleImg, audio: TurtleAudio },
-        RABBIT: { image: rabbitImg, audio: RabbitAudio },
-        HUNGRY: { image: hungryImg, audio: HungryAudio },
+        TABLET: { image: Assets.tabletImg, audio: Assets.TabletAudio },
+        GARDEN: { image: Assets.gardenImg, audio: Assets.GardenAudio },
+        WINTER: { image: Assets.winterImg, audio: Assets.WinterAudio },
+        TURTLE: { image: Assets.turtleImg, audio: Assets.TurtleAudio },
+        RABBIT: { image: Assets.rabbitImg, audio: Assets.RabbitAudio },
+        HUNGRY: { image: Assets.hungryImg, audio: Assets.HungryAudio },
       },
       arrM: ["TABLET", "GARDEN", "WINTER", "TURTLE", "RABBIT", "HUNGRY"],
     },
@@ -468,7 +408,7 @@ const BingoCard = ({
         }}
       >
         <img
-          src={chillarImg}
+          src={Assets.chillarImg}
           alt="Coin"
           style={{
             height: "37px",
@@ -485,7 +425,7 @@ const BingoCard = ({
       {showEmptyImg && (
         <>
           <img
-            src={emptyImg}
+            src={Assets.emptyImg}
             alt="Empty Placeholder"
             style={{
               position: "absolute",
@@ -510,7 +450,7 @@ const BingoCard = ({
             onClick={handleReset}
           >
             <img
-              src={resetImg}
+              src={Assets.resetImg}
               alt="Reset"
               style={{
                 width: screenWidth < 768 ? "40px" : "50px",
@@ -533,7 +473,7 @@ const BingoCard = ({
               onClick={handleNextButton}
             >
               <img
-                src={nextImg}
+                src={Assets.nextImg}
                 alt="Next"
                 style={{
                   width: screenWidth < 768 ? "40px" : "50px",
@@ -559,7 +499,7 @@ const BingoCard = ({
           }}
         >
           <img
-            src={coinssImg}
+            src={Assets.coinssImg}
             alt="Coins Animation"
             style={{
               width: "100%",
@@ -568,7 +508,7 @@ const BingoCard = ({
           />
 
           <img
-            src={textCoinsImg}
+            src={Assets.textCoinsImg}
             alt="Text Coins"
             style={{
               position: "absolute",
@@ -592,7 +532,7 @@ const BingoCard = ({
         }}
       >
         <img
-          src={monkeyImg}
+          src={Assets.monkeyImg}
           alt="Monkey"
           style={{
             width: screenWidth < 768 ? "150px" : "250px",
@@ -611,7 +551,7 @@ const BingoCard = ({
               onClick={() => {
                 startAudio(currentWordIndex);
               }}
-              src={startImg}
+              src={Assets.startImg}
               alt="Start"
               style={{
                 width: screenWidth < 768 ? "40px" : "50px",
@@ -633,7 +573,7 @@ const BingoCard = ({
           showInitialEffect &&
           !startGame && (
             <img
-              src={emptyImg}
+              src={Assets.emptyImg}
               alt="Empty Placeholder"
               style={{
                 position: "absolute",
@@ -666,7 +606,7 @@ const BingoCard = ({
                 onClick={handleHintClick}
               >
                 <img
-                  src={hintImg}
+                  src={Assets.hintImg}
                   alt="Hint"
                   style={{
                     width: screenWidth < 768 ? "40px" : "60px",
@@ -685,7 +625,7 @@ const BingoCard = ({
                 }}
               >
                 <img
-                  src={resetImg}
+                  src={Assets.resetImg}
                   alt="Reset"
                   style={{
                     width: screenWidth < 768 ? "40px" : "50px",
@@ -700,7 +640,7 @@ const BingoCard = ({
       {showWrongWord && (
         <>
           <img
-            src={wrongWordImg}
+            src={Assets.wrongWordImg}
             alt="Wrong Word"
             style={{
               position: "absolute",
@@ -725,7 +665,7 @@ const BingoCard = ({
             onClick={handleReset}
           >
             <img
-              src={resetImg}
+              src={Assets.resetImg}
               alt="Reset"
               style={{
                 width: screenWidth < 768 ? "40px" : "50px",
@@ -747,7 +687,7 @@ const BingoCard = ({
           }}
         >
           <img
-            src={cloudText}
+            src={Assets.cloudText}
             alt="Cloud"
             style={{
               width: screenWidth < 768 ? "170px" : "230px",
@@ -808,7 +748,7 @@ const BingoCard = ({
               }}
             >
               <img
-                src={rockImg}
+                src={Assets.rockImg}
                 alt="Rock Word"
                 style={{
                   width: screenWidth < 768 ? "130px" : "200px",
@@ -832,7 +772,7 @@ const BingoCard = ({
             </div>
 
             <img
-              src={etImg}
+              src={Assets.etImg}
               alt="Et Word"
               style={{
                 width: screenWidth < 768 ? "80px" : "100px",
@@ -848,8 +788,7 @@ const BingoCard = ({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns:
-            screenWidth < 768 ? "repeat(3, 1fr)" : "repeat(3, 1fr)",
+          gridTemplateColumns: "repeat(3, 1fr)",
           gap: screenWidth < 768 ? "10px 30px" : "20px 50px",
           position: "absolute",
           right: screenWidth < 768 ? "50%" : "10%",
