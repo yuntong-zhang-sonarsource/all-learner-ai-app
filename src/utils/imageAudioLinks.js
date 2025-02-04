@@ -148,3 +148,128 @@ export const bulbHint =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/hint.svg";
 export const bulbHintDisabled =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/DisabledHint.svg";
+
+export const RocketAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/rocketAudio.wav";
+export const BasketAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/basketAudio.wav";
+export const PencilAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/pencilAudio.wav";
+export const SunsetAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/sunsetAudio.wav";
+export const LemonAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/lemonAudio.wav";
+export const DinnerAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/dinnerAudio.wav";
+export const PaperAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/PaperAudio.wav";
+export const TigerAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/TigerAudio.wav";
+export const HappyAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/HappyAudio.wav";
+export const PuppetAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/PuppetAudio.wav";
+export const TicketAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/TicketAudio.wav";
+export const JacketAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/JacketAudio.wav";
+export const CandleAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/CandleAudio.wav";
+export const FlowerAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/FlowerAudio.wav";
+export const BottleAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/BottleAudio.wav";
+export const ButtonAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/ButtonAudio.wav";
+export const LaptopAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/LaptopAudio.wav";
+export const PillowAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/PillowAudio.wav";
+export const TabletAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/TabletAudio.wav";
+export const GardenAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/GardenAudio.wav";
+export const WinterAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/WinterAudio.wav";
+export const TurtleAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/TurtleAudio.wav";
+export const RabbitAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/RabbitAudio.wav";
+export const HungryAudio =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/HungryAudio.wav";
+
+export const monkeyImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/Monkey.svg";
+export const rocketImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/rocketImg.svg";
+export const basketImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/basketImg.svg";
+export const pencilImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/pencilImg.svg";
+export const sunsetImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/sunsetImg.svg";
+export const lemonImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/lemonImg.svg";
+export const dinnerImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/dinnerImg.svg";
+export const paperImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/paperImg.png";
+export const tigerImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/tigerImg.jpeg";
+export const happyImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/happyImg.jpeg";
+export const puppetImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/puppetImg.png";
+export const ticketImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/ticketImg.png";
+export const jacketImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/jacketImg.jpg";
+export const candleImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/candleImg.jpeg";
+export const flowerImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/flowerImg.jpeg";
+export const bottleImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/bottleImg.jpg";
+export const buttonImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/buttonImg.png";
+export const laptopImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/laptopImg.png";
+export const pillowImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/pillowImg.png";
+export const tabletImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/tabletImg.png";
+export const gardenImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/gardenImg.png";
+export const winterImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/winterImg.png";
+export const turtleImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/turtleImg.png";
+export const rabbitImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/rabbitImg.jpeg";
+export const hungryImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/hungryImg.png";
+export const hintImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/HintButton.svg";
+export const startImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/play-button.svg";
+
+export const resetImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/ResetButton.svg";
+export const cloudText =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/cloudText.png";
+export const rockImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/Cloud.png";
+export const etImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/win.svg";
+export const wrongWordImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/wrongWord.svg";
+export const textCoinsImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/100.svg";
+export const emptyImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/Empty.svg";
+export const coinssImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/Coinss.svg";
+export const chillarImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/chillar.png";
+export const nextImg =
+  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/next.png";
