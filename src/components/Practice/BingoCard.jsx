@@ -383,106 +383,79 @@ const BingoCard = ({
           height: "80%",
           backgroundColor: "#FFFFFF40",
           zIndex: 1,
-          top: screenWidth < 768 ? "10%" : "14%",
+          top: "10%",
           left: "2.5%",
           borderRadius: "33px",
         }}
       ></div>
-      <div
-        style={{
-          position: "absolute",
-          right: "5%",
-          top: "5%",
-          width: "58px",
-          height: "18px",
-          paddingLeft: "12px",
-          background: "rgba(144, 57, 3, 1)",
-          borderRadius: "50px 30px 30px 50px",
-          fontSize: "14px",
-          fontWeight: "bold",
-          color: "#FF8506",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          outline: "4px solid #FCAE1E",
-        }}
-      >
-        <img
-          src={Assets.chillarImg}
-          alt="Coin"
-          style={{
-            height: "37px",
-            position: "absolute",
-            left: "-7px",
-            borderRadius: "32px",
-            zIndex: 0,
-            top: "-12px",
-          }}
-        />
-        <span style={{ color: "white" }}>{coins}</span>
-      </div>
 
       {showEmptyImg && (
-        <>
+        <div
+          style={{
+            position: "absolute",
+            left: screenWidth < 768 ? "50%" : "270px",
+            bottom: screenWidth < 768 ? "220px" : "308px",
+            width: screenWidth < 768 ? "140px" : "240px",
+            height: screenWidth < 768 ? "90px" : "130px",
+            zIndex: 1000,
+          }}
+        >
           <img
             src={Assets.emptyImg}
             alt="Empty Placeholder"
             style={{
-              position: "absolute",
-              left: screenWidth < 768 ? "47%" : "21%",
-              bottom: screenWidth < 768 ? "31%" : "50%",
               transform: "translateX(-50%)",
               width: screenWidth < 768 ? "120px" : "170px",
               height: screenWidth < 768 ? "90px" : "125px",
               zIndex: 100,
             }}
           />
-          <button
-            style={{
-              position: "absolute",
-              left: screenWidth < 768 ? "40%" : "17%",
-              top: screenWidth < 768 ? "76%" : "50%",
-              border: "none",
-              background: "transparent",
-              cursor: "pointer",
-              zIndex: "5",
-            }}
-            onClick={handleReset}
-          >
-            <img
-              src={Assets.resetImg}
-              alt="Reset"
-              style={{
-                width: screenWidth < 768 ? "40px" : "50px",
-                height: screenWidth < 768 ? "40px" : "50px",
-              }}
-            />
-          </button>
-
-          {showNextButton && (
+          <div style={{ display: "flex", marginTop: "10px", gap: "15px" }}>
             <button
               style={{
                 position: "absolute",
-                left: screenWidth < 768 ? "60%" : "25%",
-                top: screenWidth < 768 ? "76%" : "50%",
+                right: "90%",
                 border: "none",
                 background: "transparent",
                 cursor: "pointer",
                 zIndex: "5",
               }}
-              onClick={handleNextButton}
+              onClick={handleReset}
             >
               <img
-                src={Assets.nextImg}
-                alt="Next"
+                src={Assets.resetImg}
+                alt="Reset"
                 style={{
                   width: screenWidth < 768 ? "40px" : "50px",
                   height: screenWidth < 768 ? "40px" : "50px",
                 }}
               />
             </button>
-          )}
-        </>
+
+            {showNextButton && (
+              <button
+                style={{
+                  position: "absolute",
+                  right: "55%",
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                  zIndex: "5",
+                }}
+                onClick={handleNextButton}
+              >
+                <img
+                  src={Assets.nextImg}
+                  alt="Next"
+                  style={{
+                    width: screenWidth < 768 ? "40px" : "50px",
+                    height: screenWidth < 768 ? "40px" : "50px",
+                  }}
+                />
+              </button>
+            )}
+          </div>
+        </div>
       )}
 
       {showCoinsImg && (
@@ -679,11 +652,12 @@ const BingoCard = ({
       {showHint && !winEffect && (
         <div
           style={{
-            position: "relative",
-            display: "inline-block",
-            left: screenWidth < 768 ? "61%" : "160px",
-            top: screenWidth < 768 ? "475px" : "110px",
-            transform: screenWidth < 768 ? "translateX(-50%)" : "none",
+            position: "absolute",
+            left: screenWidth < 768 ? "50%" : "175px",
+            bottom: screenWidth < 768 ? "220px" : "320px",
+            width: screenWidth < 768 ? "140px" : "240px",
+            height: screenWidth < 768 ? "90px" : "130px",
+            zIndex: 1000,
           }}
         >
           <img
@@ -701,7 +675,7 @@ const BingoCard = ({
             style={{
               position: "absolute",
               left: "50%",
-              top: "40%",
+              top: "45%",
               transform: "translate(-50%, -50%)",
               height: screenWidth < 768 ? "50px" : "70px",
               zIndex: 22,
@@ -792,7 +766,7 @@ const BingoCard = ({
           gap: screenWidth < 768 ? "10px 30px" : "20px 50px",
           position: "absolute",
           right: screenWidth < 768 ? "50%" : "10%",
-          top: screenWidth < 768 ? "15%" : "20%",
+          top: screenWidth < 768 ? "15%" : "17%",
           transform: screenWidth < 768 ? "translateX(50%)" : "none",
           zIndex: 1,
         }}
