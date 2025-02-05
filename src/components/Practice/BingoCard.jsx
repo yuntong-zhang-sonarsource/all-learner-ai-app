@@ -611,14 +611,24 @@ const BingoCard = ({
       </div>
 
       {showWrongWord && (
-        <>
+        <div
+          style={{
+            position: "absolute",
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+            alignItems: "center",
+            left: screenWidth < 768 ? "50%" : "145px",
+            bottom: screenWidth < 768 ? "220px" : "280px",
+            width: screenWidth < 768 ? "140px" : "240px",
+            height: screenWidth < 768 ? "90px" : "130px",
+            zIndex: 1000,
+          }}
+        >
           <img
             src={Assets.wrongWordImg}
             alt="Wrong Word"
             style={{
-              position: "absolute",
-              left: screenWidth < 768 ? "46%" : "12%",
-              bottom: screenWidth < 768 ? "29%" : "52%",
               width: screenWidth < 768 ? "140px" : "190px",
               height: screenWidth < 768 ? "80px" : "100px",
               zIndex: 10,
@@ -627,9 +637,6 @@ const BingoCard = ({
           />
           <button
             style={{
-              position: "absolute",
-              left: screenWidth < 768 ? "40%" : "17%",
-              top: screenWidth < 768 ? "75%" : "50%",
               border: "none",
               background: "transparent",
               cursor: "pointer",
@@ -646,7 +653,7 @@ const BingoCard = ({
               }}
             />
           </button>
-        </>
+        </div>
       )}
 
       {showHint && !winEffect && (
