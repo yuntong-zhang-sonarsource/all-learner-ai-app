@@ -1,16 +1,9 @@
 import axios from "axios";
 import config from "../../utils/urlConstants.json";
 import { getLocalData } from "../../utils/constants";
-import { jwtDecode } from "jwt-decode";
+import { getVirtualId } from "../userservice/userService";
 
 const API_LEARNER_AI_APP_HOST = process.env.REACT_APP_LEARNER_AI_APP_HOST;
-
-const TOKEN = localStorage.getItem("apiToken");
-let virtualId;
-if (TOKEN) {
-  const tokenDetails = jwtDecode(TOKEN);
-  virtualId = JSON.stringify(tokenDetails?.virtual_id);
-}
 
 const getHeaders = () => {
   const token = getLocalData("apiToken");
@@ -73,7 +66,7 @@ export const fetchGetSetResult = async (
         collectionId: currentCollectionId,
         totalSyllableCount: totalSyllableCount,
         language: lang,
-        user_id: virtualId,
+        user_id: getVirtualId(),
       },
       getHeaders()
     );
@@ -98,7 +91,7 @@ export const getSetResultPractice = async ({
         sub_session_id: subSessionId,
         contentType: currentContentType,
         session_id: sessionId,
-        user_id: virtualId,
+        user_id: getVirtualId(),
         totalSyllableCount: totalSyllableCount,
         language: localStorage.getItem("lang"),
         is_mechanics: mechanism && mechanism?.id ? true : false,
@@ -114,7 +107,7 @@ export const getSetResultPractice = async ({
 
 export const updateLearnerProfile = async (lang, requestBody) => {
   try {
-    requestBody.user_id = virtualId;
+    requestBody.user_id = getVirtualId();
     const response = await axios.post(
       `${API_LEARNER_AI_APP_HOST}/${config.URLS.UPDATE_LEARNER_PROFILE}/${lang}`,
       requestBody,
