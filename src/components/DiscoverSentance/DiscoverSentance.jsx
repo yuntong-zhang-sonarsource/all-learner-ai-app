@@ -78,9 +78,14 @@ const SpeakSentenceComponent = () => {
 
   useEffect(() => {
     if (!localStorage.getItem("contentSessionId")) {
-      fetchUserPoints().then((points) => {
-        setPoints(points);
-      });
+      fetchUserPoints()
+        .then((points) => {
+          setPoints(points);
+        })
+        .catch((error) => {
+          console.error("Error fetching user points:", error);
+          setPoints(0);
+        });
     }
   }, []);
 

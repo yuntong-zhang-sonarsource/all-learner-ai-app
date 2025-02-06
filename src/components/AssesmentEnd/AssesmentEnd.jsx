@@ -52,9 +52,14 @@ const AssesmentEnd = () => {
         process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
         localStorage.getItem("contentSessionId") !== null
       ) {
-        fetchUserPoints().then((points) => {
-          setPoints(points);
-        });
+        fetchUserPoints()
+          .then((points) => {
+            setPoints(points);
+          })
+          .catch((error) => {
+            console.error("Error fetching user points:", error);
+            setPoints(0);
+          });
       }
     })();
     setTimeout(() => {
