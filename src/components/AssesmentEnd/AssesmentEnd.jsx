@@ -19,6 +19,8 @@ import desktopLevel5 from "../../assets/images/assesmentComplete.png";
 import config from "../../utils/urlConstants.json";
 import { uniqueId } from "../../services/utilService";
 import usePreloadAudio from "../../hooks/usePreloadAudio";
+import { fetchUserPoints } from "../../services/orchestration/orchestrationService";
+import { getFetchMilestoneDetails } from "../../services/learnerAi/learnerAiService";
 
 const AssesmentEnd = () => {
   const [shake, setShake] = useState(true);
@@ -37,22 +39,22 @@ const AssesmentEnd = () => {
       const lang = getLocalData("lang");
       const previous_level = getLocalData("previous_level");
       setPreviousLevel(previous_level?.replace("m", ""));
-      const getMilestoneDetails = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${virtualId}?language=${lang}`
-      );
+      const getMilestoneDetails = await getFetchMilestoneDetails(lang);
       const { data } = getMilestoneDetails;
-      setLevel(data.data.milestone_level);
-      setLocalData("userLevel", data.data.milestone_level?.replace("m", ""));
+      setLevel(data.milestone_level);
+      setLocalData("userLevel", data.milestone_level?.replace("m", ""));
       let sessionId = getLocalData("sessionId");
       if (!sessionId) {
         sessionId = uniqueId();
         localStorage.setItem("sessionId", sessionId);
       }
-      if (process.env.REACT_APP_IS_APP_IFRAME !== "true" && localStorage.getItem("contentSessionId") !== null) {
-        const getPointersDetails = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
-        );
-        setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
+      if (
+        process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
+        localStorage.getItem("contentSessionId") !== null
+      ) {
+        fetchUserPoints().then((points) => {
+          setPoints(points);
+        });
       }
     })();
     setTimeout(() => {

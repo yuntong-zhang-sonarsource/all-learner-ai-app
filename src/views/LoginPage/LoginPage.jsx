@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Container, Typography, TextField, Button, Grid } from '@mui/material';
-import config from "../../utils/urlConstants.json";
-import './LoginPage.css'; // Import the CSS file
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Container, Typography, TextField, Button, Grid } from "@mui/material";
+import { fetchVirtualId } from "../../services/userservice/userService";
+import { jwtDecode } from "jwt-decode";
+import "./LoginPage.css"; // Import the CSS file
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,19 +19,18 @@ const LoginPage = () => {
     localStorage.clear();
 
     try {
-      const usernameDetails = await axios.post(
-        `${process.env.REACT_APP_VIRTUAL_ID_HOST}/${config.URLS.GET_VIRTUAL_ID}?username=${username}`
-      );
+      const usernameDetails = await fetchVirtualId(username);
+      let token = usernameDetails?.result?.token;
 
-      if (usernameDetails?.data?.result?.virtualID) {
+      localStorage.setItem("apiToken", token);
+      const tokenDetails = jwtDecode(token);
+      if (tokenDetails?.virtual_id) {
         localStorage.setItem("profileName", username);
-        localStorage.setItem("virtualId", usernameDetails?.data?.result?.virtualID);
         navigate("/discover-start");
       } else {
         alert("Enter correct username and password");
       }
     } catch (error) {
-      console.error("Error occurred:", error);
       alert("An error occurred. Please try again later.");
     }
   };
@@ -66,7 +65,12 @@ const LoginPage = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary" fullWidth>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
                 Login
               </Button>
             </Grid>

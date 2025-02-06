@@ -1,7 +1,6 @@
 import { Box, Card, CardContent, IconButton, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Confetti from "react-confetti";
-import axios from "../../../node_modules/axios/index";
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
 import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
 import back from "../../assets/images/back-arrow.svg";
@@ -9,8 +8,8 @@ import discoverEndLeft from "../../assets/images/discover-end-left.svg";
 import discoverEndRight from "../../assets/images/discover-end-right.svg";
 import textureImage from "../../assets/images/textureImage.png";
 import { LetsStart, getLocalData, setLocalData } from "../../utils/constants";
-import config from "../../utils/urlConstants.json";
 import usePreloadAudio from "../../hooks/usePreloadAudio";
+import { getFetchMilestoneDetails } from "../../services/learnerAi/learnerAiService";
 
 const sectionStyle = {
   backgroundImage: `url(${textureImage})`,
@@ -39,12 +38,10 @@ const SpeakSentenceComponent = () => {
       }
       const virtualId = getLocalData("virtualId");
       const lang = getLocalData("lang");
-      const getMilestoneDetails = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${virtualId}?language=${lang}`
-      );
+      const getMilestoneDetails = await getFetchMilestoneDetails(lang);
       const { data } = getMilestoneDetails;
-      setLevel(data.data.milestone_level);
-      setLocalData("userLevel", data.data.milestone_level?.replace("m", ""));
+      setLevel(data.milestone_level);
+      setLocalData("userLevel", data.milestone_level?.replace("m", ""));
     })();
     setTimeout(() => {
       setShake(false);
