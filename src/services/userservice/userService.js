@@ -20,8 +20,12 @@ export const getVirtualId = () => {
   const TOKEN = localStorage.getItem("apiToken");
   let virtualId;
   if (TOKEN) {
-    const tokenDetails = jwtDecode(TOKEN);
-    virtualId = JSON.stringify(tokenDetails?.virtual_id);
+    try {
+      const tokenDetails = jwtDecode(TOKEN);
+      virtualId = JSON.stringify(tokenDetails?.virtual_id);
+    } catch (error) {
+      console.error("Error decoding token:", error);
+    }
   }
   return virtualId;
 };
