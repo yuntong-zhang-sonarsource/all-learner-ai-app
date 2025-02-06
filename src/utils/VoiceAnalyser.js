@@ -34,6 +34,7 @@ import { filterBadWords } from "./Badwords";
 import S3Client from "../config/awsS3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import usePreloadAudio from "../hooks/usePreloadAudio";
+import { updateLearnerProfile } from "../services/learnerAi/learnerAiService";
 /* eslint-disable */
 
 const AudioPath = {
@@ -374,13 +375,8 @@ function VoiceAnalyser(props) {
       }
 
       if (callUpdateLearner) {
-        const { data: updateLearnerData } = await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.UPDATE_LEARNER_PROFILE}/${lang}`,
-          requestBody
-        );
-
+        const updateLearnerData = await updateLearnerProfile(lang, requestBody);
         //TODO: handle  Errors
-
         data = updateLearnerData;
         responseText = data.responseText;
         profanityWord = await filterBadWords(data.responseText);
