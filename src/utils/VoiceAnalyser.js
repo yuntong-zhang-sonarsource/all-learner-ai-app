@@ -375,12 +375,8 @@ function VoiceAnalyser(props) {
       }
 
       if (callUpdateLearner) {
-        const { data: updateLearnerData } = await updateLearnerProfile(
-          lang,
-          requestBody
-        );
+        const updateLearnerData = await updateLearnerProfile(lang, requestBody);
         //TODO: handle  Errors
-        debugger;
         data = updateLearnerData;
         responseText = data.responseText;
         profanityWord = await filterBadWords(data.responseText);

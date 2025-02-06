@@ -872,7 +872,6 @@ const Assesment = ({ discoverStart }) => {
                 sx={{
                   cursor: "pointer",
                   mt: { xs: 1, md: 2 },
-                  zIndex: 9999,
                 }}
                 onClick={handleRedirect}
               >
