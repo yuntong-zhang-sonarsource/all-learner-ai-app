@@ -4,6 +4,7 @@ import Mechanics3 from "../../components/Practice/Mechanics3";
 import Mechanics4 from "../../components/Practice/Mechanics4";
 import Mechanics5 from "../../components/Practice/Mechanics5";
 import BingoCard from "../../components/Practice/BingoCard";
+import SyllablePuzzle from "../../components/Practice/SyllablePuzzle";
 import { useNavigate } from "react-router-dom";
 import {
   callConfetti,
@@ -1243,6 +1244,50 @@ const Practice = () => {
     } else if (mechanism.name === "bingoCard") {
       return (
         <BingoCard
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (mechanism.name === "syllablePuzzle") {
+      return (
+        <SyllablePuzzle
           page={page}
           setPage={setPage}
           {...{

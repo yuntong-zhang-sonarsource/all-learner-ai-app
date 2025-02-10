@@ -3308,12 +3308,14 @@ export const levelGetContent = {
         template: "simple",
         tags: "CEFR_ENG",
         storyMode: true,
+        mechanism: { id: "syllable_puzzle", name: "syllablePuzzle" },
       },
       {
         title: "P2",
         criteria: "word",
         template: "simple",
         tags: "CEFR_ENG",
+        mechanism: { id: "syllable_puzzle", name: "syllablePuzzle" },
       },
       {
         title: "P3",
@@ -3339,11 +3341,13 @@ export const levelGetContent = {
         title: "P5",
         criteria: "sentence",
         template: "simple",
+        mechanism: { id: "syllable_puzzle", name: "syllablePuzzle" },
       },
       {
         title: "P6",
         criteria: "sentence",
         template: "simple",
+        mechanism: { id: "syllable_puzzle", name: "syllablePuzzle" },
       },
       {
         title: "P7",

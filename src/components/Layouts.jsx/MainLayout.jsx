@@ -524,7 +524,7 @@ const MainLayout = (props) => {
                                         fontFamily: "Quicksand",
                                       }}
                                     >
-                                      {LEVEL === 1 || LEVEL === 2
+                                      {LEVEL === 1 || LEVEL === 2 || LEVEL === 3
                                         ? elem.title
                                         : elem.name}
                                     </span>

@@ -1,7 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as Assets from "../../utils/imageAudioLinks";
 import Confetti from "react-confetti";
 import { practiceSteps, getLocalData } from "../../utils/constants";
+import Mic from "../../assets/mic.svg";
+import Stop from "../../assets/stop.svg";
+import Play from "../../assets/playButton.svg";
+import RecordVisualizer from "../../assets/recordVisualizer.svg";
+import { phoneticMatch } from "../../utils/phoneticUtils";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+
+const isChrome =
+  /Chrome/.test(navigator.userAgent) &&
+  /Google Inc/.test(navigator.vendor) &&
+  !/Edg/.test(navigator.userAgent);
 
 const BingoCard = ({
   setVoiceText,
@@ -50,6 +63,173 @@ const BingoCard = ({
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [showInitialEffect, setShowInitialEffect] = useState(false);
   const [startGame, setStartGame] = useState(true);
+  const [showRecording, setShowRecording] = useState(false);
+  const {
+    transcript,
+    interimTranscript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+
+  const transcriptRef = useRef("");
+  useEffect(() => {
+    transcriptRef.current = transcript;
+  }, [transcript]);
+
+  const [wordsAfterSplit, setWordsAfterSplit] = useState([]);
+  const [recAudio, setRecAudio] = useState("");
+
+  const [isRecordingComplete, setIsRecordingComplete] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [currentWord, setCurrentWord] = useState("");
+  const [currentIsSelected, setCurrentIsSelected] = useState(false);
+  const [recognition, setRecognition] = useState(null);
+  const [selectedWordsNew, setSelectedWordsNew] = useState([]);
+  const [incorrectWords, setIncorrectWords] = useState({});
+  const [isMicOn, setIsMicOn] = useState(false);
+  const [syllAudios, setSyllAudios] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  const initializeRecognition = () => {
+    let recognitionInstance;
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      recognitionInstance = new SpeechRecognition();
+    } else {
+      alert("Your browser does not support Speech Recognition.");
+      return;
+    }
+
+    if (recognitionInstance) {
+      recognitionInstance.continuous = true;
+      recognitionInstance.interimResults = true;
+      recognitionInstance.lang = "en-US";
+      recognitionInstance.maxAlternatives = 1;
+
+      recognitionInstance.onstart = () => {};
+
+      recognitionInstance.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setIsRecording(false);
+        setIsProcessing(false);
+        setIsMicOn(false);
+        const matchPercentage = phoneticMatch(
+          levels[currentLevel]?.arrM[currentWordIndex],
+          transcript
+        );
+        console.log("matchPercentage", matchPercentage);
+      };
+
+      recognitionInstance.onerror = (event) => {
+        setIsRecording(false);
+        setIsProcessing(false);
+        setIsMicOn(false);
+        console.error("Speech recognition error:", event.error);
+        if (event.error === "no-speech") {
+          console.log("No Speech!");
+        } else if (event.error === "aborted") {
+          recognitionInstance.start();
+        }
+      };
+
+      recognitionInstance.onend = () => {
+        setIsProcessing(false);
+      };
+
+      setRecognition(recognitionInstance);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (recognition) {
+        recognition.onstart = null;
+        recognition.onresult = null;
+        recognition.onerror = null;
+        recognition.onend = null;
+        recognition.stop();
+      }
+    };
+  }, [recognition]);
+
+  const startRecording = (word, isSelected) => {
+    //console.log('recs', recognition);
+    if (isChrome) {
+      if (!browserSupportsSpeechRecognition) {
+        alert("Speech recognition is not supported in your browser.");
+        return;
+      }
+      resetTranscript();
+      SpeechRecognition.startListening({
+        continuous: true,
+        interimResults: true,
+      });
+    }
+    setIsRecording(true);
+    setCurrentWord(word);
+    setCurrentIsSelected(isSelected);
+  };
+
+  const stopRecording = () => {
+    if (isChrome) {
+      SpeechRecognition.stopListening();
+      const finalTranscript = transcriptRef.current;
+      setIsMicOn(false);
+      setIsRecording(false);
+      setIsProcessing(false);
+    } else {
+      if (recognition) {
+        recognition.stop();
+      }
+      setIsProcessing(true);
+    }
+    setIsRecording(false);
+    setShowRecording(false);
+    setShowHint(false);
+    setWinEffect(true);
+    setShowConfetti(true);
+    setCoins((prevCoins) => prevCoins + 100);
+    setShowWrongWord(false);
+    setHighlightCorrectWords(false);
+
+    setTimeout(() => {
+      setShowCoinsImg(true);
+
+      setTimeout(() => {
+        setShowEmptyImg(true);
+        setShowNextButton(true);
+        setShowCoinsImg(false);
+      }, 1000);
+    }, 3000);
+
+    setTimeout(() => {
+      setSelectedWords([]);
+      setWinEffect(false);
+      setShowEmptyImg(false);
+    }, 3000);
+
+    setTimeout(() => {
+      setShowConfetti(false);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    if (isRecording && recognition && recognition.state !== "recording") {
+      recognition.start();
+    }
+  }, [isRecording, recognition]);
+
+  useEffect(() => {
+    if (!isChrome) {
+      initializeRecognition();
+    }
+  }, []);
 
   let progressDatas = getLocalData("practiceProgress");
   const virtualId = String(getLocalData("virtualId"));
@@ -265,32 +445,33 @@ const BingoCard = ({
       );
 
       if (isCorrectPair) {
-        setShowHint(false);
-        setWinEffect(true);
-        setShowConfetti(true);
-        setCoins((prevCoins) => prevCoins + 100);
-        setShowWrongWord(false);
-        setHighlightCorrectWords(false);
+        setShowRecording(true);
+        // setShowHint(false);
+        // setWinEffect(true);
+        // setShowConfetti(true);
+        // setCoins((prevCoins) => prevCoins + 100);
+        // setShowWrongWord(false);
+        // setHighlightCorrectWords(false);
 
-        setTimeout(() => {
-          setShowCoinsImg(true);
+        // setTimeout(() => {
+        //   setShowCoinsImg(true);
 
-          setTimeout(() => {
-            setShowEmptyImg(true);
-            setShowNextButton(true);
-            setShowCoinsImg(false);
-          }, 1000);
-        }, 3000);
+        //   setTimeout(() => {
+        //     setShowEmptyImg(true);
+        //     setShowNextButton(true);
+        //     setShowCoinsImg(false);
+        //   }, 1000);
+        // }, 3000);
 
-        setTimeout(() => {
-          setSelectedWords([]);
-          setWinEffect(false);
-          setShowEmptyImg(false);
-        }, 3000);
+        // setTimeout(() => {
+        //   setSelectedWords([]);
+        //   setWinEffect(false);
+        //   setShowEmptyImg(false);
+        // }, 3000);
 
-        setTimeout(() => {
-          setShowConfetti(false);
-        }, 3000);
+        // setTimeout(() => {
+        //   setShowConfetti(false);
+        // }, 3000);
       } else if (updatedWords.length === 2 && !winEffect) {
         setShowHint(false);
         setShowWrongWord(true);
@@ -524,7 +705,7 @@ const BingoCard = ({
               onClick={() => {
                 startAudio(currentWordIndex);
               }}
-              src={Assets.startImg}
+              src={Play}
               alt="Start"
               style={{
                 width: screenWidth < 768 ? "40px" : "50px",
@@ -565,7 +746,8 @@ const BingoCard = ({
           !showCoinsImg &&
           !showEmptyImg &&
           !showInitialEffect &&
-          !startGame && (
+          !startGame &&
+          !showRecording && (
             <>
               <button
                 style={{
@@ -690,6 +872,95 @@ const BingoCard = ({
           />
         </div>
       )}
+
+      {showRecording &&
+        (!isRecording && !isProcessing ? (
+          <div
+            style={{
+              position: "absolute",
+              left: screenWidth < 768 ? "50%" : "175px",
+              bottom: screenWidth < 768 ? "220px" : "320px",
+              width: screenWidth < 768 ? "140px" : "240px",
+              height: screenWidth < 768 ? "90px" : "130px",
+              zIndex: 1000,
+            }}
+          >
+            <img
+              src={Assets.cloudText}
+              alt="Cloud"
+              style={{
+                width: screenWidth < 768 ? "170px" : "230px",
+                height: screenWidth < 768 ? "85px" : "160px",
+                zIndex: 21,
+              }}
+            />
+            <img
+              src={Mic}
+              alt={"Start Recording"}
+              style={{
+                position: "absolute",
+                left: "50%",
+                top: "45%",
+                transform: "translate(-50%, -50%)",
+                height: "50px",
+                zIndex: 22,
+              }}
+              onClick={() =>
+                startRecording(levels[currentLevel]?.arrM[currentWordIndex])
+              }
+            />
+          </div>
+        ) : (
+          <div
+            style={{
+              position: "absolute",
+              left: screenWidth < 768 ? "50%" : "175px",
+              bottom: screenWidth < 768 ? "220px" : "320px",
+              width: screenWidth < 768 ? "140px" : "240px",
+              height: screenWidth < 768 ? "90px" : "130px",
+              zIndex: 1000,
+            }}
+          >
+            <img
+              src={Assets.cloudText}
+              alt="Cloud"
+              style={{
+                width: screenWidth < 768 ? "170px" : "230px",
+                height: screenWidth < 768 ? "85px" : "160px",
+                zIndex: 21,
+              }}
+            />
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            >
+              <img
+                src={RecordVisualizer}
+                alt={"Start Visualizer"}
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "35%",
+                  transform: "translate(-50%, -50%)",
+                  height: "30px",
+                  zIndex: 22,
+                }}
+              />
+              <img
+                src={Stop}
+                alt={"Start Recording"}
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "70%",
+                  transform: "translate(-50%, -50%)",
+                  height: "50px",
+                  zIndex: 22,
+                }}
+                onClick={() => stopRecording()}
+              />
+            </div>
+          </div>
+        ))}
 
       {winEffect && (
         <>
