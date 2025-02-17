@@ -47,6 +47,7 @@ const WordsOrImage = ({
   setOpenMessageDialog,
   isNextButtonCalled,
   setIsNextButtonCalled,
+  hallucinationAlternative,
 }) => {
   const audioRef = createRef(null);
   const [duration, setDuration] = useState(0);
@@ -288,6 +289,7 @@ const WordsOrImage = ({
               setOpenMessageDialog,
               isNextButtonCalled,
               setIsNextButtonCalled,
+              hallucinationAlternative,
             }}
           />
         </Box>
@@ -308,14 +310,14 @@ WordsOrImage.propTypes = {
   showTimer: PropTypes.bool,
   points: PropTypes.number,
   currentStep: PropTypes.number.isRequired,
-  percentage: PropTypes.string,
+  percentage: PropTypes.any,
   fluency: PropTypes.bool,
   isDiscover: PropTypes.bool,
   showProgress: PropTypes.bool,
   callUpdateLearner: PropTypes.bool,
   disableScreen: PropTypes.bool,
   isShowCase: PropTypes.bool,
-  handleBack: PropTypes.func.isRequired,
+  handleBack: PropTypes.any.isRequired,
   setEnableNext: PropTypes.func.isRequired,
   startShowCase: PropTypes.bool,
   setStartShowCase: PropTypes.func,
@@ -324,7 +326,7 @@ WordsOrImage.propTypes = {
   setOpenMessageDialog: PropTypes.func.isRequired,
   isNextButtonCalled: PropTypes.bool,
   setIsNextButtonCalled: PropTypes.func,
-  background: PropTypes.bool,
+  background: PropTypes.any,
   type: PropTypes.any,
   words: PropTypes.any,
   storyLine: PropTypes.number,
@@ -338,6 +340,7 @@ WordsOrImage.propTypes = {
   gameOverData: PropTypes.any,
   highlightWords: PropTypes.func,
   matchedChar: PropTypes.any,
+  hallucinationAlternative: PropTypes.any,
 };
 
 export default WordsOrImage;

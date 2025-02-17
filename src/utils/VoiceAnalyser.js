@@ -351,7 +351,6 @@ function VoiceAnalyser(props) {
       let profanityWord = "";
       let newThresholdPercentage = 0;
       let data = {};
-
       let requestBody = {
         original_text: originalText,
         audio: base64Data,
@@ -364,6 +363,11 @@ function VoiceAnalyser(props) {
         contentType,
         mechanics_id: localStorage.getItem("mechanism_id") || "",
       };
+
+      if (props.hallucinationAlternative) {
+        requestBody["hallucination_alternative"] =
+          props.hallucinationAlternative;
+      }
 
       if (props.selectedOption) {
         requestBody["is_correct_choice"] = props.selectedOption?.isAns;
