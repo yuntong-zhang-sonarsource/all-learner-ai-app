@@ -291,7 +291,7 @@ const SpeakSentenceComponent = () => {
         quesArr = [...quesArr, ...(resPagination?.data?.data || [])];
         // quesArr[1].contentType = 'image';
         // quesArr[0].contentType = 'phonics';
-        console.log("quesArr", quesArr);
+        // console.log("quesArr", quesArr);
         setQuestions(quesArr);
       } catch (error) {
         console.log("err", error);
@@ -308,6 +308,7 @@ const SpeakSentenceComponent = () => {
     //   navigate("/discover-start")
     // }
   };
+
   return (
     <>
       {!!openMessageDialog && (
@@ -351,6 +352,9 @@ const SpeakSentenceComponent = () => {
           isNextButtonCalled,
           setIsNextButtonCalled,
           setOpenMessageDialog,
+          hallucinationAlternative:
+            questions[currentQuestion]?.contentSourceData[0]
+              ?.hallucination_alternative || null,
         }}
       />
     </>

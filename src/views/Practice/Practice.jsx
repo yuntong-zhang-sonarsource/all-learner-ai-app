@@ -837,6 +837,9 @@ const Practice = () => {
             setEnableNext,
             isNextButtonCalled,
             setIsNextButtonCalled,
+            hallucinationAlternative:
+              questions[currentQuestion]?.contentSourceData[0]
+                ?.hallucination_alternative || null,
           }}
         />
       );
@@ -940,7 +943,7 @@ const Practice = () => {
             loading,
             setOpenMessageDialog,
             isNextButtonCalled,
-            setIsNextButtonCalled
+            setIsNextButtonCalled,
           }}
         />
       );
@@ -1067,7 +1070,7 @@ const Practice = () => {
             loading,
             setOpenMessageDialog,
             isNextButtonCalled,
-            setIsNextButtonCalled
+            setIsNextButtonCalled,
           }}
         />
       );
@@ -1130,7 +1133,7 @@ const Practice = () => {
               ? questions[currentQuestion]?.mechanics_data[0]?.options
               : [],
             isNextButtonCalled,
-            setIsNextButtonCalled
+            setIsNextButtonCalled,
           }}
         />
       );
