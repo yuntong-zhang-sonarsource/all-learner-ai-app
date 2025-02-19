@@ -137,7 +137,7 @@ const Practice = () => {
         {
           score: score,
           message: "all-test-rig-score",
-        }
+        }, window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
       );
     }
   };
@@ -713,7 +713,7 @@ const Practice = () => {
               "mechanic_1")
             ? 500
             : stringLengths[0];
-        window.parent.postMessage({ type: "stringLengths", length });
+        window.parent.postMessage({ type: "stringLengths", length }, window?.location?.ancestorOrigins?.[0] || window.parent.location.origin);
       }
     }
   }, [questions[currentQuestion]]);

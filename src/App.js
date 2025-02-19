@@ -94,7 +94,7 @@ const App = () => {
               window.parent.postMessage(
                 {
                   message: "Unauthorized",
-                }
+                }, window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
               );
             } else {
               localStorage.clear();

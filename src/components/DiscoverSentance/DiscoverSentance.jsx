@@ -118,7 +118,7 @@ const SpeakSentenceComponent = () => {
         {
           score: score,
           message: "all-test-rig-score",
-        }
+        }, window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
       );
     }
   };
