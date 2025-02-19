@@ -299,7 +299,25 @@ const Practice = () => {
           return;
         }
         const resGetContent = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}`
+          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
+            (currentGetContent?.mechanism?.id
+              ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
+              : "") +
+            (currentGetContent?.competency
+              ? `&level_competency=${currentGetContent?.competency}`
+              : "") +
+            (currentGetContent?.tags
+              ? `&tags=${currentGetContent?.tags}`
+              : "") +
+            (currentGetContent?.category
+              ? `&category=${currentGetContent?.category}`
+              : "") +
+            (currentGetContent?.typeOfLearner
+              ? `&type_of_learner=${currentGetContent?.typeOfLearner}`
+              : "") +
+            (currentGetContent?.storyMode
+              ? `&story_mode=${currentGetContent?.storyMode}`
+              : "")
         );
 
         setTotalSyllableCount(resGetContent?.data?.totalSyllableCount);
@@ -435,7 +453,23 @@ const Practice = () => {
       );
 
       const resWord = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}`
+        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
+          (currentGetContent?.mechanism?.id
+            ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
+            : "") +
+          (currentGetContent?.competency
+            ? `&level_competency=${currentGetContent?.competency}`
+            : "") +
+          (currentGetContent?.tags ? `&tags=${currentGetContent?.tags}` : "") +
+          (currentGetContent?.category
+            ? `&category=${currentGetContent?.category}`
+            : "") +
+          (currentGetContent?.typeOfLearner
+            ? `&type_of_learner=${currentGetContent?.typeOfLearner}`
+            : "") +
+          (currentGetContent?.storyMode
+            ? `&story_mode=${currentGetContent?.storyMode}`
+            : "")
       );
       setTotalSyllableCount(resWord?.data?.totalSyllableCount);
       setLivesData({
@@ -525,8 +559,25 @@ const Practice = () => {
       );
       let quesArr = [];
       const resWord = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}`
+        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
+          (currentGetContent?.mechanism?.id
+            ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
+            : "") +
+          (currentGetContent?.competency
+            ? `&level_competency=${currentGetContent?.competency}`
+            : "") +
+          (currentGetContent?.tags ? `&tags=${currentGetContent?.tags}` : "") +
+          (currentGetContent?.category
+            ? `&category=${currentGetContent?.category}`
+            : "") +
+          (currentGetContent?.typeOfLearner
+            ? `&type_of_learner=${currentGetContent?.typeOfLearner}`
+            : "") +
+          (currentGetContent?.storyMode
+            ? `&story_mode=${currentGetContent?.storyMode}`
+            : "")
       );
+
       setTotalSyllableCount(resWord?.data?.totalSyllableCount);
       setLivesData({
         ...livesData,
@@ -742,7 +793,7 @@ const Practice = () => {
             storyLine,
             handleNext,
             type: questions[currentQuestion]?.contentType,
-            // image: elephant,
+            image: `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-image-files/${lang}/${questions[currentQuestion]?.contentId}.png`,
             enableNext,
             showTimer: false,
             points,
