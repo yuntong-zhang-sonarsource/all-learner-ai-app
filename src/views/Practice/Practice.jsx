@@ -137,8 +137,7 @@ const Practice = () => {
         {
           score: score,
           message: "all-test-rig-score",
-        },
-        "*"
+        }
       );
     }
   };
@@ -345,7 +344,7 @@ const Practice = () => {
         setProgressData(practiceProgress[virtualId]);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -493,7 +492,7 @@ const Practice = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log("err", error);
+      console.error("err", error);
     }
   };
 
@@ -714,7 +713,7 @@ const Practice = () => {
               "mechanic_1")
             ? 500
             : stringLengths[0];
-        window.parent.postMessage({ type: "stringLengths", length }, "*");
+        window.parent.postMessage({ type: "stringLengths", length });
       }
     }
   }, [questions[currentQuestion]]);

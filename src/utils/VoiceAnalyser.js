@@ -153,7 +153,7 @@ function VoiceAnalyser(props) {
         alert("Failed to load the audio. Please try again.");
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -544,7 +544,7 @@ function VoiceAnalyser(props) {
       }
       setRecordedAudioBase64("");
       setApiResponse("error");
-      console.log("err", error);
+      console.error("err", error);
     }
   };
 
@@ -635,7 +635,7 @@ function VoiceAnalyser(props) {
         setLivesData(newLivesData);
       }
     } catch (e) {
-      console.log("error", e);
+      console.error("error", e);
     }
   };
 
@@ -665,7 +665,7 @@ function VoiceAnalyser(props) {
         setAudioPermission(true);
       })
       .catch((error) => {
-        console.log("Permission Denied");
+        console.error("Permission Denied");
         setAudioPermission(false);
         //alert("Microphone Permission Denied");
       });

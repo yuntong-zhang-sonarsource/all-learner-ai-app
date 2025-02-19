@@ -118,8 +118,7 @@ const SpeakSentenceComponent = () => {
         {
           score: score,
           message: "all-test-rig-score",
-        },
-        "*"
+        }
       );
     }
   };
@@ -251,7 +250,7 @@ const SpeakSentenceComponent = () => {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -282,10 +281,9 @@ const SpeakSentenceComponent = () => {
         setAssessmentResponse(resAssessment);
         localStorage.setItem("storyTitle", sentences?.name);
         quesArr = [...quesArr, ...(resPagination?.data || [])];
-        console.log("quesArr", quesArr);
         setQuestions(quesArr);
       } catch (error) {
-        console.log("Error fetching data:", error);
+        console.error("Error fetching data:", error);
       }
     })();
   }, []);

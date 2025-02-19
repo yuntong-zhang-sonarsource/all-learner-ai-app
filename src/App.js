@@ -94,8 +94,7 @@ const App = () => {
               window.parent.postMessage(
                 {
                   message: "Unauthorized",
-                },
-                "*"
+                }
               );
             } else {
               localStorage.clear();
