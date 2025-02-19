@@ -31,6 +31,7 @@ const LoginPage = () => {
         alert("Enter correct username and password");
       }
     } catch (error) {
+      console.error(error)
       alert("An error occurred. Please try again later.");
     }
   };
