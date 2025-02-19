@@ -10,10 +10,7 @@ const getHeaders = () => {
   return {
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      "Cache-Control": "no-cache",
-      Pragma: "no-cache",
-      "Content-Security-Policy": "default-src 'self'"
+      "Content-Type": "application/json"
     },
   };
 };
