@@ -142,6 +142,27 @@ const Practice = () => {
     }
   };
 
+  const getContent = async (criteria, lang, limit, options = {}) => {
+    const virtualId = getLocalData("virtualId");
+    try {
+      let url = `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}`;
+
+      if (options.mechanismId) url += `&mechanics_id=${options.mechanismId}`;
+      if (options.competency) url += `&level_competency=${options.competency}`;
+      if (options.tags) url += `&tags=${options.tags}`;
+      if (options.category) url += `&category=${options.category}`;
+      if (options.typeOfLearner)
+        url += `&type_of_learner=${options.typeOfLearner}`;
+      if (options.storyMode) url += `&story_mode=${options.storyMode}`;
+
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching content:", error);
+      throw error;
+    }
+  };
+
   const handleNext = async (isGameOver) => {
     setIsNextButtonCalled(true);
     setEnableNext(false);
@@ -298,36 +319,28 @@ const Practice = () => {
           gameOver();
           return;
         }
-        const resGetContent = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
-            (currentGetContent?.mechanism?.id
-              ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
-              : "") +
-            (currentGetContent?.competency
-              ? `&level_competency=${currentGetContent?.competency}`
-              : "") +
-            (currentGetContent?.tags
-              ? `&tags=${currentGetContent?.tags}`
-              : "") +
-            (currentGetContent?.category
-              ? `&category=${currentGetContent?.category}`
-              : "") +
-            (currentGetContent?.typeOfLearner
-              ? `&type_of_learner=${currentGetContent?.typeOfLearner}`
-              : "") +
-            (currentGetContent?.storyMode
-              ? `&story_mode=${currentGetContent?.storyMode}`
-              : "")
+        const resGetContent = await getContent(
+          currentGetContent.criteria,
+          lang,
+          limit,
+          {
+            mechanismId: currentGetContent?.mechanism?.id,
+            competency: currentGetContent?.competency,
+            tags: currentGetContent?.tags,
+            category: currentGetContent?.category,
+            typeOfLearner: currentGetContent?.typeOfLearner,
+            storyMode: currentGetContent?.storyMode,
+          }
         );
 
-        setTotalSyllableCount(resGetContent?.data?.totalSyllableCount);
+        setTotalSyllableCount(resGetContent?.totalSyllableCount);
         setLivesData({
           ...livesData,
-          totalTargets: resGetContent?.data?.totalSyllableCount,
+          totalTargets: resGetContent?.totalSyllableCount,
           targetsForLives:
-            resGetContent?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE,
+            resGetContent?.subsessionTargetsCount * TARGETS_PERCENTAGE,
           targetPerLive:
-            (resGetContent?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE) /
+            (resGetContent?.subsessionTargetsCount * TARGETS_PERCENTAGE) /
             LIVES,
         });
 
@@ -335,9 +348,9 @@ const Practice = () => {
           currentPracticeStep === 3 || currentPracticeStep === 8;
         setIsShowCase(showcaseLevel);
 
-        quesArr = [...quesArr, ...(resGetContent?.data?.content || [])];
-        setCurrentContentType(resGetContent?.data?.content?.[0]?.contentType);
-        setCurrentCollectionId(resGetContent?.data?.content?.[0]?.collectionId);
+        quesArr = [...quesArr, ...(resGetContent?.content || [])];
+        setCurrentContentType(resGetContent?.content?.[0]?.contentType);
+        setCurrentCollectionId(resGetContent?.content?.[0]?.collectionId);
         setAssessmentResponse(resGetContent);
         setCurrentQuestion(0);
         practiceProgress[virtualId] = {
@@ -452,37 +465,30 @@ const Practice = () => {
         (elem) => elem.title === practiceSteps?.[userState].name
       );
 
-      const resWord = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
-          (currentGetContent?.mechanism?.id
-            ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
-            : "") +
-          (currentGetContent?.competency
-            ? `&level_competency=${currentGetContent?.competency}`
-            : "") +
-          (currentGetContent?.tags ? `&tags=${currentGetContent?.tags}` : "") +
-          (currentGetContent?.category
-            ? `&category=${currentGetContent?.category}`
-            : "") +
-          (currentGetContent?.typeOfLearner
-            ? `&type_of_learner=${currentGetContent?.typeOfLearner}`
-            : "") +
-          (currentGetContent?.storyMode
-            ? `&story_mode=${currentGetContent?.storyMode}`
-            : "")
+      const resWord = await getContent(
+        currentGetContent.criteria,
+        lang,
+        limit,
+        {
+          mechanismId: currentGetContent?.mechanism?.id,
+          competency: currentGetContent?.competency,
+          tags: currentGetContent?.tags,
+          category: currentGetContent?.category,
+          typeOfLearner: currentGetContent?.typeOfLearner,
+          storyMode: currentGetContent?.storyMode,
+        }
       );
-      setTotalSyllableCount(resWord?.data?.totalSyllableCount);
+      setTotalSyllableCount(resWord?.totalSyllableCount);
       setLivesData({
         ...livesData,
-        totalTargets: resWord?.data?.totalSyllableCount,
-        targetsForLives:
-          resWord?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE,
+        totalTargets: resWord?.totalSyllableCount,
+        targetsForLives: resWord?.subsessionTargetsCount * TARGETS_PERCENTAGE,
         targetPerLive:
-          (resWord?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE) / LIVES,
+          (resWord?.subsessionTargetsCount * TARGETS_PERCENTAGE) / LIVES,
       });
-      quesArr = [...quesArr, ...(resWord?.data?.content || [])];
+      quesArr = [...quesArr, ...(resWord?.content || [])];
       setCurrentContentType(currentGetContent.criteria);
-      setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
+      setCurrentCollectionId(resWord?.content?.[0]?.collectionId);
       setAssessmentResponse(resWord);
 
       localStorage.setItem("storyTitle", resWord?.name);
@@ -558,38 +564,31 @@ const Practice = () => {
         (elem) => elem.title === practiceSteps?.[newCurrentPracticeStep].name
       );
       let quesArr = [];
-      const resWord = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
-          (currentGetContent?.mechanism?.id
-            ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
-            : "") +
-          (currentGetContent?.competency
-            ? `&level_competency=${currentGetContent?.competency}`
-            : "") +
-          (currentGetContent?.tags ? `&tags=${currentGetContent?.tags}` : "") +
-          (currentGetContent?.category
-            ? `&category=${currentGetContent?.category}`
-            : "") +
-          (currentGetContent?.typeOfLearner
-            ? `&type_of_learner=${currentGetContent?.typeOfLearner}`
-            : "") +
-          (currentGetContent?.storyMode
-            ? `&story_mode=${currentGetContent?.storyMode}`
-            : "")
+      const resWord = await getContent(
+        currentGetContent.criteria,
+        lang,
+        limit,
+        {
+          mechanismId: currentGetContent?.mechanism?.id,
+          competency: currentGetContent?.competency,
+          tags: currentGetContent?.tags,
+          category: currentGetContent?.category,
+          typeOfLearner: currentGetContent?.typeOfLearner,
+          storyMode: currentGetContent?.storyMode,
+        }
       );
 
-      setTotalSyllableCount(resWord?.data?.totalSyllableCount);
+      setTotalSyllableCount(resWord?.totalSyllableCount);
       setLivesData({
         ...livesData,
-        totalTargets: resWord?.data?.totalSyllableCount,
-        targetsForLives:
-          resWord?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE,
+        totalTargets: resWord?.totalSyllableCount,
+        targetsForLives: resWord?.subsessionTargetsCount * TARGETS_PERCENTAGE,
         targetPerLive:
-          (resWord?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE) / LIVES,
+          (resWord?.subsessionTargetsCount * TARGETS_PERCENTAGE) / LIVES,
       });
-      quesArr = [...quesArr, ...(resWord?.data?.content || [])];
+      quesArr = [...quesArr, ...(resWord?.content || [])];
       setCurrentContentType(currentGetContent.criteria);
-      setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
+      setCurrentCollectionId(resWord?.content?.[0]?.collectionId);
       setAssessmentResponse(resWord);
 
       localStorage.setItem("storyTitle", resWord?.name);
