@@ -163,6 +163,35 @@ const Practice = () => {
     }
   };
 
+  const addLesson = async ({
+    sessionId,
+    milestone = "practice",
+    lesson = "0",
+    progress = 0,
+    language,
+    milestoneLevel,
+  }) => {
+    const virtualId = getLocalData("virtualId");
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
+        {
+          userId: virtualId,
+          sessionId: sessionId,
+          milestone: milestone,
+          lesson: lesson,
+          progress: progress,
+          language: language,
+          milestoneLevel: milestoneLevel,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error adding lesson:", error);
+      throw error;
+    }
+  };
+
   const handleNext = async (isGameOver) => {
     setIsNextButtonCalled(true);
     setEnableNext(false);
@@ -209,18 +238,15 @@ const Practice = () => {
 
       let showcasePercentage = ((currentQuestion + 1) * 100) / questions.length;
 
-      await axios.post(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
-        {
-          userId: virtualId,
-          sessionId: sessionId,
-          milestone: isShowCase ? "showcase" : `practice`,
-          lesson: currentPracticeStep,
-          progress: isShowCase ? showcasePercentage : currentPracticeProgress,
-          language: lang,
-          milestoneLevel: `m${level}`,
-        }
-      );
+      await addLesson({
+        userId: virtualId,
+        sessionId: sessionId,
+        milestone: isShowCase ? "showcase" : `practice`,
+        lesson: currentPracticeStep,
+        progress: isShowCase ? showcasePercentage : currentPracticeProgress,
+        language: lang,
+        milestoneLevel: `m${level}`,
+      });
 
       let newPracticeStep =
         currentQuestion === questions.length - 1 || isGameOver
@@ -271,18 +297,15 @@ const Practice = () => {
           setLocalData("previous_level", getSetData.data.previous_level);
           if (getSetData.data.sessionResult === "pass") {
             try {
-              await axios.post(
-                `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
-                {
-                  userId: virtualId,
-                  sessionId: sessionId,
-                  milestone: `practice`,
-                  lesson: "0",
-                  progress: 0,
-                  language: lang,
-                  milestoneLevel: getSetData.data.currentLevel,
-                }
-              );
+              await addLesson({
+                userId: virtualId,
+                sessionId: sessionId,
+                milestone: `practice`,
+                lesson: "0",
+                progress: 0,
+                language: lang,
+                milestoneLevel: getSetData.data.currentLevel,
+              });
               gameOver({ link: "/assesment-end" }, true);
               return;
             } catch (e) {
@@ -302,18 +325,15 @@ const Practice = () => {
           (elem) => elem.title === practiceSteps?.[newPracticeStep].name
         );
 
-        await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
-          {
-            userId: virtualId,
-            sessionId: sessionId,
-            milestone: `practice`,
-            lesson: newPracticeStep,
-            progress: currentPracticeProgress,
-            language: lang,
-            milestoneLevel: `m${level}`,
-          }
-        );
+        await addLesson({
+          userId: virtualId,
+          sessionId: sessionId,
+          milestone: `practice`,
+          lesson: newPracticeStep,
+          progress: currentPracticeProgress,
+          language: lang,
+          milestoneLevel: `m${level}`,
+        });
 
         if (newPracticeStep === 0 || newPracticeStep === 5 || isGameOver) {
           gameOver();
@@ -499,18 +519,15 @@ const Practice = () => {
       let showcaseLevel = userState === 4 || userState === 9;
       setIsShowCase(showcaseLevel);
       if (showcaseLevel) {
-        await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
-          {
-            userId: virtualId,
-            sessionId: sessionId,
-            milestone: "showcase",
-            lesson: userState,
-            progress: 0,
-            language: lang,
-            milestoneLevel: `m${level}`,
-          }
-        );
+        await addLesson({
+          userId: virtualId,
+          sessionId: sessionId,
+          milestone: "showcase",
+          lesson: userState,
+          progress: 0,
+          language: lang,
+          milestoneLevel: `m${level}`,
+        });
       }
 
       setCurrentQuestion(practiceProgress[virtualId]?.currentQuestion || 0);
@@ -545,18 +562,15 @@ const Practice = () => {
         fromBack: true,
       };
 
-      await axios.post(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
-        {
-          userId: virtualId,
-          sessionId: sessionId,
-          milestone: "practice",
-          lesson: newCurrentPracticeStep,
-          progress: (newCurrentPracticeStep / practiceSteps.length) * 100,
-          language: lang,
-          milestoneLevel: `m${level}`,
-        }
-      );
+      await addLesson({
+        userId: virtualId,
+        sessionId: sessionId,
+        milestone: "practice",
+        lesson: newCurrentPracticeStep,
+        progress: (newCurrentPracticeStep / practiceSteps.length) * 100,
+        language: lang,
+        milestoneLevel: `m${level}`,
+      });
 
       setProgressData(practiceProgress[virtualId]);
 
