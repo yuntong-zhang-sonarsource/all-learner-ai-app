@@ -101,6 +101,25 @@ const WordsOrImage = ({
           pointerEvents: disableScreen ? "none" : "initial",
         }}
       >
+        {image && (
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <img
+              src={image}
+              onError={(e) => {
+                e.target.style.display = "none"; // Hide the image if it fails to load
+              }}
+              style={{
+                width: "100%", // Image will take full width of the parent container
+                maxWidth: "500px", // Limit the width to 500px
+                height: "auto", // Maintain aspect ratio
+                maxHeight: "200px", // Cap the height at 200px
+                marginBottom: "40px",
+                objectFit: "contain", // Ensures the image fits well within the dimensions
+              }}
+              alt="Responsive content" // Adding alt text for accessibility
+            />
+          </Box>
+        )}
         {type === "image" ? (
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <img

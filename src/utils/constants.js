@@ -3411,7 +3411,14 @@ export const levelGetContent = {
     { title: "S2", criteria: "paragraph", template: "simple" },
   ],
   8: [
-    { title: "P1", criteria: "sentence", template: "simple" },
+    {
+      title: "P1",
+      criteria: "sentence",
+      template: "simple",
+      storyMode: true,
+      category: "story",
+      typeOfLearner: "Intermediate",
+    },
     { title: "P2", criteria: "sentence", template: "simple" },
     { title: "P3", criteria: "paragraph", template: "simple" },
     { title: "P4", criteria: "paragraph", template: "simple" },
@@ -3423,7 +3430,14 @@ export const levelGetContent = {
     { title: "S2", criteria: "paragraph", template: "simple" },
   ],
   9: [
-    { title: "P1", criteria: "sentence", template: "simple" },
+    {
+      title: "P1",
+      criteria: "sentence",
+      template: "simple",
+      storyMode: true,
+      category: "story",
+      typeOfLearner: "Emergent",
+    },
     { title: "P2", criteria: "sentence", template: "simple" },
     { title: "P3", criteria: "paragraph", template: "simple" },
     { title: "P4", criteria: "paragraph", template: "simple" },
@@ -3523,7 +3537,7 @@ const AllLanguages = [
   { name: "ಕನ್ನಡ", lang: "kn", symbol: "ಕ" },
   { name: "తెలుగు", lang: "te", symbol: "ఈ" },
   { name: "ગુજરાતી", lang: "gu", symbol: "ગુ" },
-  { name: "ଓଡ଼ିଆ", lang: "or", symbol: "ଓ" }
+  { name: "ଓଡ଼ିଆ", lang: "or", symbol: "ଓ" },
 ];
 
 const appLanguages = process.env.REACT_APP_LANGUAGES
