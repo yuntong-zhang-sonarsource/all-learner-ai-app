@@ -61,7 +61,17 @@ const loadSherpaModule = async () => {
         // recognizer = createOnlineRecognizer(Module);
         window.sherpaRecognizer =recognizer;
         console.log('recognizer is created!', recognizer);
+
+        vad = createVad(Module);
+        window.vad = vad;
+        console.log('vad is created!', vad);
+    
+        buffer = new CircularBuffer(30 * 16000, Module);
+        window.wasmBuffer = buffer; 
+        console.log('CircularBuffer is created!', buffer);
       };
+
+
     } catch (error) {
       console.error('Failed to load WASM module', error);
     }

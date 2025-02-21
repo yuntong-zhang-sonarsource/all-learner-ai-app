@@ -38,6 +38,7 @@ import * as fuzz from "fuzzball";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import S3Client from "../config/awsS3";
 import * as wasm from "indicasr-wasm";
+import { ConstructionOutlined } from "@mui/icons-material";
 /* eslint-disable */
 
 const AudioPath = {
@@ -445,6 +446,14 @@ function VoiceAnalyser(props) {
     // return denoised_response_text;
 
       // Initialize the recognizer if needed
+  
+  let printed = false;
+  let lastResult = '';
+  let resultList = [];
+  let vad = window.vad;
+  let buffer = window.wasmBuffer;
+  let result;
+
   let expectedSampleRate = 16000;
 
   // Convert the Blob to an ArrayBuffer
@@ -479,25 +488,58 @@ function VoiceAnalyser(props) {
       offsetBuffer = nextOffsetBuffer;
     }
     return result;
-};
+  };
 
   // Get the audio samples from the buffer
   let samples = audioBuffer.getChannelData(0);
 
   samples = downsampleBuffer(samples, expectedSampleRate);
+  buffer.push(samples);
 
-  recognizer_stream = recognizer.createStream();
+  while (buffer.size() > vad.config.sileroVad.windowSize) {
+    const s = buffer.get(buffer.head(), vad.config.sileroVad.windowSize);
+    vad.acceptWaveform(s);
+    buffer.pop(vad.config.sileroVad.windowSize);
 
-  // Process the samples with the recognizer
-  recognizer_stream.acceptWaveform(expectedSampleRate, samples);
+    if (vad.isDetected() && !printed) {
+      printed = true;
+      lastResult = 'Speech detected';
+    }
 
-  recognizer.decode(recognizer_stream);
+    if (!vad.isDetected()) {
+      printed = false;
+      if (lastResult != '') {
+        resultList.push(lastResult);
+      }
+      lastResult = '';
+    }
 
-  let result = recognizer.getResult(recognizer_stream);
+    
+
+    while (!vad.isEmpty()) {
+      const segment = vad.front();
+
+      vad.pop();
+
+      recognizer_stream = recognizer.createStream();
+
+      // Process the samples with the recognizer
+      recognizer_stream.acceptWaveform(expectedSampleRate, segment.samples);
+
+      recognizer.decode(recognizer_stream);
+
+      result = recognizer.getResult(recognizer_stream);
+
+      recognizer_stream.free();
+  }}
+
 
   console.log(result);
+  console.log(vad);
 
   return result.text;
+
+  
 
   };
 
