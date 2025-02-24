@@ -22,9 +22,6 @@ const PrivateRoute = (props) => {
   return <>{props.children}</>;
 };
 const AppContent = ({ routes }) => {
-  // const navigate = useNavigate();
-  // const location = useLocation();
-
   return (
     <Fragment>
       <CustomizedSnackbars />
