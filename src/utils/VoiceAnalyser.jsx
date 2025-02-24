@@ -365,87 +365,6 @@ function VoiceAnalyser(props) {
   };
 
   const getResponseText = async (audioBlob) => {
-    // console.log("whisper code");
-    // let denoised_response_text = "";
-    // let isWhisperRunning = false;
-    // let audio0 = null;
-    // let context = new AudioContext({
-    //   sampleRate: 16000,
-    //   channelCount: 1,
-    //   echoCancellation: false,
-    //   autoGainControl: true,
-    //   noiseSuppression: true,
-    // });
-
-    // window.OfflineAudioContext =
-    //   window.OfflineAudioContext || window.webkitOfflineAudioContext;
-
-    // window.whisperModule.set_status("");
-
-    // const blobToArrayBuffer = async (blob) => {
-    //   return new Promise((resolve, reject) => {
-    //     const reader = new FileReader();
-    //     reader.onloadend = () => resolve(reader.result);
-    //     reader.onerror = reject;
-    //     reader.readAsArrayBuffer(blob);
-    //   });
-    // };
-
-    // let audioBuf = await blobToArrayBuffer(audioBlob);
-
-    // let audioBuffer;
-    // try {
-    //   audioBuffer = await context.decodeAudioData(audioBuf);
-    // } catch (error) {
-    //   console.error("Error decoding audio data:", error);
-    //   return "";
-    // }
-
-    // var offlineContext = new OfflineAudioContext(
-    //   audioBuffer.numberOfChannels,
-    //   audioBuffer.length,
-    //   audioBuffer.sampleRate
-    // );
-    // var source = offlineContext.createBufferSource();
-    // source.buffer = audioBuffer;
-    // source.connect(offlineContext.destination);
-    // source.start(0);
-
-    // let renderedBuffer = await offlineContext.startRendering();
-    // let audio = renderedBuffer.getChannelData(0);
-    // let audioAll = new Float32Array(
-    //   audio0 == null ? audio.length : audio0.length + audio.length
-    // );
-
-    // if (audio0 != null) {
-    //   audioAll.set(audio0, 0);
-    // }
-    // audioAll.set(audio, audio0 == null ? 0 : audio0.length);
-
-    // window.whisperModule.set_audio(1, audioAll);
-
-    // let whisperStatus = "";
-
-    // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-    // let checkWhisperStatus = true;
-
-    // while (checkWhisperStatus) {
-    //   whisperStatus = window.whisperModule.get_status();
-    //   if (whisperStatus === "running whisper ...") {
-    //     isWhisperRunning = true;
-    //   }
-    //   if (isWhisperRunning && whisperStatus === "waiting for audio ...") {
-    //     denoised_response_text = window.whisperModule.get_transcribed();
-    //     checkWhisperStatus = false;
-    //     break;
-    //   }
-    //   await delay(100);
-    // }
-
-    // return denoised_response_text;
-
-      // Initialize the recognizer if needed
   
   let printed = false;
   let lastResult = '';
@@ -494,6 +413,8 @@ function VoiceAnalyser(props) {
   let samples = audioBuffer.getChannelData(0);
 
   samples = downsampleBuffer(samples, expectedSampleRate);
+
+  if (import.meta.env.VITE_APP_SHERPA_VAD_ENABLED === "true") {
   buffer.push(samples);
 
   while (buffer.size() > vad.config.sileroVad.windowSize) {
@@ -520,18 +441,27 @@ function VoiceAnalyser(props) {
       const segment = vad.front();
 
       vad.pop();
-
-      recognizer_stream = recognizer.createStream();
-
-      // Process the samples with the recognizer
+      recognizer_stream = window.sherpaRecognizer.createStream();
       recognizer_stream.acceptWaveform(expectedSampleRate, segment.samples);
-
-      recognizer.decode(recognizer_stream);
-
-      result = recognizer.getResult(recognizer_stream);
-
-      recognizer_stream.free();
+      window.sherpaRecognizer.decode(recognizer_stream);
+      result = window.sherpaRecognizer.getResult(recognizer_stream);
+      // recognizer_stream.free();
   }}
+
+  }else{
+    console.log(window.sherpaRecognizer);
+    recognizer_stream = window.sherpaRecognizer.createStream();
+
+    // Process the samples with the recognizer
+    recognizer_stream.acceptWaveform(expectedSampleRate, samples);
+  
+    // Wait for the recognizer to be ready and decode the result
+    // while (window.sherpaRecognizer.isReady(recognizer_stream)) {
+      window.sherpaRecognizer.decode(recognizer_stream);
+    // }
+  
+    result = window.sherpaRecognizer.getResult(recognizer_stream);
+  }
 
 
   console.log(result);

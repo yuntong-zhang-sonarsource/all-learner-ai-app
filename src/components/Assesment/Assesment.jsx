@@ -350,11 +350,14 @@ export const LanguageModal = ({
           // mr="110px"
         >
           <Box
-            onClick={() => {
+            onClick={async() => {
               setLang(selectedLang);
               setOpenLangModal(false);
               if (isOfflineModel && selectedLang !== "en") {
                 loadModel(selectedLang);
+              }
+              else{
+                await window.sherpaModule.loadModel();
               }
             }}
             sx={{
@@ -1148,11 +1151,39 @@ const Assesment = ({ discoverStart }) => {
       // } else {
         await loadModelIndic(modelName);
         await loadVocabIndic(vacabFileName);
+      }else{
+        if(!window.sherpaRecognizer){
+        let config = {
+          modelConfig: {
+            debug: 1,
+            tokens: './tokens.txt',
+          },
+        };
+        config.modelConfig.transducer = {
+          encoder: './transducer-encoder.onnx',
+          decoder: './transducer-decoder.onnx',
+          joiner: './transducer-joiner.onnx',
+        };
+        config.modelConfig.modelType = 'transducer';
+        let recognizer = new window.OfflineRecognizer(config, window.sherpaModule);
+        window.sherpaRecognizer = recognizer;
+        console.log('recognizer is created!', recognizer);
+        
+        if(import.meta.env.VITE_APP_SHERPA_VAD_ENABLED === "true"){
+          let vad = window.createVad(window.sherpaModule);
+          window.vad = vad;
+          console.log('vad is created!', vad);
+    
+          let buffer = new CircularBuffer(30 * 16000, window.sherpaModule);
+          window.wasmBuffer = buffer; 
+          console.log('CircularBuffer is created!', buffer);
+        }
+      }
       }
     }
     const profileName = getLocalData("profileName");
     if (!username && !profileName && !virtualId && level === 0) {
-      // alert("please add username in query param");
+
       setOpenMessageDialog({
         message: "please add username in query param",
         isError: true,
@@ -1364,7 +1395,7 @@ const Assesment = ({ discoverStart }) => {
                   mt: { xs: 1, md: 2 },
                 }}
                 onClick={async () => {
-                  handleRedirect(lang);
+                  await handleRedirect(lang);
                 }}
               >
                 <StartAssessmentButton />
