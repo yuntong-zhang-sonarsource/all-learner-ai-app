@@ -23,15 +23,15 @@ const LoginPage = () => {
       let token = usernameDetails?.result?.token;
 
       localStorage.setItem("apiToken", token);
-      const tokenDetails = jwtDecode(token);
-      if (tokenDetails?.virtual_id) {
+      // const tokenDetails = jwtDecode(token);
+      if (token) {
         localStorage.setItem("profileName", username);
         navigate("/discover-start");
       } else {
         alert("Enter correct username and password");
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
       alert("An error occurred. Please try again later.");
     }
   };

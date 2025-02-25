@@ -352,7 +352,11 @@ export const ProfileHeader = ({
   const handleProfileBack = () => {
     try {
       if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-        window.parent.postMessage({ type: "restore-iframe-content" }, window?.location?.ancestorOrigins?.[0] || window.parent.location.origin);
+        window.parent.postMessage(
+          { type: "restore-iframe-content" },
+          window?.location?.ancestorOrigins?.[0] ||
+            window.parent.location.origin
+        );
         navigate("/");
       } else {
         navigate("/discover-start");
@@ -572,14 +576,14 @@ const Assesment = ({ discoverStart }) => {
     dispatch(setVirtualId(localStorage.getItem("virtualId")));
     let contentSessionId = localStorage.getItem("contentSessionId");
     localStorage.setItem("sessionId", contentSessionId);
-    const TOKEN = localStorage.getItem("apiToken");
-    let virtualId;
-    if (TOKEN) {
-      const tokenDetails = jwtDecode(TOKEN);
-      virtualId = tokenDetails?.virtual_id;
-    }
+    // const TOKEN = localStorage.getItem("apiToken");
+    // let virtualId;
+    // if (TOKEN) {
+    //   const tokenDetails = jwtDecode(TOKEN);
+    //   virtualId = tokenDetails?.virtual_id;
+    // }
 
-    if (discoverStart && username && !virtualId) {
+    if (discoverStart && username && !TOKEN) {
       (async () => {
         setLocalData("profileName", username);
         const usernameDetails = await fetchVirtualId(username);
@@ -612,7 +616,7 @@ const Assesment = ({ discoverStart }) => {
             });
         }
 
-        dispatch(setVirtualId(virtualId));
+        // dispatch(setVirtualId(virtualId));
       })();
     } else {
       (async () => {
@@ -634,7 +638,7 @@ const Assesment = ({ discoverStart }) => {
 
         if (
           process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
-          virtualId &&
+          TOKEN &&
           localStorage.getItem("contentSessionId") !== null
         ) {
           fetchUserPoints()
@@ -652,10 +656,10 @@ const Assesment = ({ discoverStart }) => {
 
   const TOKEN = localStorage.getItem("apiToken");
   let virtualId;
-  if (TOKEN) {
-    const tokenDetails = jwtDecode(TOKEN);
-    virtualId = JSON.stringify(tokenDetails?.virtual_id);
-  }
+  // if (TOKEN) {
+  //   const tokenDetails = jwtDecode(TOKEN);
+  //   virtualId = JSON.stringify(tokenDetails?.virtual_id);
+  // }
 
   const handleOpenVideo = () => {
     if (process.env.REACT_APP_SHOW_HELP_VIDEO === "true") {
@@ -694,7 +698,7 @@ const Assesment = ({ discoverStart }) => {
   const navigate = useNavigate();
   const handleRedirect = () => {
     const profileName = getLocalData("profileName");
-    if (!username && !profileName && !virtualId && level === 0) {
+    if (!username && !profileName && !TOKEN && level === 0) {
       // alert("please add username in query param");
       setOpenMessageDialog({
         message: "please add username in query param",
