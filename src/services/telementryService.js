@@ -215,12 +215,12 @@ function checkTelemetryMode(currentMode) {
 
 const getVirtualId = () => {
   const TOKEN = localStorage.getItem("apiToken");
-  let virtualId;
-  if (TOKEN) {
-    const tokenDetails = jwtDecode(TOKEN);
-    virtualId = JSON.stringify(tokenDetails?.virtual_id);
-  }
-  return virtualId;
+  // let virtualId;
+  // if (TOKEN) {
+  //   const tokenDetails = jwtDecode(TOKEN);
+  //   virtualId = JSON.stringify(tokenDetails?.virtual_id);
+  // }
+  return TOKEN;
 };
 
 export const getEventOptions = () => {
