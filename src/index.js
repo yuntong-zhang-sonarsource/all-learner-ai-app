@@ -9,16 +9,18 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { getCSP } from "./csp";
 
 const injectCSP = () => {
-  const cspContent = getCSP(process.env); // Pass environment variables
-  const metaTag = document.createElement("meta");
-  metaTag.httpEquiv = "Content-Security-Policy";
-  metaTag.content = cspContent.trim();
-  document.head.appendChild(metaTag);
+  try {
+    const cspContent = getCSP(process.env); // Pass environment variables
+    const metaTag = document.createElement("meta");
+    metaTag.httpEquiv = "Content-Security-Policy";
+    metaTag.content = cspContent.trim();
+    document.head.appendChild(metaTag);
+  } catch (error) {
+    console.error("Failed to inject CSP:", error);
+  }
 };
 
-setTimeout(() => {
-  injectCSP();
-}, 0);
+injectCSP();
 
 render(
   <React.StrictMode>
