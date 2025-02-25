@@ -29,18 +29,19 @@
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
-      script-src 'self' https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js;
-      style-src 'self' https://fonts.googleapis.com https://fonts.cdnfonts.com;
+      script-src 'self' https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js 'unsafe-eval';
+      style-src 'self' https://fonts.googleapis.com https://fonts.cdnfonts.com 'unsafe-inline';
       object-src 'none';
       base-uri 'self';
       connect-src 'self' *.theall.ai;
-      font-src 'self' https://fonts.googleapis.com https://fonts.cdnfonts.com;
+      font-src 'self' https://fonts.googleapis.com https://fonts.cdnfonts.com https://fonts.gstatic.com;
       frame-src 'self';
       img-src 'self' https://images.squarespace-cdn.com;
       manifest-src 'self';
       media-src 'self';
       worker-src 'none';
     " />
+
   </head>
   <body>
     <div id="root" />
