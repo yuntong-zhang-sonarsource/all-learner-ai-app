@@ -51,7 +51,7 @@ const WordsOrImage = ({
   const audioRef = createRef(null);
   const [duration, setDuration] = useState(0);
   const [isReady, setIsReady] = useState(false);
-
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const togglePlayPause = () => {
@@ -101,159 +101,189 @@ const WordsOrImage = ({
           pointerEvents: disableScreen ? "none" : "initial",
         }}
       >
-        {image && (
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <img
-              src={image}
-              onError={(e) => {
-                e.target.style.display = "none"; // Hide the image if it fails to load
-              }}
-              style={{
-                width: "100%", // Image will take full width of the parent container
-                maxWidth: "500px", // Limit the width to 500px
-                height: "auto", // Maintain aspect ratio
-                maxHeight: "200px", // Cap the height at 200px
-                marginBottom: "40px",
-                objectFit: "contain", // Ensures the image fits well within the dimensions
-              }}
-              alt="Responsive content" // Adding alt text for accessibility
-            />
-          </Box>
-        )}
-        {type === "image" ? (
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <img
-              src={image}
-              style={{
-                maxWidth: "450px",
-                maxHeight: "130px",
-                marginBottom: "40px",
-              }}
-            />
-          </Box>
-        ) : type === "phonics" ? (
-          <Box
-            position="relative"
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              mb: "40px",
-            }}
-          >
+        <Box>
+          {type === "image" ? (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <img
+                src={image}
+                style={{
+                  maxWidth: "450px",
+                  maxHeight: "130px",
+                  marginBottom: "40px",
+                }}
+              />
+            </Box>
+          ) : type === "phonics" ? (
             <Box
               position="relative"
               sx={{
-                minWidth: "403px",
-                borderRadius: "15px",
-                background: "rgba(255, 161, 50, 0.1)",
-                height: "88px",
+                width: "100%",
                 display: "flex",
+                justifyContent: "center",
+                mb: "40px",
               }}
             >
-              <audio
-                ref={audioRef}
-                preload="metadata"
-                onDurationChange={(e) => setDuration(e.currentTarget.duration)}
-                onCanPlay={(e) => {
-                  setIsReady(true);
-                }}
-                onPlaying={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                onTimeUpdate={(e) => {
-                  setCurrrentProgress(e.currentTarget.currentTime);
-                }}
-              >
-                <source type="audio/mp3" src={v11} />
-              </audio>
-              {/* <AudioPlayerSvg color="#FFA132" /> */}
-
               <Box
+                position="relative"
                 sx={{
+                  minWidth: "403px",
+                  borderRadius: "15px",
+                  background: "rgba(255, 161, 50, 0.1)",
                   height: "88px",
                   display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
                 }}
               >
+                <audio
+                  ref={audioRef}
+                  preload="metadata"
+                  onDurationChange={(e) =>
+                    setDuration(e.currentTarget.duration)
+                  }
+                  onCanPlay={(e) => {
+                    setIsReady(true);
+                  }}
+                  onPlaying={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  onTimeUpdate={(e) => {
+                    setCurrrentProgress(e.currentTarget.currentTime);
+                  }}
+                >
+                  <source type="audio/mp3" src={v11} />
+                </audio>
+                {/* <AudioPlayerSvg color="#FFA132" /> */}
+
                 <Box
                   sx={{
-                    cursor: "pointer",
-                    marginLeft: "20px",
-                    marginTop: "5px",
-                  }}
-                  onClick={() => {
-                    togglePlayPause();
+                    height: "88px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
                 >
-                  {isReady && (
-                    <>
-                      {isPlaying ? (
-                        <StopAudioButton color="#FFA132" />
-                      ) : (
-                        <PlayAudioButton color="#FFA132" />
-                      )}
-                    </>
-                  )}
+                  <Box
+                    sx={{
+                      cursor: "pointer",
+                      marginLeft: "20px",
+                      marginTop: "5px",
+                    }}
+                    onClick={() => {
+                      togglePlayPause();
+                    }}
+                  >
+                    {isReady && (
+                      <>
+                        {isPlaying ? (
+                          <StopAudioButton color="#FFA132" />
+                        ) : (
+                          <PlayAudioButton color="#FFA132" />
+                        )}
+                      </>
+                    )}
+                  </Box>
+                  <Typography
+                    variant="h5"
+                    component="h4"
+                    sx={{
+                      color: "#333F61",
+                      fontSize: "44px",
+                      letterSpacing: "2.2px",
+                      lineHeight: "normal",
+                      fontWeight: 600,
+                      fontFamily: "Quicksand",
+                      marginLeft: "20px",
+                    }}
+                  >
+                    {"REF LECTION"}
+                  </Typography>
                 </Box>
-                <Typography
-                  variant="h5"
-                  component="h4"
-                  sx={{
-                    color: "#333F61",
-                    fontSize: "44px",
-                    letterSpacing: "2.2px",
-                    lineHeight: "normal",
-                    fontWeight: 600,
-                    fontFamily: "Quicksand",
-                    marginLeft: "20px",
-                  }}
-                >
-                  {"REF LECTION"}
-                </Typography>
               </Box>
             </Box>
-          </Box>
-        ) : (
-          <Box>
-            {!words && (
-              <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
-              </Box>
-            )}
-            {words && !matchedChar && (
-              <Typography
-                variant="h5"
-                component="h4"
-                sx={{
-                  mb: 4,
-                  color: "#333F61",
-                  textAlign: "center",
-                  fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
-                  // lineHeight: "normal",
-                  fontWeight: 700,
-                  fontFamily: "Quicksand",
-                  lineHeight: "50px",
-                }}
-              >
-                {words || ""}
-              </Typography>
-            )}
-            {matchedChar && (
+          ) : (
+            <Box
+              sx={{
+                display: {
+                  xs: "",
+                  md: imageLoaded ? "flex" : "",
+                },
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
+              {image && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                >
+                  <img
+                    src={image}
+                    onLoad={() => setImageLoaded(true)} // When image loads, set state to true
+                    onError={(e) => {
+                      e.target.style.display = "none"; // Hide if error occurs
+                      setImageLoaded(false);
+                    }}
+                    style={{
+                      width: "100%", // Image will take full width of the parent container
+                      maxWidth: "500px", // Limit the width to 500px
+                      height: "auto", // Maintain aspect ratio
+                      maxHeight: "500px", // Cap the height at 200px
+                      marginBottom: "40px",
+                      objectFit: "contain", // Ensures the image fits well within the dimensions
+                    }}
+                    alt="Responsive content" // Adding alt text for accessibility
+                  />
+                </Box>
+              )}
               <Box
-                display={"flex"}
-                mb={4}
                 sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center", // Centers content vertically
+                  alignItems: "center", // Centers content horizontally
                   width: "100%",
-                  justifyContent: "center",
-                  flexWrap: "wrap",
                 }}
               >
-                {highlightWords(words, matchedChar)}
+                {!words && (
+                  <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
+                  </Box>
+                )}
+                {words && !matchedChar && (
+                  <Typography
+                    variant="h5"
+                    component="h4"
+                    sx={{
+                      mb: 4,
+                      color: "#333F61",
+                      textAlign: "center",
+                      fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
+                      fontWeight: 700,
+                      fontFamily: "Quicksand",
+                      lineHeight: "60px",
+                    }}
+                  >
+                    {words || ""}
+                  </Typography>
+                )}
+                {matchedChar && (
+                  <Box
+                    display={"flex"}
+                    mb={4}
+                    sx={{
+                      width: "100%",
+                      justifyContent: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {highlightWords(words, matchedChar)}
+                  </Box>
+                )}
               </Box>
-            )}
-          </Box>
-        )}
+            </Box>
+          )}
+        </Box>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <VoiceAnalyser
             setVoiceText={setVoiceText}
