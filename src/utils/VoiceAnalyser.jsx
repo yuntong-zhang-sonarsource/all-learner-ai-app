@@ -435,17 +435,14 @@ function VoiceAnalyser(props) {
       lastResult = '';
     }
 
-    
-
     while (!vad.isEmpty()) {
       const segment = vad.front();
-
       vad.pop();
       recognizer_stream = window.sherpaRecognizer.createStream();
       recognizer_stream.acceptWaveform(expectedSampleRate, segment.samples);
       window.sherpaRecognizer.decode(recognizer_stream);
       result = window.sherpaRecognizer.getResult(recognizer_stream);
-      // recognizer_stream.free();
+      recognizer_stream.free();
   }}
 
   }else{
@@ -455,12 +452,11 @@ function VoiceAnalyser(props) {
     // Process the samples with the recognizer
     recognizer_stream.acceptWaveform(expectedSampleRate, samples);
   
-    // Wait for the recognizer to be ready and decode the result
-    // while (window.sherpaRecognizer.isReady(recognizer_stream)) {
-      window.sherpaRecognizer.decode(recognizer_stream);
-    // }
+    // Decode the result
+    window.sherpaRecognizer.decode(recognizer_stream);
   
     result = window.sherpaRecognizer.getResult(recognizer_stream);
+    recognizer_stream.free();
   }
 
 
