@@ -4230,7 +4230,7 @@ export const offlineModelsInfo = [
   {
     modelName: "english",
     lang: "en",
-    modelURL: "./models/english.quant.bin",
+    modelURL: "./models/sherpa-onnx-wasm-main-vad-asr.data",
   },
   { modelName: "kannada", lang: "kn", modelURL: "/models/kannada.quant.onnx", vacabFileName: "kannada.vocab" ,vocabUrl: "/models/kannada.vocab"},
   { modelName: "tamil", lang: "ta", modelURL: "/models/tamil.quant.onnx", vacabFileName: "tamil.vocab", vocabUrl: "/models/tamil.vocab" },

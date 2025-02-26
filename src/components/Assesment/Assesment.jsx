@@ -1137,17 +1137,28 @@ const Assesment = ({ discoverStart }) => {
         }
 
         function fileExists(filename) {
-          const filenameLen = window.sherpaModule.lengthBytesUTF8(filename) + 1;
-          const buffer = window.sherpaModule._malloc(filenameLen);
-          window.sherpaModule.stringToUTF8(filename, buffer, filenameLen);
-        
-          let exists = window.sherpaModule._SherpaOnnxFileExists(buffer);
-
-          console.log('SherpaFileExists',exists);
-        
-          window.sherpaModule._free(buffer);
-        
-          return exists;
+            let buffer = null;
+              try {
+                const filenameLen = Module.lengthBytesUTF8(filename) + 1;
+                const buffer = Module._malloc(filenameLen);
+              if (!buffer) {
+                throw new Error('Failed to allocate memory');
+              }
+                Module.stringToUTF8(filename, buffer, filenameLen);
+             
+                let exists = Module._SherpaOnnxFileExists(buffer);
+             
+                Module._free(buffer);
+             
+                return exists;
+              } catch (error) {
+                console.error('Error checking file existence:', error);
+                return false;
+              } finally {
+                if (buffer) {
+                  Module._free(buffer);
+                }
+               }
         }
       }
       }
