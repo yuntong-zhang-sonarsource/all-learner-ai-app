@@ -1,0 +1,20 @@
+{
+  "name": "indicasr-wasm",
+  "type": "module",
+  "collaborators": [
+    "Nikhil Narasimhan <nikhil.narasimhan99@gmail.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "indicasr_wasm_bg.wasm",
+    "indicasr_wasm.js",
+    "indicasr_wasm_bg.js",
+    "indicasr_wasm.d.ts"
+  ],
+  "main": "indicasr_wasm.js",
+  "types": "indicasr_wasm.d.ts",
+  "sideEffects": [
+    "./indicasr_wasm.js",
+    "./snippets/*"
+  ]
+}
