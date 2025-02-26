@@ -3,7 +3,7 @@ import desktopLevel2 from "../../assets/images/desktopLevel2.png";
 import desktopLevel3 from "../../assets/images/desktopLevel3.jpg";
 import {
   useSearchParams,
-} from "../../../node_modules/react-router-dom/dist/index";
+} from "react-router-dom";
 
 const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();

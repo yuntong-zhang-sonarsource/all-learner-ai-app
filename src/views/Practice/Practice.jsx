@@ -121,7 +121,7 @@ const Practice = () => {
   }, [voiceText]);
 
   const send = (score) => {
-    if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+    if (import.meta.env.VITE_APP_IS_APP_IFRAME === "true") {
       window.parent.postMessage(
         {
           score: score,
@@ -161,7 +161,7 @@ const Practice = () => {
         }
       } else {
         const pointsRes = await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
+          `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_POINTER}`,
           {
             userId: localStorage.getItem("virtualId"),
             sessionId: localStorage.getItem("sessionId"),
@@ -195,7 +195,7 @@ const Practice = () => {
       let showcasePercentage = ((currentQuestion + 1) * 100) / questions.length;
 
       await axios.post(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
+        `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
         {
           userId: virtualId,
           sessionId: sessionId,
@@ -231,7 +231,7 @@ const Practice = () => {
 
           const sub_session_id = getLocalData("sub_session_id");
           const getSetResultRes = await axios.post(
-            `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_SET_RESULT}`,
+            `${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_SET_RESULT}`,
             {
               sub_session_id: sub_session_id,
               contentType: currentContentType,
@@ -247,9 +247,9 @@ const Practice = () => {
           Log(data, "practice", "ET");
           setPercentage(getSetData?.data?.percentage);
           checkFluency(currentContentType, getSetData?.data?.fluency);
-          if (process.env.REACT_APP_POST_LEARNER_PROGRESS === "true") {
+          if (import.meta.env.VITE_APP_POST_LEARNER_PROGRESS === "true") {
             await axios.post(
-              `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.CREATE_LEARNER_PROGRESS}`,
+              `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.CREATE_LEARNER_PROGRESS}`,
               {
                 userId: virtualId,
                 sessionId: sessionId,
@@ -264,7 +264,7 @@ const Practice = () => {
           if (getSetData.data.sessionResult === "pass") {
             try {
               await axios.post(
-                `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
+                `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
                 {
                   userId: virtualId,
                   sessionId: sessionId,
@@ -291,7 +291,7 @@ const Practice = () => {
         }
 
         await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
+          `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
           {
             userId: virtualId,
             sessionId: sessionId,
@@ -308,7 +308,7 @@ const Practice = () => {
           return;
         }
         const resGetContent = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
+          `${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
             (currentGetContent?.mechanism?.id
               ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
               : "") +
@@ -400,12 +400,12 @@ const Practice = () => {
   const playTeacherAudio = () => {
     const contentId = questions[currentQuestion]?.contentId;
     let audio = new Audio(
-      `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${contentId}.wav`
+      `${import.meta.env.VITE_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${contentId}.wav`
     );
     audio.addEventListener("canplaythrough", () => {
       set_temp_audio(
         new Audio(
-          `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${contentId}.wav`
+          `${import.meta.env.VITE_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${contentId}.wav`
         )
       );
     });
@@ -425,7 +425,7 @@ const Practice = () => {
       }
 
       const getMilestoneDetails = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${virtualId}?language=${lang}`
+        `${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${virtualId}?language=${lang}`
       );
 
       // TODO: validate the getMilestoneDetails API return
@@ -443,13 +443,13 @@ const Practice = () => {
       setLevel(level);
 
       const resLessons = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_LESSON_PROGRESS_BY_ID}/${virtualId}?language=${lang}`
+        `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_LESSON_PROGRESS_BY_ID}/${virtualId}?language=${lang}`
       );
 
       // TODO: Handle Error for lessons - no lesson progress - starting point should be P1
 
       const getPointersDetails = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
+        `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
       );
 
       // TODO: Just Opss icon - we are trying to fetch the score for you
@@ -478,7 +478,7 @@ const Practice = () => {
       );
 
       const resWord = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
+        `${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
           (currentGetContent?.mechanism?.id
             ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
             : "") +
@@ -517,7 +517,7 @@ const Practice = () => {
       setIsShowCase(showcaseLevel);
       if (showcaseLevel) {
         await axios.post(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
+          `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
           {
             userId: virtualId,
             sessionId: sessionId,
@@ -563,7 +563,7 @@ const Practice = () => {
       };
 
       await axios.post(
-        `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
+        `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
         {
           userId: virtualId,
           sessionId: sessionId,
@@ -584,7 +584,7 @@ const Practice = () => {
       );
       let quesArr = [];
       const resWord = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
+        `${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
           (currentGetContent?.mechanism?.id
             ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
             : "") +
@@ -618,7 +618,7 @@ const Practice = () => {
       setCurrentQuestion(practiceProgress[virtualId]?.currentQuestion || 0);
       setLocalData("practiceProgress", JSON.stringify(practiceProgress));
     } else {
-      if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+      if (import.meta.env.VITE_APP_IS_APP_IFRAME === "true") {
         navigate("/");
       } else {
         navigate("/discover-start");
@@ -748,7 +748,7 @@ const Practice = () => {
 
   useEffect(() => {
     if (questions[currentQuestion]?.contentSourceData) {
-      if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+      if (import.meta.env.VITE_APP_IS_APP_IFRAME === "true") {
         const contentSourceData =
           questions[currentQuestion]?.contentSourceData || [];
         const stringLengths = contentSourceData.map((item) => item.text.length);
@@ -840,11 +840,11 @@ const Practice = () => {
             storyLine,
             handleNext,
             image: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
+              ? `${import.meta.env.VITE_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
                 questions[currentQuestion]?.mechanics_data[0]?.image_url
               : null,
             audio: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
+              ? `${import.meta.env.VITE_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
                 questions[currentQuestion]?.mechanics_data[0]?.audio_url
               : null,
             enableNext,
@@ -940,7 +940,7 @@ const Practice = () => {
               : questions[currentQuestion]?.contentSourceData?.[0]?.text,
             contentType: currentContentType,
             question_audio: mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
+              ? `${import.meta.env.VITE_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
                 mechanics_data[0].audio_url
               : questions[currentQuestion]?.contentSourceData?.[0]?.audio_url,
             contentId: questions[currentQuestion]?.contentId,
@@ -953,12 +953,12 @@ const Practice = () => {
             handleNext,
             type: "word",
             image: mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
+              ? `${import.meta.env.VITE_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
                 mechanics_data[0]?.image_url
               : null,
 
             audio: mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
+              ? `${import.meta.env.VITE_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
                 audioLink
               : null,
             enableNext,
@@ -1015,7 +1015,7 @@ const Practice = () => {
             handleNext,
             // image: elephant,
             audio: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
+              ? `${import.meta.env.VITE_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
                 questions[currentQuestion]?.mechanics_data[0]?.audio_url
               : null,
             enableNext,
@@ -1069,11 +1069,11 @@ const Practice = () => {
             storyLine,
             handleNext,
             image: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
+              ? `${import.meta.env.VITE_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
                 questions[currentQuestion]?.mechanics_data[0]?.image_url
               : null,
             audio: questions[currentQuestion]?.mechanics_data
-              ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
+              ? `${import.meta.env.VITE_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/` +
                 questions[currentQuestion]?.mechanics_data[0]?.audio_url
               : null,
             enableNext,

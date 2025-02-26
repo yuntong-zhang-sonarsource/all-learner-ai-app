@@ -7,7 +7,7 @@ import {
   Tooltip,
   Typography,
   Dialog,
-} from "../../../node_modules/@mui/material/index";
+} from "@mui/material";
 import LogoutImg from "../../assets/images/logout.svg";
 import { styled } from "@mui/material/styles";
 import {
@@ -21,12 +21,12 @@ import {
   setLocalData,
 } from "../../utils/constants";
 import practicebg from "../../assets/images/practice-bg.svg";
-import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import HelpLogo from "../../assets/help.png";
 import CloseIcon from "@mui/icons-material/Close";
 
-import axios from "../../../node_modules/axios/index";
+import axios from "axios";
 // import { useDispatch } from 'react-redux';
 import { setVirtualId } from "../../store/slices/user.slice";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,6 +50,7 @@ import cryPanda from "../../assets/images/cryPanda.svg";
 import { uniqueId } from "../../services/utilService";
 import ProgressOverlay from "../CommonComponent/ProgressOverlay";
 import { end } from "../../services/telementryService";
+import { offlineModelsInfo } from "../../utils/constants";
 
 export const LanguageModal = ({
   lang,
@@ -95,12 +96,17 @@ export const LanguageModal = ({
   };
 
   // Function to store model in IndexedDB
-  const storeModel = async (modelName, modelURL) => {
+  const storeModel = async (modelName, modelURL, isVocabModel) => {
     try {
+      console.log(modelURL);
       const response = await fetch(modelURL);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
+
+      let modelData
+
+      if(!isVocabModel){
 
       const reader = response.body.getReader();
       const contentLength = +response.headers.get("Content-Length");
@@ -118,12 +124,22 @@ export const LanguageModal = ({
         setDownloadProgress(percentage.toFixed());
       }
 
-      const modelData = new Uint8Array(receivedLength);
-      let position = 0;
-      for (let chunk of chunks) {
-        modelData.set(chunk, position);
-        position += chunk.length;
+       modelData = new Uint8Array(receivedLength);
+
+       let position = 0;
+       for (let chunk of chunks) {
+         modelData.set(chunk, position);
+         position += chunk.length;
+       }
+
+      }else{
+        console.log(response);
+        const vocabData = await response.arrayBuffer();
+        const decoder = new TextDecoder("utf-8");
+        modelData = decoder.decode(vocabData).split("\n");
       }
+
+
 
       const transaction = db.transaction(["models"], "readwrite");
       const store = transaction.objectStore("models");
@@ -157,20 +173,43 @@ export const LanguageModal = ({
   };
 
   // Function to load model
-  const loadModel = async () => {
+  const loadModel = async (selectedLang) => {
     setLoading(true);
     try {
       await openDB();
-      const modelName = "en-model";
-      const modelURL = "./models/ggml-model-whisper-base.en-q5_1.bin";
+      let modelName = "";
+      let modelURL = "";
+      let vacabFileName = "";
+      let vocabURL = "";
+
+      offlineModelsInfo.map((modelInfoElement) => {
+        if (modelInfoElement.lang === selectedLang) {
+          modelName = modelInfoElement.modelName;
+          modelURL = modelInfoElement.modelURL;
+          vocabURL = modelInfoElement?.vocabUrl;
+          vacabFileName = modelInfoElement?.vacabFileName;
+        }
+      });
 
       const stored = await isModelStored(modelName);
+
+      if(vocabURL){
+        const vocabStored = await isModelStored(vacabFileName);
+        if (!stored) {
+          await storeModel(vacabFileName, vocabURL, true);
+        } else {
+          console.log(`Model ${vacabFileName} is already stored in IndexedDB`);
+          return;
+        }
+      }
+
       if (!stored) {
-        await storeModel(modelName, modelURL);
+        await storeModel(modelName, modelURL,false);
       } else {
         console.log(`Model ${modelName} is already stored in IndexedDB`);
         return;
       }
+
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -311,11 +350,14 @@ export const LanguageModal = ({
           // mr="110px"
         >
           <Box
-            onClick={() => {
+            onClick={async() => {
               setLang(selectedLang);
               setOpenLangModal(false);
-              if (isOfflineModel) {
-                loadModel();
+              if (isOfflineModel && selectedLang !== "en") {
+                loadModel(selectedLang);
+              }
+              else{
+                await window.sherpaModule.loadModel();
               }
             }}
             sx={{
@@ -482,7 +524,7 @@ export const ProfileHeader = ({
 
   const handleProfileBack = () => {
     try {
-      if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+      if (import.meta.env.VITE_APP_IS_APP_IFRAME === "true") {
         window.parent.postMessage({ type: "restore-iframe-content" }, "*");
         navigate("/");
       } else {
@@ -665,7 +707,7 @@ export const ProfileHeader = ({
               </Box>
             </Box>
           </Box>
-          {process.env.REACT_APP_IS_IN_APP_AUTHORISATION === "true" && (
+          {import.meta.env.VITE_APP_IS_IN_APP_AUTHORISATION === "true" && (
             <CustomTooltip title="Logout">
               <Box>
                 <CustomIconButton onClick={handleLogout}>
@@ -716,10 +758,10 @@ const Assesment = ({ discoverStart }) => {
       (async () => {
         setLocalData("profileName", username);
         const usernameDetails = await axios.post(
-          `${process.env.REACT_APP_VIRTUAL_ID_HOST}/${config.URLS.GET_VIRTUAL_ID}?username=${username}`
+          `${import.meta.env.VITE_APP_VIRTUAL_ID_HOST}/${config.URLS.GET_VIRTUAL_ID}?username=${username}`
         );
         const getMilestoneDetails = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${usernameDetails?.data?.result?.virtualID}?language=${lang}`
+          `${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${usernameDetails?.data?.result?.virtualID}?language=${lang}`
         );
 
         localStorage.setItem(
@@ -742,7 +784,7 @@ const Assesment = ({ discoverStart }) => {
 
         localStorage.setItem("lang", lang || "ta");
         const getPointersDetails = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${usernameDetails?.data?.result?.virtualID}/${session_id}?language=${lang}`
+          `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${usernameDetails?.data?.result?.virtualID}/${session_id}?language=${lang}`
         );
         setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
 
@@ -760,7 +802,7 @@ const Assesment = ({ discoverStart }) => {
         localStorage.setItem("virtualId", virtualId);
         const language = lang;
         const getMilestoneDetails = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${virtualId}?language=${language}`
+          `${import.meta.env.VITE_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}/${virtualId}?language=${language}`
         );
         localStorage.setItem(
           "getMilestone",
@@ -780,7 +822,7 @@ const Assesment = ({ discoverStart }) => {
 
         if (virtualId) {
           const getPointersDetails = await axios.get(
-            `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
+            `${import.meta.env.VITE_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
           );
           setPoints(getPointersDetails?.data?.result?.totalLanguagePoints || 0);
         }
@@ -791,15 +833,15 @@ const Assesment = ({ discoverStart }) => {
   const { virtualId } = useSelector((state) => state.user);
 
   const handleOpenVideo = () => {
-    if (process.env.REACT_APP_SHOW_HELP_VIDEO === "true") {
+    if (import.meta.env.VITE_APP_SHOW_HELP_VIDEO === "true") {
       let allowedOrigins = [];
       try {
         allowedOrigins = JSON.parse(
-          process.env.REACT_APP_PARENT_ORIGIN_URL || "[]"
+          import.meta.env.VITE_APP_PARENT_ORIGIN_URL || "[]"
         );
       } catch (error) {
         console.error(
-          "Invalid JSON format in REACT_APP_PARENT_ORIGIN_URL:",
+          "Invalid JSON format in VITE_APP_PARENT_ORIGIN_URL:",
           error
         );
       }
@@ -851,14 +893,7 @@ const Assesment = ({ discoverStart }) => {
     });
   };
 
-  // Function to load model in whisper cpp module
-  const loadModelWhisper = async (modelName) => {
-    try {
-      window.whisperModule.FS_unlink("whisper.bin");
-      await window.whisperModule.free(1);
-    } catch (e) {
-      console.log(e);
-    }
+  const loadModelIndic = async (modelName) => {
     try {
       let transaction;
       let store;
@@ -874,33 +909,64 @@ const Assesment = ({ discoverStart }) => {
 
       request.onsuccess = async () => {
         const modelData = request.result;
-        let storeResponse = await window.whisperModule.FS_createDataFile(
-          "/",
-          "whisper.bin",
-          modelData,
-          true,
-          true
+        if(window.offlineSession === undefined) {
+        window.offlineSession = await window.ort.InferenceSession.create(
+          modelData
         );
-        setTimeout(console.log(window.whisperModule.init("whisper.bin")), 5000);
+        console.log(window.offlineSession);
+      }
       };
 
       request.onerror = (err) => {
         console.error(`Error to get model data: ${err}`);
       };
 
-      console.log(`Stored model in whisper cpp memory`);
+      console.log(`Created model session`);
+    } catch (error) {
+      console.error("Error storing model in IndexedDB:", error);
+    }
+  };
+
+  const loadVocabIndic = async (vocabFileName) => {
+    try {
+      let transaction;
+      let store;
+      let request;
+      try {
+        transaction = await db.transaction(["models"], "readonly");
+        store = transaction.objectStore("models");
+        request = await store.get(vocabFileName);
+      } catch (error) {
+        console.error("Error accessing IndexedDB:", error);
+        return;
+      }
+
+      request.onsuccess = async () => {;
+        window.offlineVocab = request.result;
+      };
+
+      request.onerror = (err) => {
+        console.error(`Error to get model data: ${err}`);
+      };
+
+      console.log(`Created model session`);
     } catch (error) {
       console.error("Error storing model in IndexedDB:", error);
     }
   };
 
   // Function to store model in IndexedDB
-  const storeModel = async (modelName, modelURL) => {
+  const storeModel = async (modelName, modelURL, isVocabModel) => {
     try {
+      console.log(modelURL);
       const response = await fetch(modelURL);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
+
+      let modelData
+
+      if(!isVocabModel){
 
       const reader = response.body.getReader();
       const contentLength = +response.headers.get("Content-Length");
@@ -918,12 +984,22 @@ const Assesment = ({ discoverStart }) => {
         setDownloadProgress(percentage.toFixed());
       }
 
-      const modelData = new Uint8Array(receivedLength);
-      let position = 0;
-      for (let chunk of chunks) {
-        modelData.set(chunk, position);
-        position += chunk.length;
+       modelData = new Uint8Array(receivedLength);
+
+       let position = 0;
+       for (let chunk of chunks) {
+         modelData.set(chunk, position);
+         position += chunk.length;
+       }
+
+      }else{
+        console.log(response);
+        const vocabData = await response.arrayBuffer();
+        const decoder = new TextDecoder("utf-8");
+        modelData = decoder.decode(vocabData).split("\n");
       }
+
+
 
       const transaction = db.transaction(["models"], "readwrite");
       const store = transaction.objectStore("models");
@@ -936,19 +1012,43 @@ const Assesment = ({ discoverStart }) => {
   };
 
   // Function to load model
-  const loadModel = async () => {
+  const loadModel = async (lang) => {
     setLoading(true);
     try {
       await openDB();
-      const modelName = "en-model";
-      const modelURL = "./models/ggml-model-whisper-base.en-q5_1.bin";
+      let modelName = "";
+      let modelURL = "";
+      let vacabFileName = "";
+      let vocabURL = "";
+
+      offlineModelsInfo.map((modelInfoElement) => {
+        if (modelInfoElement.lang === lang) {
+          modelName = modelInfoElement.modelName;
+          modelURL = modelInfoElement.modelURL;
+          vocabURL = modelInfoElement?.vocabUrl;
+          vacabFileName = modelInfoElement?.vacabFileName;
+        }
+      });
 
       const stored = await isModelStored(modelName);
+
       if (!stored) {
-        await storeModel(modelName, modelURL);
+        await storeModel(modelName, modelURL,false);
       } else {
         console.log(`Model ${modelName} is already stored in IndexedDB`);
+        return;
       }
+
+      if(vocabURL){
+        const vocabStored = await isModelStored(vacabFileName);
+        if (!stored) {
+          await storeModel(vacabFileName, vocabURL,true);
+        } else {
+          console.log(`Model ${vacabFileName} is already stored in IndexedDB`);
+          return;
+        }
+      }
+
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -980,23 +1080,92 @@ const Assesment = ({ discoverStart }) => {
     });
   };
 
-  const handleRedirect = async () => {
+  const handleRedirect = async (lang) => {
     if (localStorage.getItem("isOfflineModel") === "true") {
-      const modelName = "en-model";
+      let modelName = "";
+      let vacabFileName = "";
+
+      offlineModelsInfo.map((modelInfoElement) => {
+        if (modelInfoElement.lang === lang) {
+          modelName = modelInfoElement.modelName;
+          vacabFileName = modelInfoElement?.vacabFileName;
+        }
+      });
+
       await openDB();
       const stored = await isModelStored(modelName);
       if (stored) {
         console.log(`Model ${modelName} is already stored in IndexedDB`);
       } else {
         alert(`you have to download en-offline model`);
-        await loadModel();
+        if(lang != "en"){
+        await loadModel(lang);
+        }
         return;
       }
-      await loadModelWhisper(modelName);
+      if (lang !== "en") {
+        await loadModelIndic(modelName);
+        await loadVocabIndic(vacabFileName);
+      }else{
+        if(!window.sherpaRecognizer){
+        await window.sherpaModule.loadModel();
+        await fileExists('transducer-encoder.onnx');
+        let config = {
+          modelConfig: {
+            debug: 1,
+            tokens: './tokens.txt',
+          },
+        };
+        config.modelConfig.transducer = {
+          encoder: './transducer-encoder.onnx',
+          decoder: './transducer-decoder.onnx',
+          joiner: './transducer-joiner.onnx',
+        };
+        config.modelConfig.modelType = 'transducer';
+        let recognizer = new window.OfflineRecognizer(config, window.sherpaModule);
+        window.sherpaRecognizer = recognizer;
+        console.log('recognizer is created!', recognizer);
+        
+        if(import.meta.env.VITE_APP_SHERPA_VAD_ENABLED === "true"){
+          let vad = window.createVad(window.sherpaModule);
+          window.vad = vad;
+          console.log('vad is created!', vad);
+    
+          let buffer = new CircularBuffer(30 * 16000, window.sherpaModule);
+          window.wasmBuffer = buffer; 
+          console.log('CircularBuffer is created!', buffer);
+        }
+
+        function fileExists(filename) {
+            let buffer = null;
+              try {
+                const filenameLen = Module.lengthBytesUTF8(filename) + 1;
+                const buffer = Module._malloc(filenameLen);
+              if (!buffer) {
+                throw new Error('Failed to allocate memory');
+              }
+                Module.stringToUTF8(filename, buffer, filenameLen);
+             
+                let exists = Module._SherpaOnnxFileExists(buffer);
+             
+                Module._free(buffer);
+             
+                return exists;
+              } catch (error) {
+                console.error('Error checking file existence:', error);
+                return false;
+              } finally {
+                if (buffer) {
+                  Module._free(buffer);
+                }
+               }
+        }
+      }
+      }
     }
     const profileName = getLocalData("profileName");
     if (!username && !profileName && !virtualId && level === 0) {
-      // alert("please add username in query param");
+
       setOpenMessageDialog({
         message: "please add username in query param",
         isError: true,
@@ -1075,7 +1244,7 @@ const Assesment = ({ discoverStart }) => {
             }}
           />
           <Box>
-            {process.env.REACT_APP_SHOW_HELP_VIDEO === "true" && (
+            {import.meta.env.VITE_APP_SHOW_HELP_VIDEO === "true" && (
               <Box
                 onClick={handleOpenVideo}
                 sx={{
@@ -1115,7 +1284,9 @@ const Assesment = ({ discoverStart }) => {
                   cursor: "pointer",
                   boxShadow: `3px 3px 10px ${levelConfig[level].color}80`,
                 }}
-                onClick={handleRedirect}
+                onClick={async () => {
+                  await handleRedirect(lang);
+                }}
               >
                 <span
                   style={{
@@ -1187,7 +1358,7 @@ const Assesment = ({ discoverStart }) => {
               </Typography>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              {process.env.REACT_APP_SHOW_HELP_VIDEO === "true" && (
+              {import.meta.env.VITE_APP_SHOW_HELP_VIDEO === "true" && (
                 <Box
                   onClick={handleOpenVideo}
                   sx={{
@@ -1205,7 +1376,9 @@ const Assesment = ({ discoverStart }) => {
                   cursor: "pointer",
                   mt: { xs: 1, md: 2 },
                 }}
-                onClick={handleRedirect}
+                onClick={async () => {
+                  await handleRedirect(lang);
+                }}
               >
                 <StartAssessmentButton />
               </Box>
