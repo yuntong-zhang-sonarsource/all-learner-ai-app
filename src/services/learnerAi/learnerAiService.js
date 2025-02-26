@@ -10,7 +10,7 @@ const getHeaders = () => {
   return {
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
   };
 };
@@ -66,7 +66,7 @@ export const fetchGetSetResult = async (
         collectionId: currentCollectionId,
         totalSyllableCount: totalSyllableCount,
         language: lang,
-        user_id: getVirtualId(),
+        // user_id: getVirtualId(),
       },
       getHeaders()
     );
@@ -91,7 +91,7 @@ export const getSetResultPractice = async ({
         sub_session_id: subSessionId,
         contentType: currentContentType,
         session_id: sessionId,
-        user_id: getVirtualId(),
+        // user_id: getVirtualId(),
         totalSyllableCount: totalSyllableCount,
         language: localStorage.getItem("lang"),
         is_mechanics: mechanism && mechanism?.id ? true : false,
@@ -107,7 +107,7 @@ export const getSetResultPractice = async ({
 
 export const updateLearnerProfile = async (lang, requestBody) => {
   try {
-    requestBody.user_id = getVirtualId();
+    // requestBody.user_id = getVirtualId();
     const response = await axios.post(
       `${API_LEARNER_AI_APP_HOST}/${config.URLS.UPDATE_LEARNER_PROFILE}/${lang}`,
       requestBody,

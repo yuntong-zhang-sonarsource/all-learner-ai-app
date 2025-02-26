@@ -11,7 +11,7 @@ const getHeaders = () => {
   return {
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
   };
 };
@@ -53,7 +53,7 @@ export const addPointer = async (points, milestone) => {
     const response = await axios.post(
       `${API_BASE_URL_ORCHESTRATION}/${config.URLS.ADD_POINTER}`,
       {
-        userId: getVirtualId(),
+        // userId: getVirtualId(),
         sessionId: sessionId,
         points: points,
         language: lang,
@@ -78,7 +78,7 @@ export const createLearnerProgress = async (
 
   try {
     const requestBody = {
-      userId: getVirtualId(),
+      // userId: getVirtualId(),
       sessionId: sessionId,
       subSessionId: subSessionId,
       milestoneLevel: milestoneLevel,
@@ -111,7 +111,7 @@ export const addLesson = async ({
     const response = await axios.post(
       `${API_BASE_URL_ORCHESTRATION}/${config.URLS.ADD_LESSON}`,
       {
-        userId: getVirtualId(),
+        // userId: getVirtualId(),
         sessionId: sessionId,
         milestone: milestone,
         lesson: lesson,
