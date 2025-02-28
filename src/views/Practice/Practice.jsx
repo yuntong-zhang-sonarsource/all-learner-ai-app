@@ -137,7 +137,8 @@ const Practice = () => {
         {
           score: score,
           message: "all-test-rig-score",
-        }, window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
+        },
+        window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
       );
     }
   };
@@ -419,10 +420,8 @@ const Practice = () => {
           });
       }
 
-      let userState = Number.isInteger(
-        Number(resLessons?.result?.result?.lesson)
-      )
-        ? Number(resLessons.result?.result?.lesson)
+      let userState = Number.isInteger(Number(resLessons?.result?.lesson))
+        ? Number(resLessons.result?.lesson)
         : 0;
 
       // TODO: revisit this - looks like not required
@@ -713,10 +712,16 @@ const Practice = () => {
               "mechanic_1")
             ? 500
             : stringLengths[0];
-        window.parent.postMessage({ type: "stringLengths", length }, window?.location?.ancestorOrigins?.[0] || window.parent.location.origin);
+        window.parent.postMessage(
+          { type: "stringLengths", length },
+          window?.location?.ancestorOrigins?.[0] ||
+            window.parent.location.origin
+        );
       }
     }
   }, [questions[currentQuestion]]);
+
+  console.log(mechanism);
 
   const renderMechanics = () => {
     if (!mechanism) {
