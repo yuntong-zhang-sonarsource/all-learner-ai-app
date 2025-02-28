@@ -721,8 +721,6 @@ const Practice = () => {
     }
   }, [questions[currentQuestion]]);
 
-  console.log(mechanism);
-
   const renderMechanics = () => {
     if (!mechanism) {
       return (
