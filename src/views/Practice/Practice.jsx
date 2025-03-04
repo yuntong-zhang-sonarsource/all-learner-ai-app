@@ -195,9 +195,7 @@ const Practice = () => {
       let newQuestionIndex =
         currentQuestion === questions.length - 1 ? 0 : currentQuestion + 1;
 
-      const currentGetContent = levelGetContent[getLocalData("lang") || "en"]?.[
-        level
-      ]?.find((elem) => elem.title === practiceSteps?.[newPracticeStep]?.name);
+      const currentGetContent = getCurrentContent(newPracticeStep);
 
       if (currentQuestion === questions.length - 1 || isGameOver) {
         let currentPracticeStep = practiceProgress.currentPracticeStep;
@@ -430,9 +428,7 @@ const Practice = () => {
         currentPracticeStep: userState || 0,
       };
 
-      const currentGetContent = levelGetContent[getLocalData("lang") || "en"]?.[
-        level
-      ]?.find((elem) => elem.title === practiceSteps?.[userState].name);
+      const currentGetContent = getCurrentContent(userState);
 
       const resWord = await getContent(
         currentGetContent.criteria,
@@ -496,6 +492,13 @@ const Practice = () => {
     setLocalData("mechanism_id", (mechanism && mechanism.id) || "");
   }, [mechanism]);
 
+  const getCurrentContent = (stepKey) => {
+    const lang = getLocalData("lang") || "en";
+    return levelGetContent[lang]?.[level]?.find(
+      (elem) => elem.title === practiceSteps?.[stepKey]?.name
+    );
+  };
+
   const handleBack = async () => {
     if (progressData.currentPracticeStep > 0) {
       const virtualId = getLocalData("virtualId");
@@ -524,11 +527,7 @@ const Practice = () => {
 
       setProgressData(practiceProgress);
 
-      const currentGetContent = levelGetContent[getLocalData("lang") || "en"]?.[
-        level
-      ]?.find(
-        (elem) => elem.title === practiceSteps?.[newCurrentPracticeStep].name
-      );
+      const currentGetContent = getCurrentContent(newCurrentPracticeStep);
 
       let quesArr = [];
 

@@ -574,7 +574,7 @@ const Assesment = ({ discoverStart }) => {
     // setLevel(level);
     setLocalData("lang", lang);
     let contentSessionId = localStorage.getItem("contentSessionId");
-    getLocalData("sessionId", contentSessionId);
+    setLocalData("sessionId", contentSessionId);
     // const TOKEN = localStorage.getItem("apiToken");
     // let virtualId;
     // if (TOKEN) {
