@@ -169,7 +169,7 @@ const Practice = () => {
       const virtualId = getLocalData("virtualId");
       const sessionId = getLocalData("sessionId");
 
-      let practiceProgress = JSON.parse(getLocalData("practiceProgress"));
+      let practiceProgress = getLocalData("practiceProgress");
 
       practiceProgress = practiceProgress ? JSON.parse(practiceProgress) : {};
 
@@ -421,7 +421,7 @@ const Practice = () => {
         : 0;
 
       // TODO: revisit this - looks like not required
-      let practiceProgress = JSON.parse(getLocalData("practiceProgress"));
+      let practiceProgress = getLocalData("practiceProgress");
       practiceProgress = practiceProgress ? JSON.parse(practiceProgress) : {};
 
       practiceProgress = {
