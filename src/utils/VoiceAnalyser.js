@@ -358,7 +358,8 @@ function VoiceAnalyser(props) {
 
       // TODO: Remove false when REACT_APP_AWS_S3_BUCKET_NAME and keys added
       var audioFileName = "";
-      if (process.env.REACT_APP_CAPTURE_AUDIO === "true" && false) {
+      if (process.env.REACT_APP_CAPTURE_AUDIO === "true") {
+        console.log("capturing audio...")
         let getContentId = currentLine;
         audioFileName = `${process.env.REACT_APP_CHANNEL
           }/${sessionId}-${Date.now()}-${getContentId}.wav`;
