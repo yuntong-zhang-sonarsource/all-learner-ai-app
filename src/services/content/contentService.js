@@ -6,12 +6,12 @@ const API_BASE_URL_CONTENT_SERVICE =
   process.env.REACT_APP_CONTENT_SERVICE_APP_HOST;
 
 const getHeaders = () => {
-  const token = getLocalData("apiToken");
+  const token = localStorage.getItem("apiToken");
   return {
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   };
 };
 

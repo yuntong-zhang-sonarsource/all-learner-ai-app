@@ -2,6 +2,7 @@ import { CsTelemetryModule } from "@project-sunbird/client-services/telemetry";
 
 import { uniqueId } from "./utilService";
 import { jwtDecode } from "../../node_modules/jwt-decode/build/cjs/index";
+import { getLocalData } from "../utils/constants";
 
 let startTime; // Variable to store the timestamp when the start event is raised
 let contentSessionId;
@@ -266,7 +267,7 @@ export const getEventOptions = () => {
         },
         { id: playSessionId, type: "PlaySession" },
         { id: userId, type: userType },
-        { id: localStorage.getItem("lang") || "ta", type: "language" },
+        { id: getLocalData("lang") || "ta", type: "language" },
         { id: userDetails?.school_name, type: "school_name" },
         {
           id: userDetails?.class_studying_id,

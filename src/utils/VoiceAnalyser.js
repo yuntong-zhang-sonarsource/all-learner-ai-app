@@ -363,7 +363,7 @@ function VoiceAnalyser(props) {
         sub_session_id,
         contentId,
         contentType,
-        mechanics_id: localStorage.getItem("mechanism_id") || "",
+        mechanics_id: getLocalData("mechanism_id") || "",
       };
 
       if (props.selectedOption) {

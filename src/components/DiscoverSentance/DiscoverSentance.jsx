@@ -118,7 +118,8 @@ const SpeakSentenceComponent = () => {
         {
           score: score,
           message: "all-test-rig-score",
-        }, window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
+        },
+        window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
       );
     }
   };
@@ -279,7 +280,7 @@ const SpeakSentenceComponent = () => {
         setTotalSyllableCount(resPagination?.totalSyllableCount);
         setCurrentCollectionId(sentences?.collectionId);
         setAssessmentResponse(resAssessment);
-        localStorage.setItem("storyTitle", sentences?.name);
+        setLocalData("storyTitle", sentences?.name);
         quesArr = [...quesArr, ...(resPagination?.data || [])];
         setQuestions(quesArr);
       } catch (error) {

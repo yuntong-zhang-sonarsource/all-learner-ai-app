@@ -4,6 +4,7 @@ import { Container, Typography, TextField, Button, Grid } from "@mui/material";
 import { fetchVirtualId } from "../../services/userservice/userService";
 import { jwtDecode } from "jwt-decode";
 import "./LoginPage.css"; // Import the CSS file
+import { setLocalData } from "../../utils/constants";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const LoginPage = () => {
       localStorage.setItem("apiToken", token);
       // const tokenDetails = jwtDecode(token);
       if (token) {
-        localStorage.setItem("profileName", username);
+        setLocalData("profileName", username);
         navigate("/discover-start");
       } else {
         alert("Enter correct username and password");
