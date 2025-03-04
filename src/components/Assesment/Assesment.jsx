@@ -573,9 +573,8 @@ const Assesment = ({ discoverStart }) => {
     // const level = getLocalData('userLevel');
     // setLevel(level);
     setLocalData("lang", lang);
-    dispatch(setVirtualId(localStorage.getItem("virtualId")));
     let contentSessionId = localStorage.getItem("contentSessionId");
-    localStorage.setItem("sessionId", contentSessionId);
+    setLocalData("sessionId", contentSessionId);
     // const TOKEN = localStorage.getItem("apiToken");
     // let virtualId;
     // if (TOKEN) {
@@ -589,19 +588,19 @@ const Assesment = ({ discoverStart }) => {
         const usernameDetails = await fetchVirtualId(username);
         const getMilestoneDetails = await getFetchMilestoneDetails(lang);
 
-        localStorage.setItem(
+        setLocalData(
           "getMilestone",
           JSON.stringify({ ...getMilestoneDetails })
         );
         setLevel(getMilestoneDetails?.data?.milestone_level?.replace("m", ""));
-        let session_id = localStorage.getItem("sessionId");
+        let session_id = getLocalData("sessionId");
 
         if (!session_id) {
           session_id = uniqueId();
-          localStorage.setItem("sessionId", session_id);
+          setLocalData("sessionId", session_id);
         }
 
-        localStorage.setItem("lang", lang || "ta");
+        setLocalData("lang", lang || "ta");
         if (
           process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
           localStorage.getItem("contentSessionId") !== null
@@ -622,7 +621,7 @@ const Assesment = ({ discoverStart }) => {
       (async () => {
         const language = lang;
         const getMilestoneDetails = await getFetchMilestoneDetails(language);
-        localStorage.setItem(
+        setLocalData(
           "getMilestone",
           JSON.stringify({ ...getMilestoneDetails })
         );
@@ -633,7 +632,7 @@ const Assesment = ({ discoverStart }) => {
 
         if (!sessionId || sessionId === "null") {
           sessionId = uniqueId();
-          localStorage.setItem("sessionId", sessionId);
+          setLocalData("sessionId", sessionId);
         }
 
         if (

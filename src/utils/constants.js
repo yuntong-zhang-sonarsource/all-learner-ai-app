@@ -1,12 +1,16 @@
 import confetti from "canvas-confetti";
 import * as React from "react";
+import CryptoJS from "crypto-js";
 
 export const getLocalData = (item) => {
-  return localStorage.getItem(item);
+  const decryptValue = localStorage.getItem(item);
+  if (!decryptValue) return null;
+  return handleDecrypt(decryptValue);
 };
 
 export const setLocalData = (item, value) => {
-  return localStorage.setItem(item, value);
+  const encryptValue = handleEncrypt(value);
+  return localStorage.setItem(item, encryptValue);
 };
 
 export function replaceAll(string, search, replace) {
@@ -2996,8 +3000,7 @@ export const AssesmentCompletePlane = (props) => (
 
 export const Diamond = (props) => {
   const milestone =
-    JSON.parse(localStorage.getItem("getMilestone")).data?.milestone_level ||
-    "m1";
+    JSON.parse(getLocalData("getMilestone")).data?.milestone_level || "m1";
 
   // Define color mapping for each milestone
   const colorMap = {
@@ -4324,4 +4327,42 @@ export const randomizeArray = (arr) => {
     wordsArr[j] = k;
   }
   return wordsArr;
+};
+
+export function handleEncrypt(value) {
+  const API_SECRET_KEY = localStorage.getItem("apiToken");
+  try {
+    var ciphertext = CryptoJS.AES.encrypt(
+      JSON.stringify(value),
+      API_SECRET_KEY
+    ).toString();
+    return ciphertext;
+  } catch (error) {
+    console.error("Crypto operation failed:", error.message);
+    return null;
+  }
+}
+
+export function handleDecrypt(value) {
+  const API_SECRET_KEY = localStorage.getItem("apiToken");
+  try {
+    var bytes = CryptoJS.AES.decrypt(value, API_SECRET_KEY);
+    var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    return decryptedData;
+  } catch (error) {
+    console.error("Crypto operation failed:", error.message);
+    return null;
+  }
+}
+
+export const sendTestRigScore = (score) => {
+  if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+    window.parent.postMessage(
+      {
+        score,
+        message: "all-test-rig-score",
+      },
+      window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
+    );
+  }
 };

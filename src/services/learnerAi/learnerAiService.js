@@ -6,7 +6,7 @@ import { getVirtualId } from "../userservice/userService";
 const API_LEARNER_AI_APP_HOST = process.env.REACT_APP_LEARNER_AI_APP_HOST;
 
 const getHeaders = () => {
-  const token = getLocalData("apiToken");
+  const token = localStorage.getItem("apiToken");
   return {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -33,7 +33,7 @@ export const getContent = async (criteria, lang, limit, options = {}) => {
 };
 
 export const getFetchMilestoneDetails = async (lang) => {
-  if (getLocalData("apiToken")) {
+  if (localStorage.getItem("apiToken")) {
     try {
       const response = await axios.get(
         `${API_LEARNER_AI_APP_HOST}/${config.URLS.GET_MILESTONE}?language=${lang}`,
@@ -53,7 +53,7 @@ export const fetchGetSetResult = async (
   currentCollectionId,
   totalSyllableCount
 ) => {
-  const session_id = localStorage.getItem("sessionId");
+  const session_id = getLocalData("sessionId");
   const lang = getLocalData("lang");
 
   try {
@@ -91,7 +91,7 @@ export const getSetResultPractice = async ({
         contentType: currentContentType,
         session_id: sessionId,
         totalSyllableCount: totalSyllableCount,
-        language: localStorage.getItem("lang"),
+        language: getLocalData("lang"),
         is_mechanics: mechanism && mechanism?.id ? true : false,
       },
       getHeaders()

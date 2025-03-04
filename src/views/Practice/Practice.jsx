@@ -9,6 +9,7 @@ import {
   getLocalData,
   levelGetContent,
   practiceSteps,
+  sendTestRigScore,
   setLocalData,
 } from "../../utils/constants";
 import axios from "axios";
@@ -131,18 +132,6 @@ const Practice = () => {
     }
   }, [voiceText]);
 
-  const send = (score) => {
-    if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-      window.parent.postMessage(
-        {
-          score: score,
-          message: "all-test-rig-score",
-        },
-        window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
-      );
-    }
-  };
-
   const checkFluency = (contentType, fluencyScore) => {
     switch (contentType.toLowerCase()) {
       case "word":
@@ -176,8 +165,8 @@ const Practice = () => {
       let currentPracticeStep = "";
       let currentPracticeProgress = "";
 
-      if (practiceProgress?.[virtualId]) {
-        currentPracticeStep = practiceProgress[virtualId].currentPracticeStep;
+      if (practiceProgress) {
+        currentPracticeStep = practiceProgress.currentPracticeStep;
         currentPracticeProgress = Math.round(
           ((currentQuestion + 1 + currentPracticeStep * limit) /
             (practiceSteps.length * limit)) *
@@ -195,21 +184,16 @@ const Practice = () => {
       let newQuestionIndex =
         currentQuestion === questions.length - 1 ? 0 : currentQuestion + 1;
 
-      const currentGetContent = levelGetContent[
-        localStorage.getItem("lang") || "en"
-      ]?.[level]?.find(
-        (elem) => elem.title === practiceSteps?.[newPracticeStep]?.name
-      );
+      const currentGetContent = getCurrentContent(newPracticeStep);
 
       if (currentQuestion === questions.length - 1 || isGameOver) {
-        let currentPracticeStep =
-          practiceProgress[virtualId].currentPracticeStep;
+        let currentPracticeStep = practiceProgress.currentPracticeStep;
         let isShowCase = currentPracticeStep === 4 || currentPracticeStep === 9; // P4 or P8
 
         if (localStorage.getItem("contentSessionId") !== null) {
           setPoints(1);
           if (isShowCase) {
-            send(5);
+            sendTestRigScore(5);
           }
         } else {
           let points = 1;
@@ -318,14 +302,14 @@ const Practice = () => {
         setCurrentQuestion(0);
 
         // TODO: not required - we are geting this data from API
-        practiceProgress[virtualId] = {
+        practiceProgress = {
           currentQuestion: newQuestionIndex,
           currentPracticeProgress,
           currentPracticeStep: newPracticeStep,
         };
         setLocalData("practiceProgress", JSON.stringify(practiceProgress));
-        setProgressData(practiceProgress[virtualId]);
-        localStorage.setItem("storyTitle", resGetContent?.name);
+        setProgressData(practiceProgress);
+        setLocalData("storyTitle", resGetContent?.name);
 
         setQuestions(quesArr);
 
@@ -336,13 +320,13 @@ const Practice = () => {
       } else if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
 
-        practiceProgress[virtualId] = {
+        practiceProgress = {
           currentQuestion: newQuestionIndex,
           currentPracticeProgress,
           currentPracticeStep: newPracticeStep,
         };
         setLocalData("practiceProgress", JSON.stringify(practiceProgress));
-        setProgressData(practiceProgress[virtualId]);
+        setProgressData(practiceProgress);
       }
     } catch (error) {
       console.error(error);
@@ -388,12 +372,11 @@ const Practice = () => {
 
       if (!sessionId) {
         sessionId = uniqueId();
-        localStorage.setItem("sessionId", sessionId);
+        setLocalData("sessionId", sessionId);
       }
       const getMilestoneDetails = await getFetchMilestoneDetails(lang);
 
       // TODO: validate the getMilestoneDetails API return
-
       setLocalData("getMilestone", JSON.stringify({ ...getMilestoneDetails }));
 
       let level =
@@ -428,17 +411,13 @@ const Practice = () => {
       let practiceProgress = getLocalData("practiceProgress");
       practiceProgress = practiceProgress ? JSON.parse(practiceProgress) : {};
 
-      practiceProgress[virtualId] = {
+      practiceProgress = {
         currentQuestion: 0,
         currentPracticeProgress: (userState / practiceSteps.length) * 100,
         currentPracticeStep: userState || 0,
       };
 
-      const currentGetContent = levelGetContent[
-        localStorage.getItem("lang") || "en"
-      ]?.[level]?.find(
-        (elem) => elem.title === practiceSteps?.[userState].name
-      );
+      const currentGetContent = getCurrentContent(userState);
 
       const resWord = await getContent(
         currentGetContent.criteria,
@@ -467,7 +446,7 @@ const Practice = () => {
       setCurrentCollectionId(resWord?.content?.[0]?.collectionId);
       setAssessmentResponse(resWord);
 
-      localStorage.setItem("storyTitle", resWord?.name);
+      setLocalData("storyTitle", resWord?.name);
 
       setQuestions(quesArr);
       setMechanism(currentGetContent.mechanism);
@@ -484,10 +463,9 @@ const Practice = () => {
           milestoneLevel: `m${level}`,
         });
       }
-
-      setCurrentQuestion(practiceProgress[virtualId]?.currentQuestion || 0);
+      setCurrentQuestion(practiceProgress?.currentQuestion || 0);
       setLocalData("practiceProgress", JSON.stringify(practiceProgress));
-      setProgressData(practiceProgress[virtualId]);
+      setProgressData(practiceProgress);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -500,8 +478,15 @@ const Practice = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("mechanism_id", (mechanism && mechanism.id) || "");
+    setLocalData("mechanism_id", (mechanism && mechanism.id) || "");
   }, [mechanism]);
+
+  const getCurrentContent = (stepKey) => {
+    const lang = getLocalData("lang") || "en";
+    return levelGetContent[lang]?.[level]?.find(
+      (elem) => elem.title === practiceSteps?.[stepKey]?.name
+    );
+  };
 
   const handleBack = async () => {
     if (progressData.currentPracticeStep > 0) {
@@ -513,7 +498,7 @@ const Practice = () => {
         progressData.currentPracticeStep === 5
           ? 3
           : progressData.currentPracticeStep - 1;
-      practiceProgress[virtualId] = {
+      practiceProgress = {
         currentQuestion: 0,
         currentPracticeProgress:
           (newCurrentPracticeStep / practiceSteps.length) * 100,
@@ -529,13 +514,9 @@ const Practice = () => {
         milestoneLevel: `m${level}`,
       });
 
-      setProgressData(practiceProgress[virtualId]);
+      setProgressData(practiceProgress);
 
-      const currentGetContent = levelGetContent[
-        localStorage.getItem("lang") || "en"
-      ]?.[level]?.find(
-        (elem) => elem.title === practiceSteps?.[newCurrentPracticeStep].name
-      );
+      const currentGetContent = getCurrentContent(newCurrentPracticeStep);
 
       let quesArr = [];
 
@@ -563,12 +544,12 @@ const Practice = () => {
       setCurrentCollectionId(resWord?.content?.[0]?.collectionId);
       setAssessmentResponse(resWord);
 
-      localStorage.setItem("storyTitle", resWord?.name);
+      setLocalData("storyTitle", resWord?.name);
       setQuestions(quesArr);
       setTimeout(() => {
         setMechanism(currentGetContent.mechanism);
       }, 1000);
-      setCurrentQuestion(practiceProgress[virtualId]?.currentQuestion || 0);
+      setCurrentQuestion(practiceProgress?.currentQuestion || 0);
       setLocalData("practiceProgress", JSON.stringify(practiceProgress));
     } else {
       if (process.env.REACT_APP_IS_APP_IFRAME === "true") {

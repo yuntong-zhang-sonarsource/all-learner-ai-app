@@ -81,32 +81,32 @@ const App = () => {
     };
   }, []);
 
-  useEffect(() => {
-    axios.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (error.response && error.response.status === 401) {
-          if (error?.response?.data?.error === "Unauthorized") {
-            if (
-              localStorage.getItem("contentSessionId") &&
-              process.env.REACT_APP_IS_APP_IFRAME === "true"
-            ) {
-              window.parent.postMessage(
-                {
-                  message: "Unauthorized",
-                }, window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
-              );
-            } else {
-              localStorage.clear();
-              sessionStorage.clear();
-              navigate("/login");
-            }
+  axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response && error.response.status === 401) {
+        if (error?.response?.data?.error === "Unauthorized") {
+          if (
+            localStorage.getItem("contentSessionId") &&
+            process.env.REACT_APP_IS_APP_IFRAME === "true"
+          ) {
+            window.parent.postMessage(
+              {
+                message: "Unauthorized",
+              },
+              window?.location?.ancestorOrigins?.[0] ||
+                window.parent.location.origin
+            );
+          } else {
+            localStorage.clear();
+            sessionStorage.clear();
+            navigate("/login");
           }
         }
-        return Promise.reject(error);
       }
-    );
-  }, []);
+      return Promise.reject(error);
+    }
+  );
 
   return (
     <StyledEngineProvider injectFirst>

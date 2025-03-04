@@ -7,7 +7,7 @@ const API_BASE_URL_ORCHESTRATION =
   process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST;
 
 const getHeaders = () => {
-  const token = getLocalData("apiToken");
+  const token = localStorage.getItem("apiToken");
   return {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ export const fetchUserPoints = async () => {
 };
 
 export const addPointer = async (points, milestone) => {
-  const sessionId = localStorage.getItem("sessionId");
+  const sessionId = getLocalData("sessionId");
   const lang = getLocalData("lang");
 
   try {
@@ -72,8 +72,8 @@ export const createLearnerProgress = async (
   milestoneLevel,
   totalSyllableCount
 ) => {
-  const sessionId = localStorage.getItem("sessionId");
-  const language = localStorage.getItem("lang");
+  const sessionId = getLocalData("sessionId");
+  const language = getLocalData("lang");
 
   try {
     const requestBody = {
