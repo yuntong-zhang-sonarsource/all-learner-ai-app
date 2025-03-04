@@ -9,6 +9,7 @@ import {
   getLocalData,
   levelGetContent,
   practiceSteps,
+  sendTestRigScore,
   setLocalData,
 } from "../../utils/constants";
 import axios from "axios";
@@ -131,18 +132,6 @@ const Practice = () => {
     }
   }, [voiceText]);
 
-  const send = (score) => {
-    if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-      window.parent.postMessage(
-        {
-          score: score,
-          message: "all-test-rig-score",
-        },
-        window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
-      );
-    }
-  };
-
   const checkFluency = (contentType, fluencyScore) => {
     switch (contentType.toLowerCase()) {
       case "word":
@@ -204,7 +193,7 @@ const Practice = () => {
         if (localStorage.getItem("contentSessionId") !== null) {
           setPoints(1);
           if (isShowCase) {
-            send(5);
+            sendTestRigScore(5);
           }
         } else {
           let points = 1;

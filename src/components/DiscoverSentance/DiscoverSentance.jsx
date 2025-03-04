@@ -5,6 +5,7 @@ import elephant from "../../assets/images/elephant.svg";
 import {
   callConfetti,
   getLocalData,
+  sendTestRigScore,
   setLocalData,
 } from "../../utils/constants";
 import WordsOrImage from "../Mechanism/WordsOrImage";
@@ -112,18 +113,6 @@ const SpeakSentenceComponent = () => {
     //eslint-disable-next-line
   }, [voiceText]);
 
-  const send = (score) => {
-    if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-      window.parent.postMessage(
-        {
-          score: score,
-          message: "all-test-rig-score",
-        },
-        window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
-      );
-    }
-  };
-
   const handleNext = async () => {
     setIsNextButtonCalled(true);
     setEnableNext(false);
@@ -165,7 +154,7 @@ const SpeakSentenceComponent = () => {
             console.error("Error adding points:", error);
           }
         } else {
-          send(5);
+          sendTestRigScore(5);
           // setPoints(localStorage.getItem("currentLessonScoreCount"));
         }
 

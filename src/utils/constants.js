@@ -4354,3 +4354,15 @@ export function handleDecrypt(value) {
     return null;
   }
 }
+
+export const sendTestRigScore = (score) => {
+  if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+    window.parent.postMessage(
+      {
+        score,
+        message: "all-test-rig-score",
+      },
+      window?.location?.ancestorOrigins?.[0] || window.parent.location.origin
+    );
+  }
+};
