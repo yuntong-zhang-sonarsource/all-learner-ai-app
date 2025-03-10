@@ -214,9 +214,10 @@ const SpeakSentenceComponent = () => {
             navigate("/discover-end");
           }
           const newSentencePassedCounter = sentencePassedCounter + 1;
-          const sentences = assessmentResponse?.data?.data?.filter(
-            (elem) => elem.category === "Sentence"
-          );
+          const sentences =
+            assessmentResponse?.data?.contentCollection?.data?.filter(
+              (elem) => elem.category === "Sentence"
+            );
           const resSentencesPagination = await axios.get(
             `${process.env.REACT_APP_CONTENT_SERVICE_APP_HOST}/${config.URLS.GET_PAGINATION}?page=1&limit=5&collectionId=${sentences?.[newSentencePassedCounter]?.collectionId}`
           );
@@ -240,7 +241,7 @@ const SpeakSentenceComponent = () => {
           if (getSetData.data.currentLevel !== "m0") {
             navigate("/discover-end");
           }
-          const words = assessmentResponse?.data?.data?.find(
+          const words = assessmentResponse?.data?.contentCollection?.data?.find(
             (elem) => elem.category === "Word"
           );
           const resWordsPagination = await axios.get(
@@ -295,8 +296,7 @@ const SpeakSentenceComponent = () => {
             ...{ tags: ["ASER"], language: lang },
           }
         );
-
-        const sentences = resAssessment?.data?.data?.find(
+        const sentences = resAssessment?.data?.contentCollection?.data?.find(
           (elem) => elem.category === "Sentence"
         );
 
