@@ -620,7 +620,23 @@ const Assesment = ({ discoverStart }) => {
           levelMapping[usernameDetails?.data?.result?.virtualID] !== undefined
         ) {
           setLevel(levelMapping[usernameDetails?.data?.result?.virtualID]);
+        } else {
+          const token = getLocalData("token");
+          if (token) {
+            try {
+              const decoded = jwtDecode(token);
+              const emisUsername = String(decoded.emis_username);
+
+              if (levelMapping[emisUsername] !== undefined) {
+                setLevel(levelMapping[emisUsername]);
+              }
+            } catch (error) {
+              console.error("Error decoding JWT token:", error);
+            }
+          }
         }
+
+        console.log("Assigned LEVEL:", level);
 
         localStorage.setItem(
           "virtualId",
@@ -693,7 +709,23 @@ const Assesment = ({ discoverStart }) => {
 
         if (levelMapping[virtualId] !== undefined) {
           setLevel(levelMapping[virtualId]);
+        } else {
+          const token = getLocalData("token");
+          if (token) {
+            try {
+              const decoded = jwtDecode(token);
+              const emisUsername = String(decoded.emis_username);
+
+              if (levelMapping[emisUsername] !== undefined) {
+                setLevel(levelMapping[emisUsername]);
+              }
+            } catch (error) {
+              console.error("Error decoding JWT token:", error);
+            }
+          }
         }
+
+        console.log("Assigned LEVEL:", level);
 
         let sessionId = getLocalData("sessionId");
 

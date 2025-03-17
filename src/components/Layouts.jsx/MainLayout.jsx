@@ -48,6 +48,7 @@ import gameLoseAudio from "../../assets/audio/gameLose.wav";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { levelMapping } from "../../utils/levelData";
+import { jwtDecode } from "jwt-decode";
 
 const MainLayout = (props) => {
   const levelsImages = {
@@ -146,7 +147,23 @@ const MainLayout = (props) => {
 
   if (levelMapping[virtualId] !== undefined) {
     LEVEL = levelMapping[virtualId];
+  } else {
+    const token = getLocalData("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const emisUsername = String(decoded.emis_username);
+
+        if (levelMapping[emisUsername] !== undefined) {
+          LEVEL = levelMapping[emisUsername];
+        }
+      } catch (error) {
+        console.error("Error decoding JWT token:", error);
+      }
+    }
   }
+
+  console.log("Assigned LEVEL:", LEVEL);
 
   const {
     handleNext,

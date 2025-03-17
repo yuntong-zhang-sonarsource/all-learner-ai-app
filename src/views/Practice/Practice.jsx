@@ -36,6 +36,7 @@ import * as Assets from "../../utils/imageAudioLinks";
 import { PutBucketInventoryConfigurationRequestFilterSensitiveLog } from "@aws-sdk/client-s3";
 import usePreloadAudio from "../../hooks/usePreloadAudio";
 import { levelMapping } from "../../utils/levelData";
+import { jwtDecode } from "jwt-decode";
 
 const Practice = () => {
   const [page, setPage] = useState("");
@@ -494,9 +495,37 @@ const Practice = () => {
 
       if (levelMapping[virtualId] !== undefined) {
         setLevel(levelMapping[virtualId]);
+      } else {
+        const token = getLocalData("token");
+        if (token) {
+          try {
+            const decoded = jwtDecode(token);
+            const emisUsername = String(decoded.emis_username);
+
+            if (levelMapping[emisUsername] !== undefined) {
+              setLevel(levelMapping[emisUsername]);
+            }
+          } catch (error) {
+            console.error("Error decoding JWT token:", error);
+          }
+        }
       }
 
-      let updatedLevel = levelMapping[virtualId] || 1;
+      console.log("Assigned LEVEL:", level);
+      const token = getLocalData("token");
+      let emisUsername = null;
+
+      if (token) {
+        try {
+          const decoded = jwtDecode(token);
+          emisUsername = String(decoded.emis_username);
+        } catch (error) {
+          console.error("Error decoding JWT token:", error);
+        }
+      }
+
+      let updatedLevel =
+        levelMapping[virtualId] || levelMapping[emisUsername] || 1;
 
       setLevel(updatedLevel);
 
@@ -726,7 +755,23 @@ const Practice = () => {
 
         if (levelMapping[virtualId] !== undefined) {
           setLevel(levelMapping[virtualId]);
+        } else {
+          const token = getLocalData("token");
+          if (token) {
+            try {
+              const decoded = jwtDecode(token);
+              const emisUsername = String(decoded.emis_username);
+
+              if (levelMapping[emisUsername] !== undefined) {
+                setLevel(levelMapping[emisUsername]);
+              }
+            } catch (error) {
+              console.error("Error decoding JWT token:", error);
+            }
+          }
         }
+
+        console.log("Assigned LEVEL:", level);
       } else if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
 
@@ -847,11 +892,48 @@ const Practice = () => {
 
       if (levelMapping[virtualId] !== undefined) {
         setLevel(levelMapping[virtualId]);
+      } else {
+        const token = getLocalData("token");
+        if (token) {
+          try {
+            const decoded = jwtDecode(token);
+            const emisUsername = String(decoded.emis_username);
+
+            if (levelMapping[emisUsername] !== undefined) {
+              setLevel(levelMapping[emisUsername]);
+            }
+          } catch (error) {
+            console.error("Error decoding JWT token:", error);
+          }
+        }
       }
+
+      console.log("Assigned LEVEL:", level);
+
+      const token = getLocalData("token");
+      let emisUsername = null;
+
+      if (token) {
+        try {
+          const decoded = jwtDecode(token);
+          emisUsername = String(decoded.emis_username);
+        } catch (error) {
+          console.error("Error decoding JWT token:", error);
+        }
+      }
+
+      // let updatedLevel =
+      //   levelMapping[virtualId] !== undefined
+      //     ? levelMapping[virtualId]
+      //     : Number(
+      //         getMilestoneDetails?.data?.data?.milestone_level?.replace("m", "")
+      //       ) || 1;
 
       let updatedLevel =
         levelMapping[virtualId] !== undefined
           ? levelMapping[virtualId]
+          : levelMapping[emisUsername] !== undefined
+          ? levelMapping[emisUsername]
           : Number(
               getMilestoneDetails?.data?.data?.milestone_level?.replace("m", "")
             ) || 1;
