@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import * as Assets from "../../utils/imageAudioLinks";
 import Confetti from "react-confetti";
 import { practiceSteps, getLocalData } from "../../utils/constants";
+import r3WrongTick from "../../assets/r3WrongTick.svg";
+import bingoReset from "../../assets/bingoReset.svg";
 import Mic from "../../assets/mic.svg";
 import Stop from "../../assets/stop.svg";
 import Play from "../../assets/playButton.svg";
@@ -71,6 +73,7 @@ const BingoCard = ({
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
+  const [showWrongTick, setShowWrongTick] = useState(true);
 
   const transcriptRef = useRef("");
   useEffect(() => {
@@ -92,6 +95,20 @@ const BingoCard = ({
   const [syllAudios, setSyllAudios] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    let timer;
+    if (showWrongWord) {
+      setShowWrongTick(true);
+      timer = setTimeout(() => {
+        setShowWrongTick(false);
+      }, 2000);
+    } else {
+      setShowWrongTick(true);
+    }
+
+    return () => clearTimeout(timer);
+  }, [showWrongWord]);
 
   const initializeRecognition = () => {
     let recognitionInstance;
@@ -244,6 +261,8 @@ const BingoCard = ({
   }
 
   const currentLevel = practiceSteps?.[currentPracticeStep]?.title || "L1";
+
+  console.log("loggslevel", currentLevel, currentPracticeStep);
 
   useEffect(() => {
     setStartGame(true);
@@ -574,8 +593,8 @@ const BingoCard = ({
         <div
           style={{
             position: "absolute",
-            left: screenWidth < 768 ? "50%" : "270px",
-            bottom: screenWidth < 768 ? "220px" : "308px",
+            left: screenWidth < 768 ? "50%" : "280px",
+            bottom: screenWidth < 768 ? "220px" : "318px",
             width: screenWidth < 768 ? "140px" : "240px",
             height: screenWidth < 768 ? "90px" : "130px",
             zIndex: 1000,
@@ -586,8 +605,8 @@ const BingoCard = ({
             alt="Empty Placeholder"
             style={{
               transform: "translateX(-50%)",
-              width: screenWidth < 768 ? "120px" : "170px",
-              height: screenWidth < 768 ? "90px" : "125px",
+              //width: screenWidth < 768 ? "120px" : "170px",
+              height: screenWidth < 768 ? "90px" : "165px",
               zIndex: 100,
             }}
           />
@@ -731,11 +750,11 @@ const BingoCard = ({
               alt="Empty Placeholder"
               style={{
                 position: "absolute",
-                left: screenWidth < 768 ? "85%" : "65%",
-                top: screenWidth < 768 ? "-19%" : "-7%",
+                left: screenWidth < 768 ? "85%" : "72%",
+                top: screenWidth < 768 ? "-19%" : "-20%",
                 transform: "translateX(-50%)",
-                width: screenWidth < 768 ? "120px" : "170px",
-                height: screenWidth < 768 ? "90px" : "125px",
+                //width: screenWidth < 768 ? "120px" : "170px",
+                height: screenWidth < 768 ? "90px" : "175px",
                 zIndex: 10,
               }}
             />
@@ -764,8 +783,8 @@ const BingoCard = ({
                   src={Assets.hintImg}
                   alt="Hint"
                   style={{
-                    width: screenWidth < 768 ? "40px" : "60px",
-                    height: screenWidth < 768 ? "40px" : "50px",
+                    width: screenWidth < 768 ? "40px" : "50px",
+                    height: screenWidth < 768 ? "40px" : "70px",
                   }}
                 />
               </button>
@@ -796,54 +815,8 @@ const BingoCard = ({
         <div
           style={{
             position: "absolute",
-            display: "flex",
-            flexDirection: "column",
-            gap: "15px",
-            alignItems: "center",
-            left: screenWidth < 768 ? "50%" : "145px",
-            bottom: screenWidth < 768 ? "220px" : "280px",
-            width: screenWidth < 768 ? "140px" : "240px",
-            height: screenWidth < 768 ? "90px" : "130px",
-            zIndex: 1000,
-          }}
-        >
-          <img
-            src={Assets.wrongWordImg}
-            alt="Wrong Word"
-            style={{
-              width: screenWidth < 768 ? "140px" : "190px",
-              height: screenWidth < 768 ? "80px" : "100px",
-              zIndex: 10,
-              transform: screenWidth < 768 ? "translateX(-50%)" : "none",
-            }}
-          />
-          <button
-            style={{
-              border: "none",
-              background: "transparent",
-              cursor: "pointer",
-              zIndex: "5",
-            }}
-            onClick={handleReset}
-          >
-            <img
-              src={Assets.resetImg}
-              alt="Reset"
-              style={{
-                width: screenWidth < 768 ? "40px" : "50px",
-                height: screenWidth < 768 ? "40px" : "50px",
-              }}
-            />
-          </button>
-        </div>
-      )}
-
-      {showHint && !winEffect && (
-        <div
-          style={{
-            position: "absolute",
             left: screenWidth < 768 ? "50%" : "175px",
-            bottom: screenWidth < 768 ? "220px" : "320px",
+            bottom: screenWidth < 768 ? "220px" : "330px",
             width: screenWidth < 768 ? "140px" : "240px",
             height: screenWidth < 768 ? "90px" : "130px",
             zIndex: 1000,
@@ -853,8 +826,45 @@ const BingoCard = ({
             src={Assets.cloudText}
             alt="Cloud"
             style={{
-              width: screenWidth < 768 ? "170px" : "230px",
-              height: screenWidth < 768 ? "85px" : "160px",
+              //width: screenWidth < 768 ? "170px" : "230px",
+              height: screenWidth < 768 ? "85px" : "175px",
+              zIndex: 21,
+            }}
+          />
+          <img
+            src={showWrongTick ? r3WrongTick : bingoReset}
+            alt={showWrongTick ? "Wrong" : "Bingo Reset"}
+            style={{
+              position: "absolute",
+              left: "53%",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+              height: "65px",
+              zIndex: 22,
+              cursor: showWrongTick ? "default" : "pointer",
+            }}
+            onClick={!showWrongTick ? handleReset : undefined}
+          />
+        </div>
+      )}
+
+      {showHint && !winEffect && (
+        <div
+          style={{
+            position: "absolute",
+            left: screenWidth < 768 ? "50%" : "175px",
+            bottom: screenWidth < 768 ? "220px" : "330px",
+            width: screenWidth < 768 ? "140px" : "240px",
+            height: screenWidth < 768 ? "90px" : "130px",
+            zIndex: 1000,
+          }}
+        >
+          <img
+            src={Assets.cloudText}
+            alt="Cloud"
+            style={{
+              //width: screenWidth < 768 ? "170px" : "230px",
+              height: screenWidth < 768 ? "85px" : "175px",
               zIndex: 21,
             }}
           />
@@ -1087,8 +1097,8 @@ const BingoCard = ({
             <div
               key={index}
               style={{
-                width: screenWidth < 768 ? "65px" : "75px",
-                height: screenWidth < 768 ? "65px" : "75px",
+                width: screenWidth < 768 ? "65px" : "80px",
+                height: screenWidth < 768 ? "65px" : "80px",
                 backgroundColor: isCorrectWord
                   ? "#93E908"
                   : selectedWords.includes(word)

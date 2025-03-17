@@ -5,6 +5,14 @@ import Mechanics4 from "../../components/Practice/Mechanics4";
 import Mechanics5 from "../../components/Practice/Mechanics5";
 import BingoCard from "../../components/Practice/BingoCard";
 import SyllablePuzzle from "../../components/Practice/SyllablePuzzle";
+import ReadAloud from "../../components/Practice/ReadAloud";
+import R3 from "../../components/Practice/R3";
+import AskMoreM14 from "../../components/Practice/AskMoreM14";
+import ActOutM13 from "../../components/Practice/ActOutM13";
+import PhoneConversation from "../../components/Practice/PhoneConversation";
+import WhatsMissing from "../../components/Practice/WhatsMissing";
+import ArrangePicture from "../../components/Practice/ArrangePicture";
+import AnouncementFlow from "../../components/Practice/AnouncementFlow";
 import { useNavigate } from "react-router-dom";
 import {
   callConfetti,
@@ -27,6 +35,7 @@ import Mechanics7 from "../../components/Practice/Mechanics7";
 import * as Assets from "../../utils/imageAudioLinks";
 import { PutBucketInventoryConfigurationRequestFilterSensitiveLog } from "@aws-sdk/client-s3";
 import usePreloadAudio from "../../hooks/usePreloadAudio";
+import { levelMapping } from "../../utils/levelData";
 
 const Practice = () => {
   const [page, setPage] = useState("");
@@ -429,7 +438,6 @@ const Practice = () => {
   const handleNext = async (isGameOver) => {
     setIsNextButtonCalled(true);
     setEnableNext(false);
-
     try {
       const lang = getLocalData("lang");
 
@@ -437,6 +445,60 @@ const Practice = () => {
       const sessionId = getLocalData("sessionId");
 
       let practiceProgress = getLocalData("practiceProgress");
+
+      //     if(virtualId === "6760800019"){
+      //       setLevel(12);
+      //       //setMechanism({ id: "read_aloud", name: "readAloud" });
+      //     }
+
+      //     if(virtualId === "1621936833"){
+      //       setLevel(13);
+      //     }
+      //     if(virtualId === "9526496994"){
+      //       setLevel(14);
+      //     }
+      //     if(virtualId === "7656513916"){
+      //       setLevel(4);
+      //     }
+      //     if(virtualId === "3464419415"){
+      //       setLevel(5);
+      //     }
+      //     if(virtualId === "6131132191"){
+      //       setLevel(6);
+      //     }
+      //     if(virtualId === "8909322850"){
+      //       setLevel(7);
+      //     }
+      //     if(virtualId === "9620863046"){
+      //       setLevel(10);
+      //     }
+
+      //     let updatedLevel =
+      // virtualId === "6760800019"
+      //   ? 12
+      //   : virtualId === "1621936833"
+      //   ? 13
+      //   : virtualId === "7656513916"
+      //   ? 4
+      //   : virtualId === "3464419415"
+      //   ? 5
+      //   : virtualId === "6131132191"
+      //   ? 6
+      //   : virtualId === "8909322850"
+      //   ? 7
+      //   : virtualId === "9526496994"
+      //   ? 14
+      //   : virtualId === "9620863046"
+      //   ? 10
+      //   : 1;
+
+      if (levelMapping[virtualId] !== undefined) {
+        setLevel(levelMapping[virtualId]);
+      }
+
+      let updatedLevel = levelMapping[virtualId] || 1;
+
+      setLevel(updatedLevel);
 
       practiceProgress = practiceProgress ? JSON.parse(practiceProgress) : {};
 
@@ -467,6 +529,12 @@ const Practice = () => {
       ]?.[level]?.find(
         (elem) => elem.title === practiceSteps?.[newPracticeStep]?.name
       );
+
+      console.log("cq", currentQuestion, questions, isGameOver, updatedLevel);
+
+      // if(updatedLevel === 14){
+      //   setCurrentQuestion(currentQuestion + 1);
+      // }else{
 
       if (currentQuestion === questions.length - 1 || isGameOver) {
         let currentPracticeStep =
@@ -630,6 +698,35 @@ const Practice = () => {
         setTimeout(() => {
           setMechanism(currentGetContent.mechanism);
         }, 1000);
+
+        // if(virtualId === "6760800019"){
+        //   setLevel(12);
+        //   //setMechanism({ id: "read_aloud", name: "readAloud" });
+        // }
+
+        // if(virtualId === "1621936833"){
+        //   setLevel(13);
+        //   setMechanism({ id: "r3", name: "r3" });
+        // }
+        // if(virtualId === "9526496994"){
+        //   setLevel(14);
+        // }
+        // if(virtualId === "7656513916"){
+        //   setLevel(4);
+        // }
+        // if(virtualId === "3464419415"){
+        //   setLevel(5);
+        // }
+        // if(virtualId === "6131132191"){
+        //   setLevel(6);
+        // }
+        // if(virtualId === "8909322850"){
+        //   setLevel(7);
+        // }
+
+        if (levelMapping[virtualId] !== undefined) {
+          setLevel(levelMapping[virtualId]);
+        }
       } else if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
 
@@ -704,7 +801,62 @@ const Practice = () => {
           getMilestoneDetails?.data.data?.milestone_level?.replace("m", "")
         ) || 1;
 
+      //console.log('lvl', level);
+
       setLevel(level);
+
+      // if(virtualId === "6760800019"){
+      //   setLevel("12");
+      // }
+
+      // if(virtualId === "1621936833"){
+      //   setLevel(13);
+      // }
+      // if(virtualId === "9526496994"){
+      //   setLevel(14);
+      // }
+      // if(virtualId === "7656513916"){
+      //   setLevel(4);
+      // }
+      // if(virtualId === "3464419415"){
+      //   setLevel(5);
+      // }
+      // if(virtualId === "6131132191"){
+      //   setLevel(6);
+      // }
+      // if(virtualId === "8909322850"){
+      //   setLevel(7);
+      // }
+
+      //     let updatedLevel =
+      // virtualId === "6760800019"
+      //   ? 12
+      //   : virtualId === "1621936833"
+      //   ? 13
+      //   : virtualId === "7656513916"
+      //   ? 4
+      //   : virtualId === "3464419415"
+      //   ? 5
+      //   : virtualId === "6131132191"
+      //   ? 6
+      //   : virtualId === "8909322850"
+      //   ? 7
+      //   : virtualId === "9526496994"
+      //   ? 14
+      //   : Number(getMilestoneDetails?.data.data?.milestone_level?.replace("m", "")) || 1;
+
+      if (levelMapping[virtualId] !== undefined) {
+        setLevel(levelMapping[virtualId]);
+      }
+
+      let updatedLevel =
+        levelMapping[virtualId] !== undefined
+          ? levelMapping[virtualId]
+          : Number(
+              getMilestoneDetails?.data?.data?.milestone_level?.replace("m", "")
+            ) || 1;
+
+      setLevel(updatedLevel);
 
       const resLessons = await axios.get(
         `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_LESSON_PROGRESS_BY_ID}/${virtualId}?language=${lang}`
@@ -742,9 +894,11 @@ const Practice = () => {
 
       const currentGetContent = levelGetContent[
         localStorage.getItem("lang") || "en"
-      ]?.[level]?.find(
+      ]?.[updatedLevel]?.find(
         (elem) => elem.title === practiceSteps?.[userState].name
       );
+
+      console.log("crg", currentGetContent, level, virtualId, updatedLevel);
 
       const resWord = await axios.get(
         `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
@@ -781,6 +935,14 @@ const Practice = () => {
 
       setQuestions(quesArr);
       setMechanism(currentGetContent.mechanism);
+
+      // if (virtualId === "6760800019" || level == 12) {
+      //   //setMechanism({ id: "read_aloud", name: "readAloud" });
+      // }
+
+      // if (virtualId === "1621936833" || level == 13) {
+      //   setMechanism({ id: "r3", name: "r3" });
+      // }
 
       let showcaseLevel = userState === 4 || userState === 9;
       setIsShowCase(showcaseLevel);
@@ -888,6 +1050,15 @@ const Practice = () => {
       setTimeout(() => {
         setMechanism(currentGetContent.mechanism);
       }, 1000);
+
+      // if (virtualId === "6760800019" || level == 12) {
+      //   //setMechanism({ id: "read_aloud", name: "readAloud" });
+      // }
+
+      // if (virtualId === "1621936833" || level == 13) {
+      //   setMechanism({ id: "r3", name: "r3" });
+      // }
+
       setCurrentQuestion(practiceProgress[virtualId]?.currentQuestion || 0);
       setLocalData("practiceProgress", JSON.stringify(practiceProgress));
     } else {
@@ -1037,6 +1208,8 @@ const Practice = () => {
       }
     }
   }, [questions[currentQuestion]]);
+
+  console.log("mec", mechanism, level);
 
   const renderMechanics = () => {
     if (!mechanism) {
@@ -1453,6 +1626,358 @@ const Practice = () => {
             setOpenMessageDialog,
             isNextButtonCalled,
             setIsNextButtonCalled,
+          }}
+        />
+      );
+    } else if (mechanism.name === "readAloud") {
+      return (
+        <ReadAloud
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (mechanism.name === "r3") {
+      return (
+        <R3
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (mechanism.name === "askMore") {
+      return (
+        <AskMoreM14
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (mechanism.name === "actOut") {
+      return (
+        <ActOutM13
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (mechanism.name === "ReadAloudMcqM10") {
+      return (
+        <PhoneConversation
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (mechanism.name === "WhatsMissing") {
+      return (
+        <WhatsMissing
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (mechanism.name === "arrangePicture") {
+      return (
+        <ArrangePicture
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (mechanism.name === "AnouncementFlow") {
+      return (
+        <AnouncementFlow
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase: true,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
           }}
         />
       );

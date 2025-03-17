@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Confetti from "react-confetti";
 import janwarImg from "../../assets/Janwar.svg";
@@ -52,6 +52,19 @@ import bellAudio from "../../assets/bell.wav";
 import sunImg from "../../assets/sun.png";
 import sunAudio from "../../assets/sun.wav";
 import { practiceSteps, getLocalData } from "../../utils/constants";
+import Mic from "../../assets/mic.svg";
+import Stop from "../../assets/stop.svg";
+import Play from "../../assets/playButton.svg";
+import RecordVisualizer from "../../assets/recordVisualizer.svg";
+import { phoneticMatch } from "../../utils/phoneticUtils";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+
+const isChrome =
+  /Chrome/.test(navigator.userAgent) &&
+  /Google Inc/.test(navigator.vendor) &&
+  !/Edg/.test(navigator.userAgent);
 
 const SyllablePuzzle = ({
   setVoiceText,
@@ -95,6 +108,168 @@ const SyllablePuzzle = ({
   const [resetGame, setResetGame] = useState(false);
   const [incorrectPair, setIncorrectPair] = useState(false);
   const [incorrectWord, setIncorrectWord] = useState(null);
+  const [showRecording, setShowRecording] = useState(false);
+  const {
+    transcript,
+    interimTranscript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+
+  const transcriptRef = useRef("");
+  useEffect(() => {
+    transcriptRef.current = transcript;
+  }, [transcript]);
+
+  const [wordsAfterSplit, setWordsAfterSplit] = useState([]);
+  const [recAudio, setRecAudio] = useState("");
+
+  const [isRecordingComplete, setIsRecordingComplete] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [currentWord, setCurrentWord] = useState("");
+  const [currentIsSelected, setCurrentIsSelected] = useState(false);
+  const [recognition, setRecognition] = useState(null);
+  const [selectedWordsNew, setSelectedWordsNew] = useState([]);
+  const [incorrectWords, setIncorrectWords] = useState({});
+  const [isMicOn, setIsMicOn] = useState(false);
+  const [syllAudios, setSyllAudios] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  const initializeRecognition = () => {
+    let recognitionInstance;
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      recognitionInstance = new SpeechRecognition();
+    } else {
+      alert("Your browser does not support Speech Recognition.");
+      return;
+    }
+
+    if (recognitionInstance) {
+      recognitionInstance.continuous = true;
+      recognitionInstance.interimResults = true;
+      recognitionInstance.lang = "en-US";
+      recognitionInstance.maxAlternatives = 1;
+
+      recognitionInstance.onstart = () => {};
+
+      recognitionInstance.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setIsRecording(false);
+        setIsProcessing(false);
+        setIsMicOn(false);
+        // const matchPercentage = phoneticMatch(
+        //   levels[currentLevel]?.arrM[currentWordIndex],
+        //   transcript
+        // );
+        // console.log("matchPercentage", matchPercentage);
+      };
+
+      recognitionInstance.onerror = (event) => {
+        setIsRecording(false);
+        setIsProcessing(false);
+        setIsMicOn(false);
+        console.error("Speech recognition error:", event.error);
+        if (event.error === "no-speech") {
+          console.log("No Speech!");
+        } else if (event.error === "aborted") {
+          recognitionInstance.start();
+        }
+      };
+
+      recognitionInstance.onend = () => {
+        setIsProcessing(false);
+      };
+
+      setRecognition(recognitionInstance);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (recognition) {
+        recognition.onstart = null;
+        recognition.onresult = null;
+        recognition.onerror = null;
+        recognition.onend = null;
+        recognition.stop();
+      }
+    };
+  }, [recognition]);
+
+  const startRecording = (word, isSelected) => {
+    //console.log('recs', recognition);
+    if (isChrome) {
+      if (!browserSupportsSpeechRecognition) {
+        alert("Speech recognition is not supported in your browser.");
+        return;
+      }
+      resetTranscript();
+      SpeechRecognition.startListening({
+        continuous: true,
+        interimResults: true,
+      });
+    }
+    setIsRecording(true);
+    setCurrentWord(word);
+    setCurrentIsSelected(isSelected);
+  };
+
+  const stopRecording = () => {
+    if (isChrome) {
+      SpeechRecognition.stopListening();
+      const finalTranscript = transcriptRef.current;
+      setIsMicOn(false);
+      setIsRecording(false);
+      setIsProcessing(false);
+    } else {
+      if (recognition) {
+        recognition.stop();
+      }
+      setIsProcessing(true);
+    }
+    setIsRecording(false);
+    setShowRecording(false);
+    setIsCorrectPair(true);
+    setShowConfetti(true);
+    setTimeout(() => {
+      setShowConfetti(false);
+    }, 3000);
+    setShowCorrectImage(true);
+
+    setTimeout(() => {
+      setCorrectWordDisplay(true);
+      setResetGame(true);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    if (isRecording && recognition && recognition.state !== "recording") {
+      recognition.start();
+    }
+  }, [isRecording, recognition]);
+
+  useEffect(() => {
+    if (!isChrome) {
+      initializeRecognition();
+    }
+  }, []);
+
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   let progressDatas = getLocalData("practiceProgress");
   const virtualId = String(getLocalData("virtualId"));
@@ -146,17 +321,20 @@ const SyllablePuzzle = ({
         content[currentLevel][currentIndex].corrrectWordPair.join("");
 
       if (selectedPair === correctPair) {
-        setIsCorrectPair(true);
-        setShowConfetti(true);
-        setTimeout(() => {
-          setShowConfetti(false);
-        }, 3000);
+        // setIsCorrectPair(true);
+        // setShowConfetti(true);
+        // setTimeout(() => {
+        //   setShowConfetti(false);
+        // }, 3000);
 
+        // setTimeout(() => {
+        //   setShowCorrectImage(true);
+        //   setCorrectWordDisplay(true);
+        //   setResetGame(true);
+        // }, 2000);
         setTimeout(() => {
-          setShowCorrectImage(true);
-          setCorrectWordDisplay(true);
-          setResetGame(true);
-        }, 2000);
+          setShowRecording(true);
+        }, 1000);
       } else {
         setIsCorrectPair(false);
         setIncorrectPair(true);
@@ -556,7 +734,7 @@ const SyllablePuzzle = ({
         />
       </div>
 
-      {!showCorrectImage && (
+      {!showCorrectImage && !showRecording && (
         <motion.div
           style={{
             display: "flex",
@@ -590,7 +768,7 @@ const SyllablePuzzle = ({
           position: "relative",
         }}
       >
-        {!showCorrectImage && (
+        {!showCorrectImage && !showRecording && (
           <>
             <div
               style={{
@@ -714,12 +892,12 @@ const SyllablePuzzle = ({
           </>
         )}
 
-        {showCorrectImage && (
+        {!showRecording && showCorrectImage && (
           <>
             <img
               src={content[currentLevel][currentIndex].correctImage}
               alt="Correct"
-              style={{ width: "50px", height: "50px" }}
+              style={{ width: "50px", height: "50px", marginRight: "10px" }}
             />
             <div
               style={{
@@ -740,6 +918,131 @@ const SyllablePuzzle = ({
             </div>
           </>
         )}
+
+        {showRecording &&
+          (!isRecording && !isProcessing ? (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "150px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  justifyItems: "center",
+                  alignItems: "center",
+                  gap: "10px",
+                }}
+              >
+                <img
+                  src={content[currentLevel][currentIndex]?.correctImage}
+                  alt="Correct"
+                  style={{ width: "50px", height: "50px" }}
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    fontSize: "24px",
+                    fontWeight: "bold",
+                    color: "#333F61",
+                    textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
+                  }}
+                >
+                  {content[currentLevel][currentIndex]?.corrrectWord}
+                </div>
+              </div>
+              <img
+                src={Mic}
+                alt={"Start Recording"}
+                style={{
+                  height: "50px",
+                  zIndex: 22,
+                }}
+                onClick={() =>
+                  startRecording(
+                    content[currentLevel][currentIndex]?.corrrectWord
+                  )
+                }
+              />
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "150px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  justifyItems: "center",
+                  alignItems: "center",
+                  gap: "10px",
+                }}
+              >
+                <img
+                  src={content[currentLevel][currentIndex]?.correctImage}
+                  alt="Correct"
+                  style={{ width: "50px", height: "50px" }}
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    fontSize: "24px",
+                    fontWeight: "bold",
+                    color: "#333F61",
+                    textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
+                  }}
+                >
+                  {content[currentLevel][currentIndex]?.corrrectWord}
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "90px",
+                  marginTop: "60px",
+                }}
+              >
+                <img
+                  src={RecordVisualizer}
+                  alt={"Start Visualizer"}
+                  style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "35%",
+                    transform: "translate(-50%, -50%)",
+                    height: "30px",
+                    zIndex: 22,
+                  }}
+                />
+                <img
+                  src={Stop}
+                  alt={"Start Recording"}
+                  style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "70%",
+                    transform: "translate(-50%, -50%)",
+                    height: "50px",
+                    zIndex: 22,
+                    marginTop: "70px",
+                  }}
+                  onClick={() => stopRecording()}
+                />
+              </div>
+            </div>
+          ))}
       </div>
 
       <div
@@ -750,7 +1053,8 @@ const SyllablePuzzle = ({
           marginTop: "58px",
         }}
       >
-        {content[currentLevel] &&
+        {!showRecording &&
+          content[currentLevel] &&
           content[currentLevel][currentIndex] &&
           content[currentLevel][currentIndex]?.allwords.map((word, index) => {
             let patternImg = null;
@@ -849,7 +1153,7 @@ const SyllablePuzzle = ({
           alignItems: "flex-start",
         }}
       >
-        {!incorrectPair && showAppleHint && (
+        {!incorrectPair && showAppleHint && !showRecording && (
           <div
             style={{ position: "relative", width: "110px", height: "120px" }}
           >
