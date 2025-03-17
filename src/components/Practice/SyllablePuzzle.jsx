@@ -50,7 +50,7 @@ import foxAudio from "../../assets/fox.wav";
 import bellImg from "../../assets/bell.jpg";
 import bellAudio from "../../assets/bell.wav";
 import sunImg from "../../assets/sun.png";
-import sunAudio from "../../assets/sun.wav";
+import sunAudio from "../../assets/Sun.wav";
 import { practiceSteps, getLocalData } from "../../utils/constants";
 import Mic from "../../assets/mic.svg";
 import Stop from "../../assets/stop.svg";
