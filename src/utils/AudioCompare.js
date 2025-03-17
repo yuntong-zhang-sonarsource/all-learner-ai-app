@@ -127,7 +127,8 @@ const AudioRecorder = (props) => {
                 <Box
                   sx={{
                     cursor: "pointer",
-                    ...(props.pageName === "m7" && {
+                    ...((props.pageName === "m7" ||
+                      props.pageName === "m8") && {
                       width: "90px",
                       height: "90px",
                       borderRadius: "50%",
@@ -141,7 +142,8 @@ const AudioRecorder = (props) => {
                 >
                   <Box
                     sx={
-                      props.pageName === "m7"
+                      props.pageName === "m7" ||
+                      (props.pageName === "m8" && props.buttonAnimation)
                         ? getPulseAnimationStyle("#FF4B4B33")
                         : {}
                     }
@@ -153,16 +155,24 @@ const AudioRecorder = (props) => {
                     }}
                   >
                     <StopButton
-                      height={props.pageName == "m7" ? 45 : 70}
-                      width={props.pageName == "m7" ? 45 : 70}
+                      height={
+                        props.pageName == "m7" || props.pageName === "m8"
+                          ? 45
+                          : 70
+                      }
+                      width={
+                        props.pageName == "m7" || props.pageName === "m8"
+                          ? 45
+                          : 70
+                      }
                     />
                   </Box>
                 </Box>
                 {showLoader ? (
                   <div className="loader"></div>
                 ) : (
-                  <Box style={{ marginTop: "50px", marginBottom: "50px" }}>
-                    <RecordVoiceVisualizer />
+                  <Box style={{ marginTop: "10px", marginBottom: "50px" }}>
+                    {props.pageName !== "m8" && <RecordVoiceVisualizer />}
                   </Box>
                 )}
               </div>
@@ -192,8 +202,18 @@ const AudioRecorder = (props) => {
                             >
                               <Box sx={{ cursor: "pointer" }}>
                                 <ListenButton
-                                  height={props.pageName == "m7" ? 45 : 70}
-                                  width={props.pageName == "m7" ? 45 : 70}
+                                  height={
+                                    props.pageName == "m7" ||
+                                    props.pageName === "m8"
+                                      ? 45
+                                      : 70
+                                  }
+                                  width={
+                                    props.pageName == "m7" ||
+                                    props.pageName === "m8"
+                                      ? 45
+                                      : 70
+                                  }
                                 />
                               </Box>
                             </div>
@@ -205,8 +225,18 @@ const AudioRecorder = (props) => {
                               }}
                             >
                               <StopButton
-                                height={props.pageName == "m7" ? 45 : 70}
-                                width={props.pageName == "m7" ? 45 : 70}
+                                height={
+                                  props.pageName == "m7" ||
+                                  props.pageName === "m8"
+                                    ? 45
+                                    : 70
+                                }
+                                width={
+                                  props.pageName == "m7" ||
+                                  props.pageName === "m8"
+                                    ? 45
+                                    : 70
+                                }
                               />
                             </Box>
                           )}
@@ -225,7 +255,13 @@ const AudioRecorder = (props) => {
                                 !props.isStudentAudioPlaying
                               )
                             }
-                            style={{ height: props.pageName == "m7" ? 45 : 70 }}
+                            style={{
+                              height:
+                                props.pageName == "m7" ||
+                                props.pageName === "m8"
+                                  ? 45
+                                  : 70,
+                            }}
                             src={
                               props.isStudentAudioPlaying
                                 ? pauseButton
@@ -256,7 +292,8 @@ const AudioRecorder = (props) => {
                         {!props.recordedAudio ? (
                           <Box
                             sx={{
-                              ...(props.pageName === "m7" && {
+                              ...((props.pageName == "m7" ||
+                                props.pageName === "m8") && {
                                 width: "90px",
                                 height: "90px",
                                 borderRadius: "50%",
@@ -269,7 +306,9 @@ const AudioRecorder = (props) => {
                           >
                             <Box
                               sx={
-                                props.pageName === "m7"
+                                props.pageName == "m7" ||
+                                (props.pageName === "m8" &&
+                                  props.buttonAnimation)
                                   ? getPulseAnimationStyle("#58CC0233")
                                   : {}
                               }
@@ -281,15 +320,33 @@ const AudioRecorder = (props) => {
                               }}
                             >
                               <SpeakButton
-                                height={props.pageName == "m7" ? 45 : 70}
-                                width={props.pageName == "m7" ? 45 : 70}
+                                height={
+                                  props.pageName == "m7" ||
+                                  props.pageName === "m8"
+                                    ? 45
+                                    : 70
+                                }
+                                width={
+                                  props.pageName == "m7" ||
+                                  props.pageName === "m8"
+                                    ? 45
+                                    : 70
+                                }
                               />
                             </Box>
                           </Box>
                         ) : (
                           <RetryIcon
-                            height={props.pageName == "m7" ? 45 : 70}
-                            width={props.pageName == "m7" ? 45 : 70}
+                            height={
+                              props.pageName == "m7" || props.pageName === "m8"
+                                ? 45
+                                : 70
+                            }
+                            width={
+                              props.pageName == "m7" || props.pageName === "m8"
+                                ? 45
+                                : 70
+                            }
                           />
                         )}
                       </Box>

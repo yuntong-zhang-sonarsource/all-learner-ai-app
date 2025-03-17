@@ -31,6 +31,13 @@ import {
   callConfettiSnow,
   levelConfig,
   practiceSteps,
+  getLocalData,
+  LevelTen,
+  LevelEleven,
+  LevelTwelve,
+  LevelThirteen,
+  LevelFourteen,
+  LevelFifteen,
 } from "../../utils/constants";
 
 import { ProfileHeader } from "../Assesment/Assesment";
@@ -40,6 +47,7 @@ import gameLoseAudio from "../../assets/audio/gameLose.wav";
 
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { levelMapping } from "../../utils/levelData";
 
 const MainLayout = (props) => {
   const levelsImages = {
@@ -94,9 +102,52 @@ const MainLayout = (props) => {
       background: practicebg3,
       backgroundColor: `${levelConfig[9].color}60`,
     },
+    10: {
+      milestone: <LevelTen />,
+      backgroundAddOn: practicebgstone3,
+      background: practicebg3,
+      backgroundColor: `${levelConfig[9].color}60`,
+    },
+    11: {
+      milestone: <LevelEleven />,
+      backgroundAddOn: practicebgstone3,
+      background: practicebg3,
+      backgroundColor: `${levelConfig[9].color}60`,
+    },
+    12: {
+      milestone: <LevelTwelve />,
+      backgroundAddOn: practicebgstone3,
+      background: practicebg3,
+      backgroundColor: `${levelConfig[9].color}60`,
+    },
+    13: {
+      milestone: <LevelThirteen />,
+      backgroundAddOn: practicebgstone3,
+      background: practicebg3,
+      backgroundColor: `${levelConfig[9].color}60`,
+    },
+    14: {
+      milestone: <LevelFourteen />,
+      backgroundAddOn: practicebgstone3,
+      background: practicebg3,
+      backgroundColor: `${levelConfig[9].color}60`,
+    },
+    15: {
+      milestone: <LevelFifteen />,
+      backgroundAddOn: practicebgstone3,
+      background: practicebg3,
+      backgroundColor: `${levelConfig[9].color}60`,
+    },
   };
 
-  const LEVEL = props?.level;
+  let LEVEL = props?.level;
+
+  const virtualId = String(getLocalData("virtualId"));
+
+  if (levelMapping[virtualId] !== undefined) {
+    LEVEL = levelMapping[virtualId];
+  }
+
   const {
     handleNext,
     enableNext,
@@ -421,7 +472,14 @@ const MainLayout = (props) => {
                   </Box>
                 )}
               <Box sx={{ height: "110px", position: "relative" }}>
-                <Box sx={{ position: "absolute", left: 0, bottom: "-2px" }}>
+                <Box
+                  sx={{
+                    position: "absolute",
+                    left: 0,
+                    bottom: "-2px",
+                    zIndex: "9999",
+                  }}
+                >
                   <footer>{LEVEL && levelsImages?.[LEVEL]?.milestone}</footer>
                 </Box>
                 <Box
@@ -524,7 +582,7 @@ const MainLayout = (props) => {
                                         fontFamily: "Quicksand",
                                       }}
                                     >
-                                      {LEVEL === 1 || LEVEL === 2
+                                      {LEVEL === 1 || LEVEL === 2 || LEVEL === 3
                                         ? elem.title
                                         : elem.name}
                                     </span>

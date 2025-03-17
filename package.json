@@ -26,6 +26,7 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.33.1",
     "faker": "^5.5.3",
+    "framer-motion": "^12.4.1",
     "homophones": "^1.0.1",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",

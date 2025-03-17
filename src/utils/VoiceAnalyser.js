@@ -265,7 +265,7 @@ function VoiceAnalyser(props) {
         reader.onload = function (e) {
           let base64Data = e.target.result.split(",")[1];
           setRecordedAudioBase64(base64Data);
-          if (props.pageName === "m7") {
+          if (props.pageName === "m7" || props.pageName === "m8") {
             props.onAudioProcessed(base64Data);
           }
         };
@@ -715,6 +715,7 @@ function VoiceAnalyser(props) {
                     showOnlyListen={props.showOnlyListen}
                     setOpenMessageDialog={props.setOpenMessageDialog}
                     enableAfterLoad={enableAfterLoad}
+                    buttonAnimation={props.buttonAnimation}
                   />
                   {/* <RecordVoiceVisualizer /> */}
                 </>
@@ -743,26 +744,30 @@ function VoiceAnalyser(props) {
       )}
       {!loader && (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          {props.enableNext && (
+          {props.enableNext && props.pageName !== "m8" && (
             <Box
               sx={{ cursor: "pointer" }}
               onClick={() => {
                 if (props.setIsNextButtonCalled) {
                   props.setIsNextButtonCalled(true);
-                  if (props.pageName === "m7") {
+                  if (props.pageName === "m7" || props.pageName === "m8") {
                     props.onAudioProcessed("");
                   }
                 } else {
                   props.handleNext();
-                  if (props.pageName === "m7") {
+                  if (props.pageName === "m7" || props.pageName === "m8") {
                     props.onAudioProcessed("");
                   }
                 }
               }}
             >
               <NextButtonRound
-                height={props.pageName == "m7" ? 50 : 70}
-                width={props.pageName == "m7" ? 50 : 70}
+                height={
+                  props.pageName == "m7" || props.pageName === "m8" ? 50 : 70
+                }
+                width={
+                  props.pageName == "m7" || props.pageName === "m8" ? 50 : 70
+                }
               />
             </Box>
           )}
