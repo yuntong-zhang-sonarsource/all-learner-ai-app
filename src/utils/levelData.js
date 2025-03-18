@@ -2603,6 +2603,8 @@ export const level11 = [
     data: {
       instructions: {
         type: "chat",
+        imageOne: "dosaIce1",
+        imageTwo: "dosaIce2",
         content: [
           {
             role: "System",
@@ -2736,6 +2738,8 @@ export const level11 = [
     data: {
       instructions: {
         type: "chat",
+        imageOne: "rahulOne",
+        imageTwo: "rahulTwo",
         content: [
           {
             role: "System",
@@ -2867,50 +2871,38 @@ export const level11 = [
     level: "P3",
     mechanics: "askMore",
     data: {
+      images: {
+        imageOne: "vegVendor",
+        imageTwo: "child",
+      },
       conversation: [
         {
-          speaker: "Vegetable Vendor",
-          user: "Good morning, dear! How can I help you?",
-        },
-        {
-          speaker: "Anbu",
+          speaker: "Good morning, dear! How can I help you?",
           user: "Good morning, sir. I need some potatoes.",
         },
         {
-          speaker: "Vegetable Vendor",
-          user: "How many kilos do you want?",
-        },
-        {
-          speaker: "Anbu",
+          speaker: "How many kilos do you want?",
           user: "Two kilograms, please.",
         },
         {
-          speaker: "Vegetable Vendor",
-          user: "One kilo of potatoes costs Rs. 30.",
-        },
-        {
-          speaker: "Anbu",
+          speaker: "One kilo of potatoes costs Rs. 30.",
           user: "That’s fine. I also need half a kilo of carrots and beans.",
         },
         {
-          speaker: "Vegetable Vendor",
-          user: "Anything else?",
-        },
-        {
-          speaker: "Anbu",
+          speaker: "Anything else?",
           user: "No, that’s all. What is the total amount?",
         },
         {
-          speaker: "Vegetable Vendor",
-          user: "The total amount is Rs. 100.",
-        },
-        {
-          speaker: "Anbu",
+          speaker: "The total amount is Rs. 100.",
           user: "Here is the money. Thank you, sir.",
         },
         {
-          speaker: "Vegetable Vendor",
-          user: "You’re welcome! Please visit again.",
+          speaker: "You’re welcome! Please visit again.",
+          user: "Sure!",
+        },
+        {
+          speaker: "You’re welcome! Please visit again.",
+          user: "Sure!",
         },
       ],
     },
@@ -2919,45 +2911,33 @@ export const level11 = [
     level: "P4",
     mechanics: "askMore",
     data: {
+      images: {
+        imageOne: "mother",
+        imageTwo: "child",
+      },
       conversation: [
         {
-          speaker: "Mother",
-          user: "Arivu, can you help me in the kitchen?",
-        },
-        {
-          speaker: "Arivu",
+          speaker: "Arivu, can you help me in the kitchen?",
           user: "Sure, Mom! What should I do?",
         },
         {
-          speaker: "Mother",
-          user: "Please bring me the tomatoes from the fridge.",
-        },
-        {
-          speaker: "Arivu",
+          speaker: "Please bring me the tomatoes from the fridge.",
           user: "Here they are, Mom. Do you need anything else?",
         },
         {
-          speaker: "Mother",
-          user: "Yes, wash these vegetables and put them in the basket.",
-        },
-        {
-          speaker: "Arivu",
+          speaker: "Yes, wash these vegetables and put them in the basket.",
           user: "Okay, I have washed them. What’s next?",
         },
         {
-          speaker: "Mother",
-          user: "Can you get me the salt from the shelf?",
-        },
-        {
-          speaker: "Arivu",
+          speaker: "Can you get me the salt from the shelf?",
           user: "Here it is, Mom. Are you making sambar?",
         },
         {
-          speaker: "Mother",
-          user: "Yes, and your favourite potato fry too!",
+          speaker: "Yes, and your favourite potato fry too!",
+          user: "Wow! I can’t wait to eat. Thank you, Mom!",
         },
         {
-          speaker: "Arivu",
+          speaker: "Yes, and your favourite potato fry too!",
           user: "Wow! I can’t wait to eat. Thank you, Mom!",
         },
       ],
@@ -2969,6 +2949,8 @@ export const level11 = [
     data: {
       instructions: {
         type: "chat",
+        imageOne: "bf1",
+        imageTwo: "bf2",
         content: [
           {
             role: "System",
@@ -5594,4 +5576,6 @@ export const levelMapping = {
   1013636763: 11,
   1013674669: 12,
   1012988598: 10,
+  9025374424: 11,
+  4708438660: 11,
 };

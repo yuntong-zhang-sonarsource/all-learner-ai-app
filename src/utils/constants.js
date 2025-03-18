@@ -4380,13 +4380,13 @@ export const levelGetContent = {
         title: "P1",
         criteria: "sentence",
         template: "simple",
-        mechanism: { id: "ReadAloudMcqM10", name: "ReadAloudMcqM10" },
+        mechanism: { id: "AnouncementFlow", name: "AnouncementFlow" },
       },
       {
         title: "P2",
         criteria: "sentence",
         template: "simple",
-        mechanism: { id: "ReadAloudMcqM10", name: "ReadAloudMcqM10" },
+        mechanism: { id: "AnouncementFlow", name: "AnouncementFlow" },
       },
       {
         title: "P3",
@@ -4404,7 +4404,7 @@ export const levelGetContent = {
         title: "S1",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "ReadAloudMcqM10", name: "ReadAloudMcqM10" },
+        mechanism: { id: "AnouncementFlow", name: "AnouncementFlow" },
       },
       {
         title: "P5",

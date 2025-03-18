@@ -1,11 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Box } from "@mui/material";
-import phoneImg from "../../assets/phonee.svg";
-import profileImg from "../../assets/prof.png";
-import listenImg from "../../assets/startVoiceNote.png";
-import stopVoiceNote from "../../assets/stopVoiceNote.png";
-import boyimg from "../../assets/boy.png";
-import nextimg from "../../assets/next.svg";
 import listenImg2 from "../../assets/listen.png";
 import Confetti from "react-confetti";
 import {
@@ -24,23 +18,10 @@ import {
   NextButtonRound,
   RetryIcon,
 } from "../../utils/constants";
-import pzMic from "../../assets/pzMic.svg";
-import spinnerWave from "../../assets/spinnerWave.svg";
 import spinnerStop from "../../assets/pause.png";
 import raMic from "../../assets/listen.png";
 import raStop from "../../assets/pause.png";
-import raRetry from "../../assets/raRetry.svg";
-import raNext from "../../assets/raNext.svg";
-import atm from "../../assets/atm.svg";
-import mall from "../../assets/mall.svg";
-import raWoodStand from "../../assets/raWoodStand.svg";
-import raWave from "../../assets/raWave.svg";
-import raStop2 from "../../assets/raStop2.svg";
-import raSound from "../../assets/raSound.svg";
-import raMic2 from "../../assets/raMic2.svg";
-import raMonkey from "../../assets/raMonkey.svg";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
-import hintImg from "../../assets/hintNew.svg";
 
 const levelMap = {
   10: level10,
@@ -316,7 +297,7 @@ const AnouncementFlow = ({
 
   useEffect(() => {
     setConversationData(conversation?.instructions?.content);
-    setImageData(conversation?.instructions);
+    //setImageData(conversation?.instructions);
     setCompleteAudio(conversation?.instructions?.content[0]?.audio);
     setTasks(conversation?.tasks);
     setCurrentTaskIndex(0);
@@ -324,6 +305,7 @@ const AnouncementFlow = ({
 
   useEffect(() => {
     setConversationData(conversation?.instructions?.content || []);
+    setImageData(conversation?.instructions);
     setTasks(conversation?.tasks || []);
     setCurrentTaskIndex(0);
     setSelectedOption(null);
@@ -654,7 +636,7 @@ const AnouncementFlow = ({
             }}
           >
             <img
-              src={Assets[imageData?.imageOne] || atm}
+              src={Assets[imageData?.imageOne] || Assets.atm}
               alt="Next"
               height={"130px"}
               //width={"75px"}
@@ -662,7 +644,7 @@ const AnouncementFlow = ({
               style={{ cursor: "pointer", marginTop: "0px", zIndex: "9999" }}
             />
             <img
-              src={Assets[imageData?.imageTwo] || mall}
+              src={Assets[imageData?.imageTwo] || Assets.mall}
               alt="Next"
               height={"130px"}
               //width={"75px"}
@@ -781,7 +763,7 @@ const AnouncementFlow = ({
                     onClick={handleHintClick}
                   >
                     <img
-                      src={hintImg}
+                      src={Assets.hintNew}
                       alt="Hint"
                       style={{
                         width: "50px",
@@ -893,35 +875,37 @@ const AnouncementFlow = ({
                   {tasks[currentTaskIndex]?.question?.value}
                 </div>
                 {/* {recording === "no" && ( */}
-                <div style={styles.optionsContainer}>
-                  {tasks[currentTaskIndex]?.options.map((option, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        ...styles.option,
-                        ...(selectedOption === option.id &&
-                          (currentLevel === "S1" || currentLevel === "S2") &&
-                          styles.selectedNeutralOption),
-                        ...(currentLevel !== "S1" &&
-                          currentLevel !== "S2" &&
-                          selectedOption === option.id &&
-                          isCorrect === true &&
-                          styles.correctOption),
-                        ...(currentLevel !== "S1" &&
-                          currentLevel !== "S2" &&
-                          selectedOption === option.id &&
-                          isCorrect === false &&
-                          styles.incorrectOption),
-                        ...(tasks[currentTaskIndex].options.length === 3 &&
-                          index === 2 &&
-                          styles.thirdOption),
-                      }}
-                      onClick={() => handleOptionClick(option.id)}
-                    >
-                      {option.value}
-                    </div>
-                  ))}
-                </div>
+                {currentLevel !== "S1" && currentLevel !== "S2" && (
+                  <div style={styles.optionsContainer}>
+                    {tasks[currentTaskIndex]?.options.map((option, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          ...styles.option,
+                          ...(selectedOption === option.id &&
+                            (currentLevel === "S1" || currentLevel === "S2") &&
+                            styles.selectedNeutralOption),
+                          ...(currentLevel !== "S1" &&
+                            currentLevel !== "S2" &&
+                            selectedOption === option.id &&
+                            isCorrect === true &&
+                            styles.correctOption),
+                          ...(currentLevel !== "S1" &&
+                            currentLevel !== "S2" &&
+                            selectedOption === option.id &&
+                            isCorrect === false &&
+                            styles.incorrectOption),
+                          ...(tasks[currentTaskIndex].options.length === 3 &&
+                            index === 2 &&
+                            styles.thirdOption),
+                        }}
+                        onClick={() => handleOptionClick(option.id)}
+                      >
+                        {option.value}
+                      </div>
+                    ))}
+                  </div>
+                )}
                 {/* // )} */}
                 {/* {recording === "recording" && (
                   <div
@@ -980,7 +964,10 @@ const AnouncementFlow = ({
                   style={{
                     display: "flex",
                     justifyContent: "center",
-                    marginTop: "10px",
+                    marginTop:
+                      currentLevel === "S1" || currentLevel === "S2"
+                        ? "30px"
+                        : "10px",
                     gap: "10px",
                   }}
                 >
@@ -1010,20 +997,24 @@ const AnouncementFlow = ({
                       setOpenMessageDialog,
                     }}
                   />
-                  {selectedOption !== null && recAudio && (
-                    // <img
-                    //   src={nextimg}
-                    //   alt="Next"
-                    //   style={styles.nextButton}
-
-                    // />
-                    <div
-                      onClick={loadNextTask}
-                      style={{ cursor: "pointer", marginLeft: "35px" }}
-                    >
-                      <NextButtonRound height={45} width={45} />
-                    </div>
-                  )}
+                  {currentLevel !== "S1" && currentLevel !== "S2"
+                    ? selectedOption !== null &&
+                      recAudio && (
+                        <div
+                          onClick={loadNextTask}
+                          style={{ cursor: "pointer", marginLeft: "35px" }}
+                        >
+                          <NextButtonRound height={45} width={45} />
+                        </div>
+                      )
+                    : recAudio && (
+                        <div
+                          onClick={loadNextTask}
+                          style={{ cursor: "pointer", marginLeft: "35px" }}
+                        >
+                          <NextButtonRound height={45} width={45} />
+                        </div>
+                      )}
                 </div>
               </div>
             )
