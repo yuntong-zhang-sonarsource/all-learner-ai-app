@@ -1,17 +1,5 @@
 import React, { useState, useEffect } from "react";
-import beerImg from "../../assets/beer.svg";
-import pandaImg from "../../assets/panda.svg";
-import modalImg from "../../assets/moddal.svg";
-import sunImg from "../../assets/sun.svg";
-import cloudImg from "../../assets/clouud.png";
-import playImg from "../../assets/plaay.svg";
-import sandImg from "../../assets/sand.svg";
-import cloudPandaImg from "../../assets/cloudpanda.svg";
-import mikeImg from "../../assets/miiike.svg";
-import pauseImg from "../../assets/paaaause.svg";
-import effectImg from "../../assets/efffect.svg";
-import clockImg from "../../assets/cloock.svg";
-import cloudyImg from "../../assets/cloudyy.svg";
+import * as Assets from "../../utils/imageAudioLinks";
 import { practiceSteps, getLocalData } from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import {
@@ -91,6 +79,7 @@ const AskMoreM14 = ({
   const [cloudText, setCloudText] = useState("......");
   const [showPandaText, setShowPandaText] = useState(false);
   const [showClock, setShowClock] = useState(false);
+  const [imageData, setImageData] = useState({});
 
   const getConversation = (level, currentLevel) => {
     const levelData = levelMap[level];
@@ -98,6 +87,14 @@ const AskMoreM14 = ({
       (item) => item.level === currentLevel
     );
     return conversationObj?.data?.conversation || [];
+  };
+
+  const getImages = (level, currentLevel) => {
+    const levelData = levelMap[level];
+    const conversationObj = levelData?.find(
+      (item) => item.level === currentLevel
+    );
+    return conversationObj?.data || [];
   };
 
   steps = 1;
@@ -120,13 +117,18 @@ const AskMoreM14 = ({
 
   const conversation = getConversation(level, currentLevel);
 
+  useEffect(() => {
+    setImageData(getImages(level, currentLevel));
+  }, [currentLevel]);
+
   console.log(
     "levelM14",
     level,
     currentStep,
     currentLevel,
     conversation,
-    steps
+    steps,
+    imageData
   );
 
   useEffect(() => {
@@ -235,7 +237,7 @@ const AskMoreM14 = ({
         {cloudPositions?.map((pos, index) => (
           <img
             key={index}
-            src={cloudyImg}
+            src={Assets.cloudyImg}
             alt="Cloudy Background"
             style={{
               position: "absolute",
@@ -270,9 +272,9 @@ const AskMoreM14 = ({
             >
               Ask More!
             </span>
-            <img src={modalImg} alt="Modal" style={{ width: "500px" }} />
+            <img src={Assets.modalImg} alt="Modal" style={{ width: "500px" }} />
             <img
-              src={playImg}
+              src={Assets.playImg}
               alt="Play Button"
               style={{
                 position: "absolute",
@@ -293,7 +295,7 @@ const AskMoreM14 = ({
         </div>
       )} */}
         <img
-          src={sunImg}
+          src={Assets.sunImg}
           alt="Sun"
           style={{
             position: "absolute",
@@ -303,24 +305,26 @@ const AskMoreM14 = ({
           }}
         />
         <img
-          src={beerImg}
+          src={Assets[imageData?.images?.imageOne] || Assets.beerImg}
           alt="Left Character"
           style={{
             position: "absolute",
             bottom: "15%",
             left: "10%",
-            width: "210px",
+            //width: "210px",
+            height: "250px",
             zIndex: 2,
           }}
         />
         <img
-          src={pandaImg}
+          src={Assets[imageData?.images?.imageTwo] || Assets.pandaImg}
           alt="Right Character"
           style={{
             position: "absolute",
             bottom: "15%",
             right: "8%",
-            width: "210px",
+            //width: "210px",
+            height: "250px",
             zIndex: 2,
           }}
         />
@@ -336,7 +340,11 @@ const AskMoreM14 = ({
                 textAlign: "center",
               }}
             >
-              <img src={cloudImg} alt="Cloud" style={{ width: "100%" }} />
+              <img
+                src={Assets.cloudImg}
+                alt="Cloud"
+                style={{ width: "100%" }}
+              />
               <span
                 style={{
                   position: "absolute",
@@ -364,7 +372,7 @@ const AskMoreM14 = ({
                 }}
               >
                 <img
-                  src={cloudPandaImg}
+                  src={Assets.cloudPandaImg}
                   alt="Cloud Panda"
                   style={{ width: "130%" }}
                 />
@@ -386,7 +394,7 @@ const AskMoreM14 = ({
                 </span>
                 {!isMikeClicked ? (
                   <img
-                    src={mikeImg}
+                    src={Assets.mikeImg}
                     alt="Microphone"
                     style={{
                       position: "absolute",
@@ -395,13 +403,14 @@ const AskMoreM14 = ({
                       transform: "translate(-50%, -50%)",
                       width: "35px",
                       cursor: "pointer",
+                      zIndex: "9999",
                     }}
                     onClick={handleMikeClick}
                   />
                 ) : (
                   <>
                     <img
-                      src={effectImg}
+                      src={Assets.effectImg}
                       alt="Effect"
                       style={{
                         position: "absolute",
@@ -412,7 +421,7 @@ const AskMoreM14 = ({
                       }}
                     />
                     <img
-                      src={pauseImg}
+                      src={Assets.pauseImg}
                       alt="Pause"
                       style={{
                         position: "absolute",
@@ -421,6 +430,7 @@ const AskMoreM14 = ({
                         transform: "translate(-50%, -50%)",
                         width: "35px",
                         cursor: "pointer",
+                        zIndex: "9999",
                       }}
                       onClick={handlePauseClick}
                     />
@@ -448,7 +458,7 @@ const AskMoreM14 = ({
         )}
 
         <img
-          src={sandImg}
+          src={Assets.sandImg}
           alt="Sand"
           style={{
             position: "relative",

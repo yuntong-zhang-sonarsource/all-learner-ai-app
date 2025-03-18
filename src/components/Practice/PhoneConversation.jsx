@@ -1,10 +1,4 @@
 import React, { useEffect, useState } from "react";
-import phoneImg from "../../assets/phonee.svg";
-import profileImg from "../../assets/prof.png";
-import listenImg from "../../assets/startVoiceNote.png";
-import stopVoiceNote from "../../assets/stopVoiceNote.png";
-import boyimg from "../../assets/boy.png";
-import nextimg from "../../assets/next.svg";
 import Confetti from "react-confetti";
 import {
   level13,
@@ -17,9 +11,6 @@ import {
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
 import { practiceSteps, getLocalData } from "../../utils/constants";
-import pzMic from "../../assets/pzMic.svg";
-import spinnerWave from "../../assets/spinnerWave.svg";
-import spinnerStop from "../../assets/spinnerStop.svg";
 
 const levelMap = {
   10: level10,
@@ -387,7 +378,7 @@ const PhoneConversation = ({
       display: "flex",
       flexDirection: "column",
       gap: "40px",
-      marginTop: "15px",
+      marginTop: "35px",
     },
     message: {
       padding: "10px",
@@ -587,14 +578,16 @@ const PhoneConversation = ({
                         }}
                       >
                         <img
-                          src={boyimg}
+                          src={Assets.boyimg}
                           alt="Boy"
                           width={"25px"}
                           height={"25px"}
                         />
                         <img
                           src={
-                            isPlaying === msg.audio ? stopVoiceNote : listenImg
+                            isPlaying === msg.audio
+                              ? Assets.stopVoiceNote
+                              : Assets.startVoiceNote
                           }
                           alt="Audio"
                           style={{
@@ -610,7 +603,9 @@ const PhoneConversation = ({
                       <div style={styles.callerIconsContainer}>
                         <img
                           src={
-                            isPlaying === msg.audio ? stopVoiceNote : listenImg
+                            isPlaying === msg.audio
+                              ? Assets.stopVoiceNote
+                              : Assets.startVoiceNote
                           }
                           alt="Audio"
                           style={{
@@ -621,7 +616,7 @@ const PhoneConversation = ({
                           onClick={() => playAudio(msg?.audio)}
                         />
                         <img
-                          src={boyimg}
+                          src={Assets.boyimg}
                           alt="Boy"
                           width={"25px"}
                           height={"25px"}
@@ -632,7 +627,7 @@ const PhoneConversation = ({
                 ))}
               </div>
               <img
-                src={nextimg}
+                src={Assets.nextimg}
                 alt="Next"
                 style={styles.nextButton}
                 onClick={handleNextClick}
@@ -648,7 +643,7 @@ const PhoneConversation = ({
                 }}
               >
                 <img
-                  src={isPlaying ? stopVoiceNote : listenImg}
+                  src={isPlaying ? Assets.stopVoiceNote : Assets.startVoiceNote}
                   alt="Audio"
                   style={{
                     height: "40px",
@@ -707,7 +702,7 @@ const PhoneConversation = ({
                       onClick={() => {
                         setRecording("startRec");
                       }}
-                      src={pzMic}
+                      src={Assets.pzMic}
                       alt="mic"
                       style={{ width: "70px", height: "70px" }}
                     />
@@ -725,7 +720,7 @@ const PhoneConversation = ({
                     }}
                   >
                     <img
-                      src={spinnerWave}
+                      src={Assets.spinnerWave}
                       alt="Wave"
                       style={{ width: "300px", height: "80px" }}
                     />
@@ -734,7 +729,7 @@ const PhoneConversation = ({
                         setRecording("no");
                         loadNextTask();
                       }}
-                      src={spinnerStop}
+                      src={Assets.spinnerStop}
                       alt="Stop"
                       style={{
                         width: "60px",

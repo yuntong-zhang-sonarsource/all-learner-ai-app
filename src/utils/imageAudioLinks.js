@@ -744,3 +744,67 @@ export const level10P1ImgOne =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/acc4ab72f1c68f1050c43f38ddd200841ef131b8/level10P1ImgOne.svg";
 export const level10P1ImgTwo =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/acc4ab72f1c68f1050c43f38ddd200841ef131b8/level10P1ImgTwo.svg";
+export const boyimg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/boy.png";
+export const boyOne =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/boyOne.png";
+export const nextimg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/next.svg";
+export const pzMic =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/pzMic.svg";
+export const spinnerStop =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/spinnerStop.svg";
+export const spinnerWave =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/spinnerWave.svg";
+export const startVoiceNote =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/startVoiceNote.png";
+export const stopVoiceNote =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/stopVoiceNote.png";
+export const atm =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/atm.svg";
+export const hintNew =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/hintNew.svg";
+export const mall =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/mall.svg";
+export const beerImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/beer.svg";
+export const pandaImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/panda.svg";
+export const modalImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/moddal.svg";
+export const sunImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/sun.svg";
+export const cloudImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/clouud.png";
+export const playImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/plaay.svg";
+export const sandImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/sand.svg";
+export const cloudPandaImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/cloudpanda.svg";
+export const mikeImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/miiike.svg";
+export const pauseImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/paaaause.svg";
+export const effectImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/efffect.svg";
+export const cloudyImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/cloudyy.svg";
+export const vegVendor =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/vegVendor.svg";
+export const mother =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/mother.svg";
+export const child =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/child.svg";
+export const bf1 =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/bf1.svg";
+export const bf2 =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/bf2.svg";
+export const rahulOne =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/rahulOne.svg";
+export const rahulTwo =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/rahulTwo.svg";
+export const dosaIce1 =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/dosIce1.svg";
+export const dosaIce2 =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/dosaIce2.svg";
