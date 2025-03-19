@@ -79,7 +79,7 @@ jobs:
         run: npm run build
 
       - name: Deploy to S3 Bucket
-        run: aws s3 sync ./build s3://sb-all-appliance/all-automation/
+        run: aws s3 sync ./build s3://sb-all-appliance/assets/all-app/
 
       - name: Debug Environment Variables
         run: |
