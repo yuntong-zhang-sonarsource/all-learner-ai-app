@@ -838,6 +838,8 @@ const MainLayout = (props) => {
                                     {Math.abs(70 - totalCorrectnessSore)}
                                   </span>{" "}
                                   more.
+                                  <br />
+                                  You need to practice more.
                                 </Typography>
                               ) : (
                                 <Typography textAlign="center" sx={{ mt: 2 }}>
@@ -846,6 +848,8 @@ const MainLayout = (props) => {
                                     {Math.abs(70 - percentage)}
                                   </span>{" "}
                                   more.
+                                  <br />
+                                  You need to practice more.
                                 </Typography>
                               )}
                             </Typography>
