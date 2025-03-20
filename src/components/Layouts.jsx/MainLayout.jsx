@@ -128,6 +128,7 @@ const MainLayout = (props) => {
     loading,
     storedData,
     resetStoredData,
+    totalCorrectnessSore,
   } = props;
 
   const [shake, setShake] = useState(false);
@@ -817,13 +818,26 @@ const MainLayout = (props) => {
                                   textShadow: "1px 1px 2px rgba(0, 0, 0, 0.5)",
                                 }}
                               >
-                                {percentage <= 0 ? 0 : percentage}/100
+                                {totalCorrectnessSore
+                                  ? totalCorrectnessSore
+                                  : percentage <= 0
+                                  ? 0
+                                  : percentage}
+                                /100
                               </span>
                               <br />
 
                               {!fluency ? (
                                 <Typography textAlign="center" sx={{ mt: 2 }}>
                                   Good try! Need more speed.
+                                </Typography>
+                              ) : totalCorrectnessSore ? (
+                                <Typography textAlign="center" sx={{ mt: 2 }}>
+                                  You need{" "}
+                                  <span style={{ fontWeight: "bold" }}>
+                                    {Math.abs(70 - totalCorrectnessSore)}
+                                  </span>{" "}
+                                  more.
                                 </Typography>
                               ) : (
                                 <Typography textAlign="center" sx={{ mt: 2 }}>
