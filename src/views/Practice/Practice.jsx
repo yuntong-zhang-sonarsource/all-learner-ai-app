@@ -56,7 +56,7 @@ const Practice = () => {
   const lang = getLocalData("lang");
   const [totalSyllableCount, setTotalSyllableCount] = useState("");
   const [percentage, setPercentage] = useState("");
-  const [totalCorrectnessSore, setTotalCorrectnessScore] = useState("");
+  const [totalCorrectnessScore, setTotalCorrectnessScore] = useState("");
   const [fluency, setFluency] = useState(false);
   const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
 
@@ -1022,7 +1022,7 @@ const Practice = () => {
             fluency,
             isNextButtonCalled,
             setIsNextButtonCalled,
-            totalCorrectnessSore,
+            totalCorrectnessScore,
           }}
         />
       );

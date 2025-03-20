@@ -53,7 +53,7 @@ const Mechanics5 = ({
   gameOverData,
   correctness,
   audio,
-  totalCorrectnessSore,
+  totalCorrectnessScore,
 }) => {
   const audiosRef = useRef(
     new Array(options.length).fill(null).map(() => React.createRef())
@@ -160,7 +160,7 @@ const Mechanics5 = ({
         setLivesData,
         isNextButtonCalled,
         setIsNextButtonCalled,
-        totalCorrectnessSore,
+        totalCorrectnessScore,
       }}
     >
       <div

@@ -128,7 +128,7 @@ const MainLayout = (props) => {
     loading,
     storedData,
     resetStoredData,
-    totalCorrectnessSore,
+    totalCorrectnessScore,
   } = props;
 
   const [shake, setShake] = useState(false);
@@ -818,8 +818,8 @@ const MainLayout = (props) => {
                                   textShadow: "1px 1px 2px rgba(0, 0, 0, 0.5)",
                                 }}
                               >
-                                {totalCorrectnessSore
-                                  ? totalCorrectnessSore
+                                {totalCorrectnessScore
+                                  ? totalCorrectnessScore
                                   : percentage <= 0
                                   ? 0
                                   : percentage}
@@ -831,11 +831,11 @@ const MainLayout = (props) => {
                                 <Typography textAlign="center" sx={{ mt: 2 }}>
                                   Good try! Need more speed.
                                 </Typography>
-                              ) : totalCorrectnessSore ? (
+                              ) : totalCorrectnessScore ? (
                                 <Typography textAlign="center" sx={{ mt: 2 }}>
                                   You need{" "}
                                   <span style={{ fontWeight: "bold" }}>
-                                    {Math.abs(70 - totalCorrectnessSore)}
+                                    {Math.abs(70 - totalCorrectnessScore)}
                                   </span>{" "}
                                   more.
                                   <br />
