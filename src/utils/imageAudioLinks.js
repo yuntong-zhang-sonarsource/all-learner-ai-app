@@ -1613,3 +1613,5 @@ export const play =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/1d87845cf1a97d62844f43c8b568d06a8bd52ee0/playButton.svg";
 export const graph =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/1d87845cf1a97d62844f43c8b568d06a8bd52ee0/recordVisualizer.svg";
+export const rOneMileImage =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/R1.png";
