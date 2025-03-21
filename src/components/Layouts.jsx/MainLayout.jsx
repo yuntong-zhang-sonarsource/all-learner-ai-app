@@ -38,17 +38,19 @@ import {
   LevelThirteen,
   LevelFourteen,
   LevelFifteen,
+  ROneImg,
 } from "../../utils/constants";
 
 import { ProfileHeader } from "../Assesment/Assesment";
 import Confetti from "react-confetti";
 import LevelCompleteAudio from "../../assets/audio/levelComplete.wav";
 import gameLoseAudio from "../../assets/audio/gameLose.wav";
-
+import * as Assets from "../../utils/imageAudioLinks";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { levelMapping } from "../../utils/levelData";
 import { jwtDecode } from "jwt-decode";
+import rOneImg from "../../assets/R1.png";
 
 const MainLayout = (props) => {
   const levelsImages = {
@@ -144,6 +146,9 @@ const MainLayout = (props) => {
   const rFlow = getLocalData("rFlow");
 
   let LEVEL = props?.level;
+
+  let flowNames = props?.flowNames;
+  let activeFlow = props?.activeFlow;
 
   const virtualId = String(getLocalData("virtualId"));
 
@@ -499,7 +504,17 @@ const MainLayout = (props) => {
                     zIndex: "9999",
                   }}
                 >
-                  <footer>{LEVEL && levelsImages?.[LEVEL]?.milestone}</footer>
+                  <footer>
+                    {rFlow === "true" ? (
+                      <img
+                        src={Assets.rOneMileImage}
+                        alt="R One"
+                        height={"250px"}
+                      />
+                    ) : (
+                      LEVEL && levelsImages?.[LEVEL]?.milestone
+                    )}
+                  </footer>
                 </Box>
                 <Box
                   sx={{
@@ -613,6 +628,88 @@ const MainLayout = (props) => {
                                 </Box>
                               );
                             })}
+                          </Box>
+                        </Box>
+                      </Box>
+                    )}
+                    {rFlow == "true" && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          width: "100%",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: "48px",
+                              border: "1.5px solid rgba(51, 63, 97, 0.15)",
+                              ml: { xs: 10, sm: 15, lg: 25, md: 18 },
+                              borderRadius: "30px",
+                              background: "white",
+                            }}
+                          >
+                            {flowNames?.map((flow, i) => (
+                              <Box
+                                key={i}
+                                sx={{
+                                  width: {
+                                    xs: "24px",
+                                    sm: "26px",
+                                    md: "28px",
+                                    lg: "36px",
+                                  },
+                                  height: {
+                                    xs: "24px",
+                                    sm: "26px",
+                                    md: "28px",
+                                    lg: "36px",
+                                  },
+                                  background:
+                                    flow === activeFlow
+                                      ? "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)"
+                                      : flowNames?.indexOf(flow) <
+                                        flowNames?.indexOf(activeFlow)
+                                      ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
+                                      : "rgba(0, 0, 0, 0.04)",
+                                  ml: { xs: 0.5, sm: 0.5, md: 1.5, lg: 2 },
+                                  mr: i === flowNames?.length - 1 ? 2 : 0,
+                                  borderRadius: "30px",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                {flowNames?.indexOf(flow) <
+                                flowNames?.indexOf(activeFlow) ? (
+                                  <GreenTick />
+                                ) : (
+                                  <span
+                                    style={{
+                                      color:
+                                        flow === activeFlow
+                                          ? "white"
+                                          : "#1E2937",
+                                      fontWeight: 600,
+                                      fontSize: "16px",
+                                      fontFamily: "Quicksand",
+                                    }}
+                                  >
+                                    {flow}
+                                  </span>
+                                )}
+                              </Box>
+                            ))}
                           </Box>
                         </Box>
                       </Box>
