@@ -7,9 +7,11 @@ import BingoCard from "../../components/Practice/BingoCard";
 import SyllablePuzzle from "../../components/Practice/SyllablePuzzle";
 import ReadAloud from "../../components/Practice/ReadAloud";
 import R3 from "../../components/Practice/R3";
+import R1 from "../../RFlow/R1";
 import AskMoreM14 from "../../components/Practice/AskMoreM14";
 import ActOutM13 from "../../components/Practice/ActOutM13";
 import PhoneConversation from "../../components/Practice/PhoneConversation";
+import PhrasesInAction from "../../components/Practice/PhrasesInAction";
 import WhatsMissing from "../../components/Practice/WhatsMissing";
 import ArrangePicture from "../../components/Practice/ArrangePicture";
 import AnouncementFlow from "../../components/Practice/AnouncementFlow";
@@ -78,114 +80,114 @@ const Practice = () => {
   const levels = {
     L1: [
       {
+        completeWord: "Apple",
+        syllable: ["Ap", "ple"],
+        img: Assets.Apple,
+        syllablesAudio: [
+          { name: "Ap", audio: Assets.apAudio },
+          { name: "ple", audio: Assets.pleAudio },
+        ],
+        completeAudio: Assets.appleAudio,
+      },
+      {
         completeWord: "Tiger",
         syllable: ["Ti", "ger"],
-        img: Assets.Tiger,
+        img: Assets.TigerNewImg,
         syllablesAudio: [
-          { name: "Ti", audio: Assets.Ti },
-          { name: "Ger", audio: Assets.Ger },
+          { name: "Ti", audio: Assets.tiAudio },
+          { name: "ger", audio: Assets.gerAudio },
         ],
-        completeAudio: Assets.TigerS,
+        completeAudio: Assets.tigerAudio,
+      },
+      {
+        completeWord: "Happy",
+        syllable: ["Hap", "py"],
+        img: Assets.happyImg,
+        syllablesAudio: [
+          { name: "Hap", audio: Assets.hapAudio },
+          { name: "py", audio: Assets.pyAudio },
+        ],
+        completeAudio: Assets.happyAudio,
       },
       {
         completeWord: "Pencil",
         syllable: ["Pen", "cil"],
-        img: Assets.Pencil,
+        img: Assets.pencilImg,
         syllablesAudio: [
-          { name: "Pen", audio: Assets.Pen },
-          { name: "Cil", audio: Assets.Cil },
+          { name: "Pen", audio: Assets.penAudio },
+          { name: "cil", audio: Assets.cilAudio },
         ],
-        completeAudio: Assets.PencilS,
-      },
-      {
-        completeWord: "Rabbit",
-        syllable: ["Rab", "bit"],
-        img: Assets.Rabbit,
-        syllablesAudio: [
-          { name: "Rab", audio: Assets.Rab },
-          { name: "Bit", audio: Assets.Bit },
-        ],
-        completeAudio: Assets.RabbitS,
+        completeAudio: Assets.pencilAudio,
       },
       {
         completeWord: "Rocket",
         syllable: ["Rock", "et"],
-        img: Assets.Rocket,
+        img: Assets.RocketNewImg,
         syllablesAudio: [
           { name: "Rock", audio: Assets.Rock },
           { name: "Et", audio: Assets.Et },
         ],
         completeAudio: Assets.RocketS,
       },
-      {
-        completeWord: "Apple",
-        syllable: ["Ap", "ple"],
-        img: Assets.Apple,
-        syllablesAudio: [
-          { name: "Ap", audio: Assets.Ap },
-          { name: "Ple", audio: Assets.Ple },
-        ],
-        completeAudio: Assets.AppleS,
-      },
     ],
     L2: [
       {
-        completeWord: "Candle",
-        syllable: ["Can", "dle"],
-        img: Assets.Candle,
+        completeWord: "Basket",
+        syllable: ["Bas", "ket"],
+        img: Assets.Basket,
         syllablesAudio: [
-          { name: "Can", audio: Assets.Can },
-          { name: "Dle", audio: Assets.Dle },
+          { name: "Bas", audio: Assets.Bas },
+          { name: "Ket", audio: Assets.Ket },
         ],
-        completeAudio: Assets.CandleS,
+        completeAudio: Assets.BasketS,
       },
       {
-        completeWord: "Tablet",
-        syllable: ["Tab", "let"],
-        img: Assets.Tablet,
+        completeWord: "Dinner",
+        syllable: ["Din", "ner"],
+        img: Assets.DinnerNewImg,
         syllablesAudio: [
-          { name: "Tab", audio: Assets.Tab },
-          { name: "Let", audio: Assets.Let },
+          { name: "Din", audio: Assets.dinAudio },
+          { name: "ner", audio: Assets.nerAudio },
         ],
-        completeAudio: Assets.TabletS,
+        completeAudio: Assets.dinnerAudio,
       },
       {
-        completeWord: "Orange",
-        syllable: ["Or", "ange"],
-        img: Assets.Orange,
+        completeWord: "Window",
+        syllable: ["Win", "dow"],
+        img: Assets.WindowNewImg,
         syllablesAudio: [
-          { name: "Or", audio: Assets.Or },
-          { name: "Ange", audio: Assets.Ange },
+          { name: "Win", audio: Assets.winAudio },
+          { name: "dow", audio: Assets.dowAudio },
         ],
-        completeAudio: Assets.OrangeS,
+        completeAudio: Assets.windowAudio,
       },
       {
-        completeWord: "Table",
-        syllable: ["Ta", "ble"],
-        img: Assets.Table,
+        completeWord: "Magnet",
+        syllable: ["Mag", "net"],
+        img: Assets.MagnetNewImg,
         syllablesAudio: [
-          { name: "Ta", audio: Assets.Ta },
-          { name: "Ble", audio: Assets.Ble },
+          { name: "Mag", audio: Assets.magAudio },
+          { name: "net", audio: Assets.netAudio },
         ],
-        completeAudio: Assets.TableS,
+        completeAudio: Assets.magnetAudio,
       },
       {
-        completeWord: "Lemon",
-        syllable: ["Le", "mon"],
-        img: Assets.Lemon,
+        completeWord: "Tennis",
+        syllable: ["Ten", "nis"],
+        img: Assets.TennisNewImg,
         syllablesAudio: [
-          { name: "Le", audio: Assets.Le },
-          { name: "Mon", audio: Assets.Mon },
+          { name: "Ten", audio: Assets.tenAudio },
+          { name: "nis", audio: Assets.nisAudio },
         ],
-        completeAudio: Assets.LemonS,
+        completeAudio: Assets.tennisAudio,
       },
     ],
     P1: [
-      { completeWord: "Tiger", syllable: ["Ti", "ger"] },
-      { completeWord: "Pencil", syllable: ["Pen", "cil"] },
-      { completeWord: "Rocket", syllable: ["Rock", "et"] },
-      { completeWord: "Banana", syllable: ["Ba", "na", "na"] },
-      { completeWord: "Orange", syllable: ["Or", "ange"] },
+      { completeWord: "River", syllable: ["Ri", "ver"] },
+      { completeWord: "Signal", syllable: ["Sig", "nal"] },
+      { completeWord: "Boring", syllable: ["Bor", "ing"] },
+      { completeWord: "Table", syllable: ["Ta", "ble"] },
+      { completeWord: "Carpet", syllable: ["Car", "pet"] },
     ],
     P2: [
       { completeWord: "Rabbit", syllable: ["Rab", "bit"] },
@@ -203,76 +205,76 @@ const Practice = () => {
     ],
     L3: [
       {
-        completeWord: "Basket",
-        syllable: ["Bas", "ket"],
-        img: Assets.Basket,
+        completeWord: "Picture",
+        syllable: ["Pic", "Ture"],
+        img: Assets.PictureNewImg,
         syllablesAudio: [
-          { name: "Bas", audio: Assets.Bas },
-          { name: "Ket", audio: Assets.Ket },
+          { name: "Pic", audio: Assets.picAudio },
+          { name: "ture", audio: Assets.tureAudio },
         ],
-        completeAudio: Assets.BasketS,
+        completeAudio: Assets.pictureAudio,
       },
       {
-        completeWord: "Tunnel",
-        syllable: ["Tun", "nel"],
-        img: Assets.Tunnel,
+        completeWord: "Number",
+        syllable: ["Num", "ber"],
+        img: Assets.NumberNewImg,
         syllablesAudio: [
-          { name: "Tun", audio: Assets.Tun },
-          { name: "Nel", audio: Assets.Nel },
+          { name: "Num", audio: Assets.numAudio },
+          { name: "ber", audio: Assets.berAudio },
         ],
-        completeAudio: Assets.TunnelS,
+        completeAudio: Assets.numberAudio,
       },
       {
-        completeWord: "Sunset",
-        syllable: ["Sun", "set"],
-        img: Assets.Sunset,
+        completeWord: "Doctor",
+        syllable: ["Doc", "tor"],
+        img: Assets.DoctorNewImg,
         syllablesAudio: [
-          { name: "Sun", audio: Assets.Sun },
-          { name: "Set", audio: Assets.SetNew },
+          { name: "Doc", audio: Assets.docAudio },
+          { name: "tor", audio: Assets.torAudio },
         ],
-        completeAudio: Assets.SunsetS,
+        completeAudio: Assets.doctorAudio,
       },
       {
-        completeWord: "Candle",
-        syllable: ["Can", "dle"],
-        img: Assets.Candle,
+        completeWord: "Paper",
+        syllable: ["Pa", "per"],
+        img: Assets.PaperNewImg,
         syllablesAudio: [
-          { name: "Can", audio: Assets.Can },
-          { name: "Dle", audio: Assets.Dle },
+          { name: "Pa", audio: Assets.paAudio },
+          { name: "per", audio: Assets.perAudio },
         ],
-        completeAudio: Assets.CandleS,
+        completeAudio: Assets.paperAudio,
       },
       {
-        completeWord: "Button",
-        syllable: ["But", "ton"],
-        img: Assets.Button,
+        completeWord: "Monkey",
+        syllable: ["Mon", "key"],
+        img: Assets.MonkeyNewImg,
         syllablesAudio: [
-          { name: "But", audio: Assets.But },
-          { name: "Ton", audio: Assets.Ton },
+          { name: "Mon", audio: Assets.monAudio },
+          { name: "key", audio: Assets.keyAudio },
         ],
-        completeAudio: Assets.ButtonS,
+        completeAudio: Assets.monkeyAudio,
       },
     ],
     L4: [
       {
-        completeWord: "Tablet",
-        syllable: ["Tab", "let"],
-        img: Assets.Tablet,
+        completeWord: "Garden",
+        syllable: ["Gar", "Den"],
+        img: Assets.GardenNewImg,
         syllablesAudio: [
-          { name: "Tab", audio: Assets.Tab },
-          { name: "Let", audio: Assets.Let },
+          { name: "Gar", audio: Assets.garAudio },
+          { name: "Den", audio: Assets.denAudio },
         ],
-        completeAudio: Assets.TabletS,
+        completeAudio: Assets.GardenAudio,
       },
       {
-        completeWord: "Picnic",
-        syllable: ["Pic", "nic"],
+        completeWord: "Helmet",
+        syllable: ["Hel", "met"],
         img: Assets.Picnic,
         syllablesAudio: [
-          { name: "Pic", audio: Assets.Pic },
-          { name: "Nic", audio: Assets.Nic },
+          { name: "Hel", audio: Assets.helAudio },
+          { name: "met", audio: Assets.metAudio },
         ],
-        completeAudio: Assets.PicnicS,
+        completeAudio: Assets.helmetAudio,
       },
       {
         completeWord: "Kitten",
@@ -327,6 +329,22 @@ const Practice = () => {
       { completeWord: "Window", syllable: ["Win", "dow"] },
     ],
   };
+
+  let progressDatas = getLocalData("practiceProgress");
+  const virtualId = String(getLocalData("virtualId"));
+
+  if (typeof progressDatas === "string") {
+    progressDatas = JSON.parse(progressDatas);
+  }
+
+  let currentPracticeStep;
+  if (progressDatas?.[virtualId]) {
+    currentPracticeStep = progressDatas[virtualId].currentPracticeStep;
+  }
+
+  const currentLevel = practiceSteps?.[currentPracticeStep]?.title || "P1";
+
+  const rFlow = getLocalData("rFlow");
 
   useEffect(() => {
     if (
@@ -501,6 +519,7 @@ const Practice = () => {
           try {
             const decoded = jwtDecode(token);
             const emisUsername = String(decoded.emis_username);
+            console.log("emu", emisUsername);
 
             if (levelMapping[emisUsername] !== undefined) {
               setLevel(levelMapping[emisUsername]);
@@ -519,15 +538,19 @@ const Practice = () => {
         try {
           const decoded = jwtDecode(token);
           emisUsername = String(decoded.emis_username);
+          console.log("emu", emisUsername);
         } catch (error) {
           console.error("Error decoding JWT token:", error);
         }
       }
 
-      let updatedLevel =
-        levelMapping[virtualId] || levelMapping[emisUsername] || 1;
+      let updatedLevel;
 
-      setLevel(updatedLevel);
+      if (levelMapping[virtualId] || levelMapping[emisUsername]) {
+        updatedLevel = levelMapping[virtualId] || levelMapping[emisUsername];
+
+        setLevel(updatedLevel);
+      }
 
       practiceProgress = practiceProgress ? JSON.parse(practiceProgress) : {};
 
@@ -641,6 +664,8 @@ const Practice = () => {
             } catch (e) {
               // catch error
             }
+          } else if (currentLevel === "S2") {
+            setLocalData("rFlow", true);
           }
         }
 
@@ -761,6 +786,7 @@ const Practice = () => {
             try {
               const decoded = jwtDecode(token);
               const emisUsername = String(decoded.emis_username);
+              console.log("emu", emisUsername);
 
               if (levelMapping[emisUsername] !== undefined) {
                 setLevel(levelMapping[emisUsername]);
@@ -835,6 +861,8 @@ const Practice = () => {
       );
 
       // TODO: validate the getMilestoneDetails API return
+
+      console.log("milestone d", getMilestoneDetails);
 
       setLocalData(
         "getMilestone",
@@ -1291,7 +1319,7 @@ const Practice = () => {
     }
   }, [questions[currentQuestion]]);
 
-  console.log("mec", mechanism, level);
+  console.log("mec", mechanism, level, rFlow);
 
   const renderMechanics = () => {
     if (!mechanism) {
@@ -1304,7 +1332,7 @@ const Practice = () => {
                 ? `Guess the below image`
                 : `Speak the below ${questions[currentQuestion]?.contentType}`,
             words:
-              level === 1
+              level === 1 || level === 2 || level === 3
                 ? levelOneWord
                 : questions[currentQuestion]?.contentSourceData?.[0]?.text,
             contentType: currentContentType,
@@ -1345,6 +1373,50 @@ const Practice = () => {
             setEnableNext,
             isNextButtonCalled,
             setIsNextButtonCalled,
+          }}
+        />
+      );
+    } else if (rFlow === "true") {
+      return (
+        <R1
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
           }}
         />
       );
@@ -2022,6 +2094,50 @@ const Practice = () => {
     } else if (mechanism.name === "AnouncementFlow") {
       return (
         <AnouncementFlow
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase: true,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (mechanism.name === "PhrasesInAction") {
+      return (
+        <PhrasesInAction
           page={page}
           setPage={setPage}
           {...{

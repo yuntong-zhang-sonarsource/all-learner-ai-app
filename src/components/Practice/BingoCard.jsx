@@ -1,22 +1,32 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as Assets from "../../utils/imageAudioLinks";
 import Confetti from "react-confetti";
-import { practiceSteps, getLocalData } from "../../utils/constants";
+import {
+  practiceSteps,
+  getLocalData,
+  NextButtonRound,
+  RetryIcon,
+} from "../../utils/constants";
 import r3WrongTick from "../../assets/r3WrongTick.svg";
 import bingoReset from "../../assets/bingoReset.svg";
-import Mic from "../../assets/mic.svg";
-import Stop from "../../assets/stop.svg";
+import Mic from "../../assets/mikee.svg";
+import Stop from "../../assets/pausse.svg";
 import Play from "../../assets/playButton.svg";
 import RecordVisualizer from "../../assets/recordVisualizer.svg";
 import { phoneticMatch } from "../../utils/phoneticUtils";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import MainLayout from "../Layouts.jsx/MainLayout";
+import correctSound from "../../assets/correct.wav";
+import wrongSound from "../../assets/audio/wrong.wav";
 
-const isChrome =
-  /Chrome/.test(navigator.userAgent) &&
-  /Google Inc/.test(navigator.vendor) &&
-  !/Edg/.test(navigator.userAgent);
+// const isChrome =
+//   /Chrome/.test(navigator.userAgent) &&
+//   /Google Inc/.test(navigator.vendor) &&
+//   !/Edg/.test(navigator.userAgent);
+
+const isChrome = true;
 
 const BingoCard = ({
   setVoiceText,
@@ -110,70 +120,70 @@ const BingoCard = ({
     return () => clearTimeout(timer);
   }, [showWrongWord]);
 
-  const initializeRecognition = () => {
-    let recognitionInstance;
+  // const initializeRecognition = () => {
+  //   let recognitionInstance;
 
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
+  //   const SpeechRecognition =
+  //     window.SpeechRecognition || window.webkitSpeechRecognition;
 
-    if (SpeechRecognition) {
-      recognitionInstance = new SpeechRecognition();
-    } else {
-      alert("Your browser does not support Speech Recognition.");
-      return;
-    }
+  //   if (SpeechRecognition) {
+  //     recognitionInstance = new SpeechRecognition();
+  //   } else {
+  //     alert("Your browser does not support Speech Recognition.");
+  //     return;
+  //   }
 
-    if (recognitionInstance) {
-      recognitionInstance.continuous = true;
-      recognitionInstance.interimResults = true;
-      recognitionInstance.lang = "en-US";
-      recognitionInstance.maxAlternatives = 1;
+  //   if (recognitionInstance) {
+  //     recognitionInstance.continuous = true;
+  //     recognitionInstance.interimResults = true;
+  //     recognitionInstance.lang = "en-US";
+  //     recognitionInstance.maxAlternatives = 1;
 
-      recognitionInstance.onstart = () => {};
+  //     recognitionInstance.onstart = () => {};
 
-      recognitionInstance.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        setIsRecording(false);
-        setIsProcessing(false);
-        setIsMicOn(false);
-        const matchPercentage = phoneticMatch(
-          levels[currentLevel]?.arrM[currentWordIndex],
-          transcript
-        );
-        console.log("matchPercentage", matchPercentage);
-      };
+  //     recognitionInstance.onresult = (event) => {
+  //       const transcript = event.results[0][0].transcript;
+  //       setIsRecording(false);
+  //       setIsProcessing(false);
+  //       setIsMicOn(false);
+  //       const matchPercentage = phoneticMatch(
+  //         levels[currentLevel]?.arrM[currentWordIndex],
+  //         transcript
+  //       );
+  //       console.log("matchPercentage", matchPercentage);
+  //     };
 
-      recognitionInstance.onerror = (event) => {
-        setIsRecording(false);
-        setIsProcessing(false);
-        setIsMicOn(false);
-        console.error("Speech recognition error:", event.error);
-        if (event.error === "no-speech") {
-          console.log("No Speech!");
-        } else if (event.error === "aborted") {
-          recognitionInstance.start();
-        }
-      };
+  //     recognitionInstance.onerror = (event) => {
+  //       setIsRecording(false);
+  //       setIsProcessing(false);
+  //       setIsMicOn(false);
+  //       console.error("Speech recognition error:", event.error);
+  //       if (event.error === "no-speech") {
+  //         console.log("No Speech!");
+  //       } else if (event.error === "aborted") {
+  //         recognitionInstance.start();
+  //       }
+  //     };
 
-      recognitionInstance.onend = () => {
-        setIsProcessing(false);
-      };
+  //     recognitionInstance.onend = () => {
+  //       setIsProcessing(false);
+  //     };
 
-      setRecognition(recognitionInstance);
-    }
-  };
+  //     setRecognition(recognitionInstance);
+  //   }
+  // };
 
-  useEffect(() => {
-    return () => {
-      if (recognition) {
-        recognition.onstart = null;
-        recognition.onresult = null;
-        recognition.onerror = null;
-        recognition.onend = null;
-        recognition.stop();
-      }
-    };
-  }, [recognition]);
+  // useEffect(() => {
+  //   return () => {
+  //     if (recognition) {
+  //       recognition.onstart = null;
+  //       recognition.onresult = null;
+  //       recognition.onerror = null;
+  //       recognition.onend = null;
+  //       recognition.stop();
+  //     }
+  //   };
+  // }, [recognition]);
 
   const startRecording = (word, isSelected) => {
     //console.log('recs', recognition);
@@ -201,13 +211,15 @@ const BingoCard = ({
       setIsRecording(false);
       setIsProcessing(false);
     } else {
-      if (recognition) {
-        recognition.stop();
-      }
+      // if (recognition) {
+      //   recognition.stop();
+      // }
       setIsProcessing(true);
     }
     setIsRecording(false);
     setShowRecording(false);
+    const audio = new Audio(correctSound);
+    audio.play();
     setShowHint(false);
     setWinEffect(true);
     setShowConfetti(true);
@@ -236,17 +248,17 @@ const BingoCard = ({
     }, 3000);
   };
 
-  useEffect(() => {
-    if (isRecording && recognition && recognition.state !== "recording") {
-      recognition.start();
-    }
-  }, [isRecording, recognition]);
+  // useEffect(() => {
+  //   if (isRecording && recognition && recognition.state !== "recording") {
+  //     recognition.start();
+  //   }
+  // }, [isRecording, recognition]);
 
-  useEffect(() => {
-    if (!isChrome) {
-      initializeRecognition();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!isChrome) {
+  //     initializeRecognition();
+  //   }
+  // }, []);
 
   let progressDatas = getLocalData("practiceProgress");
   const virtualId = String(getLocalData("virtualId"));
@@ -260,7 +272,7 @@ const BingoCard = ({
     currentPracticeStep = progressDatas[virtualId].currentPracticeStep;
   }
 
-  const currentLevel = practiceSteps?.[currentPracticeStep]?.title || "L1";
+  const currentLevel = practiceSteps?.[currentPracticeStep]?.titleNew || "L1";
 
   console.log("loggslevel", currentLevel, currentPracticeStep);
 
@@ -282,103 +294,121 @@ const BingoCard = ({
   const levels = {
     L1: {
       words: [
-        "BAS",
-        "KET",
-        "ROCK",
-        "SUN",
-        "SET",
-        "ET",
-        "PEN",
-        "LE",
-        "MON",
-        "CIL",
-        "DIN",
-        "NER",
+        "SUB",
+        "BER",
+        "TEL",
+        "NO",
+        "PINE",
+        "RINE",
+        "DOM",
+        "E",
+        "AP",
+        "PHONE",
+        "I",
+        "PLE",
+        "STRAW",
+        "MA",
+        "RY",
+        "BAT",
       ],
       imageAudioMap: {
-        ROCKET: { image: Assets.rocketImg, audio: Assets.RocketAudio },
-        PENCIL: { image: Assets.pencilImg, audio: Assets.PencilAudio },
-        DINNER: { image: Assets.dinnerImg, audio: Assets.DinnerAudio },
-        SUNSET: { image: Assets.sunsetImg, audio: Assets.SunsetAudio },
-        BASKET: { image: Assets.basketImg, audio: Assets.BasketAudio },
-        LEMON: { image: Assets.lemonImg, audio: Assets.LemonAudio },
+        TELEPHONE: {
+          image: Assets.TelephoneNewImg,
+          audio: Assets.telephoneAudio,
+        },
+        PINEAPPLE: {
+          image: Assets.PineappleNewImg,
+          audio: Assets.pineappleAudio,
+        },
+        SUBMARINE: { image: Assets.dinnerImg, audio: Assets.submarineAudio },
+        STRAWBERRY: { image: Assets.dinnerImg, audio: Assets.strawberryAudio },
+        DOMINO: { image: Assets.dinnerImg, audio: Assets.dominoAudio },
       },
-      arrM: ["ROCKET", "PENCIL", "DINNER", "SUNSET", "BASKET", "LEMON"],
+      arrM: ["TELEPHONE", "PINEAPPLE", "SUBMARINE", "STRAWBERRY", "DOMINO"],
     },
     L2: {
       words: [
-        "PAP",
-        "ER",
-        "HAP",
-        "PY",
-        "TI",
+        "BUR",
+        "CAN",
+        "MIC",
+        "SI",
         "GER",
-        "PUP",
-        "PET",
-        "TICK",
-        "ET",
-        "JACK",
-        "ETS",
+        "CUM",
+        "A",
+        "RO",
+        "CLE",
+        "HAM",
+        "WAVE",
+        "MEL",
+        "CAR",
+        "CU",
+        "POP",
+        "BER",
       ],
       imageAudioMap: {
-        PAPER: { image: Assets.paperImg, audio: Assets.PaperAudio },
-        HAPPY: { image: Assets.happyImg, audio: Assets.HappyAudio },
-        TIGER: { image: Assets.tigerImg, audio: Assets.TigerAudio },
-        PUPPET: { image: Assets.puppetImg, audio: Assets.PuppetAudio },
-        TICKET: { image: Assets.ticketImg, audio: Assets.TicketAudio },
-        JACKETS: { image: Assets.jacketImg, audio: Assets.JacketAudio },
+        MICROWAVE: { image: Assets.dinnerImg, audio: Assets.microwaveAudio },
+        CARAMEL: { image: Assets.dinnerImg, audio: Assets.caramelAudio },
+        HAMBURGER: { image: Assets.dinnerImg, audio: Assets.hamburgerAudio },
+        POPSICLE: { image: Assets.dinnerImg, audio: Assets.popsicleAudio },
+        CUCUMBER: { image: Assets.dinnerImg, audio: Assets.cucumberAudio },
       },
-      arrM: ["PAPER", "HAPPY", "TIGER", "PUPPET", "TICKET", "JACKETS"],
+      arrM: ["MICROWAVE", "CARAMEL", "HAMBURGER", "POPSICLE", "CUCUMBER"],
     },
     L3: {
       words: [
-        "BOT",
-        "TLE",
-        "BUT",
-        "TON",
-        "LAP",
-        "TOP",
-        "PIL",
-        "LOW",
-        "CAN",
-        "DLE",
-        "FLOW",
-        "ER",
+        "VI",
+        "O",
+        "LIN",
+        "GE",
+        "SUB",
+        "NO",
+        "BI",
+        "CA",
+        "STRAW",
+        "I",
+        "RINE",
+        "BER",
+        "TAN",
+        "MA",
+        "RY",
+        "VOL",
       ],
       imageAudioMap: {
-        BOTTLE: { image: Assets.bottleImg, audio: Assets.BottleAudio },
-        BUTTON: { image: Assets.buttonImg, audio: Assets.ButtonAudio },
-        LAPTOP: { image: Assets.laptopImg, audio: Assets.LaptopAudio },
-        PILLOW: { image: Assets.pillowImg, audio: Assets.PillowAudio },
-        CANDLE: { image: Assets.candleImg, audio: Assets.CandleAudio },
-        FLOWER: { image: Assets.flowerImg, audio: Assets.FlowerAudio },
+        SUBMARINE: { image: Assets.dinnerImg, audio: Assets.submarineAudio },
+        VOLCANO: { image: Assets.dinnerImg, audio: Assets.volcanoAudio },
+        STRAWBERRY: { image: Assets.dinnerImg, audio: Assets.strawberryAudio },
+        TANGERINE: { image: Assets.dinnerImg, audio: Assets.tangerineAudio },
+        VIOLIN: { image: Assets.dinnerImg, audio: Assets.violinAudio },
       },
-      arrM: ["BOTTLE", "BUTTON", "LAPTOP", "PILLOW", "CANDLE", "FLOWER"],
+      arrM: ["SUBMARINE", "VOLCANO", "STRAWBERRY", "TANGERINE", "VIOLIN"],
     },
     L4: {
       words: [
-        "TAB",
+        "BAT",
+        "U",
+        "TOR",
+        "CU",
+        "PROJ",
+        "UM",
         "LET",
-        "GAR",
-        "DEN",
-        "WIN",
-        "TER",
-        "TUR",
-        "TLE",
-        "RAB",
-        "BIT",
-        "HUN",
-        "GRY",
+        "EC",
+        "BER",
+        "OME",
+        "DISH",
+        "CUM",
+        "WASH",
+        "ER",
+        "TE",
+        "VAC",
       ],
       imageAudioMap: {
-        TABLET: { image: Assets.tabletImg, audio: Assets.TabletAudio },
-        GARDEN: { image: Assets.gardenImg, audio: Assets.GardenAudio },
-        WINTER: { image: Assets.winterImg, audio: Assets.WinterAudio },
-        TURTLE: { image: Assets.turtleImg, audio: Assets.TurtleAudio },
-        RABBIT: { image: Assets.rabbitImg, audio: Assets.RabbitAudio },
-        HUNGRY: { image: Assets.hungryImg, audio: Assets.HungryAudio },
+        CUCUMBER: { image: Assets.dinnerImg, audio: Assets.cucumberAudio },
+        PROJECTOR: { image: Assets.dinnerImg, audio: Assets.projectorAudio },
+        DISHWASHER: { image: Assets.dinnerImg, audio: Assets.dishwasherAudio },
+        VACUUM: { image: Assets.dinnerImg, audio: Assets.vacuumAudio },
+        OMELETTE: { image: Assets.dinnerImg, audio: Assets.omeletteAudio },
       },
-      arrM: ["TABLET", "GARDEN", "WINTER", "TURTLE", "RABBIT", "HUNGRY"],
+      arrM: ["CUCUMBER", "PROJECTOR", "DISHWASHER", "VACUUM", "OMELETTE"],
     },
   };
 
@@ -426,74 +456,58 @@ const BingoCard = ({
     }, levels[currentLevel]?.words.length * 500);
   }, []);
 
+  const getSize = () =>
+    screenWidth < 480 ? "40px" : screenWidth < 768 ? "50px" : "60px";
+
   const handleWordClick = (word) => {
     if (!selectedWords.includes(word)) {
       const updatedWords = [...selectedWords, word];
       setSelectedWords(updatedWords);
+
+      // if (Assets.LionAudio) {
+      //   const audio = new Audio(Assets.LionAudio);
+      //   audio.play();
+      // }
+
       const validPairs = {
-        ROCKET: ["ROCK", "ET"],
-        PENCIL: ["PEN", "CIL"],
-        DINNER: ["DIN", "NER"],
-        SUNSET: ["SUN", "SET"],
-        BASKET: ["BAS", "KET"],
-        LEMON: ["LE", "MON"],
-        PAPER: ["PAP", "ER"],
-        HAPPY: ["HAP", "PY"],
-        TIGER: ["TI", "GER"],
-        PUPPET: ["PUP", "PET"],
-        TICKET: ["TICK", "ET"],
-        JACKET: ["JACK", "ETS"],
-        BOTTLE: ["BOT", "TLE"],
-        BUTTON: ["BUT", "TON"],
-        LAPTOP: ["LAP", "TOP"],
-        PILLOW: ["PIL", "LOW"],
-        CANDLE: ["CAN", "DLE"],
-        FLOWER: ["FLOW", "ER"],
-        TABLET: ["TAB", "LET"],
-        GARDEN: ["GAR", "DEN"],
-        WINTER: ["WIN", "TER"],
-        TURTLE: ["TUR", "TLE"],
-        RABBIT: ["RAB", "BIT"],
-        HUNGRY: ["HUN", "GRY"],
+        MICROWAVE: ["MIC", "RO", "WAVE"],
+        TELEPHONE: ["TEL", "E", "PHONE"],
+        PINEAPPLE: ["PINE", "AP", "PLE"],
+        SUBMARINE: ["SUB", "MA", "RINE"],
+        STRAWBERRY: ["STRAW", "BER", "RY"],
+        DOMINO: ["DOM", "I", "NO"],
+        CARAMEL: ["CAR", "A", "MEL"],
+        HAMBURGER: ["HAM", "BUR", "GER"],
+        POPSICLE: ["POP", "SI", "CLE"],
+        CUCUMBER: ["CU", "CUM", "BER"],
+        VOLCANO: ["VOL", "CA", "NO"],
+        TANGERINE: ["TAN", "GE", "RINE"],
+        PROJECTOR: ["PROJ", "EC", "TOR"],
+        DISHWASHER: ["DISH", "WASH", "ER"],
+        VACUUM: ["VAC", "U", "UM"],
+        OMELETTE: ["OME", "LET", "TE"],
+        VIOLIN: ["VI", "O", "LIN"],
       };
 
       const currentWord = levels[currentLevel]?.arrM[currentWordIndex];
 
-      const isCorrectPair = validPairs[currentWord]?.every((part) =>
-        updatedWords.includes(part)
-      );
+      // const isCorrectPair = validPairs[currentWord]?.every((part) =>
+      //   updatedWords.includes(part)
+      // );
+
+      const requiredParts = validPairs[currentWord] || [];
+
+      const isCorrectPair =
+        updatedWords.length === requiredParts.length &&
+        requiredParts.every((part) => updatedWords.includes(part));
 
       if (isCorrectPair) {
         setShowRecording(true);
-        // setShowHint(false);
-        // setWinEffect(true);
-        // setShowConfetti(true);
-        // setCoins((prevCoins) => prevCoins + 100);
-        // setShowWrongWord(false);
-        // setHighlightCorrectWords(false);
-
-        // setTimeout(() => {
-        //   setShowCoinsImg(true);
-
-        //   setTimeout(() => {
-        //     setShowEmptyImg(true);
-        //     setShowNextButton(true);
-        //     setShowCoinsImg(false);
-        //   }, 1000);
-        // }, 3000);
-
-        // setTimeout(() => {
-        //   setSelectedWords([]);
-        //   setWinEffect(false);
-        //   setShowEmptyImg(false);
-        // }, 3000);
-
-        // setTimeout(() => {
-        //   setShowConfetti(false);
-        // }, 3000);
-      } else if (updatedWords.length === 2 && !winEffect) {
+      } else if (updatedWords.length >= requiredParts.length && !winEffect) {
         setShowHint(false);
         setShowWrongWord(true);
+        const audio = new Audio(wrongSound);
+        audio.play();
       }
     }
   };
@@ -540,23 +554,46 @@ const BingoCard = ({
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100vh",
-        position: "relative",
-        overflowX: "hidden",
-        backgroundColor: "#1CB0F6",
-        filter: "brightness(1.1)",
-        overflowY: "hidden",
+    <MainLayout
+      background={background}
+      handleNext={handleNext}
+      enableNext={enableNext}
+      showTimer={showTimer}
+      points={points}
+      pageName={"m14"}
+      //answer={answer}
+      //isRecordingComplete={isRecordingComplete}
+      parentWords={parentWords}
+      //={recAudio}
+      {...{
+        steps,
+        currentStep,
+        level,
+        progressData,
+        showProgress,
+        playTeacherAudio,
+        handleBack,
+        disableScreen,
+        loading,
       }}
     >
-      {showConfetti && (
-        <Confetti width={window.innerWidth} height={window.innerHeight} />
-      )}
+      <div
+        style={{
+          width: "100%",
+          height: "85vh",
+          position: "relative",
+          overflowX: "hidden",
+          backgroundColor: "#1CB0F6",
+          filter: "brightness(1.1)",
+          overflowY: "hidden",
+        }}
+      >
+        {showConfetti && (
+          <Confetti width={window.innerWidth} height={window.innerHeight} />
+        )}
 
-      <style>
-        {`
+        <style>
+          {`
           .focusHint {
             animation: hintPulse 1s ease-in-out;
           }
@@ -575,321 +612,303 @@ const BingoCard = ({
             }
           }
         `}
-      </style>
-      <div
-        style={{
-          position: "absolute",
-          width: "95%",
-          height: "80%",
-          backgroundColor: "#FFFFFF40",
-          zIndex: 1,
-          top: "10%",
-          left: "2.5%",
-          borderRadius: "33px",
-        }}
-      ></div>
-
-      {showEmptyImg && (
+        </style>
         <div
           style={{
             position: "absolute",
-            left: screenWidth < 768 ? "50%" : "280px",
-            bottom: screenWidth < 768 ? "220px" : "318px",
-            width: screenWidth < 768 ? "140px" : "240px",
-            height: screenWidth < 768 ? "90px" : "130px",
-            zIndex: 1000,
+            width: "95%",
+            height: "83%",
+            backgroundColor: "#FFFFFF40",
+            zIndex: 1,
+            top: "10%",
+            left: "2.5%",
+            borderRadius: "33px",
           }}
-        >
-          <img
-            src={Assets.emptyImg}
-            alt="Empty Placeholder"
+        ></div>
+
+        {showEmptyImg && (
+          <div
             style={{
-              transform: "translateX(-50%)",
-              //width: screenWidth < 768 ? "120px" : "170px",
-              height: screenWidth < 768 ? "90px" : "165px",
-              zIndex: 100,
+              position: "absolute",
+              left: screenWidth < 768 ? "30%" : "280px",
+              bottom: screenWidth < 768 ? "220px" : "318px",
+              width: screenWidth < 768 ? "140px" : "240px",
+              height: screenWidth < 768 ? "90px" : "130px",
+              zIndex: 1000,
             }}
-          />
-          <div style={{ display: "flex", marginTop: "10px", gap: "15px" }}>
-            <button
+          >
+            <img
+              src={Assets.emptyImg}
+              alt="Empty Placeholder"
               style={{
-                position: "absolute",
-                right: "90%",
-                border: "none",
-                background: "transparent",
-                cursor: "pointer",
-                zIndex: "5",
+                transform: "translateX(-50%)",
+                //width: screenWidth < 768 ? "120px" : "170px",
+                height: screenWidth < 768 ? "90px" : "165px",
+                zIndex: 100,
               }}
-              onClick={handleReset}
-            >
-              <img
+            />
+            <div style={{ display: "flex", marginTop: "10px", gap: "15px" }}>
+              <button
+                style={{
+                  position: "absolute",
+                  right: "90%",
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                  zIndex: "5",
+                }}
+                onClick={handleReset}
+              >
+                {/* <img
                 src={Assets.resetImg}
                 alt="Reset"
                 style={{
                   width: screenWidth < 768 ? "40px" : "50px",
                   height: screenWidth < 768 ? "40px" : "50px",
                 }}
-              />
-            </button>
+              /> */}
+                <RetryIcon
+                  height={screenWidth < 768 ? 40 : 50}
+                  width={screenWidth < 768 ? 40 : 50}
+                />
+              </button>
 
-            {showNextButton && (
-              <button
-                style={{
-                  position: "absolute",
-                  right: "55%",
-                  border: "none",
-                  background: "transparent",
-                  cursor: "pointer",
-                  zIndex: "5",
-                }}
-                onClick={handleNextButton}
-              >
-                <img
+              {showNextButton && (
+                <button
+                  style={{
+                    position: "absolute",
+                    right: "55%",
+                    border: "none",
+                    background: "transparent",
+                    cursor: "pointer",
+                    zIndex: "5",
+                  }}
+                  onClick={handleNextButton}
+                >
+                  {/* <img
                   src={Assets.nextImg}
                   alt="Next"
                   style={{
                     width: screenWidth < 768 ? "40px" : "50px",
                     height: screenWidth < 768 ? "40px" : "50px",
                   }}
-                />
-              </button>
-            )}
-          </div>
-        </div>
-      )}
+                /> */}
 
-      {showCoinsImg && (
+                  <NextButtonRound
+                    height={screenWidth < 768 ? 40 : 50}
+                    width={screenWidth < 768 ? 40 : 50}
+                  />
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {showCoinsImg && (
+          <div
+            style={{
+              position: "absolute",
+              //left: screenWidth < 768 ? "50%" : "157px",
+              left: screenWidth < 768 ? "30%" : "15%",
+              bottom: screenWidth < 768 ? "220px" : "308px",
+              width: screenWidth < 768 ? "140px" : "240px",
+              height: screenWidth < 768 ? "90px" : "130px",
+              zIndex: 0,
+              animation: "moveCoins 0s linear forwards",
+              transform: screenWidth < 768 ? "translateX(-50%)" : "none",
+            }}
+          >
+            <img
+              src={Assets.coinssImg}
+              alt="Coins Animation"
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
+            />
+
+            <img
+              src={Assets.textCoinsImg}
+              alt="Text Coins"
+              style={{
+                position: "absolute",
+                top: "60%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: screenWidth < 768 ? "20%" : "15%",
+              }}
+            />
+          </div>
+        )}
         <div
           style={{
             position: "absolute",
-            left: screenWidth < 768 ? "50%" : "157px",
-            bottom: screenWidth < 768 ? "220px" : "308px",
-            width: screenWidth < 768 ? "140px" : "240px",
-            height: screenWidth < 768 ? "90px" : "130px",
-            zIndex: 0,
-            animation: "moveCoins 0s linear forwards",
+            left: screenWidth < 768 ? "20%" : "10px",
+            bottom: screenWidth < 768 ? "13%" : "0%",
+            height: screenWidth < 768 ? "200px" : "390px",
+            width: screenWidth < 768 ? "200px" : "390px",
+            zIndex: "2",
             transform: screenWidth < 768 ? "translateX(-50%)" : "none",
           }}
         >
           <img
-            src={Assets.coinssImg}
-            alt="Coins Animation"
+            src={Assets.monkeyImg}
+            alt="Monkey"
             style={{
-              width: "100%",
-              height: "100%",
+              width: screenWidth < 768 ? "150px" : "250px",
+              height: screenWidth < 768 ? "250px" : "450px",
             }}
           />
-
-          <img
-            src={Assets.textCoinsImg}
-            alt="Text Coins"
-            style={{
-              position: "absolute",
-              top: "60%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: screenWidth < 768 ? "20%" : "15%",
-            }}
-          />
-        </div>
-      )}
-      <div
-        style={{
-          position: "absolute",
-          left: screenWidth < 768 ? "30%" : "10px",
-          bottom: screenWidth < 768 ? "13%" : "0%",
-          height: screenWidth < 768 ? "200px" : "390px",
-          width: screenWidth < 768 ? "200px" : "390px",
-          zIndex: "2",
-          transform: screenWidth < 768 ? "translateX(-50%)" : "none",
-        }}
-      >
-        <img
-          src={Assets.monkeyImg}
-          alt="Monkey"
-          style={{
-            width: screenWidth < 768 ? "150px" : "250px",
-            height: screenWidth < 768 ? "250px" : "450px",
-          }}
-        />
-        {!hideButtons &&
-          !showWrongWord &&
-          !winEffect &&
-          !showCoinsImg &&
-          !showEmptyImg &&
-          !showInitialEffect &&
-          !showInitialEffect &&
-          startGame && (
-            <img
-              onClick={() => {
-                startAudio(currentWordIndex);
-              }}
-              src={Play}
-              alt="Start"
-              style={{
-                width: screenWidth < 768 ? "40px" : "50px",
-                height: screenWidth < 768 ? "40px" : "50px",
-                position: "absolute",
-                left: screenWidth < 768 ? "75%" : "55%",
-                top: screenWidth < 768 ? "10%" : "5%",
-                transform: "translateX(-50%)",
-                zIndex: 100,
-                padding: screenWidth < 768 ? "8px 16px" : "10px 20px",
-              }}
-            />
-          )}
-        {!hideButtons &&
-          !showWrongWord &&
-          !winEffect &&
-          !showCoinsImg &&
-          !showEmptyImg &&
-          showInitialEffect &&
-          !startGame && (
-            <img
-              src={Assets.emptyImg}
-              alt="Empty Placeholder"
-              style={{
-                position: "absolute",
-                left: screenWidth < 768 ? "85%" : "72%",
-                top: screenWidth < 768 ? "-19%" : "-20%",
-                transform: "translateX(-50%)",
-                //width: screenWidth < 768 ? "120px" : "170px",
-                height: screenWidth < 768 ? "90px" : "175px",
-                zIndex: 10,
-              }}
-            />
-          )}
-        {!hideButtons &&
-          !showWrongWord &&
-          !winEffect &&
-          !showCoinsImg &&
-          !showEmptyImg &&
-          !showInitialEffect &&
-          !startGame &&
-          !showRecording && (
-            <>
-              <button
+          {!hideButtons &&
+            !showWrongWord &&
+            !winEffect &&
+            !showCoinsImg &&
+            !showEmptyImg &&
+            !showInitialEffect &&
+            !showInitialEffect &&
+            startGame && (
+              <img
+                onClick={() => {
+                  startAudio(currentWordIndex);
+                }}
+                src={Play}
+                alt="Start"
                 style={{
+                  width: screenWidth < 768 ? "40px" : "50px",
+                  height: screenWidth < 768 ? "40px" : "50px",
                   position: "absolute",
-                  left: "55%",
+                  left: screenWidth < 768 ? "75%" : "55%",
                   top: screenWidth < 768 ? "10%" : "5%",
-                  border: "none",
-                  background: "transparent",
-                  cursor: "pointer",
+                  transform: "translateX(-50%)",
+                  zIndex: 100,
+                  padding: screenWidth < 768 ? "8px 16px" : "10px 20px",
                 }}
-                onClick={handleHintClick}
-              >
-                <img
-                  src={Assets.hintImg}
-                  alt="Hint"
-                  style={{
-                    width: screenWidth < 768 ? "40px" : "50px",
-                    height: screenWidth < 768 ? "40px" : "70px",
-                  }}
-                />
-              </button>
-              <button
+              />
+            )}
+          {!hideButtons &&
+            !showWrongWord &&
+            !winEffect &&
+            !showCoinsImg &&
+            !showEmptyImg &&
+            showInitialEffect &&
+            !startGame && (
+              <img
+                src={Assets.emptyImg}
+                alt="Empty Placeholder"
                 style={{
                   position: "absolute",
-                  left: screenWidth < 768 ? "80%" : "55%",
-                  top: screenWidth < 768 ? "10%" : "25%",
-                  border: "none",
-                  background: "transparent",
-                  cursor: "pointer",
+                  left: screenWidth < 768 ? "85%" : "72%",
+                  top: screenWidth < 768 ? "-19%" : "-20%",
+                  transform: "translateX(-50%)",
+                  //width: screenWidth < 768 ? "120px" : "170px",
+                  height: screenWidth < 768 ? "90px" : "175px",
+                  zIndex: 10,
                 }}
-              >
-                <img
+              />
+            )}
+          {!hideButtons &&
+            !showWrongWord &&
+            !winEffect &&
+            !showCoinsImg &&
+            !showEmptyImg &&
+            !showInitialEffect &&
+            !startGame &&
+            !showRecording && (
+              <>
+                <button
+                  style={{
+                    position: "absolute",
+                    left: "55%",
+                    top: screenWidth < 768 ? "10%" : "5%",
+                    border: "none",
+                    background: "transparent",
+                    cursor: "pointer",
+                  }}
+                  onClick={handleHintClick}
+                >
+                  <img
+                    src={Assets.hintImg}
+                    alt="Hint"
+                    style={{
+                      width: screenWidth < 768 ? "40px" : "50px",
+                      height: screenWidth < 768 ? "40px" : "70px",
+                    }}
+                  />
+                </button>
+                <button
+                  style={{
+                    position: "absolute",
+                    left: screenWidth < 768 ? "80%" : "55%",
+                    top: screenWidth < 768 ? "10%" : "25%",
+                    border: "none",
+                    background: "transparent",
+                    cursor: "pointer",
+                  }}
+                  onClick={handleReset}
+                >
+                  {/* <img
                   src={Assets.resetImg}
                   alt="Reset"
                   style={{
                     width: screenWidth < 768 ? "40px" : "50px",
                     height: screenWidth < 768 ? "40px" : "70px",
                   }}
-                />
-              </button>
-            </>
-          )}
-      </div>
-
-      {showWrongWord && (
-        <div
-          style={{
-            position: "absolute",
-            left: screenWidth < 768 ? "50%" : "175px",
-            bottom: screenWidth < 768 ? "220px" : "330px",
-            width: screenWidth < 768 ? "140px" : "240px",
-            height: screenWidth < 768 ? "90px" : "130px",
-            zIndex: 1000,
-          }}
-        >
-          <img
-            src={Assets.cloudText}
-            alt="Cloud"
-            style={{
-              //width: screenWidth < 768 ? "170px" : "230px",
-              height: screenWidth < 768 ? "85px" : "175px",
-              zIndex: 21,
-            }}
-          />
-          <img
-            src={showWrongTick ? r3WrongTick : bingoReset}
-            alt={showWrongTick ? "Wrong" : "Bingo Reset"}
-            style={{
-              position: "absolute",
-              left: "53%",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
-              height: "65px",
-              zIndex: 22,
-              cursor: showWrongTick ? "default" : "pointer",
-            }}
-            onClick={!showWrongTick ? handleReset : undefined}
-          />
+                /> */}
+                  <RetryIcon
+                    height={screenWidth < 768 ? 40 : 50}
+                    width={screenWidth < 768 ? 40 : 50}
+                  />
+                </button>
+              </>
+            )}
         </div>
-      )}
 
-      {showHint && !winEffect && (
-        <div
-          style={{
-            position: "absolute",
-            left: screenWidth < 768 ? "50%" : "175px",
-            bottom: screenWidth < 768 ? "220px" : "330px",
-            width: screenWidth < 768 ? "140px" : "240px",
-            height: screenWidth < 768 ? "90px" : "130px",
-            zIndex: 1000,
-          }}
-        >
-          <img
-            src={Assets.cloudText}
-            alt="Cloud"
-            style={{
-              //width: screenWidth < 768 ? "170px" : "230px",
-              height: screenWidth < 768 ? "85px" : "175px",
-              zIndex: 21,
-            }}
-          />
-          <img
-            src={currentImage}
-            alt={levels[currentLevel]?.arrM[currentWordIndex]}
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "45%",
-              transform: "translate(-50%, -50%)",
-              height: screenWidth < 768 ? "50px" : "70px",
-              zIndex: 22,
-            }}
-          />
-        </div>
-      )}
-
-      {showRecording &&
-        (!isRecording && !isProcessing ? (
+        {showWrongWord && (
           <div
             style={{
               position: "absolute",
-              left: screenWidth < 768 ? "50%" : "175px",
-              bottom: screenWidth < 768 ? "220px" : "320px",
+              left: screenWidth < 768 ? "30%" : "27%",
+              bottom: screenWidth < 768 ? "220px" : "330px",
+              width: screenWidth < 768 ? "140px" : "240px",
+              height: screenWidth < 768 ? "90px" : "130px",
+              zIndex: 1000,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transform: "translateX(-50%)", // Center the div itself
+            }}
+          >
+            <img
+              src={Assets.cloudText}
+              alt="Cloud"
+              style={{
+                height: screenWidth < 768 ? "85px" : "175px",
+                zIndex: 21,
+              }}
+            />
+            <img
+              src={showWrongTick ? r3WrongTick : bingoReset}
+              alt={showWrongTick ? "Wrong" : "Bingo Reset"}
+              style={{
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, -50%)", // Ensures the image stays centered
+                height: screenWidth < 768 ? "35px" : "65px",
+                zIndex: 22,
+                cursor: showWrongTick ? "default" : "pointer",
+              }}
+              onClick={!showWrongTick ? handleReset : undefined}
+            />
+          </div>
+        )}
+
+        {showHint && !winEffect && (
+          <div
+            style={{
+              position: "absolute",
+              left: screenWidth < 768 ? "20%" : "15%",
+              bottom: screenWidth < 768 ? "220px" : "330px",
               width: screenWidth < 768 ? "140px" : "240px",
               height: screenWidth < 768 ? "90px" : "130px",
               zIndex: 1000,
@@ -899,251 +918,297 @@ const BingoCard = ({
               src={Assets.cloudText}
               alt="Cloud"
               style={{
-                width: screenWidth < 768 ? "170px" : "230px",
-                height: screenWidth < 768 ? "85px" : "160px",
+                //width: screenWidth < 768 ? "170px" : "230px",
+                height: screenWidth < 768 ? "90px" : "175px",
                 zIndex: 21,
               }}
             />
             <img
-              src={Mic}
-              alt={"Start Recording"}
+              src={currentImage}
+              alt={levels[currentLevel]?.arrM[currentWordIndex]}
               style={{
                 position: "absolute",
                 left: "50%",
                 top: "45%",
                 transform: "translate(-50%, -50%)",
-                height: "50px",
+                height: screenWidth < 768 ? "40px" : "65px",
                 zIndex: 22,
               }}
-              onClick={() =>
-                startRecording(levels[currentLevel]?.arrM[currentWordIndex])
-              }
             />
           </div>
-        ) : (
-          <div
-            style={{
-              position: "absolute",
-              left: screenWidth < 768 ? "50%" : "175px",
-              bottom: screenWidth < 768 ? "220px" : "320px",
-              width: screenWidth < 768 ? "140px" : "240px",
-              height: screenWidth < 768 ? "90px" : "130px",
-              zIndex: 1000,
-            }}
-          >
-            <img
-              src={Assets.cloudText}
-              alt="Cloud"
-              style={{
-                width: screenWidth < 768 ? "170px" : "230px",
-                height: screenWidth < 768 ? "85px" : "160px",
-                zIndex: 21,
-              }}
-            />
+        )}
+
+        {showRecording &&
+          (!isRecording && !isProcessing ? (
             <div
-              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+              style={{
+                position: "absolute",
+                left: screenWidth < 768 ? "20%" : "15%",
+                bottom: screenWidth < 768 ? "220px" : "320px",
+                //width: screenWidth < 768 ? "140px" : "240px",
+                //height: screenWidth < 768 ? "90px" : "130px",
+                zIndex: 1000,
+              }}
             >
               <img
-                src={RecordVisualizer}
-                alt={"Start Visualizer"}
+                src={Assets.cloudText}
+                alt="Cloud"
                 style={{
-                  position: "absolute",
-                  left: "50%",
-                  top: "35%",
-                  transform: "translate(-50%, -50%)",
-                  height: "30px",
-                  zIndex: 22,
+                  width: screenWidth < 768 ? "170px" : "230px",
+                  //height: screenWidth < 768 ? "85px" : "160px",
+                  zIndex: 21,
                 }}
               />
               <img
-                src={Stop}
+                src={Mic}
                 alt={"Start Recording"}
                 style={{
                   position: "absolute",
                   left: "50%",
-                  top: "70%",
+                  top: "45%",
                   transform: "translate(-50%, -50%)",
-                  height: "50px",
+                  height: screenWidth < 786 ? "40px" : "50px",
                   zIndex: 22,
                 }}
-                onClick={() => stopRecording()}
+                onClick={() =>
+                  startRecording(levels[currentLevel]?.arrM[currentWordIndex])
+                }
               />
             </div>
-          </div>
-        ))}
-
-      {winEffect && (
-        <>
-          {showConfetti && (
-            <Confetti
-              width={200}
-              height={100}
-              numberOfPieces={50}
-              recycle={false}
-              particleSize={10}
-              gravity={0.3}
-              style={{
-                position: "absolute",
-                left: "180px",
-                bottom: "420px",
-                zIndex: 25,
-              }}
-            />
-          )}
-
-          <div
-            style={{
-              position: "absolute",
-              left: screenWidth < 768 ? "45%" : "170px",
-              bottom: screenWidth < 768 ? "220px" : "310px",
-              display: "flex",
-              gap: screenWidth < 768 ? "10px" : "20px",
-              zIndex: 20,
-              transform: screenWidth < 768 ? "translateX(-50%)" : "none",
-            }}
-          >
+          ) : (
             <div
               style={{
-                position: "relative",
-                justifyContent: "center",
-                alignItems: "center",
+                position: "absolute",
+                left: screenWidth < 768 ? "20%" : "15%",
+                bottom: screenWidth < 768 ? "220px" : "320px",
+                //width: screenWidth < 768 ? "140px" : "240px",
+                //height: screenWidth < 768 ? "90px" : "130px",
+                zIndex: 1000,
               }}
             >
               <img
-                src={Assets.rockImg}
-                alt="Rock Word"
+                src={Assets.cloudText}
+                alt="Cloud"
                 style={{
-                  width: screenWidth < 768 ? "130px" : "200px",
-                  height: screenWidth < 768 ? "90px" : "130px",
+                  width: screenWidth < 768 ? "170px" : "230px",
+                  //height: screenWidth < 768 ? "85px" : "160px",
                   zIndex: 21,
                 }}
               />
-              <p
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                }}
+              >
+                <img
+                  src={RecordVisualizer}
+                  alt={"Start Visualizer"}
+                  style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "30%",
+                    transform: "translate(-50%, -50%)",
+                    height: screenWidth < 786 ? "15px" : "30px",
+                    zIndex: 22,
+                  }}
+                />
+                <img
+                  src={Stop}
+                  alt={"Start Recording"}
+                  style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "60%",
+                    transform: "translate(-50%, -50%)",
+                    height: screenWidth < 786 ? "40px" : "50px",
+                    zIndex: 22,
+                  }}
+                  onClick={() => stopRecording()}
+                />
+              </div>
+            </div>
+          ))}
+
+        {winEffect && (
+          <>
+            {showConfetti && (
+              <Confetti
+                width={200}
+                height={100}
+                numberOfPieces={50}
+                recycle={false}
+                particleSize={10}
+                gravity={0.3}
                 style={{
                   position: "absolute",
-                  top: "42%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  color: "#333F61",
-                  fontWeight: "700",
-                  fontSize: screenWidth < 768 ? "16px" : "20px",
+                  left: "180px",
+                  bottom: "420px",
+                  zIndex: 25,
                 }}
-              >
-                {levels[currentLevel]?.arrM[currentWordIndex]}
-              </p>
-            </div>
+              />
+            )}
 
-            <img
-              src={Assets.etImg}
-              alt="Et Word"
-              style={{
-                width: screenWidth < 768 ? "80px" : "100px",
-                height: screenWidth < 768 ? "90px" : "120px",
-                zIndex: 22,
-                marginLeft: screenWidth < 768 ? "-120px" : "-160px",
-              }}
-            />
-          </div>
-        </>
-      )}
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: screenWidth < 768 ? "10px 30px" : "20px 50px",
-          position: "absolute",
-          right: screenWidth < 768 ? "50%" : "10%",
-          top: screenWidth < 768 ? "15%" : "17%",
-          transform: screenWidth < 768 ? "translateX(50%)" : "none",
-          zIndex: 1,
-        }}
-      >
-        {levels[currentLevel]?.words.map((word, index) => {
-          const validPairs = {
-            ROCKET: ["ROCK", "ET"],
-            PENCIL: ["PEN", "CIL"],
-            DINNER: ["DIN", "NER"],
-            SUNSET: ["SUN", "SET"],
-            BASKET: ["BAS", "KET"],
-            LEMON: ["LE", "MON"],
-            PAPER: ["PAP", "ER"],
-            HAPPY: ["HAP", "PY"],
-            TIGER: ["TI", "GER"],
-            PUPPET: ["PUP", "PET"],
-            TICKET: ["TICK", "ET"],
-            JACKET: ["JACK", "ETS"],
-            BOTTLE: ["BOT", "TLE"],
-            BUTTON: ["BUT", "TON"],
-            LAPTOP: ["LAP", "TOP"],
-            PILLOW: ["PIL", "LOW"],
-            CANDLE: ["CAN", "DLE"],
-            FLOWER: ["FLOW", "ER"],
-            TABLET: ["TAB", "LET"],
-            GARDEN: ["GAR", "DEN"],
-            WINTER: ["WIN", "TER"],
-            TURTLE: ["TUR", "TLE"],
-            RABBIT: ["RAB", "BIT"],
-            HUNGRY: ["HUN", "GRY"],
-          };
-
-          const isCorrectWord =
-            highlightCorrectWords &&
-            validPairs[
-              levels[currentLevel]?.levels[currentLevel]?.arrM[currentWordIndex]
-            ].includes(word);
-
-          return (
             <div
-              key={index}
               style={{
-                width: screenWidth < 768 ? "65px" : "80px",
-                height: screenWidth < 768 ? "65px" : "80px",
-                backgroundColor: isCorrectWord
-                  ? "#93E908"
-                  : selectedWords.includes(word)
-                  ? showConfetti
-                    ? "#00FF00"
-                    : showWrongWord
-                    ? "#FF2D55"
-                    : "#1CB0F6"
-                  : "#ffffff",
-                color:
-                  selectedWords.includes(word) || isCorrectWord
-                    ? "#ffffff"
-                    : "#1CB0F6",
-                borderRadius: "30% 70% 30% 70% / 70% 30% 70% 30%",
-                boxShadow:
-                  "0 6px 8px rgba(0, 0, 0, 0.2), 0 -4px 6px rgba(255, 255, 255, 0.5) inset",
-                transform: "rotate(-12deg)",
+                position: "absolute",
+                left: screenWidth < 768 ? "30%" : "170px",
+                bottom: screenWidth < 768 ? "220px" : "310px",
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: screenWidth < 768 ? "16px" : "22px",
-                fontWeight: "bold",
-                border:
-                  highlightedButtonIndex === index
-                    ? "0.3px solid #4DBD25"
-                    : "0.3px solid #000000",
-                fontFamily: "Quicksand",
-                cursor: "pointer",
-                zIndex: 2,
+                gap: screenWidth < 768 ? "10px" : "20px",
+                zIndex: 20,
+                transform: screenWidth < 768 ? "translateX(-50%)" : "none",
               }}
-              onClick={() => handleWordClick(word)}
             >
-              <p
+              <div
                 style={{
-                  transform: "rotate(12deg)",
-                  fontSize: screenWidth < 768 ? "16px" : "22px",
+                  position: "relative",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                {word}
-              </p>
+                <img
+                  src={Assets.rockImg}
+                  alt="Rock Word"
+                  style={{
+                    width: screenWidth < 768 ? "130px" : "220px",
+                    height: screenWidth < 768 ? "90px" : "140px",
+                    zIndex: 21,
+                  }}
+                />
+                <p
+                  style={{
+                    position: "absolute",
+                    top: "42%",
+                    left: "52%",
+                    transform: "translate(-50%, -50%)",
+                    color: "#333F61",
+                    fontWeight: "700",
+                    fontSize: screenWidth < 768 ? "12px" : "18px",
+                  }}
+                >
+                  {levels[currentLevel]?.arrM[currentWordIndex]}
+                </p>
+              </div>
+
+              <img
+                src={Assets.etImg}
+                alt="Et Word"
+                style={{
+                  width: screenWidth < 768 ? "80px" : "100px",
+                  height: screenWidth < 768 ? "90px" : "120px",
+                  zIndex: 22,
+                  marginLeft: screenWidth < 768 ? "-120px" : "-160px",
+                }}
+              />
             </div>
-          );
-        })}
+          </>
+        )}
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: screenWidth < 768 ? "10px 30px" : "20px 50px",
+            position: "absolute",
+            right: screenWidth < 768 ? "10%" : "10%",
+            top: screenWidth < 768 ? "15%" : "17%",
+            //transform: screenWidth < 768 ? "translateX(50%)" : "none",
+            zIndex: 1,
+          }}
+        >
+          {levels[currentLevel]?.words.map((word, index) => {
+            const validPairs = {
+              MICROWAVE: ["MIC", "RO", "WAVE"],
+              TELEPHONE: ["TEL", "E", "PHONE"],
+              PINEAPPLE: ["PINE", "AP", "PLE"],
+              SUBMARINE: ["SUB", "MA", "RINE"],
+              STRAWBERRY: ["STRAW", "BER", "RY"],
+              DOMINO: ["DOM", "I", "NO"],
+              CARAMEL: ["CAR", "A", "MEL"],
+              HAMBURGER: ["HAM", "BUR", "GER"],
+              POPSICLE: ["POP", "SI", "CLE"],
+              CUCUMBER: ["CU", "CUM", "BER"],
+              VOLCANO: ["VOL", "CA", "NO"],
+              TANGERINE: ["TAN", "GE", "RINE"],
+              PROJECTOR: ["PROJ", "EC", "TOR"],
+              DISHWASHER: ["DISH", "WASH", "ER"],
+              VACUUM: ["VAC", "U", "UM"],
+              OMELETTE: ["OME", "LET", "TE"],
+              VIOLIN: ["VI", "O", "LIN"],
+            };
+
+            const isCorrectWord =
+              highlightCorrectWords &&
+              validPairs[
+                levels[currentLevel]?.levels[currentLevel]?.arrM[
+                  currentWordIndex
+                ]
+              ].includes(word);
+
+            return (
+              <div
+                key={index}
+                style={{
+                  width: getSize(),
+                  height: getSize(),
+                  backgroundColor: isCorrectWord
+                    ? "#93E908"
+                    : selectedWords.includes(word)
+                    ? showConfetti
+                      ? "#00FF00"
+                      : showWrongWord
+                      ? "#FF2D55"
+                      : "#1CB0F6"
+                    : "#ffffff",
+                  color:
+                    selectedWords.includes(word) || isCorrectWord
+                      ? "#ffffff"
+                      : "#1CB0F6",
+                  borderRadius: "30% 70% 30% 70% / 70% 30% 70% 30%",
+                  boxShadow:
+                    "0 6px 8px rgba(0, 0, 0, 0.2), 0 -4px 6px rgba(255, 255, 255, 0.5) inset",
+                  transform: "rotate(-12deg)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize:
+                    screenWidth < 480
+                      ? "14px"
+                      : screenWidth < 768
+                      ? "16px"
+                      : "18px",
+                  fontWeight: "bold",
+                  border:
+                    highlightedButtonIndex === index
+                      ? "0.3px solid #4DBD25"
+                      : "0.3px solid #000000",
+                  fontFamily: "Quicksand",
+                  cursor: "pointer",
+                  zIndex: 2,
+                }}
+                onClick={() => handleWordClick(word)}
+              >
+                <p
+                  style={{
+                    transform: "rotate(12deg)",
+                    fontSize:
+                      screenWidth < 480
+                        ? "10px"
+                        : screenWidth < 768
+                        ? "12px"
+                        : "15px",
+                  }}
+                >
+                  {word}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 

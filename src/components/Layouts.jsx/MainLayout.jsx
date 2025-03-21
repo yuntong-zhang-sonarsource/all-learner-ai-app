@@ -141,6 +141,8 @@ const MainLayout = (props) => {
     },
   };
 
+  const rFlow = getLocalData("rFlow");
+
   let LEVEL = props?.level;
 
   const virtualId = String(getLocalData("virtualId"));
@@ -515,7 +517,7 @@ const MainLayout = (props) => {
                       height: "100%",
                     }}
                   >
-                    {showProgress && (
+                    {showProgress && rFlow !== "true" && (
                       <Box
                         sx={{
                           display: "flex",
@@ -599,8 +601,12 @@ const MainLayout = (props) => {
                                         fontFamily: "Quicksand",
                                       }}
                                     >
-                                      {LEVEL === 1 || LEVEL === 2 || LEVEL === 3
+                                      {LEVEL === 1
                                         ? elem.title
+                                        : LEVEL === 2
+                                        ? elem.titleNew
+                                        : LEVEL === 3
+                                        ? elem.titleThree
                                         : elem.name}
                                     </span>
                                   )}

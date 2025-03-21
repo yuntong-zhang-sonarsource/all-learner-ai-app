@@ -417,7 +417,7 @@ const WordsOrImage = ({
           </Box>
         )}
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          {level === 1 && !isShowCase ? (
+          {(level === 1 || level === 2 || level === 3) && !isShowCase ? (
             <div>
               {showSpeakButton && (
                 <Box
