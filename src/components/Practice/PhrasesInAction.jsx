@@ -805,7 +805,7 @@ const PhrasesInAction = ({
                           onClick={handleMicClick}
                         >
                           <img
-                            src={Stop}
+                            src={Assets.pause}
                             alt="Stop Recording"
                             style={{ width: "60px", height: "60px" }}
                           />
@@ -824,7 +824,7 @@ const PhrasesInAction = ({
                         onClick={handleMicClick}
                       >
                         <img
-                          src={Mic}
+                          src={Assets.mic}
                           alt="Start Recording"
                           style={{ width: "60px", height: "60px" }}
                         />
@@ -1034,7 +1034,7 @@ const PhrasesInAction = ({
                           onClick={handleMicClick2}
                         >
                           <img
-                            src={Stop}
+                            src={Assets.pause}
                             alt="Stop Recording"
                             style={{
                               width: isMobile
@@ -1066,7 +1066,7 @@ const PhrasesInAction = ({
                           onClick={handleMicClick2}
                         >
                           <img
-                            src={Mic}
+                            src={Assets.mic}
                             alt="Start Recording"
                             style={{
                               width: isMobile

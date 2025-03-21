@@ -479,7 +479,7 @@ const Mechanics7 = ({
           }}
         >
           <img
-            src={frame}
+            src={Assets.frame}
             height={"110px"}
             alt="frame"
             width={"300px"}
