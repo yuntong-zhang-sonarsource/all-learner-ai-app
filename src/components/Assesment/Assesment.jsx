@@ -46,6 +46,7 @@ import desktopLevel12 from "../../assets/images/desktopLevel12.png";
 import desktopLevel13 from "../../assets/images/desktopLevel13.png";
 import desktopLevel14 from "../../assets/images/desktopLevel14.png";
 import desktopLevel15 from "../../assets/images/desktopLevel15.png";
+import rOneImage from "../../assets/images/DeskTopR1Image.png";
 import profilePic from "../../assets/images/profile_url.png";
 import textureImage from "../../assets/images/textureImage.png";
 import back from "../../assets/images/back-arrow.png";
@@ -820,10 +821,14 @@ const Assesment = ({ discoverStart }) => {
     desktopLevel15,
   };
 
+  const rFlow = getLocalData("rFlow");
+
   const sectionStyle = {
     width: "100vw",
     height: "100vh",
-    backgroundImage: `url(${images?.[`desktopLevel${level || 1}`]})`,
+    backgroundImage: `url(${
+      rFlow === "true" ? rOneImage : images?.[`desktopLevel${level || 1}`]
+    })`,
     backgroundRepeat: "round",
     backgroundSize: "auto",
     position: "relative",
@@ -902,7 +907,9 @@ const Assesment = ({ discoverStart }) => {
                     textShadow: "#000 1px 0 10px",
                   }}
                 >
-                  {`Start Level ${level}`}
+                  {rFlow === "true"
+                    ? `Start R ${level}`
+                    : `Start Level ${level}`}
                 </span>
               </Box>
             </Box>

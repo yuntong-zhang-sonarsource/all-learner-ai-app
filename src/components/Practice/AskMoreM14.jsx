@@ -10,6 +10,14 @@ import {
   level12,
   level15,
 } from "../../utils/levelData";
+import {
+  ListenButton,
+  RetryIcon,
+  SpeakButton,
+  StopButton,
+} from "../../utils/constants";
+import RecordVoiceVisualizer from "../../utils/RecordVoiceVisualizer";
+import { Box, CircularProgress } from "@mui/material";
 
 const levelMap = {
   10: level10,
@@ -80,6 +88,28 @@ const AskMoreM14 = ({
   const [showPandaText, setShowPandaText] = useState(false);
   const [showClock, setShowClock] = useState(false);
   const [imageData, setImageData] = useState({});
+
+  const getPulseAnimationStyle = (color) => ({
+    position: "absolute",
+    width: "90px",
+    height: "90px",
+    backgroundColor: color,
+    borderRadius: "50%",
+    animation: "pulse 1.2s linear infinite",
+    "@keyframes pulse": {
+      "0%": {
+        transform: "scale(0.6)",
+        opacity: 0,
+      },
+      "50%": {
+        opacity: 1,
+      },
+      "100%": {
+        transform: "scale(1.4)",
+        opacity: 0,
+      },
+    },
+  });
 
   const getConversation = (level, currentLevel) => {
     const levelData = levelMap[level];
@@ -392,30 +422,72 @@ const AskMoreM14 = ({
                 >
                   {conversation[currentSteps].user}
                 </span>
-                {!isMikeClicked ? (
-                  <img
-                    src={Assets.mikeImg}
-                    alt="Microphone"
-                    style={{
-                      position: "absolute",
-                      top: "85%",
-                      left: "65%",
-                      transform: "translate(-50%, -50%)",
-                      width: "35px",
-                      cursor: "pointer",
-                      zIndex: "9999",
+              </div>
+            )}
+            {!isMikeClicked ? (
+              // <img
+              //   src={Assets.mikeImg}
+              //   alt="Microphone"
+              //   style={{
+              //     position: "absolute",
+              //     top: "70%",
+              //     left: "50%",
+              //     transform: "translate(-50%, -50%)",
+              //     width: "35px",
+              //     cursor: "pointer",
+              //     zIndex: "9999",
+              //   }}
+              //   onClick={handleMikeClick}
+              // />
+              <Box
+                // marginLeft={
+                //   !props.dontShowListen || props.recordedAudio
+                //     ? "32px"
+                //     : "0px"
+                // }
+                style={{
+                  position: "absolute",
+                  top: "70%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: "35px",
+                  cursor: "pointer",
+                  zIndex: "9999",
+                }}
+                sx={{ cursor: "pointer" }}
+                //onClick={startRecording}
+              >
+                <Box
+                  sx={{
+                    width: "90px",
+                    height: "90px",
+                    borderRadius: "50%",
+                    position: "relative",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box sx={getPulseAnimationStyle("#58CC0233")} />
+                  <Box
+                    sx={{
+                      position: "relative",
+                      zIndex: 1,
                     }}
-                    onClick={handleMikeClick}
-                  />
-                ) : (
-                  <>
-                    <img
+                  >
+                    <SpeakButton height={45} width={45} />
+                  </Box>
+                </Box>
+              </Box>
+            ) : (
+              <>
+                {/* <img
                       src={Assets.effectImg}
                       alt="Effect"
                       style={{
                         position: "absolute",
-                        top: "64%",
-                        left: "65%",
+                        top: "60%",
+                        left: "50%",
                         transform: "translate(-50%, -50%)",
                         width: "130px",
                       }}
@@ -425,18 +497,16 @@ const AskMoreM14 = ({
                       alt="Pause"
                       style={{
                         position: "absolute",
-                        top: "85%",
-                        left: "65%",
+                        top: "70%",
+                        left: "50%",
                         transform: "translate(-50%, -50%)",
                         width: "35px",
                         cursor: "pointer",
                         zIndex: "9999",
                       }}
                       onClick={handlePauseClick}
-                    />
-                  </>
-                )}
-              </div>
+                    /> */}
+              </>
             )}
           </>
         ) : (

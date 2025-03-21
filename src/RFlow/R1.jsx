@@ -1,0 +1,413 @@
+import React, { useState } from "react";
+import Confetti from "react-confetti";
+import * as Assets from "../utils/imageAudioLinks";
+import {
+  ThemeProvider,
+  createTheme,
+  useMediaQuery,
+  Grid,
+  Box,
+} from "@mui/material";
+import MainLayout from "../components/Layouts.jsx/MainLayout";
+import listenImg from "../assets/listen.png";
+import Mic from "../assets/mikee.svg";
+import Stop from "../assets/pausse.svg";
+import correctSound from "../assets/correct.wav";
+import wrongSound from "../assets/audio/wrong.wav";
+import RecordVoiceVisualizer from "../utils/RecordVoiceVisualizer";
+import {
+  practiceSteps,
+  getLocalData,
+  NextButtonRound,
+  RetryIcon,
+  setLocalData,
+} from "../utils/constants";
+import { useNavigate } from "react-router-dom";
+
+const content = {
+  L1: [
+    {
+      allwords: [
+        { img: Assets.Apple, text: "Apple" },
+        { img: Assets.dogsBarkImg, text: "Dog" },
+        { img: Assets.juiceImg, text: "Mug" },
+      ],
+      correctWord: "Apple",
+      audio: Assets.appleRoneAudio,
+    },
+
+    {
+      allwords: [
+        { img: Assets.happyImg, text: "Happy" },
+        { img: Assets.deskImg, text: "Table" },
+        { img: Assets.tigerImg, text: "Tiger" },
+      ],
+      correctWord: "Table",
+      audio: Assets.tableRoneAudio,
+    },
+    {
+      allwords: [
+        { img: Assets.sunsetImg, text: "Sunset" },
+        { img: Assets.basketImg, text: "Basket" },
+        { img: Assets.penImg, text: "Pen" },
+      ],
+      correctWord: "Pen",
+      audio: Assets.penRoneAudio,
+    },
+  ],
+};
+
+const R1 = ({
+  setVoiceText,
+  setRecordedAudio,
+  setVoiceAnimate,
+  storyLine,
+  type,
+  handleNext,
+  background,
+  parentWords = "",
+  enableNext,
+  showTimer,
+  points,
+  steps,
+  currentStep,
+  contentId,
+  contentType,
+  level,
+  isDiscover,
+  progressData,
+  showProgress,
+  playTeacherAudio = () => {},
+  callUpdateLearner,
+  disableScreen,
+  isShowCase,
+  handleBack,
+  setEnableNext,
+  loading,
+  setOpenMessageDialog,
+  audio,
+  currentImg,
+}) => {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedWord, setSelectedWord] = useState(null);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [wrongWord, setWrongWord] = useState(null);
+  const [recording, setRecording] = useState("no");
+  const navigate = useNavigate();
+
+  steps = 1;
+
+  const handleWordClick = (word) => {
+    setSelectedWord(word);
+    const currentQuestion = content.L1[currentQuestionIndex];
+
+    if (word === currentQuestion.correctWord) {
+      setShowConfetti(true);
+      setWrongWord(null);
+      setTimeout(() => {
+        setShowConfetti(false);
+        setSelectedWord(null);
+        // setCurrentQuestionIndex(
+        //   (prevIndex) => (prevIndex + 1) % content.L1.length
+        // );
+        setRecording("recording");
+      }, 3000);
+    } else {
+      setWrongWord(word);
+      setTimeout(() => setWrongWord(null), 2000);
+    }
+  };
+
+  const currentQuestion = content.L1[currentQuestionIndex];
+
+  const correctImage = currentQuestion.allwords.find(
+    (word) => word.text === currentQuestion.correctWord
+  )?.img;
+
+  const handlePlayAudio = () => {
+    const currentAudio = new Audio(content.L1[currentQuestionIndex].audio);
+    currentAudio.play();
+  };
+
+  return (
+    <MainLayout
+      background={background}
+      handleNext={handleNext}
+      enableNext={enableNext}
+      showTimer={showTimer}
+      points={points}
+      pageName={"m14"}
+      //answer={answer}
+      //isRecordingComplete={isRecordingComplete}
+      parentWords={parentWords}
+      //={recAudio}
+      {...{
+        steps,
+        currentStep,
+        level,
+        progressData,
+        showProgress,
+        playTeacherAudio,
+        handleBack,
+        disableScreen,
+        loading,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "97vh",
+          background: "linear-gradient(180deg, #91E7EF 0%, #42C6FF 100%)",
+          padding: "16px",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {recording === "no" && (
+          <>
+            {showConfetti && <Confetti />}
+
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                pointerEvents: "none",
+              }}
+            >
+              {[
+                { top: "10%", left: "5%" },
+                { top: "25%", left: "30%" },
+                { top: "10%", left: "55%" },
+                { top: "25%", left: "80%" },
+              ].map((pos, index) => (
+                <img
+                  key={index}
+                  src={Assets.cloudNewImg}
+                  alt={`Cloud ${index + 1}`}
+                  style={{
+                    position: "absolute",
+                    width: "150px",
+                    height: "auto",
+                    ...pos,
+                  }}
+                />
+              ))}
+            </div>
+
+            {selectedWord === currentQuestion?.correctWord ? (
+              <div
+                style={{
+                  width: "45px",
+                  height: "45px",
+                  borderRadius: "50%",
+                  backgroundColor: "#fff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                  marginBottom: "75px",
+                }}
+              >
+                <img
+                  src={Assets.tickImg}
+                  alt="Tick"
+                  style={{ width: "50px", height: "50px" }}
+                />
+              </div>
+            ) : wrongWord ? (
+              <div
+                style={{
+                  width: "45px",
+                  height: "45px",
+                  borderRadius: "60%",
+                  backgroundColor: "rgba(255, 127, 54, 0.8)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                  border: "4px solid #FFFFFF",
+                  marginBottom: "75px",
+                }}
+              >
+                <img
+                  src={Assets.xImg}
+                  alt="Wrong"
+                  style={{ width: "25px", height: "25px" }}
+                />
+              </div>
+            ) : (
+              <button
+                onClick={handlePlayAudio}
+                style={{
+                  position: "relative",
+                  marginBottom: "75px",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <img
+                  src={listenImg}
+                  alt="Audio"
+                  style={{ width: "45px", height: "45px" }}
+                />
+              </button>
+            )}
+
+            <div style={{ display: "flex", gap: "24px", marginTop: "24px" }}>
+              {currentQuestion.allwords.map((item, index) => {
+                const isCorrect =
+                  selectedWord === currentQuestion.correctWord &&
+                  item.text === selectedWord;
+                const isWrong = wrongWord === item.text;
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      backgroundColor: isCorrect
+                        ? "rgba(117, 209, 0, 0.6)"
+                        : isWrong
+                        ? "rgba(255, 127, 54, 0.8)"
+                        : "rgba(255, 255, 255, 0.2)",
+                      padding: "16px",
+                      borderRadius: "18px",
+                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                      border: "2px solid rgba(255, 255, 255, 0.5)",
+                      width: "128px",
+                      height: "128px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backdropFilter: "blur(56px)",
+                      WebkitBackdropFilter: "blur(56px)",
+                      cursor: "pointer",
+                      transition: "background-color 0.3s ease-in-out",
+                    }}
+                    onClick={() => handleWordClick(item.text)}
+                  >
+                    <img
+                      src={item.img}
+                      alt={item.text}
+                      style={{ width: "80px", height: "80px" }}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+        {recording === "recording" && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "80px",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                padding: "16px",
+                borderRadius: "18px",
+                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                border: "2px solid rgba(255, 255, 255, 0.5)",
+                width: "128px",
+                height: "128px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backdropFilter: "blur(56px)",
+                WebkitBackdropFilter: "blur(56px)",
+                cursor: "pointer",
+                transition: "background-color 0.3s ease-in-out",
+              }}
+              //onClick={() => handleWordClick(currentQuestion.correctWord)}
+            >
+              <img
+                src={correctImage}
+                alt={currentQuestion.correctWord}
+                style={{ width: "80px", height: "80px" }}
+              />
+            </div>
+            <img
+              onClick={() => {
+                setRecording("startRec");
+              }}
+              src={Assets.pzMic}
+              alt="mic"
+              style={{ width: "70px", height: "70px" }}
+            />
+          </div>
+        )}
+        {recording === "startRec" && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "80px",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                padding: "16px",
+                borderRadius: "18px",
+                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                border: "2px solid rgba(255, 255, 255, 0.5)",
+                width: "128px",
+                height: "128px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backdropFilter: "blur(56px)",
+                WebkitBackdropFilter: "blur(56px)",
+                cursor: "pointer",
+                transition: "background-color 0.3s ease-in-out",
+              }}
+              //onClick={() => handleWordClick(currentQuestion.correctWord)}
+            >
+              <img
+                src={correctImage}
+                alt={currentQuestion.correctWord}
+                style={{ width: "80px", height: "80px" }}
+              />
+            </div>
+            <Box style={{ marginTop: "10px", marginBottom: "10px" }}>
+              <RecordVoiceVisualizer />
+            </Box>
+            <img
+              onClick={() => {
+                setRecording("no");
+                if (currentQuestionIndex === content.L1.length - 1) {
+                  setLocalData("rFlow", false);
+                  if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+                    navigate("/");
+                  } else {
+                    navigate("/discover-start");
+                  }
+                } else {
+                  setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+                }
+              }}
+              src={Stop}
+              alt="Stop"
+              style={{ width: "60px", height: "60px", cursor: "pointer" }}
+            />
+          </div>
+        )}
+      </div>
+    </MainLayout>
+  );
+};
+
+export default R1;
