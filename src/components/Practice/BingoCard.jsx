@@ -771,7 +771,7 @@ const BingoCard = ({
                 onClick={() => {
                   startAudio(currentWordIndex);
                 }}
-                src={Play}
+                src={Assets.play}
                 alt="Start"
                 style={{
                   width: screenWidth < 768 ? "40px" : "50px",
@@ -887,7 +887,7 @@ const BingoCard = ({
               }}
             />
             <img
-              src={showWrongTick ? r3WrongTick : bingoReset}
+              src={showWrongTick ? Assets.wrongTick : Assets.reset}
               alt={showWrongTick ? "Wrong" : "Bingo Reset"}
               style={{
                 position: "absolute",
@@ -960,7 +960,7 @@ const BingoCard = ({
                 }}
               />
               <img
-                src={Mic}
+                src={Assets.mic}
                 alt={"Start Recording"}
                 style={{
                   position: "absolute",
@@ -1003,7 +1003,7 @@ const BingoCard = ({
                 }}
               >
                 <img
-                  src={RecordVisualizer}
+                  src={Assets.graph}
                   alt={"Start Visualizer"}
                   style={{
                     position: "absolute",
@@ -1015,7 +1015,7 @@ const BingoCard = ({
                   }}
                 />
                 <img
-                  src={Stop}
+                  src={Assets.pause}
                   alt={"Start Recording"}
                   style={{
                     position: "absolute",

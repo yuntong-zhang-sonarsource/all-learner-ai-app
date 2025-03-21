@@ -1564,7 +1564,7 @@ export const TelephoneNewImg =
 export const TelescopeNewImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/TelescopeNewImg.png";
 export const TennisNewImg =
-  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/TennisNewImg.png";
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/tennisNewImg.png";
 export const TigerNewImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/TigerNewImg.png";
 export const TomatoNewImg =
@@ -1599,3 +1599,17 @@ export const DoctorNewImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/DoctorNewImg.png";
 export const FurnitureNewImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/FurnitureNewImg.png";
+export const frame =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/e38228a2757e02eb50425217d1ded1d33c6e5801/frame.svg";
+export const mic =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/f963e646e0fd08203444ac0b66cd6014610b3c3f/mikee.svg";
+export const pause =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/f963e646e0fd08203444ac0b66cd6014610b3c3f/pausse.svg";
+export const wrongTick =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/1d87845cf1a97d62844f43c8b568d06a8bd52ee0/r3WrongTick.svg";
+export const reset =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/1d87845cf1a97d62844f43c8b568d06a8bd52ee0/bingoReset.svg";
+export const play =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/1d87845cf1a97d62844f43c8b568d06a8bd52ee0/playButton.svg";
+export const graph =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/1d87845cf1a97d62844f43c8b568d06a8bd52ee0/recordVisualizer.svg";
