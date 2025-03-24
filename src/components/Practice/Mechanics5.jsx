@@ -70,6 +70,7 @@ const Mechanics5 = ({
       const newEntry = {
         selectedAnswer:
           options && options.length > 0 && options[selectedOption]?.text,
+        correctOption: options?.find((option) => option?.isAns === true)?.text,
         audioUrl: audios,
         correctAnswer: isCorrect,
       };

@@ -962,7 +962,9 @@ const MainLayout = (props) => {
                                         minWidth: "100px",
                                       }}
                                     >
-                                      {elem.selectedAnswer || "Binocular"}
+                                      {elem.correctOption
+                                        ? elem.correctOption
+                                        : elem.selectedAnswer || "Binocular"}
                                     </span>
                                   </Stack>
                                 ))}
