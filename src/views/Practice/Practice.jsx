@@ -56,6 +56,7 @@ const Practice = () => {
   const lang = getLocalData("lang");
   const [totalSyllableCount, setTotalSyllableCount] = useState("");
   const [percentage, setPercentage] = useState("");
+  const [totalCorrectnessScore, setTotalCorrectnessScore] = useState("");
   const [fluency, setFluency] = useState(false);
   const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
 
@@ -253,6 +254,7 @@ const Practice = () => {
           const data = JSON.stringify(getSetData?.data);
           Log(data, "practice", "ET");
           setPercentage(getSetData?.data?.percentage);
+          setTotalCorrectnessScore(getSetData?.data?.total_correctness_score);
           checkFluency(currentContentType, getSetData?.data?.fluency);
           if (process.env.REACT_APP_POST_LEARNER_PROGRESS === "true") {
             await axios.post(
@@ -1020,6 +1022,7 @@ const Practice = () => {
             fluency,
             isNextButtonCalled,
             setIsNextButtonCalled,
+            totalCorrectnessScore,
           }}
         />
       );

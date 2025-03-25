@@ -128,6 +128,7 @@ const MainLayout = (props) => {
     loading,
     storedData,
     resetStoredData,
+    totalCorrectnessScore,
   } = props;
 
   const [shake, setShake] = useState(false);
@@ -817,13 +818,28 @@ const MainLayout = (props) => {
                                   textShadow: "1px 1px 2px rgba(0, 0, 0, 0.5)",
                                 }}
                               >
-                                {percentage <= 0 ? 0 : percentage}/100
+                                {totalCorrectnessScore
+                                  ? totalCorrectnessScore
+                                  : percentage <= 0
+                                  ? 0
+                                  : percentage}
+                                /100
                               </span>
                               <br />
 
                               {!fluency ? (
                                 <Typography textAlign="center" sx={{ mt: 2 }}>
                                   Good try! Need more speed.
+                                </Typography>
+                              ) : totalCorrectnessScore ? (
+                                <Typography textAlign="center" sx={{ mt: 2 }}>
+                                  You need{" "}
+                                  <span style={{ fontWeight: "bold" }}>
+                                    {Math.abs(70 - totalCorrectnessScore)}
+                                  </span>{" "}
+                                  more.
+                                  <br />
+                                  You need to practice more.
                                 </Typography>
                               ) : (
                                 <Typography textAlign="center" sx={{ mt: 2 }}>
@@ -832,6 +848,8 @@ const MainLayout = (props) => {
                                     {Math.abs(70 - percentage)}
                                   </span>{" "}
                                   more.
+                                  <br />
+                                  You need to practice more.
                                 </Typography>
                               )}
                             </Typography>
@@ -944,7 +962,9 @@ const MainLayout = (props) => {
                                         minWidth: "100px",
                                       }}
                                     >
-                                      {elem.selectedAnswer || "Binocular"}
+                                      {elem.correctOption
+                                        ? elem.correctOption
+                                        : elem.selectedAnswer || "Binocular"}
                                     </span>
                                   </Stack>
                                 ))}
