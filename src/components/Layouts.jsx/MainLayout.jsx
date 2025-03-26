@@ -527,7 +527,7 @@ const MainLayout = (props) => {
                               : null
                           }
                           alt={`R Step ${props.rStep}`}
-                          height={"250px"}
+                          height={"200px"}
                         />
                       ) : null
                     ) : (

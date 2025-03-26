@@ -1310,7 +1310,7 @@ export const flyAudio =
 export const phoneAudio =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/main/phone.wav.wav";
 export const nutAudio =
-  "https://raw.githubusercontent.com/anik200002/EkstepImg/main/nut.wav.wav";
+  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/nutAudio.wav.wav";
 export const scopeAudio =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/main/scope.wav.wav";
 export const laAudio =
@@ -1883,10 +1883,6 @@ export const planeImg =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/planeImg.svg";
 export const glassImg =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/glassImg.svg";
-export const shopImg =
-  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/shopImg.svg";
-export const chopImg =
-  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/chopImg.svg";
 export const whipImg =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/whipImg.svg";
 export const wheelImg =
@@ -1930,7 +1926,7 @@ export const cloudImgRs =
 export const stopImg =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/stopImg.svg";
 export const truckImg =
-  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/truckImg.svg";
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/truckImg.png";
 export const dropImg =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/dropImg.svg";
 export const grapeImg =
@@ -2008,3 +2004,12 @@ export const violinImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/violinImg.png";
 export const dishwasherImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/dishwasherImg.png";
+export const shopImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/4821e92fe2bf4c8166205de4e6c243383503fd45/shoppImg.svg";
+
+export const chopImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/4821e92fe2bf4c8166205de4e6c243383503fd45/ChoppImg.svg";
+export const playButtonImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/09c8abd2ebe53ef1d6f58bc42069f905ac1e5e02/playButtonImg.svg";
+export const pauseButtonImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/PauseImg.png";
