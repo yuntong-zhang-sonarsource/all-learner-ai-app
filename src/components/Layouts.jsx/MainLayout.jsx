@@ -51,6 +51,9 @@ import { useNavigate } from "react-router-dom";
 import { levelMapping } from "../../utils/levelData";
 import { jwtDecode } from "jwt-decode";
 import rOneImg from "../../assets/R1.png";
+import rTwoMileImage from "../../assets/r2mile.png";
+import rThreeMileImage from "../../assets/r3mile.png";
+import rFourMileImage from "../../assets/r4mile.png";
 
 const MainLayout = (props) => {
   const levelsImages = {
@@ -170,7 +173,7 @@ const MainLayout = (props) => {
     }
   }
 
-  console.log("Assigned LEVEL:", LEVEL);
+  console.log("Assigned LEVEL:", LEVEL, props.rStep);
 
   const {
     handleNext,
@@ -506,11 +509,27 @@ const MainLayout = (props) => {
                 >
                   <footer>
                     {rFlow === "true" ? (
-                      <img
-                        src={Assets.rOneMileImage}
-                        alt="R One"
-                        height={"250px"}
-                      />
+                      LEVEL == 1 ? (
+                        <img
+                          src={Assets.rOneMileImage}
+                          alt="R One"
+                          height={"250px"}
+                        />
+                      ) : LEVEL === 2 ? (
+                        <img
+                          src={
+                            props.rStep === 2
+                              ? rTwoMileImage
+                              : props.rStep === 3
+                              ? rThreeMileImage
+                              : props.rStep === 4
+                              ? rFourMileImage
+                              : null
+                          }
+                          alt={`R Step ${props.rStep}`}
+                          height={"250px"}
+                        />
+                      ) : null
                     ) : (
                       LEVEL && levelsImages?.[LEVEL]?.milestone
                     )}

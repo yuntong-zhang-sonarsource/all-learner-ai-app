@@ -49,25 +49,15 @@ const levelMap = {
 };
 
 const content = {
-  L1: [
-    {
-      stepOne: {
-        img: shipImg,
-        correctWord: "Ship",
-        correctAudio: shipAudio,
-        audioTest: {
-          audio: shipAudio,
-          isCorrect: true,
-        },
-        audio: [
-          { audio: shipAudio1, text: "Ship" },
-          { audio: shipAudio2, text: "Window" },
-          { audio: shipAudio3, text: "Dinner" },
-        ],
-      },
-      allwords: [{ img: chairImg, CORRECTWORD: "CHAIR" }],
-      ALLWORD: "H I W R A U B S T C".split(" "),
-    },
+  question: {
+    text: "Which announcement is about showing respect to teachers and classmates?",
+    type: "text",
+  },
+  answer: "audio1",
+  options: [
+    { id: "audio1", value: "level10P7OneAudio1", type: "audio" },
+    { id: "audio2", value: "level10P7OneAudio2", type: "audio" },
+    { id: "audio3", value: "level10P7OneAudio3", type: "audio" },
   ],
 };
 

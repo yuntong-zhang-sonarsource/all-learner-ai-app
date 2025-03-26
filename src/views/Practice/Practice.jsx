@@ -8,6 +8,9 @@ import SyllablePuzzle from "../../components/Practice/SyllablePuzzle";
 import ReadAloud from "../../components/Practice/ReadAloud";
 import R3 from "../../components/Practice/R3";
 import R1 from "../../RFlow/R1";
+import R2 from "../../RFlow/R2";
+import R3Flow from "../../RFlow/R3";
+import R4 from "../../RFlow/R4";
 import AskMoreM14 from "../../components/Practice/AskMoreM14";
 import ActOutM13 from "../../components/Practice/ActOutM13";
 import PhoneConversation from "../../components/Practice/PhoneConversation";
@@ -76,6 +79,9 @@ const Practice = () => {
   const [percentage, setPercentage] = useState("");
   const [fluency, setFluency] = useState(false);
   const [isNextButtonCalled, setIsNextButtonCalled] = useState(false);
+  const [rStep, setRStep] = useState(() => {
+    return Number(getLocalData("rStep")) || 2;
+  });
 
   const levels = {
     L1: [
@@ -328,6 +334,11 @@ const Practice = () => {
       { completeWord: "Button", syllable: ["But", "ton"] },
       { completeWord: "Window", syllable: ["Win", "dow"] },
     ],
+  };
+
+  const handleComplete = (nextStep) => {
+    setRStep(nextStep);
+    setLocalData("rStep", nextStep);
   };
 
   let progressDatas = getLocalData("practiceProgress");
@@ -1322,7 +1333,7 @@ const Practice = () => {
   console.log("mec", mechanism, level, rFlow);
 
   const renderMechanics = () => {
-    if (!mechanism) {
+    if (!mechanism && rFlow !== "true") {
       return (
         <WordsOrImage
           {...{
@@ -1376,11 +1387,148 @@ const Practice = () => {
           }}
         />
       );
-    } else if (rFlow === "true") {
+    } else if (rFlow === "true" && level === 1) {
       return (
         <R1
           page={page}
           setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (rFlow === "true" && level === 2 && rStep === 2) {
+      return (
+        <R2
+          page={page}
+          setPage={setPage}
+          rStep={rStep}
+          onComplete={() => handleComplete(3)}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (rFlow === "true" && level === 2 && rStep === 3) {
+      return (
+        <R3Flow
+          page={page}
+          setPage={setPage}
+          rStep={rStep}
+          onComplete={() => handleComplete(4)}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (rFlow === "true" && level === 2 && rStep === 4) {
+      return (
+        <R4
+          page={page}
+          setPage={setPage}
+          rStep={rStep}
           {...{
             level: level,
             header:

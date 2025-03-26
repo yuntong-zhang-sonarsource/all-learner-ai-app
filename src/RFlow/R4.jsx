@@ -29,61 +29,61 @@ const content = {
     {
       allwords: [
         { img: Assets.Apple, text: "Apple" },
-        { img: Assets.dogsBarkImg, text: "Dog" },
+        { img: Assets.stopImg, text: "Stop" },
         { img: Assets.juiceImg, text: "Mug" },
       ],
-      correctWord: "Apple",
-      audio: Assets.appleRoneAudio,
+      correctWord: "Stop",
+      audio: Assets.stopRs,
       flowName: "P1",
     },
     {
       allwords: [
         { img: Assets.sunsetImg, text: "Sunset" },
         { img: Assets.basketImg, text: "Basket" },
-        { img: Assets.penImg, text: "Pen" },
+        { img: Assets.grapeImg, text: "Grape" },
       ],
-      correctWord: "Pen",
-      audio: Assets.penRoneAudio,
+      correctWord: "Grape",
+      audio: Assets.grapeRs,
       flowName: "P2",
     },
     {
       allwords: [
-        { img: Assets.bagR1OneImg, text: "Bag" },
+        { img: Assets.truckImg, text: "Truck" },
         { img: Assets.bagR1TwoImg, text: "Shoes" },
         { img: Assets.bagR1ThreeImg, text: "Watch" },
       ],
-      correctWord: "Bag",
-      audio: Assets.bagR1OneAudio,
+      correctWord: "Truck",
+      audio: Assets.truckRs,
       flowName: "P3",
     },
     {
       allwords: [
         { img: Assets.capR1TwoImg, text: "Belt" },
-        { img: Assets.capR1OneImg, text: "Cap" },
+        { img: Assets.spoonImg, text: "Spoon" },
         { img: Assets.capR1ThreeImg, text: "Tie" },
       ],
-      correctWord: "Cap",
-      audio: Assets.capR1OneAudio,
+      correctWord: "Spoon",
+      audio: Assets.spoonRs,
       flowName: "P4",
     },
     {
       allwords: [
-        { img: Assets.dogR1OneImg, text: "Dog" },
+        { img: Assets.nutImg, text: "Nut" },
         { img: Assets.dogR1TwoImg, text: "Cat" },
         { img: Assets.dogR1ThreeImg, text: "Horse" },
       ],
-      correctWord: "Dog",
-      audio: Assets.dogR1OneAudio,
+      correctWord: "Nut",
+      audio: Assets.nutAudio,
       flowName: "P5",
     },
     {
       allwords: [
         { img: Assets.eggR1TwoImg, text: "Fan" },
-        { img: Assets.eggR1OneImg, text: "Egg" },
+        { img: Assets.flowerImg, text: "Flower" },
         { img: Assets.eggR1ThreeImg, text: "Goat" },
       ],
-      correctWord: "Egg",
-      audio: Assets.eggR1OneAudio,
+      correctWord: "Flower",
+      audio: Assets.FlowerAudio,
       flowName: "P6",
     },
     {
@@ -109,7 +109,7 @@ const content = {
   ],
 };
 
-const R1 = ({
+const R4 = ({
   setVoiceText,
   setRecordedAudio,
   setVoiceAnimate,
@@ -139,6 +139,7 @@ const R1 = ({
   setOpenMessageDialog,
   audio,
   currentImg,
+  rStep,
 }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedWord, setSelectedWord] = useState(null);
@@ -146,7 +147,6 @@ const R1 = ({
   const [wrongWord, setWrongWord] = useState(null);
   const [recording, setRecording] = useState("no");
   const navigate = useNavigate();
-  const [rSteps, setrSteps] = useState("1");
 
   steps = 1;
 
@@ -202,7 +202,7 @@ const R1 = ({
       parentWords={parentWords}
       flowNames={flowNames} // Pass all flows
       activeFlow={activeFlow} // Pass current active flow
-      //={recAudio}
+      rStep={rStep}
       {...{
         steps,
         currentStep,
@@ -455,6 +455,7 @@ const R1 = ({
                   setRecording("no");
                   if (currentQuestionIndex === content.L1.length - 1) {
                     setLocalData("rFlow", false);
+                    setLocalData("rStep", 0);
                     if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
                       navigate("/");
                     } else {
@@ -508,6 +509,7 @@ const R1 = ({
                     setRecording("no");
                     if (currentQuestionIndex === content.L1.length - 1) {
                       setLocalData("rFlow", false);
+                      setLocalData("rStep", 0);
                       if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
                         navigate("/");
                       } else {
@@ -530,4 +532,4 @@ const R1 = ({
   );
 };
 
-export default R1;
+export default R4;

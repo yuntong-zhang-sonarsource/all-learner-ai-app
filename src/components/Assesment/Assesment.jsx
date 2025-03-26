@@ -46,7 +46,11 @@ import desktopLevel12 from "../../assets/images/desktopLevel12.png";
 import desktopLevel13 from "../../assets/images/desktopLevel13.png";
 import desktopLevel14 from "../../assets/images/desktopLevel14.png";
 import desktopLevel15 from "../../assets/images/desktopLevel15.png";
-import rOneImage from "../../assets/images/DeskTopR1Image.png";
+import rOneImage from "../../assets/R1Back.png";
+import rTwoImage from "../../assets/R2Back.png";
+import rThreeImage from "../../assets/R3Back.png";
+import rFourImage from "../../assets/R4Back.png";
+import Image from "../../assets/images/DeskTopR1Image.png";
 import profilePic from "../../assets/images/profile_url.png";
 import textureImage from "../../assets/images/textureImage.png";
 import back from "../../assets/images/back-arrow.png";
@@ -822,12 +826,26 @@ const Assesment = ({ discoverStart }) => {
   };
 
   const rFlow = getLocalData("rFlow");
+  const rStep = Number(getLocalData("rStep")) || 2;
 
   const sectionStyle = {
     width: "100vw",
     height: "100vh",
+    // backgroundImage: `url(${
+    //   rFlow === "true" ? rOneImage : images?.[`desktopLevel${level || 1}`]
+    // })`,
     backgroundImage: `url(${
-      rFlow === "true" ? rOneImage : images?.[`desktopLevel${level || 1}`]
+      rFlow === "true"
+        ? level == 1
+          ? rOneImage
+          : level == 2 && rStep === 2
+          ? rTwoImage
+          : level == 2 && rStep === 3
+          ? rThreeImage
+          : level == 2 && rStep === 4
+          ? rFourImage
+          : images?.[`desktopLevel${level || 1}`]
+        : images?.[`desktopLevel${level || 1}`]
     })`,
     backgroundRepeat: "round",
     backgroundSize: "auto",
@@ -908,7 +926,7 @@ const Assesment = ({ discoverStart }) => {
                   }}
                 >
                   {rFlow === "true"
-                    ? `Start R ${level}`
+                    ? `Start R${rStep}`
                     : `Start Level ${level}`}
                 </span>
               </Box>
