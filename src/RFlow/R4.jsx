@@ -79,31 +79,31 @@ const content = {
     {
       allwords: [
         { img: Assets.eggR1TwoImg, text: "Fan" },
-        { img: Assets.flowerImg, text: "Flower" },
+        { img: Assets.screamImg, text: "Scream" },
         { img: Assets.eggR1ThreeImg, text: "Goat" },
       ],
-      correctWord: "Flower",
-      audio: Assets.FlowerAudio,
+      correctWord: "Scream",
+      audio: Assets.screamRs,
       flowName: "P6",
     },
     {
       allwords: [
-        { img: Assets.fanR1OneImg, text: "Fan" },
+        { img: Assets.splashImg, text: "Splash" },
         { img: Assets.fanR1TwoImg, text: "Table" },
         { img: Assets.fanR1ThreeImg, text: "Lamp" },
       ],
-      correctWord: "Fan",
-      audio: Assets.fanR1OneAudio,
+      correctWord: "Splash",
+      audio: Assets.splashRs,
       flowName: "P7",
     },
     {
       allwords: [
-        { img: Assets.hatR1OneImg, text: "Hat" },
+        { img: Assets.throneImg, text: "Throne" },
         { img: Assets.hatR1TwoImg, text: "Bat" },
         { img: Assets.hatR1ThreeImg, text: "Carpet" },
       ],
-      correctWord: "Hat",
-      audio: Assets.hatR1OneAudio,
+      correctWord: "Throne",
+      audio: Assets.throneRs,
       flowName: "P8",
     },
   ],
@@ -456,11 +456,11 @@ const R4 = ({
                   if (currentQuestionIndex === content.L1.length - 1) {
                     setLocalData("rFlow", false);
                     setLocalData("rStep", 0);
-                    if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-                      navigate("/");
-                    } else {
-                      navigate("/discover-start");
-                    }
+                    // if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+                    //   navigate("/");
+                    // } else {
+                    //   navigate("/discover-start");
+                    // }
                   } else {
                     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
                   }
@@ -510,11 +510,11 @@ const R4 = ({
                     if (currentQuestionIndex === content.L1.length - 1) {
                       setLocalData("rFlow", false);
                       setLocalData("rStep", 0);
-                      if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-                        navigate("/");
-                      } else {
-                        navigate("/discover-start");
-                      }
+                      // if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+                      //   navigate("/");
+                      // } else {
+                      //   navigate("/discover-start");
+                      // }
                     } else {
                       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
                     }

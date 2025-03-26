@@ -1959,3 +1959,52 @@ export const splashImg =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/splashImg.svg";
 export const spoonImg =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/spoonImg.svg";
+export const screamRs =
+  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/screamRs.wav";
+export const splashRs =
+  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/splashRs.wav";
+export const throwRs =
+  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/throwRs.wav";
+export const starRs =
+  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/starRs.wav";
+export const carRs =
+  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/carRs.wav";
+export const treeRs =
+  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/treeRs.wav";
+//export const goatRs = "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/goatRs.wav";
+export const rainRs =
+  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/rainRs.wav";
+export const throneRs =
+  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/throneRs.wav";
+export const cloudRs =
+  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/cloudRs.wav";
+export const popsicleImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/popsicleImg.png";
+export const projectorImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/projectorImg.png";
+export const strawberryImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/strawberryImg.png";
+export const submarineImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/submarineImg.png";
+export const microwaveImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/microwaveImg.png";
+export const dominoImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/dominoImg.png";
+export const caramelImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/caramelImg.png";
+export const hamburgerImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/hamburgerImg.png";
+export const vacuumImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/vacuumImg.png";
+export const OmletteImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/OmletteImg.png";
+export const cucumberImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/cucumberImg.png";
+export const volcanoImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/volcanoImg.png";
+export const tangerineImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/tangerineImg.png";
+export const violinImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/violinImg.png";
+export const dishwasherImg =
+  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/dishwasherImg.png";
