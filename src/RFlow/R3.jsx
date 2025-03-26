@@ -28,52 +28,52 @@ const content = {
   L1: [
     {
       allwords: [
-        { img: Assets.Apple, text: "Apple" },
-        { img: Assets.dogsBarkImg, text: "Dog" },
-        { img: Assets.juiceImg, text: "Mug" },
+        { img: Assets.shopImg, text: "Shop" },
+        { img: Assets.pillowR1TwoImg, text: "Dog" },
+        { img: Assets.pillowR1ThreeImg, text: "Mug" },
       ],
-      correctWord: "Apple",
-      audio: Assets.appleRoneAudio,
+      correctWord: "Shop",
+      audio: Assets.shopRs,
       flowName: "P1",
     },
     {
       allwords: [
-        { img: Assets.sunsetImg, text: "Sunset" },
-        { img: Assets.basketImg, text: "Basket" },
-        { img: Assets.penImg, text: "Pen" },
+        { img: Assets.chopImg, text: "Chop" },
+        { img: Assets.ropeR1OneImg, text: "Rope" },
+        { img: Assets.ropeR1ThreeImg, text: "Pen" },
       ],
-      correctWord: "Pen",
-      audio: Assets.penRoneAudio,
+      correctWord: "Chop",
+      audio: Assets.chopRs,
       flowName: "P2",
     },
     {
       allwords: [
-        { img: Assets.bagR1OneImg, text: "Bag" },
+        { img: Assets.wheelImg, text: "Wheel" },
         { img: Assets.bagR1TwoImg, text: "Shoes" },
         { img: Assets.bagR1ThreeImg, text: "Watch" },
       ],
-      correctWord: "Bag",
-      audio: Assets.bagR1OneAudio,
+      correctWord: "Wheel",
+      audio: Assets.wheelRs,
       flowName: "P3",
     },
     {
       allwords: [
         { img: Assets.capR1TwoImg, text: "Belt" },
-        { img: Assets.capR1OneImg, text: "Cap" },
+        { img: Assets.phoneImg, text: "Phone" },
         { img: Assets.capR1ThreeImg, text: "Tie" },
       ],
-      correctWord: "Cap",
-      audio: Assets.capR1OneAudio,
+      correctWord: "Phone",
+      audio: Assets.phoneRs,
       flowName: "P4",
     },
     {
       allwords: [
-        { img: Assets.dogR1OneImg, text: "Dog" },
+        { img: Assets.photoImg, text: "Photo" },
         { img: Assets.dogR1TwoImg, text: "Cat" },
         { img: Assets.dogR1ThreeImg, text: "Horse" },
       ],
-      correctWord: "Dog",
-      audio: Assets.dogR1OneAudio,
+      correctWord: "Photo",
+      audio: Assets.photoRs,
       flowName: "P5",
     },
     {
@@ -109,7 +109,7 @@ const content = {
   ],
 };
 
-const R1 = ({
+const R3 = ({
   setVoiceText,
   setRecordedAudio,
   setVoiceAnimate,
@@ -139,6 +139,8 @@ const R1 = ({
   setOpenMessageDialog,
   audio,
   currentImg,
+  rStep,
+  onComplete,
 }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedWord, setSelectedWord] = useState(null);
@@ -146,7 +148,6 @@ const R1 = ({
   const [wrongWord, setWrongWord] = useState(null);
   const [recording, setRecording] = useState("no");
   const navigate = useNavigate();
-  const [rSteps, setrSteps] = useState("1");
 
   steps = 1;
 
@@ -202,7 +203,7 @@ const R1 = ({
       parentWords={parentWords}
       flowNames={flowNames} // Pass all flows
       activeFlow={activeFlow} // Pass current active flow
-      //={recAudio}
+      rStep={rStep}
       {...{
         steps,
         currentStep,
@@ -454,12 +455,13 @@ const R1 = ({
                   audio.play();
                   setRecording("no");
                   if (currentQuestionIndex === content.L1.length - 1) {
-                    setLocalData("rFlow", false);
-                    if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-                      navigate("/");
-                    } else {
-                      navigate("/discover-start");
-                    }
+                    // setLocalData("rFlow", false);
+                    // if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+                    //   navigate("/");
+                    // } else {
+                    //   navigate("/discover-start");
+                    // }
+                    onComplete();
                   } else {
                     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
                   }
@@ -507,12 +509,13 @@ const R1 = ({
                     audio.play();
                     setRecording("no");
                     if (currentQuestionIndex === content.L1.length - 1) {
-                      setLocalData("rFlow", false);
-                      if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-                        navigate("/");
-                      } else {
-                        navigate("/discover-start");
-                      }
+                      // setLocalData("rFlow", false);
+                      // if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+                      //   navigate("/");
+                      // } else {
+                      //   navigate("/discover-start");
+                      // }
+                      onComplete();
                     } else {
                       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
                     }
@@ -530,4 +533,4 @@ const R1 = ({
   );
 };
 
-export default R1;
+export default R3;
