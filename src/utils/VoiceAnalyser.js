@@ -488,7 +488,7 @@ function VoiceAnalyser(props) {
           ContentType: "audio/wav",
         });
         try {
-          await S3Client.send(command);
+          S3Client.send(command);
         } catch (err) {}
       }
 
