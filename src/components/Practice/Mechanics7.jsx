@@ -105,7 +105,7 @@ const Mechanics7 = ({
   const [incorrectWords, setIncorrectWords] = useState({});
   const [isMicOn, setIsMicOn] = useState(false);
   const [syllAudios, setSyllAudios] = useState([]);
-
+  const [isCorrect, setIsCorrect] = useState(true);
   const currentWordRef = useRef(currentWord);
   const currentIsSelectedRef = useRef(currentIsSelected);
   const wordsRef = useRef(words);
@@ -391,6 +391,16 @@ const Mechanics7 = ({
       ? "correct"
       : "wrong";
 
+  useEffect(() => {
+    const isWrong =
+      selectedWordsRef.current?.length !== wordsAfterSplit?.length ||
+      selectedWordsRef.current?.join(" ") !== parentWords;
+
+    setIsCorrect(isWrong);
+  }, [selectedWordsRef.current, wordsAfterSplit, parentWords]);
+
+  console.log("ans", answer, isCorrect);
+
   const getBorderColor = () => {
     if (answer === "correct") {
       return "#58CC02";
@@ -441,7 +451,7 @@ const Mechanics7 = ({
     return "#333F61";
   };
 
-  console.log("audios", completeAudio);
+  console.log("audios", completeAudio, answer);
 
   return (
     <MainLayout
@@ -455,6 +465,7 @@ const Mechanics7 = ({
       isRecordingComplete={isRecordingComplete}
       parentWords={parentWords}
       recAudio={recAudio}
+      isCorrect={isCorrect}
       {...{
         steps,
         currentStep,
