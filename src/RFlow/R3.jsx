@@ -79,31 +79,31 @@ const content = {
     {
       allwords: [
         { img: Assets.eggR1TwoImg, text: "Fan" },
-        { img: Assets.eggR1OneImg, text: "Egg" },
+        { img: Assets.carImg, text: "Car" },
         { img: Assets.eggR1ThreeImg, text: "Goat" },
       ],
-      correctWord: "Egg",
-      audio: Assets.eggR1OneAudio,
+      correctWord: "Car",
+      audio: Assets.carRs,
       flowName: "P6",
     },
     {
       allwords: [
         { img: Assets.fanR1OneImg, text: "Fan" },
-        { img: Assets.fanR1TwoImg, text: "Table" },
+        { img: Assets.treeImg, text: "Tree" },
         { img: Assets.fanR1ThreeImg, text: "Lamp" },
       ],
-      correctWord: "Fan",
-      audio: Assets.fanR1OneAudio,
+      correctWord: "Tree",
+      audio: Assets.treeRs,
       flowName: "P7",
     },
     {
       allwords: [
-        { img: Assets.hatR1OneImg, text: "Hat" },
+        { img: Assets.starImg, text: "Star" },
         { img: Assets.hatR1TwoImg, text: "Bat" },
         { img: Assets.hatR1ThreeImg, text: "Carpet" },
       ],
-      correctWord: "Hat",
-      audio: Assets.hatR1OneAudio,
+      correctWord: "Star",
+      audio: Assets.starRs,
       flowName: "P8",
     },
   ],
@@ -148,6 +148,8 @@ const R3 = ({
   const [wrongWord, setWrongWord] = useState(null);
   const [recording, setRecording] = useState("no");
   const navigate = useNavigate();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isAudioPlayedOnce, setIsAudioPlayedOnce] = useState(false);
 
   steps = 1;
 
@@ -185,9 +187,22 @@ const R3 = ({
     (word) => word.text === currentQuestion?.correctWord
   )?.img;
 
+  let currentAudio = null;
+
   const handlePlayAudio = () => {
-    const currentAudio = new Audio(content.L1[currentQuestionIndex].audio);
+    if (currentAudio) {
+      currentAudio.pause();
+    }
+
+    currentAudio = new Audio(content.L1[currentQuestionIndex].audio);
+
     currentAudio.play();
+    setIsPlaying(true);
+    setIsAudioPlayedOnce(true);
+
+    currentAudio.onended = () => {
+      setIsPlaying(false);
+    };
   };
 
   return (
@@ -308,6 +323,7 @@ const R3 = ({
               ) : (
                 <button
                   onClick={handlePlayAudio}
+                  disabled={isPlaying}
                   style={{
                     position: "relative",
                     marginBottom: "75px",
@@ -317,17 +333,19 @@ const R3 = ({
                   }}
                 >
                   <img
-                    src={listenImg}
+                    src={
+                      isPlaying ? Assets.pauseButtonImg : Assets.playButtonImg
+                    }
                     alt="Audio"
-                    style={{ width: "45px", height: "45px" }}
+                    style={{ width: "55px", height: "55px" }}
                   />
                 </button>
               )}
 
               <div style={{ display: "flex", gap: "24px", marginTop: "24px" }}>
-                {currentQuestion.allwords.map((item, index) => {
+                {currentQuestion?.allwords.map((item, index) => {
                   const isCorrect =
-                    selectedWord === currentQuestion.correctWord &&
+                    selectedWord === currentQuestion?.correctWord &&
                     item.text === selectedWord;
                   const isWrong = wrongWord === item.text;
                   return (
@@ -338,9 +356,9 @@ const R3 = ({
                           ? "rgba(117, 209, 0, 0.6)"
                           : isWrong
                           ? "rgba(255, 127, 54, 0.8)"
-                          : "rgba(255, 255, 255, 0.2)",
-                        padding: "16px",
-                        borderRadius: "18px",
+                          : "#FFFFFF",
+                        padding: "8px",
+                        borderRadius: "24px",
                         boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                         border: "2px solid rgba(255, 255, 255, 0.5)",
                         width: "128px",
@@ -350,15 +368,20 @@ const R3 = ({
                         justifyContent: "center",
                         backdropFilter: "blur(56px)",
                         WebkitBackdropFilter: "blur(56px)",
-                        cursor: "pointer",
+                        cursor: isAudioPlayedOnce ? "pointer" : "not-allowed",
+                        opacity: isAudioPlayedOnce ? 1 : 0.7,
                         transition: "background-color 0.3s ease-in-out",
                       }}
-                      onClick={() => handleWordClick(item.text)}
+                      onClick={() => {
+                        if (isAudioPlayedOnce) {
+                          handleWordClick(item.text);
+                        }
+                      }}
                     >
                       <img
                         src={item.img}
                         alt={item.text}
-                        style={{ width: "80px", height: "80px" }}
+                        style={{ width: "110px", height: "110px" }}
                       />
                     </div>
                   );
@@ -454,6 +477,7 @@ const R3 = ({
                   const audio = new Audio(correctSound);
                   audio.play();
                   setRecording("no");
+                  setIsPlaying(false);
                   if (currentQuestionIndex === content.L1.length - 1) {
                     // setLocalData("rFlow", false);
                     // if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
@@ -461,9 +485,11 @@ const R3 = ({
                     // } else {
                     //   navigate("/discover-start");
                     // }
+                    setIsAudioPlayedOnce(false);
                     onComplete();
                   } else {
                     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+                    setIsAudioPlayedOnce(false);
                   }
                 }}
                 src={Assets.pause}

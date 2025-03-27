@@ -926,7 +926,7 @@ const Assesment = ({ discoverStart }) => {
                   }}
                 >
                   {rFlow === "true"
-                    ? `Start R${rStep}`
+                    ? `Start R${level === 1 ? "1" : rStep}`
                     : `Start Level ${level}`}
                 </span>
               </Box>

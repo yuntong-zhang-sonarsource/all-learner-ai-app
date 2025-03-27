@@ -204,6 +204,7 @@ const MainLayout = (props) => {
     resetStoredData,
     isRecordingComplete,
     answer,
+    isCorrect,
   } = props;
 
   const [shake, setShake] = useState(false);
@@ -266,8 +267,10 @@ const MainLayout = (props) => {
     };
   }, []);
 
+  console.log("isCo", isCorrect);
+
   useEffect(() => {
-    if (isRecordingComplete && answer) {
+    if (isRecordingComplete && answer && isCorrect) {
       callConfettiSnow();
     }
   }, []);
@@ -414,7 +417,7 @@ const MainLayout = (props) => {
               }}
             >
               <Box>
-                {isRecordingComplete && answer && (
+                {isRecordingComplete && answer && isCorrect && (
                   <Confetti width={width} height={"600px"} />
                 )}
               </Box>
@@ -527,7 +530,7 @@ const MainLayout = (props) => {
                               : null
                           }
                           alt={`R Step ${props.rStep}`}
-                          height={"250px"}
+                          height={"200px"}
                         />
                       ) : null
                     ) : (

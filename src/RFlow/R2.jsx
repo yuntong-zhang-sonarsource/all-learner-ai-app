@@ -67,8 +67,8 @@ const content = {
       answer: "kiteR1OneAudio",
       options: [
         { id: "kiteR1OneAudio", value: "kiteR1OneAudio", type: "audio" },
-        { id: "kiteR1TwoAudio", value: "kiteR1TwoAudio", type: "audio" },
-        { id: "kiteR1ThreeAudio", value: "kiteR1ThreeAudio", type: "audio" },
+        { id: "dogR1OneAudio", value: "dogR1OneAudio", type: "audio" },
+        { id: "capR1OneAudio", value: "capR1OneAudio", type: "audio" },
       ],
       flowName: "P1",
     },
@@ -78,11 +78,11 @@ const content = {
         img: Assets.mangoR1OneImg,
         type: "text",
       },
-      answer: "mangoR1OneAudio",
+      answer: "MangoR1OneAudio",
       options: [
-        { id: "mangoR1OneAudio", value: "mangoR1OneAudio", type: "audio" },
-        { id: "mangoR1TwoAudio", value: "mangoR2TwoAudio", type: "audio" },
-        { id: "mangoR1ThreeAudio", value: "mangoR3ThreeAudio", type: "audio" },
+        { id: "eggR1OneAudio", value: "eggR1OneAudio", type: "audio" },
+        { id: "MangoR1OneAudio", value: "MangoR1OneAudio", type: "audio" },
+        { id: "nestR1OneAudio ", value: "nestR1OneAudio", type: "audio" },
       ],
       flowName: "P2",
     },
@@ -94,9 +94,9 @@ const content = {
       },
       answer: "nestR1OneAudio",
       options: [
+        { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
+        { id: "dogR1OneAudio", value: "dogR1OneAudio", type: "audio" },
         { id: "nestR1OneAudio", value: "nestR1OneAudio", type: "audio" },
-        { id: "nestR1TwoAudio", value: "nestR2TwoAudio", type: "audio" },
-        { id: "nestR1ThreeAudio", value: "nestR3ThreeAudio", type: "audio" },
       ],
       flowName: "P3",
     },
@@ -108,9 +108,9 @@ const content = {
       },
       answer: "ratR1OneAudio",
       options: [
+        { id: "vanR1OneAudio", value: "vanR1OneAudio", type: "audio" },
         { id: "ratR1OneAudio", value: "ratR1OneAudio", type: "audio" },
-        { id: "ratR1TwoAudio", value: "ratR2TwoAudio", type: "audio" },
-        { id: "ratR1ThreeAudio", value: "ratR3ThreeAudio", type: "audio" },
+        { id: "bellR1OneAudio", value: "bellR1OneAudio", type: "audio" },
       ],
       flowName: "P4",
     },
@@ -122,9 +122,9 @@ const content = {
       },
       answer: "vanR1OneAudio",
       options: [
+        { id: "nestR1OneAudio", value: "nestR1OneAudio", type: "audio" },
+        { id: "capR1OneAudio", value: "capR1OneAudio", type: "audio" },
         { id: "vanR1OneAudio", value: "vanR1OneAudio", type: "audio" },
-        { id: "vanR1TwoAudio", value: "vanR2TwoAudio", type: "audio" },
-        { id: "vanR1ThreeAudio", value: "vanR3ThreeAudio", type: "audio" },
       ],
       flowName: "P5",
     },
@@ -137,8 +137,8 @@ const content = {
       answer: "maskR1OneAudio",
       options: [
         { id: "maskR1OneAudio", value: "maskR1OneAudio", type: "audio" },
-        { id: "maskR1TwoAudio", value: "maskR2TwoAudio", type: "audio" },
-        { id: "maskR1ThreeAudio", value: "maskR3ThreeAudio", type: "audio" },
+        { id: "jugR1OneAudio", value: "jugR1OneAudio", type: "audio" },
+        { id: "knifeR1OneAudio", value: "knifeR1OneAudio", type: "audio" },
       ],
       flowName: "P6",
     },
@@ -150,23 +150,23 @@ const content = {
       },
       answer: "onionR1OneAudio",
       options: [
+        { id: "goatR1OneAudio", value: "goatR1OneAudio", type: "audio" },
+        { id: "fanR1OneAudio", value: "fanR1OneAudio", type: "audio" },
         { id: "onionR1OneAudio", value: "onionR1OneAudio", type: "audio" },
-        { id: "onionR1TwoAudio", value: "onionR2TwoAudio", type: "audio" },
-        { id: "onionR1ThreeAudio", value: "onionR3ThreeAudio", type: "audio" },
       ],
       flowName: "P7",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.nestR1OneImg,
+        img: Assets.fanR1OneImg,
         type: "text",
       },
-      answer: "nestR1OneAudio",
+      answer: "fanRoneAudio",
       options: [
-        { id: "nestR1OneAudio", value: "nestR1OneAudio", type: "audio" },
-        { id: "nestR1TwoAudio", value: "nestR2TwoAudio", type: "audio" },
-        { id: "nestR1ThreeAudio", value: "nestR3ThreeAudio", type: "audio" },
+        { id: "fanRoneAudio", value: "fanRoneAudio", type: "audio" },
+        { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
+        { id: "appleR1OneAudio", value: "appleR1OneAudio", type: "audio" },
       ],
       flowName: "P8",
     },
@@ -297,6 +297,7 @@ const R2 = ({
 
   const handleNextClick = () => {
     if (selectedCheckbox) {
+      setProgress(0);
       handleAudioClick(selectedCheckbox);
       setShowNextButton(false);
     }

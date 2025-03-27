@@ -15,6 +15,16 @@ import {
 import MainLayout from "../Layouts.jsx/MainLayout";
 import PropTypes from "prop-types";
 import { phoneticMatch } from "../../utils/phoneticUtils";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import correctSound from "../../assets/correct.wav";
+import wrongSound from "../../assets/audio/wrong.wav";
+
+const isChrome =
+  /Chrome/.test(navigator.userAgent) &&
+  /Google Inc/.test(navigator.vendor) &&
+  !/Edg/.test(navigator.userAgent);
 
 const WordsOrImage = ({
   handleNext,
@@ -73,6 +83,19 @@ const WordsOrImage = ({
   const audioRef = useRef(null);
   const currentWordRef = useRef(null);
   const currentIsSelected = useRef(false);
+  const {
+    transcript,
+    interimTranscript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+  const [showWrongTick, setShowWrongTick] = useState(true);
+
+  const transcriptRef = useRef("");
+  useEffect(() => {
+    transcriptRef.current = transcript;
+  }, [transcript]);
 
   let mediaRecorder;
   let recordedChunks = [];
@@ -111,8 +134,12 @@ const WordsOrImage = ({
 
         if (matchPercentage < 49) {
           setAnswer(false);
+          const audio = new Audio(wrongSound);
+          audio.play();
         } else {
           setAnswer(true);
+          const audio = new Audio(correctSound);
+          audio.play();
         }
         stopAudioRecording();
       };
@@ -164,6 +191,18 @@ const WordsOrImage = ({
   };
 
   const startRecording = (word, isSelected) => {
+    if (isChrome) {
+      if (!browserSupportsSpeechRecognition) {
+        alert("Speech recognition is not supported in your browser.");
+        return;
+      }
+      resetTranscript();
+      startAudioRecording();
+      SpeechRecognition.startListening({
+        continuous: true,
+        interimResults: true,
+      });
+    }
     setIsRecording(true);
     setShowSpeakButton(false);
     setShowStopButton(true);
@@ -172,11 +211,34 @@ const WordsOrImage = ({
   };
 
   const stopRecording = (word) => {
-    setIsRecording(false);
-    setShowStopButton(false);
-    setShowListenRetryButtons(true);
-    if (recognition) {
-      recognition.stop();
+    if (isChrome) {
+      SpeechRecognition.stopListening();
+      stopAudioRecording();
+      const finalTranscript = transcriptRef.current;
+      const matchPercentage = phoneticMatch(
+        currentWordRef.current,
+        finalTranscript
+      );
+
+      if (matchPercentage < 49) {
+        setAnswer(false);
+        const audio = new Audio(wrongSound);
+        audio.play();
+      } else {
+        setAnswer(true);
+        const audio = new Audio(correctSound);
+        audio.play();
+      }
+      setIsRecording(false);
+      setShowStopButton(false);
+      setShowListenRetryButtons(true);
+    } else {
+      setIsRecording(false);
+      setShowStopButton(false);
+      setShowListenRetryButtons(true);
+      if (recognition) {
+        recognition.stop();
+      }
     }
   };
 
@@ -196,13 +258,27 @@ const WordsOrImage = ({
   };
 
   useEffect(() => {
-    if (isRecording && recognition) {
+    if (isRecording && recognition && recognition.state !== "recording") {
       recognition.start();
     }
   }, [isRecording, recognition]);
 
   useEffect(() => {
-    initializeRecognition();
+    return () => {
+      if (recognition) {
+        recognition.onstart = null;
+        recognition.onresult = null;
+        recognition.onerror = null;
+        recognition.onend = null;
+        recognition.stop();
+      }
+    };
+  }, [recognition]);
+
+  useEffect(() => {
+    if (!isChrome) {
+      initializeRecognition();
+    }
   }, []);
 
   const updateStoredData = (audio, isCorrect) => {
