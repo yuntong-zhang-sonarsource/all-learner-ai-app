@@ -18,6 +18,8 @@ import {
 } from "../../utils/constants";
 import RecordVoiceVisualizer from "../../utils/RecordVoiceVisualizer";
 import { Box, CircularProgress } from "@mui/material";
+import correctSound from "../../assets/correct.wav";
+import wrongSound from "../../assets/audio/wrong.wav";
 
 const levelMap = {
   10: level10,
@@ -204,9 +206,13 @@ const AskMoreM14 = ({
 
   const handlePauseClick = () => {
     if (currentSteps < conversation.length - 1) {
+      const audio = new Audio(correctSound);
+      audio.play();
       setCurrentStep((prev) => prev + 1);
       handleNext();
     } else {
+      const audio = new Audio(correctSound);
+      audio.play();
       setCurrentStep(conversation.length);
       //console.log('texxxxxt');
       //handleNext();
@@ -455,7 +461,7 @@ const AskMoreM14 = ({
                   zIndex: "9999",
                 }}
                 sx={{ cursor: "pointer" }}
-                //onClick={startRecording}
+                onClick={handleMikeClick}
               >
                 <Box
                   sx={{
@@ -481,31 +487,46 @@ const AskMoreM14 = ({
               </Box>
             ) : (
               <>
-                {/* <img
-                      src={Assets.effectImg}
-                      alt="Effect"
-                      style={{
-                        position: "absolute",
-                        top: "60%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        width: "130px",
+                <Box
+                  // marginLeft={
+                  //   !props.dontShowListen || props.recordedAudio
+                  //     ? "32px"
+                  //     : "0px"
+                  // }
+                  style={{
+                    position: "absolute",
+                    top: "70%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    width: "35px",
+                    cursor: "pointer",
+                    zIndex: "9999",
+                  }}
+                  sx={{ cursor: "pointer" }}
+                  onClick={handlePauseClick}
+                >
+                  <Box
+                    sx={{
+                      width: "90px",
+                      height: "90px",
+                      borderRadius: "50%",
+                      position: "relative",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box sx={getPulseAnimationStyle("#FF4B4B33")} />
+                    <Box
+                      sx={{
+                        position: "relative",
+                        zIndex: 1,
                       }}
-                    />
-                    <img
-                      src={Assets.pauseImg}
-                      alt="Pause"
-                      style={{
-                        position: "absolute",
-                        top: "70%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        width: "35px",
-                        cursor: "pointer",
-                        zIndex: "9999",
-                      }}
-                      onClick={handlePauseClick}
-                    /> */}
+                    >
+                      <StopButton height={45} width={45} />
+                    </Box>
+                  </Box>
+                </Box>
               </>
             )}
           </>

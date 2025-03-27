@@ -8299,7 +8299,7 @@ export const levelGetContent = {
         title: "P2",
         criteria: "sentence",
         template: "simple",
-        mechanism: { id: "mechanic_2", name: "readTheImage" },
+        mechanism: { id: "McqFlow", name: "McqFlow" },
       },
       {
         title: "P3",

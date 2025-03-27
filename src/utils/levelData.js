@@ -4358,7 +4358,7 @@ export const level10 = [
         content: [
           {
             type: "image",
-            value: "childrenDayImage",
+            value: "childrenDayImg",
           },
         ],
       },
