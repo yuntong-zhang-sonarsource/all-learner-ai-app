@@ -11,6 +11,7 @@ import R1 from "../../RFlow/R1";
 import R2 from "../../RFlow/R2";
 import R3Flow from "../../RFlow/R3";
 import R4 from "../../RFlow/R4";
+import McqFlow from "../../components/Practice/McqFlow";
 import AskMoreM14 from "../../components/Practice/AskMoreM14";
 import ActOutM13 from "../../components/Practice/ActOutM13";
 import PhoneConversation from "../../components/Practice/PhoneConversation";
@@ -2286,6 +2287,50 @@ const Practice = () => {
     } else if (mechanism.name === "PhrasesInAction") {
       return (
         <PhrasesInAction
+          page={page}
+          setPage={setPage}
+          {...{
+            level: level,
+            header:
+              questions[currentQuestion]?.contentType === "image"
+                ? `Guess the below image`
+                : `Speak the below word`,
+            //
+            currentImg: currentImage,
+            parentWords: parentWords,
+            contentType: currentContentType,
+            contentId: questions[currentQuestion]?.contentId,
+            setVoiceText,
+            setRecordedAudio,
+            setVoiceAnimate,
+            storyLine,
+            handleNext,
+            type: "word",
+            // image: elephant,
+            enableNext,
+            showTimer: false,
+            points,
+            steps: questions?.length,
+            currentStep: currentQuestion + 1,
+            progressData,
+            showProgress: true,
+            background:
+              isShowCase &&
+              "linear-gradient(281.02deg, #AE92FF 31.45%, #555ADA 100%)",
+            playTeacherAudio,
+            callUpdateLearner: isShowCase,
+            disableScreen,
+            isShowCase: true,
+            handleBack: !isShowCase && handleBack,
+            setEnableNext,
+            loading,
+            setOpenMessageDialog,
+          }}
+        />
+      );
+    } else if (mechanism.name === "McqFlow") {
+      return (
+        <McqFlow
           page={page}
           setPage={setPage}
           {...{

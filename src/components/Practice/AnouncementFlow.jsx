@@ -406,12 +406,12 @@ const AnouncementFlow = ({
         setShowConfetti(false);
         setRecording("recording");
         //handleNext();
-      }, 2000);
+      }, 3000);
     } else {
       setIsCorrect(false);
       setTimeout(() => {
         resetState();
-      }, 2000);
+      }, 1000);
     }
   };
 

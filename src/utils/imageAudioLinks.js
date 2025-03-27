@@ -392,7 +392,7 @@ export const busImg =
 export const buyerImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/main/Buyer.jpeg";
 export const childrenDayImg =
-  "https://raw.githubusercontent.com/anik200002/EkstepImg/main/childrenDayImage.jpeg";
+  "https://github.com/anik200002/EkstepImg/blob/main/childrenDayImg.png?raw=true";
 export const classroomImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/main/classroomImg.jpeg";
 export const concertStageImg =
