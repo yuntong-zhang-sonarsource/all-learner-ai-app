@@ -19,11 +19,6 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Install AWS CLI
-        run: |
-          sudo DEBIAN_FRONTEND=noninteractive apt-get update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y awscli
-
       - name: Configure AWS credentials
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
