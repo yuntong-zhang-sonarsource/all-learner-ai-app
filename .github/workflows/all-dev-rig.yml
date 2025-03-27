@@ -3,12 +3,12 @@ name: ALL rig dev Deployment
 on:
   push:
     branches:
-      - all-1.2
+      - all-1.4.0-dev
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: all-dev-rig
+    environment: all-dev-tn
 
     steps:
       - name: Checkout code
