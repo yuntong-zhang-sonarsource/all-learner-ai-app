@@ -10,6 +10,7 @@ import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
 import Confetti from "react-confetti";
 import listenImg from "../../assets/listen.png";
+import pause from "../../assets/pause.png";
 import Mic from "../../assets/mikee.svg";
 import Stop from "../../assets/pausse.svg";
 import correctSound from "../../assets/correct.wav";
@@ -66,6 +67,7 @@ const PhrasesInAction = ({
   const [isCorrectImageSelected, setIsCorrectImageSelected] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const [isPlaying, setIsPlaying] = useState(false);
 
   let progressDatas = getLocalData("practiceProgress");
   const virtualId = String(getLocalData("virtualId"));
@@ -79,7 +81,11 @@ const PhrasesInAction = ({
     currentPracticeStep = progressDatas[virtualId].currentPracticeStep;
   }
 
-  const currentLevel = practiceSteps?.[currentPracticeStep]?.titleThree || "L1";
+  let currentLevel = practiceSteps?.[currentPracticeStep]?.titleThree || "L1";
+
+  if (String(level) === "10") {
+    currentLevel = practiceSteps?.[currentPracticeStep]?.name;
+  }
 
   const getInitialStep = (level) => {
     return level === "L1" || level === "L3" ? "step1" : "step2";
@@ -89,7 +95,7 @@ const PhrasesInAction = ({
     getInitialStep(currentLevel)
   );
 
-  console.log("m3", currentLevel);
+  console.log("m3", currentLevel, level);
 
   const content = {
     L1: [
@@ -403,10 +409,170 @@ const PhrasesInAction = ({
         },
       },
     ],
+    P4: [
+      {
+        step1: {
+          allwords: [{ img: "textbookImg", text: "Open Textbooks" }],
+          audio: "openTextbookAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "textbookImg", text: "Open Textbooks" },
+            { img: "classroomImg", text: "Classroom" },
+            { img: "teacherImg", text: "Teacher" },
+          ],
+          correctWordTwo: "Open Textbooks",
+          audio: "openTextbookAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "listenImg", text: "Listen Carefully" }],
+          audio: "listenAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "listenImg", text: "Listen Carefully" },
+            { img: "blackboardImg", text: "Blackboard" },
+            { img: "notebookImg", text: "Notebook" },
+          ],
+          correctWordTwo: "Listen Carefully",
+          audio: "listenAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "raiseHandImg", text: "Raise Hand" }],
+          audio: "raiseHandAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "raiseHandImg", text: "Raise Hand" },
+            { img: "deskImg", text: "Desk" },
+            { img: "studentImg", text: "Students" },
+          ],
+          correctWordTwo: "Raise Hand",
+          audio: "raiseHandAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "workPairImg", text: "Work in Pairs" }],
+          audio: "workPairAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "workPairImg", text: "Work in Pairs" },
+            { img: "exerciseImg", text: "Exercise" },
+            { img: "classroomImg", text: "Classroom" },
+          ],
+          correctWordTwo: "Work in Pairs",
+          audio: "workPairAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "writeDateImg", text: "Write Date" }],
+          audio: "writeDateAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "writeDateImg", text: "Write Date" },
+            { img: "notebookImg", text: "Notebook" },
+            { img: "penImg", text: "Pen" },
+          ],
+          correctWordTwo: "Write Date",
+          audio: "writeDateAudio",
+        },
+      },
+    ],
+    P8: [
+      {
+        step1: {
+          allwords: [
+            { img: "underlineImg", text: "Underline Important Points" },
+          ],
+          audio: "underlineAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "underlineImg", text: "Underline Important Points" },
+            { img: "sitProperlyImg", text: "Sit Properly" },
+            { img: "notebookImg", text: "Notebook" },
+          ],
+          correctWordTwo: "Notebook",
+          audio: "underlineAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [
+            { img: "readInstructionsImg", text: "Read Instructions Carefully" },
+          ],
+          audio: "readInstructionsAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "pencilImg", text: "Question Paper" },
+            { img: "penImg", text: "Pen" },
+            { img: "readInstructionsImg", text: "Read Instructions Carefully" },
+          ],
+          correctWordTwo: "Read Instructions Carefully",
+          audio: "readInstructionsAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "sitProperlyImg", text: "Sit Properly" }],
+          audio: "sitProperlyAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "sitProperlyImg", text: "Sit Properly" },
+            { img: "deskImg", text: "Desk" },
+            { img: "pillowImg", text: "Pillow" },
+          ],
+          correctWordTwo: "Sit Properly",
+          audio: "sitProperlyAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "notebookImg", text: "Take Out Notebooks" }],
+          audio: "noteBookAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "penImg", text: "Pen" },
+            { img: "notebookImg", text: "Take Out Notebooks" },
+            { img: "textbookImg", text: "Textbook" },
+          ],
+          correctWordTwo: "Take Out Notebooks",
+          audio: "noteBookAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "submitHomeworkImg", text: "Submit Homework" }],
+          audio: "submitHomeworkAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "submitHomeworkImg", text: "Submit Homework" },
+            { img: "bellImg", text: "Bell" },
+            { img: "questionPaperImg", text: "Teacher’s Desk" },
+          ],
+          correctWordTwo: "Submit Homework",
+          audio: "submitHomeworkAudio",
+        },
+      },
+    ],
   };
 
   //const levelData = content?.[currentLevel][currentWordIndex][currentSteps];
   const levelData = content?.[currentLevel]?.[currentWordIndex]?.[currentSteps];
+
+  console.log("dataP410", levelData, currentLevel);
 
   let audioElement = new Audio(levelData?.audio);
 
@@ -540,8 +706,14 @@ const PhrasesInAction = ({
   };
 
   const playAudio2 = () => {
-    const audioElement = new Audio(levelData?.audio);
+    const audioElement = new Audio(
+      level === 3 ? levelData?.audio : Assets[levelData?.audio]
+    );
     audioElement.play();
+    setIsPlaying(true);
+    audioElement.onended = () => {
+      setIsPlaying(false);
+    };
   };
 
   // Step 3
@@ -690,7 +862,7 @@ const PhrasesInAction = ({
                         {levelData?.allwords[0]?.text}
                       </span>
                       <img
-                        src={listenImg}
+                        src={isPlaying ? pause : listenImg}
                         alt="Audio Control"
                         style={{
                           width: "40px",
@@ -767,7 +939,7 @@ const PhrasesInAction = ({
                           onClick={() => setSelectedDiv(item.text)}
                         >
                           <img
-                            src={item.img}
+                            src={level === 3 ? item.img : Assets[item.img]}
                             alt={item.text}
                             style={{
                               width: "200px",
@@ -864,7 +1036,7 @@ const PhrasesInAction = ({
                           {levelData?.correctWordTwo}
                         </span>
                         <img
-                          src={listenImg}
+                          src={isPlaying ? pause : listenImg}
                           alt="Listen"
                           style={{
                             width: isMobile
@@ -917,10 +1089,18 @@ const PhrasesInAction = ({
                           >
                             <img
                               src={
-                                levelData?.allwordsTwo.find(
-                                  (item) =>
-                                    item.text === levelData?.correctWordTwo
-                                ).img
+                                level === 3
+                                  ? levelData?.allwordsTwo.find(
+                                      (item) =>
+                                        item.text === levelData?.correctWordTwo
+                                    ).img
+                                  : Assets[
+                                      levelData?.allwordsTwo.find(
+                                        (item) =>
+                                          item.text ===
+                                          levelData?.correctWordTwo
+                                      ).img
+                                    ]
                               }
                               alt={levelData?.correctWordTwo}
                               style={{
@@ -985,7 +1165,9 @@ const PhrasesInAction = ({
                                 onClick={() => handleDivClick(item.text)}
                               >
                                 <img
-                                  src={item.img}
+                                  src={
+                                    level === 3 ? item.img : Assets[item.img]
+                                  }
                                   alt={item.text}
                                   style={{
                                     width: isMobile

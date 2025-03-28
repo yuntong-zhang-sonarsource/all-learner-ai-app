@@ -51,6 +51,8 @@ const AudioRecorder = (props) => {
       recorderRef.current.startRecording();
 
       setIsRecording(true);
+
+      props.handleStartRecording?.();
     } catch (err) {
       console.error("Failed to start recording:", err);
     }
@@ -75,6 +77,8 @@ const AudioRecorder = (props) => {
           }
           setIsRecording(false);
           props.setEnableNext?.(true);
+
+          props.handleStopRecording?.();
         });
       }
     }, 500);

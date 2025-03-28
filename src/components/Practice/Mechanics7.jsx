@@ -434,7 +434,7 @@ const Mechanics7 = ({
   };
 
   const getDynamicMarginLeft = (wIndex) => {
-    return wordsRef.current.length === 1 && wIndex === 0 ? "290px" : "0px";
+    return wordsRef.current.length === 1 && wIndex === 0 ? "250px" : "0px";
   };
 
   const getCircleHeight = (elem) => {
@@ -478,7 +478,7 @@ const Mechanics7 = ({
         loading,
       }}
     >
-      {isRecordingComplete && (
+      {/* {isRecordingComplete && (
         <Box
           sx={{
             display: "flex",
@@ -509,94 +509,130 @@ const Mechanics7 = ({
             }}
           />
         </Box>
-      )}
-      <Box
-        sx={{
+      )} */}
+      <div
+        style={{
           display: "flex",
-          justifyContent: "center",
-          mb: !isRecordingComplete && !isRecording && !isProcessing ? 1 : 4,
-          mt: 2,
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          height: "60vh",
+          //width: "80%"
         }}
       >
         <Box
           sx={{
-            minWidth: "230px",
-            minHeight: "37px",
             display: "flex",
             justifyContent: "center",
-            flexWrap: "wrap",
             alignItems: "center",
-            borderRadius: "15px",
-            border: `2px solid ${getBorderColor()}`,
-            cursor: "pointer",
-            letterSpacing: answer != "correct" ? "5px" : "normal",
-            background: "#FBFBFB",
-            paddingX: type === "word" ? 0 : "20px",
+            maskBorderWidth: 6,
           }}
         >
-          {selectedWordsRef.current?.map((elem, index) => {
-            const parentWordsArray =
-              typeof parentWords === "string"
-                ? parentWords.split(" ")
-                : parentWords;
+          <img
+            src={currentImg?.img}
+            alt="pencil"
+            width={"150px"}
+            style={{
+              zIndex: 2,
+            }}
+          />
+        </Box>
+        <Box
+          sx={{
+            width: "1px",
+            backgroundColor: "#E0E2E7",
+            height: "100%",
+            border: "1px solid #E0E2E7",
+          }}
+        />
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mb: 2,
+              mt: 2,
+            }}
+          >
+            <Box
+              sx={{
+                minWidth: "230px",
+                minHeight: "37px",
+                display: "flex",
+                justifyContent: "center",
+                flexWrap: "wrap",
+                alignItems: "center",
+                borderRadius: "15px",
+                border: `2px solid ${getBorderColor()}`,
+                cursor: "pointer",
+                letterSpacing: answer != "correct" ? "5px" : "normal",
+                background: "#FBFBFB",
+                paddingX: type === "word" ? 0 : "20px",
+              }}
+            >
+              {selectedWordsRef.current?.map((elem, index) => {
+                const parentWordsArray =
+                  typeof parentWords === "string"
+                    ? parentWords.split(" ")
+                    : parentWords;
 
-            let remainingParts = parentWordsArray.filter(
-              (word) => !selectedWordsRef.current.includes(word)
-            );
+                let remainingParts = parentWordsArray.filter(
+                  (word) => !selectedWordsRef.current.includes(word)
+                );
 
-            const isIncorrect = incorrectWords[elem];
+                const isIncorrect = incorrectWords[elem];
 
-            const colors = getColor(type, isIncorrect, answer);
+                const colors = getColor(type, isIncorrect, answer);
 
-            return (
-              <span
-                role="button"
-                tabIndex={0}
-                onClick={() => handleWordsLogic(elem, "", true)}
-                className={
-                  answer === "wrong"
-                    ? `audioSelectedWrongWord ${shake ? "shakeImage" : ""}`
-                    : ""
-                }
-                onKeyDown={(e) => {
-                  if (e.key === " ") {
-                    e.preventDefault();
-                  }
-                }}
-                style={{
-                  borderRadius: "12px",
-                  padding: answer === "correct" ? "0px" : "5px 10px 5px 10px",
-                  border: getBorder(),
-                  color: colors,
-                  fontWeight: type === "word" ? 600 : 700,
-                  fontSize: "22px",
-                  fontFamily: "Quicksand",
-                  cursor: "pointer",
-                  marginLeft:
-                    type === "word" ? 0 : answer != "correct" ? "20px" : 0,
-                }}
-              >
-                {elem}
-                {remainingParts.length > 0 && (
+                return (
                   <span
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => handleWordsLogic(elem, "", true)}
+                    className={
+                      answer === "wrong"
+                        ? `audioSelectedWrongWord ${shake ? "shakeImage" : ""}`
+                        : ""
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === " ") {
+                        e.preventDefault();
+                      }
+                    }}
                     style={{
-                      color: "#1897DE1A",
-                      fontWeight: 700,
+                      borderRadius: "12px",
+                      padding:
+                        answer === "correct" ? "0px" : "5px 10px 5px 10px",
+                      border: getBorder(),
+                      color: colors,
+                      fontWeight: type === "word" ? 600 : 700,
                       fontSize: "22px",
                       fontFamily: "Quicksand",
-                      marginLeft: "5px",
-                      role: "button",
+                      cursor: "pointer",
+                      marginLeft:
+                        type === "word" ? 0 : answer != "correct" ? "20px" : 0,
                     }}
                   >
-                    {remainingParts.join(" ")}
+                    {elem}
+                    {remainingParts.length > 0 && (
+                      <span
+                        style={{
+                          color: "#1897DE1A",
+                          fontWeight: 700,
+                          fontSize: "22px",
+                          fontFamily: "Quicksand",
+                          marginLeft: "5px",
+                          role: "button",
+                        }}
+                      >
+                        {remainingParts.join(" ")}
+                      </span>
+                    )}
                   </span>
-                )}
-              </span>
-            );
-          })}
-        </Box>
-      </Box>
-      {!isRecordingComplete && !isRecording && !isProcessing && (
+                );
+              })}
+            </Box>
+          </Box>
+          {/* {!isRecordingComplete && !isRecording && !isProcessing && (
         <Box
           sx={{
             display: "flex",
@@ -614,111 +650,116 @@ const Mechanics7 = ({
             }}
           />
         </Box>
-      )}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          flexWrap: "wrap",
-          //mb: 2,
-          mt: 2,
-        }}
-      >
-        {wordsRef.current?.map((elem, wIndex) => (
-          <React.Fragment key={elem}>
-            {type === "word" ? (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  marginLeft: getDynamicMarginLeft(wIndex),
-                }}
-              >
-                <Box
-                  onClick={() => handleWords(elem)}
-                  sx={{
-                    marginTop: "10px",
-                    position: "relative",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: { xs: "30px", sm: "40px", md: "50px" },
-                    minWidth: { xs: "50px", sm: "60px", md: "70px" },
-                    //   background: "#1897DE",
-                    m: { xs: 0.5, sm: 1 },
-                    cursor:
-                      wIndex === 0 ? `url(${clapImage}) 32 24, auto` : "auto",
-                    //   borderRadius: "12px",
-                    //   border: "5px solid #10618E",
-                    fontSize: {
-                      xs: "30px",
-                      sm: "30px",
-                      md: "40px",
-                      lg: "40px",
-                    },
-                    marginLeft: getMarginLeft(wIndex),
-                  }}
-                >
-                  {wIndex == 0 && (
-                    <Box sx={{ position: "absolute" }}>
-                      <WordRedCircle height={getCircleHeight(elem)} />
-                    </Box>
-                  )}
-                  {wIndex == 0 && (
+      )} */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              mt: 2,
+            }}
+          >
+            {wordsRef.current?.map((elem, wIndex) => (
+              <React.Fragment key={elem}>
+                {type === "word" ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginLeft: getDynamicMarginLeft(wIndex),
+                    }}
+                  >
                     <Box
-                      onClick={(e) => {
-                        if (
-                          !isRecordingComplete &&
-                          !isRecording &&
-                          !isProcessing
-                        ) {
-                          e.stopPropagation();
-                          handlePlayAudio(elem);
-                        } else {
-                          e.stopPropagation();
-                        }
-                      }}
+                      onClick={() => handleWords(elem)}
                       sx={{
-                        zIndex: "99999",
-                        position: "absolute",
-                        left:
-                          wordsRef.current?.length > 1 ? "-150px" : undefined,
-                        right:
-                          wordsRef.current?.length == 1 ? "-180px" : undefined,
-                        mb: "18px",
+                        marginTop: "10px",
+                        position: "relative",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: { xs: "30px", sm: "40px", md: "50px" },
+                        minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                        //   background: "#1897DE",
+                        m: { xs: 0.5, sm: 1 },
+                        cursor:
+                          wIndex === 0
+                            ? `url(${clapImage}) 32 24, auto`
+                            : "auto",
+                        //   borderRadius: "12px",
+                        //   border: "5px solid #10618E",
+                        fontSize: {
+                          xs: "30px",
+                          sm: "30px",
+                          md: "40px",
+                          lg: "40px",
+                        },
+                        marginLeft: getMarginLeft(wIndex),
                       }}
                     >
-                      <img
-                        src={
-                          !(
-                            !isRecordingComplete &&
-                            !isRecording &&
-                            !isProcessing
-                          )
-                            ? Assets.bulbHintDisabled
-                            : Assets.bulbHint
-                        }
-                        alt="bulbHint"
-                      />
+                      {wIndex == 0 && (
+                        <Box sx={{ position: "absolute" }}>
+                          <WordRedCircle height={getCircleHeight(elem)} />
+                        </Box>
+                      )}
+                      {wIndex == 0 && (
+                        <Box
+                          onClick={(e) => {
+                            if (
+                              !isRecordingComplete &&
+                              !isRecording &&
+                              !isProcessing
+                            ) {
+                              e.stopPropagation();
+                              handlePlayAudio(elem);
+                            } else {
+                              e.stopPropagation();
+                            }
+                          }}
+                          sx={{
+                            zIndex: "99999",
+                            position: "absolute",
+                            left:
+                              wordsRef.current?.length > 1
+                                ? "-100px"
+                                : undefined,
+                            right:
+                              wordsRef.current?.length == 1
+                                ? "-100px"
+                                : undefined,
+                            mb: "18px",
+                          }}
+                        >
+                          <img
+                            src={
+                              !(
+                                !isRecordingComplete &&
+                                !isRecording &&
+                                !isProcessing
+                              )
+                                ? Assets.bulbHint
+                                : Assets.bulbHint
+                            }
+                            alt="bulbHint"
+                          />
+                        </Box>
+                      )}
+                      {elem?.split("")?.map((char, index) => (
+                        <span
+                          style={{
+                            color: wIndex == 0 ? "#1897DE" : "#000000",
+                            fontWeight: 700,
+                            fontSize: "25px",
+                            lineHeight: "87px",
+                            letterSpacing: "2%",
+                            fontFamily: "Quicksand",
+                            marginLeft: index > 0 ? "12px" : undefined,
+                          }}
+                        >
+                          {char}
+                        </span>
+                      ))}
                     </Box>
-                  )}
-                  {elem?.split("")?.map((char, index) => (
-                    <span
-                      style={{
-                        color: wIndex == 0 ? "#1897DE" : "#000000",
-                        fontWeight: 700,
-                        fontSize: "25px",
-                        lineHeight: "87px",
-                        letterSpacing: "2%",
-                        fontFamily: "Quicksand",
-                        marginLeft: index > 0 ? "12px" : undefined,
-                      }}
-                    >
-                      {char}
-                    </span>
-                  ))}
-                </Box>
-                {/* 
+                    {/* 
                 {wIndex === 0 &&
                   (!recordingStates[elem] &&
                   !isRecordingComplete &&
@@ -758,242 +799,244 @@ const Mechanics7 = ({
                       <StopButton height={45} width={45} />
                     </Box>
                   ))} */}
-              </div>
-            ) : (
+                  </div>
+                ) : (
+                  <Box
+                    onClick={() => handleWords(elem)}
+                    sx={{
+                      textAlign: "center",
+                      px: { xs: "15px", sm: "20px", md: "25px" },
+                      py: { xs: "8px", sm: "10px", md: "12px" },
+                      m: { xs: 0.5, sm: 1 },
+                      textTransform: "none",
+                      borderRadius: "12px",
+                      border: `1px solid rgba(51, 63, 97, 0.10)`,
+                      background: "#FFF",
+                      cursor: "pointer",
+                      fontSize: {
+                        xs: "25px",
+                        sm: "30px",
+                        md: "35px",
+                        lg: "40px",
+                      },
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: "#6F80B1",
+                        fontWeight: 600,
+                        fontFamily: "Quicksand",
+                      }}
+                    >
+                      {elem}
+                    </span>
+                  </Box>
+                )}
+              </React.Fragment>
+            ))}
+          </Box>
+
+          {words &&
+            words.length > 0 &&
+            (!isRecordingComplete && !isRecording && !isProcessing ? (
               <Box
-                onClick={() => handleWords(elem)}
                 sx={{
-                  textAlign: "center",
-                  px: { xs: "15px", sm: "20px", md: "25px" },
-                  py: { xs: "8px", sm: "10px", md: "12px" },
-                  m: { xs: 0.5, sm: 1 },
-                  textTransform: "none",
-                  borderRadius: "12px",
-                  border: `1px solid rgba(51, 63, 97, 0.10)`,
-                  background: "#FFF",
-                  cursor: "pointer",
-                  fontSize: {
-                    xs: "25px",
-                    sm: "30px",
-                    md: "35px",
-                    lg: "40px",
-                  },
+                  //marginBottom: "25px",
+                  position: "relative",
+                  display: "flex",
+                  gap: "50px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  //height: { xs: "30px", sm: "40px", md: "50px" },
+                  minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                  cursor: `url(${clapImage}) 32 24, auto`,
                 }}
               >
-                <span
-                  style={{
-                    color: "#6F80B1",
-                    fontWeight: 600,
-                    fontFamily: "Quicksand",
-                  }}
-                >
-                  {elem}
-                </span>
-              </Box>
-            )}
-          </React.Fragment>
-        ))}
-      </Box>
-
-      {words &&
-        words.length > 0 &&
-        (!isRecordingComplete && !isRecording && !isProcessing ? (
-          <Box
-            sx={{
-              marginBottom: "25px",
-              position: "relative",
-              display: "flex",
-              gap: "50px",
-              justifyContent: "center",
-              alignItems: "center",
-              //height: { xs: "30px", sm: "40px", md: "50px" },
-              minWidth: { xs: "50px", sm: "60px", md: "70px" },
-              cursor: `url(${clapImage}) 32 24, auto`,
-            }}
-          >
-            {isPlaying ? (
-              <div>
+                {isPlaying ? (
+                  <div>
+                    <Box
+                      sx={{
+                        marginTop: "7px",
+                        position: "relative",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                        cursor: "pointer",
+                        marginLeft: getMarginLeft(0),
+                      }}
+                      onClick={stopCompleteAudio}
+                    >
+                      <StopButton height={45} width={45} />
+                    </Box>
+                  </div>
+                ) : (
+                  <div>
+                    <Box
+                      sx={{
+                        marginTop: "7px",
+                        position: "relative",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                        cursor: `url(${clapImage}) 32 24, auto`,
+                        marginLeft: getMarginLeft(0),
+                      }}
+                      onClick={playCompleteAudio}
+                    >
+                      <ListenButton height={45} width={45} />
+                    </Box>
+                  </div>
+                )}
                 <Box
                   sx={{
-                    marginTop: "7px",
                     position: "relative",
+                    width: "90px",
+                    height: "90px",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    minWidth: { xs: "50px", sm: "60px", md: "70px" },
-                    cursor: "pointer",
+                    marginTop: "7px",
                     marginLeft: getMarginLeft(0),
-                  }}
-                  onClick={stopCompleteAudio}
-                >
-                  <StopButton height={45} width={45} />
-                </Box>
-              </div>
-            ) : (
-              <div>
-                <Box
-                  sx={{
-                    marginTop: "7px",
-                    position: "relative",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    minWidth: { xs: "50px", sm: "60px", md: "70px" },
                     cursor: `url(${clapImage}) 32 24, auto`,
-                    marginLeft: getMarginLeft(0),
                   }}
-                  onClick={playCompleteAudio}
+                  onClick={() => handleWords(wordsRef?.current[0])}
                 >
-                  <ListenButton height={45} width={45} />
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "90px",
+                      height: "90px",
+                      backgroundColor: "#58CC0233",
+                      borderRadius: "50%",
+                      animation: "pulse 1.2s linear infinite",
+                      "@keyframes pulse": {
+                        "0%": {
+                          transform: "scale(0.6)",
+                          opacity: 0,
+                        },
+                        "50%": {
+                          opacity: 1,
+                        },
+                        "100%": {
+                          transform: "scale(1.4)",
+                          opacity: 0,
+                        },
+                      },
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      position: "relative",
+                      zIndex: 1,
+                    }}
+                  >
+                    <SpeakButton height={45} width={45} />
+                  </Box>
                 </Box>
-              </div>
-            )}
-            <Box
-              sx={{
-                position: "relative",
-                width: "90px",
-                height: "90px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: "7px",
-                marginLeft: getMarginLeft(0),
-                cursor: `url(${clapImage}) 32 24, auto`,
-              }}
-              onClick={() => handleWords(wordsRef?.current[0])}
-            >
+              </Box>
+            ) : (
               <Box
                 sx={{
-                  position: "absolute",
-                  width: "90px",
-                  height: "90px",
-                  backgroundColor: "#58CC0233",
-                  borderRadius: "50%",
-                  animation: "pulse 1.2s linear infinite",
-                  "@keyframes pulse": {
-                    "0%": {
-                      transform: "scale(0.6)",
-                      opacity: 0,
-                    },
-                    "50%": {
-                      opacity: 1,
-                    },
-                    "100%": {
-                      transform: "scale(1.4)",
-                      opacity: 0,
-                    },
-                  },
-                }}
-              />
-              <Box
-                sx={{
+                  marginTop: "7px",
                   position: "relative",
-                  zIndex: 1,
+                  display: "flex",
+                  gap: "50px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  //height: { xs: "30px", sm: "40px", md: "50px" },
+                  minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                  cursor: `url(${clapImage}) 32 24, auto`,
                 }}
               >
-                <SpeakButton height={45} width={45} />
+                <Box
+                  sx={{
+                    position: "relative",
+                    width: "90px",
+                    height: "90px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    //marginTop: "7px",
+                    marginLeft: getMarginLeft(0),
+                    cursor: `url(${clapImage}) 32 24, auto`,
+                    borderRadius: "50%",
+                  }}
+                  onClick={() => stopRecording(wordsRef?.current[0])}
+                >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "90px",
+                      height: "90px",
+                      backgroundColor: "#FF4B4B33",
+                      borderRadius: "50%",
+                      animation: "pulse 1.2s linear infinite",
+                      "@keyframes pulse": {
+                        "0%": {
+                          transform: "scale(0.6)",
+                          opacity: 0,
+                        },
+                        "50%": {
+                          opacity: 1,
+                        },
+                        "100%": {
+                          transform: "scale(1.4)",
+                          opacity: 0,
+                        },
+                      },
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      position: "relative",
+                      zIndex: 1,
+                    }}
+                  >
+                    <StopButton height={45} width={45} />
+                  </Box>
+                </Box>
               </Box>
-            </Box>
-          </Box>
-        ) : (
-          <Box
-            sx={{
-              marginTop: "7px",
-              position: "relative",
-              display: "flex",
-              gap: "50px",
-              justifyContent: "center",
-              alignItems: "center",
-              //height: { xs: "30px", sm: "40px", md: "50px" },
-              minWidth: { xs: "50px", sm: "60px", md: "70px" },
-              cursor: `url(${clapImage}) 32 24, auto`,
-            }}
-          >
-            <Box
-              sx={{
-                position: "relative",
-                width: "90px",
-                height: "90px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: "7px",
-                marginLeft: getMarginLeft(0),
-                cursor: `url(${clapImage}) 32 24, auto`,
-                borderRadius: "50%",
-              }}
-              onClick={() => stopRecording(wordsRef?.current[0])}
-            >
-              <Box
-                sx={{
-                  position: "absolute",
-                  width: "90px",
-                  height: "90px",
-                  backgroundColor: "#FF4B4B33",
-                  borderRadius: "50%",
-                  animation: "pulse 1.2s linear infinite",
-                  "@keyframes pulse": {
-                    "0%": {
-                      transform: "scale(0.6)",
-                      opacity: 0,
-                    },
-                    "50%": {
-                      opacity: 1,
-                    },
-                    "100%": {
-                      transform: "scale(1.4)",
-                      opacity: 0,
-                    },
-                  },
-                }}
-              />
-              <Box
-                sx={{
-                  position: "relative",
-                  zIndex: 1,
-                }}
-              >
-                <StopButton height={45} width={45} />
-              </Box>
-            </Box>
-          </Box>
-        ))}
+            ))}
 
-      <audio
-        ref={audioRef}
-        onEnded={handleAudioEnd}
-        src={completeAudio}
-        hidden
-      />
-
-      {words && words.length === 0 && !isRecording && (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: "15px" }}>
-          <VoiceAnalyser
-            pageName={"m7"}
-            setVoiceText={setVoiceText}
-            onAudioProcessed={handleRecordingComplete}
-            setRecordedAudio={setRecordedAudio}
-            setVoiceAnimate={setVoiceAnimate}
-            storyLine={storyLine}
-            dontShowListen={type === "image" || isDiscover}
-            handleNext={handleNext}
-            enableNext={enableNext}
-            originalText={parentWords}
-            audioLink={audio ? audio : completeAudio}
-            {...{
-              contentId,
-              contentType,
-              currentLine: currentStep - 1,
-              playTeacherAudio,
-              callUpdateLearner,
-              isShowCase,
-              setEnableNext,
-              showOnlyListen: answer !== "correct",
-              setOpenMessageDialog,
-            }}
+          <audio
+            ref={audioRef}
+            onEnded={handleAudioEnd}
+            src={completeAudio}
+            hidden
           />
-        </Box>
-      )}
+
+          {words && words.length === 0 && !isRecording && (
+            <Box sx={{ display: "flex", justifyContent: "center", mt: "15px" }}>
+              <VoiceAnalyser
+                pageName={"m7"}
+                setVoiceText={setVoiceText}
+                onAudioProcessed={handleRecordingComplete}
+                setRecordedAudio={setRecordedAudio}
+                setVoiceAnimate={setVoiceAnimate}
+                storyLine={storyLine}
+                dontShowListen={type === "image" || isDiscover}
+                handleNext={handleNext}
+                enableNext={enableNext}
+                originalText={parentWords}
+                audioLink={audio ? audio : completeAudio}
+                {...{
+                  contentId,
+                  contentType,
+                  currentLine: currentStep - 1,
+                  playTeacherAudio,
+                  callUpdateLearner,
+                  isShowCase,
+                  setEnableNext,
+                  showOnlyListen: answer !== "correct",
+                  setOpenMessageDialog,
+                }}
+              />
+            </Box>
+          )}
+        </div>
+      </div>
     </MainLayout>
   );
 };
