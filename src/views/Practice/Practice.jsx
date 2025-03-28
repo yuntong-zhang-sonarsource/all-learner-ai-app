@@ -213,7 +213,7 @@ const Practice = () => {
     L3: [
       {
         completeWord: "Picture",
-        syllable: ["Pic", "Ture"],
+        syllable: ["Pic", "ture"],
         img: Assets.PictureNewImg,
         syllablesAudio: [
           { name: "Pic", audio: Assets.picAudio },
@@ -244,7 +244,7 @@ const Practice = () => {
       {
         completeWord: "Paper",
         syllable: ["Pa", "per"],
-        img: Assets.PaperNewImg,
+        img: Assets.questionPaperImg,
         syllablesAudio: [
           { name: "Pa", audio: Assets.paAudio },
           { name: "per", audio: Assets.perAudio },
@@ -265,18 +265,18 @@ const Practice = () => {
     L4: [
       {
         completeWord: "Garden",
-        syllable: ["Gar", "Den"],
+        syllable: ["Gar", "den"],
         img: Assets.GardenNewImg,
         syllablesAudio: [
           { name: "Gar", audio: Assets.garAudio },
-          { name: "Den", audio: Assets.denAudio },
+          { name: "den", audio: Assets.denAudio },
         ],
         completeAudio: Assets.GardenAudio,
       },
       {
         completeWord: "Helmet",
         syllable: ["Hel", "met"],
-        img: Assets.Picnic,
+        img: Assets.helmetImg,
         syllablesAudio: [
           { name: "Hel", audio: Assets.helAudio },
           { name: "met", audio: Assets.metAudio },
@@ -289,7 +289,7 @@ const Practice = () => {
         img: Assets.Kitten,
         syllablesAudio: [
           { name: "Kit", audio: Assets.Kit },
-          { name: "Ten", audio: Assets.Ten },
+          { name: "ten", audio: Assets.Ten },
         ],
         completeAudio: Assets.KittenS,
       },
@@ -299,7 +299,7 @@ const Practice = () => {
         img: Assets.Jacket,
         syllablesAudio: [
           { name: "Jack", audio: Assets.Jack },
-          { name: "Et", audio: Assets.Et },
+          { name: "et", audio: Assets.Et },
         ],
         completeAudio: Assets.JacketS,
       },
@@ -309,7 +309,7 @@ const Practice = () => {
         img: Assets.Pocket,
         syllablesAudio: [
           { name: "Pock", audio: Assets.Pock },
-          { name: "Et", audio: Assets.Et },
+          { name: "et", audio: Assets.Et },
         ],
         completeAudio: Assets.PocketS,
       },
@@ -676,7 +676,7 @@ const Practice = () => {
             } catch (e) {
               // catch error
             }
-          } else if (currentLevel === "S2") {
+          } else if (currentLevel === "S2" && (level === 1 || level === 2)) {
             setLocalData("rFlow", true);
           }
         }
@@ -2281,6 +2281,17 @@ const Practice = () => {
             setEnableNext,
             loading,
             setOpenMessageDialog,
+            startShowCase,
+            setStartShowCase,
+            livesData,
+            setLivesData,
+            gameOverData,
+            highlightWords,
+            matchedChar: !isShowCase && questions[currentQuestion]?.matchedChar,
+            percentage,
+            fluency,
+            isNextButtonCalled,
+            setIsNextButtonCalled,
           }}
         />
       );

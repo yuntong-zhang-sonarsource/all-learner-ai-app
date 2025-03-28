@@ -22,6 +22,10 @@ import spinnerStop from "../../assets/pause.png";
 import raMic from "../../assets/listen.png";
 import raStop from "../../assets/pause.png";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
+import { fetchASROutput, handleTextEvaluation } from "../../utils/apiUtil";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
 const levelMap = {
   10: level10,
@@ -62,6 +66,16 @@ const AnouncementFlow = ({
   setOpenMessageDialog,
   audio,
   currentImg,
+  fluency,
+  startShowCase,
+  setStartShowCase,
+  livesData,
+  setLivesData,
+  gameOverData,
+  highlightWords,
+  matchedChar,
+  isNextButtonCalled,
+  setIsNextButtonCalled,
 }) => {
   const [showQuestion, setShowQuestion] = useState(false);
   const [conversationData, setConversationData] = useState([]);
@@ -83,16 +97,54 @@ const AnouncementFlow = ({
   const [recAudio, setRecAudio] = useState("");
   const [completeAudio, setCompleteAudio] = useState(null);
   const [imageData, setImageData] = useState({});
+  const [loader, setLoader] = useState(false);
+  const [apiResponse, setApiResponse] = useState("");
+  const [correctAnswerText, setCorrectAnswerText] = useState("");
+  const [finalTranscript, setFinalTranscript] = useState("");
+  const {
+    transcript,
+    interimTranscript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
 
-  const handleRecordingComplete = (base64Data) => {
-    if (base64Data) {
-      setIsRecordingComplete(true);
-      setRecAudio(base64Data);
-    } else {
-      setIsRecordingComplete(false);
-      setRecAudio("");
-    }
-  };
+  const transcriptRef = useRef("");
+  useEffect(() => {
+    transcriptRef.current = transcript;
+    console.log("Live Transcript:", transcript);
+  }, [transcript]);
+
+  // let mediaRecorder;
+  // let recordedChunks = [];
+
+  // const startAudioRecording = () => {
+  //   navigator.mediaDevices
+  //     .getUserMedia({ audio: true })
+  //     .then((stream) => {
+  //       mediaRecorder = new MediaRecorder(stream);
+  //       mediaRecorder.ondataavailable = (event) => {
+  //         if (event.data.size > 0) {
+  //           recordedChunks.push(event.data);
+  //         }
+  //       };
+  //       mediaRecorder.start();
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error accessing audio stream:", error);
+  //     });
+  // };
+
+  // const stopAudioRecording = () => {
+  //   if (mediaRecorder) {
+  //     mediaRecorder.stop();
+  //     mediaRecorder.onstop = () => {
+  //       const audioBlob = new Blob(recordedChunks, { type: "audio/webm" });
+  //       setRecordedAudioBlob(audioBlob);
+  //       recordedChunks = [];
+  //     };
+  //   }
+  // };
 
   steps = 1;
 
@@ -121,6 +173,67 @@ const AnouncementFlow = ({
   //const conversation = contentM14[level]?.[currentLevel]?.conversation || content?.conversation;
 
   const conversation = getConversation(level, currentLevel);
+
+  useEffect(() => {
+    if (tasks[currentTaskIndex]) {
+      const currentTask = tasks[currentTaskIndex];
+      const correctOption =
+        currentTask.options.find((opt) => opt.id === currentTask.answer)
+          ?.value || "Unknown";
+
+      setCorrectAnswerText(correctOption);
+    }
+  }, [currentTaskIndex, tasks]);
+
+  const handleStartRecording = () => {
+    if (!browserSupportsSpeechRecognition) {
+      alert("Speech recognition is not supported in your browser.");
+      return;
+    }
+    resetTranscript();
+    SpeechRecognition.startListening({
+      continuous: true,
+      interimResults: true,
+    });
+  };
+
+  const handleStopRecording = () => {
+    SpeechRecognition.stopListening();
+    setFinalTranscript(transcriptRef.current);
+    //console.log("Final Transcript:", transcriptRef.current);
+  };
+
+  const handleRecordingComplete = async (base64Data) => {
+    if (base64Data) {
+      setIsRecordingComplete(true);
+      setRecAudio(base64Data);
+
+      if (currentLevel === "S1" || currentLevel === "S2") {
+        setLoader(true);
+        const comprehension = await handleTextEvaluation(
+          correctAnswerText,
+          transcriptRef.current
+        );
+
+        if (comprehension) {
+          const options = {
+            originalText: correctAnswerText,
+            contentType: contentType,
+            contentId: contentId,
+            comprehension: comprehension,
+          };
+
+          fetchASROutput(base64Data, options, setLoader, setApiResponse);
+        } else {
+          console.error("Failed to get evaluation result.");
+          setLoader(false);
+        }
+      }
+    } else {
+      setIsRecordingComplete(false);
+      setRecAudio("");
+    }
+  };
 
   // const playAudio = (audioKey) => {
   //   if (Assets[audioKey]) {
@@ -622,6 +735,13 @@ const AnouncementFlow = ({
         handleBack,
         disableScreen,
         loading,
+        fluency,
+        isShowCase,
+        startShowCase,
+        setStartShowCase,
+        livesData,
+        gameOverData,
+        setIsNextButtonCalled,
       }}
     >
       <div style={styles.mainContainer}>
@@ -984,6 +1104,8 @@ const AnouncementFlow = ({
                     originalText={parentWords}
                     audioLink={audio ? audio : completeAudio}
                     buttonAnimation={selectedOption}
+                    handleStartRecording={handleStartRecording}
+                    handleStopRecording={handleStopRecording}
                     {...{
                       contentId,
                       contentType,

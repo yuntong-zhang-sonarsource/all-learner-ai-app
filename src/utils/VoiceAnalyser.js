@@ -716,6 +716,8 @@ function VoiceAnalyser(props) {
                     setOpenMessageDialog={props.setOpenMessageDialog}
                     enableAfterLoad={enableAfterLoad}
                     buttonAnimation={props.buttonAnimation}
+                    handleStartRecording={props.handleStartRecording}
+                    handleStopRecording={props.handleStopRecording}
                   />
                   {/* <RecordVoiceVisualizer /> */}
                 </>
@@ -798,6 +800,8 @@ VoiceAnalyser.propTypes = {
   contentId: PropTypes.string,
   updateStoredData: PropTypes.func.isRequired,
   pageName: PropTypes.string,
+  handleStartRecording: PropTypes.func,
+  handleStopRecording: PropTypes.func,
 };
 
 export default VoiceAnalyser;

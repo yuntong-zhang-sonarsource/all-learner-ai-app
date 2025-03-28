@@ -188,7 +188,7 @@ const R3 = ({
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) =>
-        prev < conversation[currentStep + 1]?.options.length - 1 ? prev + 1 : 0
+        prev < conversation[currentStep - 1]?.options.length - 1 ? prev + 1 : 0
       );
     }, 1000);
 
@@ -264,7 +264,7 @@ const R3 = ({
   const handleAudioClick = (text) => {
     setSelectedText(text);
     setSelectedCheckbox(null);
-    if (text === conversation[currentStep + 1]?.answer) {
+    if (text === conversation[currentStep - 1]?.answer) {
       setIsMatch(true);
       setShowConfetti(true);
       setShowRecordButton(true);
@@ -428,7 +428,7 @@ const R3 = ({
                     color: "#08B9FF",
                   }}
                 >
-                  {conversation[currentStep + 1]?.question?.text}
+                  {conversation[currentStep - 1]?.question?.text}
                 </span>
                 {/* <img
                   src={listenImg}
@@ -447,7 +447,7 @@ const R3 = ({
                   marginTop: "20px",
                 }}
               >
-                {conversation[currentStep + 1]?.options.map((audio, index) => (
+                {conversation[currentStep - 1]?.options.map((audio, index) => (
                   <div
                     key={index}
                     style={{

@@ -8307,24 +8307,29 @@ export const levelGetContent = {
         template: "simple",
         mechanism: { id: "r3", name: "r3" },
       },
-      { title: "P4", criteria: "paragraph", template: "simple" },
+      {
+        title: "P4",
+        criteria: "paragraph",
+        template: "simple",
+        mechanism: { id: "PhrasesInAction", name: "PhrasesInAction" },
+      },
       {
         title: "S1",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "ReadAloudMcqM10", name: "ReadAloudMcqM10" },
+        mechanism: { id: "AnouncementFlow", name: "AnouncementFlow" },
       },
       {
         title: "P5",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "ReadAloudMcqM10", name: "ReadAloudMcqM10" },
+        mechanism: { id: "AnouncementFlow", name: "AnouncementFlow" },
       },
       {
         title: "P6",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "mechanic_2", name: "readTheImage" },
+        mechanism: { id: "McqFlow", name: "McqFlow" },
       },
       {
         title: "P7",
@@ -8332,7 +8337,12 @@ export const levelGetContent = {
         template: "simple",
         mechanism: { id: "r3", name: "r3" },
       },
-      { title: "P8", criteria: "paragraph", template: "simple" },
+      {
+        title: "P8",
+        criteria: "paragraph",
+        template: "simple",
+        mechanism: { id: "PhrasesInAction", name: "PhrasesInAction" },
+      },
       {
         title: "S2",
         criteria: "paragraph",
@@ -8375,13 +8385,13 @@ export const levelGetContent = {
         title: "P5",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "ReadAloudMcqM10", name: "ReadAloudMcqM10" },
+        mechanism: { id: "AnouncementFlow", name: "AnouncementFlow" },
       },
       {
         title: "P6",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "ReadAloudMcqM10", name: "ReadAloudMcqM10" },
+        mechanism: { id: "AnouncementFlow", name: "AnouncementFlow" },
       },
       {
         title: "P7",
@@ -8399,7 +8409,7 @@ export const levelGetContent = {
         title: "S2",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "askMore", name: "askMore" },
+        mechanism: { id: "AnouncementFlow", name: "AnouncementFlow" },
       },
     ],
     12: [

@@ -70,14 +70,7 @@ const McqFlow = ({
   const [selectedOption, setSelectedOption] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [audioInstance, setAudioInstance] = useState(null);
-  const [evaluationResults, setEvaluationResults] = useState({});
-  const [recording, setRecording] = useState("no");
   const [step, setStep] = useState("initiate");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentQIndex, setCurrentQIndex] = useState(0);
-  const [highlightedWord, setHighlightedWord] = useState(null);
   const utteranceRef = useRef(null);
   const [isRecordingComplete, setIsRecordingComplete] = useState(false);
   const [recAudio, setRecAudio] = useState("");
@@ -118,119 +111,10 @@ const McqFlow = ({
 
   const currentLevel = practiceSteps?.[currentPracticeStep]?.name || "P1";
 
-  //const conversation = contentM14[level]?.[currentLevel]?.conversation || content?.conversation;
-
   const conversation = getConversation(level, currentLevel);
-
-  // const playAudio = (audioKey) => {
-  //   if (Assets[audioKey]) {
-  //     const audio = new Audio(Assets[audioKey]);
-  //     audio.play();
-  //   } else {
-  //     console.error("Audio file not found:", audioKey);
-  //   }
-  // };
-
-  const handleHintClick = () => {
-    setStep("start");
-  };
-
-  const playAudio = (audioKey) => {
-    if (isPlaying) {
-      // If already playing, stop the audio
-      audioInstance.pause();
-      audioInstance.currentTime = 0;
-      setIsPlaying(false);
-    } else {
-      if (Assets[audioKey]) {
-        const audio = new Audio(Assets[audioKey]);
-
-        audio.onended = () => setIsPlaying(false);
-
-        audio.play();
-        setAudioInstance(audio);
-        setIsPlaying(true);
-      } else {
-        console.error("Audio file not found:", audioKey);
-      }
-    }
-  };
-
-  const data = {
-    data: {
-      instruction: {
-        content: [
-          {
-            type: "image",
-            value: "childrenDayImg",
-          },
-        ],
-      },
-      tasks: [
-        {
-          question: "Children’s Day is celebrated on ______ (date).",
-          options: [
-            { id: "option1", value: "November 14" },
-            { id: "option2", value: "January 26" },
-            { id: "option3", value: "August 15" },
-          ],
-          answer: "option1",
-        },
-        {
-          question: "The celebration takes place at ______ (school name).",
-          options: [
-            { id: "option1", value: "ABC Public School" },
-            { id: "option2", value: "GHSS, Pudhur" },
-            { id: "option3", value: "DEF International School" },
-          ],
-          answer: "option1",
-        },
-        {
-          question:
-            "Some fun activities include speech competitions, cultural programs, ______, and prize distribution.",
-          options: [
-            { id: "option1", value: "games" },
-            { id: "option2", value: "exams" },
-            { id: "option3", value: "homework" },
-          ],
-          answer: "option1",
-        },
-        {
-          question:
-            "The picture shows children playing happily in a ______ (place).",
-          options: [
-            { id: "option1", value: "park" },
-            { id: "option2", value: "classroom" },
-            { id: "option3", value: "library" },
-          ],
-          answer: "option1",
-        },
-        {
-          question:
-            "The message at the bottom of the image says: ______ are the heart of our Nation!’",
-          options: [
-            { id: "option1", value: "Children" },
-            { id: "option2", value: "Teachers" },
-            { id: "option3", value: "Parents" },
-          ],
-          answer: "option1",
-        },
-        {
-          question: "One child in the picture is hanging on a ______.",
-          options: [
-            { id: "option1", value: "rope" },
-            { id: "option2", value: "tree" },
-            { id: "option3", value: "ladder" },
-          ],
-          answer: "option1",
-        },
-      ],
-    },
-  };
 
   useEffect(() => {
     setConversationData(conversation?.instructions?.content);
-    //setImageData(conversation?.instructions);
     setCompleteAudio(conversation?.instructions?.content[0]?.audio);
     setTasks(conversation?.tasks);
     setCurrentTaskIndex(0);
@@ -247,55 +131,7 @@ const McqFlow = ({
     setShowQuestion(false);
   }, [currentLevel]);
 
-  console.log(
-    "m10",
-    tasks,
-    currentTaskIndex,
-    currentLevel,
-    evaluationResults,
-    recAudio
-  );
-
-  const allTexts = conversationData[0]?.message;
-
-  const handleOptionClick = (optionId) => {
-    setSelectedOption(optionId);
-    //if (selectedOption !== null) return;
-
-    if (currentLevel === "S1" || currentLevel === "S2") {
-      const questionText = tasks[currentTaskIndex]?.question?.value;
-      const isAnswerCorrect = optionId === tasks[currentTaskIndex].answer;
-
-      setEvaluationResults((prevResults) => ({
-        ...prevResults,
-        [questionText]: isAnswerCorrect ? "Correct" : "Wrong",
-      }));
-      setRecording("recording");
-
-      console.log("Evaluation Results:", {
-        ...evaluationResults,
-        [questionText]: isAnswerCorrect ? "Correct" : "Wrong",
-      });
-      return;
-    }
-
-    //setSelectedOption(optionId);
-
-    if (optionId === tasks[currentTaskIndex].answer) {
-      setIsCorrect(true);
-      setShowConfetti(true);
-      setTimeout(() => {
-        setShowConfetti(false);
-        setRecording("recording");
-        //handleNext();
-      }, 3000);
-    } else {
-      setIsCorrect(false);
-      setTimeout(() => {
-        resetState();
-      }, 1000);
-    }
-  };
+  console.log("mcqFlow", conversation, currentStep);
 
   const resetState = () => {
     setSelectedOption(null);
@@ -314,174 +150,6 @@ const McqFlow = ({
     }
   };
 
-  const styles = {
-    mainContainer: {
-      background:
-        "linear-gradient(0deg, rgba(241, 153, 32, 0.32) 0%, rgba(243, 159, 39, 0.32) 23%, rgba(247, 176, 59, 0.32) 58%, rgba(254, 204, 92, 0.32) 100%)",
-      height: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "flex-end",
-      padding: "0px 20px",
-      overflowX: "hidden",
-      position: "relative",
-    },
-    innerContainer: {
-      backgroundColor: "#fff",
-      borderRadius: "10px",
-      padding: "20px",
-      width: "100%",
-      position: "relative",
-      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-      overflowX: "hidden",
-      height: "80vh",
-      overflowY: "hidden",
-      marginBottom: "40px",
-    },
-    phoneIcon: {
-      marginLeft: "40px",
-      display: "flex",
-      alignItems: "center",
-      fontWeight: "bold",
-      fontSize: "18px",
-    },
-    messageContainer: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "50px",
-      marginTop: "15px",
-    },
-    message: {
-      padding: "10px",
-      borderRadius: "10px",
-      maxWidth: "60%",
-      fontSize: "16px",
-      position: "relative",
-      whiteSpace: "pre-wrap",
-      marginLeft: "100px",
-    },
-    selectedNeutralOption: {
-      backgroundColor: "#f0f0f0",
-      //borderColor: '#aaa',
-    },
-    sonMessage: {
-      //backgroundColor: "#fde4b2",
-      alignSelf: "flex-start",
-      width: "300px",
-      marginLeft: "80px",
-    },
-    callerMessage: {
-      //backgroundColor: "#f1f1f1",
-      alignSelf: "flex-end",
-      width: "280px",
-      marginRight: "180px",
-      marginBottom: "-60px",
-    },
-    boldText: {
-      fontWeight: "bold",
-    },
-    highlighted: {
-      backgroundColor: "#f8d7da",
-      padding: "2px 4px",
-      borderRadius: "4px",
-    },
-    audioIcon: {
-      //width: "30px",
-      height: "70px",
-      cursor: "pointer",
-      marginTop: "50px",
-    },
-    profileIcon: {
-      width: "25px",
-      height: "25px",
-      borderRadius: "50%",
-    },
-    boyIcon: {
-      width: "25px",
-      height: "25px",
-      position: "absolute",
-      left: "-30px",
-      bottom: "10%",
-      transform: "translateY(50%)",
-    },
-    callerIconsContainer: {
-      position: "absolute",
-      right: "-80px",
-      bottom: "10%",
-      transform: "translateY(50%)",
-      display: "flex",
-      alignItems: "center",
-      gap: "10px",
-    },
-    nextButton: {
-      position: "absolute",
-      bottom: "10px",
-      right: "10px",
-      width: "50px",
-      height: "50px",
-      cursor: "pointer",
-    },
-    questionBox: {
-      backgroundColor: "#f8f2ff",
-      borderRadius: "20px",
-      padding: "15px",
-      fontWeight: "bold",
-      //display: "relative",
-      border: "1px dashed #d8b6ff",
-      fontSize: "24px",
-      width: "50%",
-      marginLeft: "auto",
-      marginRight: "auto",
-      //marginLeft: "400px",
-      marginTop: "20px",
-      textAlign: "center",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      //minHeight: "100px",
-    },
-    optionsContainer: {
-      marginTop: "20px",
-      display: "grid",
-      gridTemplateColumns:
-        tasks[currentTaskIndex]?.options?.length === 4 ||
-        tasks[currentTaskIndex]?.options?.length === 5
-          ? "repeat(2, 1fr)"
-          : "repeat(2, 1fr)",
-      gap: "20px",
-      width: "80%",
-      marginLeft: "auto",
-      marginRight: "auto",
-      padding: "10px",
-      position: "relative",
-    },
-
-    option: {
-      backgroundColor: "#fff",
-      padding: "15px",
-      borderRadius: "10px",
-      border: "1px solid #ddd",
-      cursor: "pointer",
-      textAlign: "center",
-      boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
-      fontSize: "18px",
-      transition: "background-color 0.3s ease",
-    },
-
-    thirdOption: {
-      gridColumn: "1 / -1",
-      justifySelf: "center",
-      width: "50%",
-    },
-
-    correctOption: {
-      backgroundColor: "#d4edda",
-    },
-    incorrectOption: {
-      backgroundColor: "#FF7F361A",
-    },
-  };
-
   return (
     <MainLayout
       background={background}
@@ -490,10 +158,7 @@ const McqFlow = ({
       showTimer={showTimer}
       points={points}
       pageName={"m7"}
-      //answer={answer}
-      //isRecordingComplete={isRecordingComplete}
       parentWords={parentWords}
-      //={recAudio}
       {...{
         steps,
         currentStep,
@@ -518,16 +183,19 @@ const McqFlow = ({
         >
           {/* Image on the left */}
           <img
-            src={Assets[data.data.instruction.content[0].value]}
+            src={Assets[conversation?.instruction?.content[0]?.value]}
             alt="Children's Day"
             style={{ width: "250px", height: "250px", borderRadius: "15px" }}
           />
 
           {/* MCQ Section on the right */}
           <div>
-            <h3>{data.data.tasks[currentStep]?.question}</h3>
+            {typeof tasks?.[currentStep - 1]?.question === "string" ? (
+              <h3>{tasks[currentStep - 1].question}</h3>
+            ) : null}
+
             <div>
-              {data.data.tasks[currentStep]?.options.map((option) => (
+              {conversation?.tasks[currentStep - 1]?.options.map((option) => (
                 <div
                   key={option.id}
                   style={{

@@ -215,7 +215,7 @@ const AskMoreM14 = ({
       audio.play();
       setCurrentStep(conversation.length);
       //console.log('texxxxxt');
-      //handleNext();
+      handleNext();
       // for (let i = 0; i < 5; i++) {
       //   handleNext();
       // }

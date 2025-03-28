@@ -10,7 +10,14 @@ import {
 } from "../../utils/levelData";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
-import { practiceSteps, getLocalData } from "../../utils/constants";
+import {
+  practiceSteps,
+  getLocalData,
+  NextButtonRound,
+  RetryIcon,
+} from "../../utils/constants";
+import VoiceAnalyser from "../../utils/VoiceAnalyser";
+import { fetchASROutput } from "../../utils/apiUtil";
 
 const levelMap = {
   10: level10,
@@ -88,18 +95,7 @@ const PhoneConversation = ({
 
   const currentLevel = practiceSteps?.[currentPracticeStep]?.name || "P1";
 
-  //const conversation = contentM14[level]?.[currentLevel]?.conversation || content?.conversation;
-
   const conversation = getConversation(level, currentLevel);
-
-  // const playAudio = (audioKey) => {
-  //   if (Assets[audioKey]) {
-  //     const audio = new Audio(Assets[audioKey]);
-  //     audio.play();
-  //   } else {
-  //     console.error("Audio file not found:", audioKey);
-  //   }
-  // };
 
   const playAudio = (audioKey) => {
     if (audioInstance) {
@@ -125,145 +121,6 @@ const PhoneConversation = ({
         console.error("Audio file not found:", audioKey);
       }
     }
-  };
-
-  const data = {
-    data: {
-      instructions: {
-        type: "chat",
-        content: [
-          {
-            role: "System",
-            message:
-              "Start at the bus stop near the supermarket. Walk straight on George Street for about five minutes. You will see a bank on your left and a coffee shop on your right. Keep walking until you reach the traffic signal. Turn right at the signal and walk past the park. The library is next to the school, on the left side of the street. You will see a banyan tree in front of the library. The library has a big blue sign, so it is easy to find!",
-            audio: "level12P1Audio",
-          },
-        ],
-      },
-      tasks: [
-        {
-          question: {
-            type: "text",
-            value: "Where do you start your journey?",
-          },
-          options: [
-            {
-              type: "text",
-              id: "option1",
-              value: "At the school",
-            },
-            {
-              type: "text",
-              id: "option2",
-              value: "At the bus stop",
-            },
-
-            {
-              type: "text",
-              id: "option3",
-              value: "At the library",
-            },
-          ],
-          answer: "option2",
-        },
-        {
-          question: {
-            type: "text",
-            value: "Which street do you walk on?",
-          },
-          options: [
-            {
-              type: "text",
-              id: "option1",
-              value: "George Street",
-            },
-            {
-              type: "text",
-              id: "option2",
-              value: "East Street",
-            },
-            {
-              type: "text",
-              id: "option3",
-              value: "North Street",
-            },
-          ],
-          answer: "option1",
-        },
-        {
-          question: {
-            type: "text",
-            value: "How long should you walk on George Street?",
-          },
-          options: [
-            {
-              type: "text",
-              id: "option1",
-              value: "Two minutes",
-            },
-            {
-              type: "text",
-              id: "option2",
-              value: "Five minutes",
-            },
-            {
-              type: "text",
-              id: "option3",
-              value: "Ten minutes",
-            },
-          ],
-          answer: "option2",
-        },
-        {
-          question: {
-            type: "text",
-            value: "What is on your left after walking for a while?",
-          },
-          options: [
-            {
-              type: "text",
-              id: "option1",
-              value: "A park",
-            },
-            {
-              type: "text",
-              id: "option2",
-              value: "A bank",
-            },
-            {
-              type: "text",
-              id: "option3",
-              value: "A school",
-            },
-          ],
-          answer: "option2",
-        },
-        {
-          question: {
-            type: "text",
-            value: "What is on your right after walking for a while?",
-          },
-          options: [
-            {
-              type: "text",
-              id: "option1",
-              value: "A bank",
-            },
-            {
-              type: "text",
-              id: "option2",
-              value: "A coffee shop",
-            },
-            {
-              type: "text",
-              id: "option3",
-              value: "A supermarket",
-            },
-          ],
-          answer: "option2",
-        },
-      ],
-    },
   };
 
   useEffect(() => {
@@ -309,15 +166,12 @@ const PhoneConversation = ({
       return;
     }
 
-    //setSelectedOption(optionId);
-
     if (optionId === tasks[currentTaskIndex].answer) {
       setIsCorrect(true);
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
         setRecording("recording");
-        //handleNext();
       }, 2000);
     } else {
       setIsCorrect(false);
@@ -642,17 +496,21 @@ const PhoneConversation = ({
                   alignItems: "center",
                 }}
               >
-                <img
-                  src={isPlaying ? Assets.stopVoiceNote : Assets.startVoiceNote}
-                  alt="Audio"
-                  style={{
-                    height: "40px",
-                    width: "190px",
-                    cursor: "pointer",
-                    marginTop: "10px",
-                  }}
-                  onClick={() => playAudio(conversationData[0].audio)}
-                />
+                {!["S1", "S2"].includes(currentLevel) && (
+                  <img
+                    src={
+                      isPlaying ? Assets.stopVoiceNote : Assets.startVoiceNote
+                    }
+                    alt="Audio"
+                    style={{
+                      height: "40px",
+                      width: "190px",
+                      cursor: "pointer",
+                      marginTop: "10px",
+                    }}
+                    onClick={() => playAudio(conversationData[0].audio)}
+                  />
+                )}
                 <div style={styles.questionBox}>
                   {tasks[currentTaskIndex]?.question?.value}
                 </div>
@@ -739,17 +597,6 @@ const PhoneConversation = ({
                     />
                   </div>
                 )}
-                {/* {(currentLevel === "S1" ||
-                  currentLevel === "S2" ||
-                  isCorrect) &&
-                  selectedOption !== null && recording === "no" && (
-                    <img
-                      src={nextimg}
-                      alt="Next"
-                      style={styles.nextButton}
-                      onClick={loadNextTask}
-                    />
-                  )} */}
               </div>
             )
           )}
