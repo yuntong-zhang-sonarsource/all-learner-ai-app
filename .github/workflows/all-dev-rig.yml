@@ -1,4 +1,4 @@
-name: ALL rig dev Deployment
+name: https://d114esnbvw5tst.cloudfront.net - ALL rig dev Deployment
 
 on:
   push:
@@ -18,11 +18,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-
-      - name: Install AWS CLI
-        run: |
-          sudo DEBIAN_FRONTEND=noninteractive apt-get update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y awscli
 
       - name: Configure AWS credentials
         run: |
