@@ -896,23 +896,26 @@ const MainLayout = (props) => {
                             <Typography
                               sx={{ mb: 1, mt: 1, textAlign: "center" }}
                             >
-                              <span
-                                style={{
-                                  fontWeight: 600,
-                                  fontSize: "24px",
-                                  lineHeight: "1.5",
-                                  letterSpacing: "1px",
-                                  fontFamily: "Quicksand",
-                                  backgroundColor: "rgb(237, 134, 0)",
-                                  padding: "6px 12px",
-                                  color: "#fff",
-                                  borderRadius: "20px",
-                                  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-                                  textShadow: "1px 1px 2px rgba(0, 0, 0, 0.5)",
-                                }}
-                              >
-                                {percentage <= 0 ? 0 : percentage}/100
-                              </span>
+                              {!props.pageName === "m8" && (
+                                <span
+                                  style={{
+                                    fontWeight: 600,
+                                    fontSize: "24px",
+                                    lineHeight: "1.5",
+                                    letterSpacing: "1px",
+                                    fontFamily: "Quicksand",
+                                    backgroundColor: "rgb(237, 134, 0)",
+                                    padding: "6px 12px",
+                                    color: "#fff",
+                                    borderRadius: "20px",
+                                    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                                    textShadow:
+                                      "1px 1px 2px rgba(0, 0, 0, 0.5)",
+                                  }}
+                                >
+                                  {percentage <= 0 ? 0 : percentage}/100
+                                </span>
+                              )}
                               <br />
 
                               {!fluency ? (

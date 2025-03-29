@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { Box, CircularProgress } from "@mui/material";
 import Confetti from "react-confetti";
 import {
   level13,
@@ -17,7 +18,12 @@ import {
   RetryIcon,
 } from "../../utils/constants";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
-import { fetchASROutput } from "../../utils/apiUtil";
+import { fetchASROutput, handleTextEvaluation } from "../../utils/apiUtil";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import correctSound from "../../assets/correct.wav";
+import wrongSound from "../../assets/audio/wrong.wav";
 
 const levelMap = {
   10: level10,
@@ -58,6 +64,16 @@ const PhoneConversation = ({
   setOpenMessageDialog,
   audio,
   currentImg,
+  fluency,
+  startShowCase,
+  setStartShowCase,
+  livesData,
+  setLivesData,
+  gameOverData,
+  highlightWords,
+  matchedChar,
+  isNextButtonCalled,
+  setIsNextButtonCalled,
 }) => {
   const [showQuestion, setShowQuestion] = useState(false);
   const [conversationData, setConversationData] = useState([]);
@@ -70,6 +86,31 @@ const PhoneConversation = ({
   const [audioInstance, setAudioInstance] = useState(null);
   const [evaluationResults, setEvaluationResults] = useState({});
   const [recording, setRecording] = useState("no");
+  const [isRecordingComplete, setIsRecordingComplete] = useState(false);
+  const [recAudio, setRecAudio] = useState("");
+  const [completeAudio, setCompleteAudio] = useState(null);
+  const [imageData, setImageData] = useState({});
+  const [loader, setLoader] = useState(false);
+  const [apiResponse, setApiResponse] = useState("");
+  const [correctAnswerText, setCorrectAnswerText] = useState("");
+  const [finalTranscript, setFinalTranscript] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const {
+    transcript,
+    interimTranscript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+
+  const transcriptRef = useRef("");
+  useEffect(() => {
+    transcriptRef.current = transcript;
+    console.log("Live Transcript:", transcript);
+  }, [transcript]);
+
+  console.log("showcase", fluency, isShowCase, livesData, gameOverData);
 
   steps = 1;
 
@@ -96,6 +137,17 @@ const PhoneConversation = ({
   const currentLevel = practiceSteps?.[currentPracticeStep]?.name || "P1";
 
   const conversation = getConversation(level, currentLevel);
+
+  useEffect(() => {
+    if (tasks[currentTaskIndex]) {
+      const currentTask = tasks[currentTaskIndex];
+      const correctOption =
+        currentTask.options.find((opt) => opt.id === currentTask.answer)
+          ?.value || "Unknown";
+
+      setCorrectAnswerText(correctOption);
+    }
+  }, [currentTaskIndex, tasks]);
 
   const playAudio = (audioKey) => {
     if (audioInstance) {
@@ -139,7 +191,56 @@ const PhoneConversation = ({
     setShowQuestion(false);
   }, [currentLevel]);
 
-  console.log("m10", tasks, currentTaskIndex, currentLevel, evaluationResults);
+  console.log("m1011", currentLevel, selectedOption, recAudio);
+
+  const handleStartRecording = () => {
+    if (!browserSupportsSpeechRecognition) {
+      alert("Speech recognition is not supported in your browser.");
+      return;
+    }
+    resetTranscript();
+    setIsRecording(true);
+    SpeechRecognition.startListening({
+      continuous: true,
+      interimResults: true,
+    });
+  };
+
+  const handleStopRecording = () => {
+    SpeechRecognition.stopListening();
+    setFinalTranscript(transcriptRef.current);
+    setIsRecording(false);
+    //console.log("Final Transcript:", transcriptRef.current);
+  };
+
+  const handleRecordingComplete = async (base64Data) => {
+    if (base64Data) {
+      setIsRecordingComplete(true);
+      setRecAudio(base64Data);
+      if (currentLevel === "S1" || currentLevel === "S2") {
+        const comprehension = await handleTextEvaluation(
+          correctAnswerText,
+          transcriptRef.current
+        );
+
+        if (comprehension) {
+          const options = {
+            originalText: correctAnswerText,
+            contentType: contentType,
+            contentId: contentId,
+            comprehension: comprehension,
+          };
+
+          fetchASROutput(base64Data, options, setLoader, setApiResponse);
+        } else {
+          console.error("Failed to get evaluation result.");
+        }
+      }
+    } else {
+      setIsRecordingComplete(false);
+      setRecAudio("");
+    }
+  };
 
   const handleNextClick = () => {
     setShowQuestion(true);
@@ -177,7 +278,7 @@ const PhoneConversation = ({
       setIsCorrect(false);
       setTimeout(() => {
         resetState();
-      }, 2000);
+      }, 500);
     }
   };
 
@@ -187,14 +288,21 @@ const PhoneConversation = ({
   };
 
   const loadNextTask = () => {
-    handleNext();
-    if (currentTaskIndex < tasks.length - 1) {
-      setCurrentTaskIndex(currentTaskIndex + 1);
-      resetState();
-    } else {
-      setCurrentTaskIndex(0);
-      resetState();
-    }
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setRecAudio(null);
+      handleNext();
+      if (currentTaskIndex < tasks.length - 1) {
+        setCurrentTaskIndex(currentTaskIndex + 1);
+        resetState();
+      } else {
+        setCurrentTaskIndex(0);
+        resetState();
+      }
+      setIsLoading(false);
+      setRecording("no");
+    }, 2000);
   };
 
   const styles = {
@@ -372,10 +480,11 @@ const PhoneConversation = ({
       enableNext={enableNext}
       showTimer={showTimer}
       points={points}
-      pageName={"m7"}
+      pageName={"m8"}
       //answer={answer}
       //isRecordingComplete={isRecordingComplete}
       parentWords={parentWords}
+      fluency={false}
       //={recAudio}
       {...{
         steps,
@@ -387,6 +496,12 @@ const PhoneConversation = ({
         handleBack,
         disableScreen,
         loading,
+        isShowCase,
+        startShowCase,
+        setStartShowCase,
+        livesData,
+        gameOverData,
+        setIsNextButtonCalled,
       }}
     >
       <div style={styles.mainContainer}>
@@ -432,7 +547,7 @@ const PhoneConversation = ({
                         }}
                       >
                         <img
-                          src={Assets.boyimg}
+                          src={Assets.avatar1}
                           alt="Boy"
                           width={"25px"}
                           height={"25px"}
@@ -470,7 +585,7 @@ const PhoneConversation = ({
                           onClick={() => playAudio(msg?.audio)}
                         />
                         <img
-                          src={Assets.boyimg}
+                          src={Assets.avatar2}
                           alt="Boy"
                           width={"25px"}
                           height={"25px"}
@@ -538,7 +653,11 @@ const PhoneConversation = ({
                             index === 2 &&
                             styles.thirdOption),
                         }}
-                        onClick={() => handleOptionClick(option.id)}
+                        onClick={() => {
+                          if (!showConfetti) {
+                            handleOptionClick(option.id);
+                          }
+                        }}
                       >
                         {option.value}
                       </div>
@@ -549,52 +668,77 @@ const PhoneConversation = ({
                   <div
                     style={{
                       display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
                       justifyContent: "center",
-                      gap: "80px",
-                      marginTop: "15px",
+                      marginTop:
+                        currentLevel === "S1" || currentLevel === "S2"
+                          ? "30px"
+                          : "15px",
+                      gap: "10px",
                     }}
                   >
-                    <img
-                      onClick={() => {
-                        setRecording("startRec");
-                      }}
-                      src={Assets.pzMic}
-                      alt="mic"
-                      style={{ width: "70px", height: "70px" }}
-                    />
-                  </div>
-                )}
-                {recording === "startRec" && (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "80px",
-                      marginTop: "15px",
-                    }}
-                  >
-                    <img
-                      src={Assets.spinnerWave}
-                      alt="Wave"
-                      style={{ width: "300px", height: "80px" }}
-                    />
-                    <img
-                      onClick={() => {
-                        setRecording("no");
-                        loadNextTask();
-                      }}
-                      src={Assets.spinnerStop}
-                      alt="Stop"
-                      style={{
-                        width: "60px",
-                        height: "60px",
-                        cursor: "pointer",
-                      }}
-                    />
+                    {isLoading ? (
+                      <Box sx={{ display: "flex" }}>
+                        <CircularProgress
+                          size="3rem"
+                          sx={{ color: "#E15404" }}
+                        />
+                      </Box>
+                    ) : (
+                      <>
+                        <VoiceAnalyser
+                          pageName={"m8"}
+                          setVoiceText={setVoiceText}
+                          onAudioProcessed={handleRecordingComplete}
+                          setRecordedAudio={setRecordedAudio}
+                          setVoiceAnimate={setVoiceAnimate}
+                          storyLine={storyLine}
+                          dontShowListen={true}
+                          handleNext={handleNext}
+                          enableNext={enableNext}
+                          originalText={parentWords}
+                          audioLink={audio ? audio : completeAudio}
+                          buttonAnimation={selectedOption}
+                          handleStartRecording={handleStartRecording}
+                          handleStopRecording={handleStopRecording}
+                          {...{
+                            contentId,
+                            contentType,
+                            currentLine: currentStep - 1,
+                            playTeacherAudio,
+                            callUpdateLearner,
+                            isShowCase,
+                            setEnableNext,
+                            //showOnlyListen: answer !== "correct",
+                            showOnlyListen: false,
+                            setOpenMessageDialog,
+                          }}
+                        />
+                        {currentLevel !== "S1" && currentLevel !== "S2"
+                          ? selectedOption !== null &&
+                            recAudio && (
+                              <div
+                                onClick={loadNextTask}
+                                style={{
+                                  cursor: "pointer",
+                                  marginLeft: "35px",
+                                }}
+                              >
+                                <NextButtonRound height={45} width={45} />
+                              </div>
+                            )
+                          : recAudio && (
+                              <div
+                                onClick={loadNextTask}
+                                style={{
+                                  cursor: "pointer",
+                                  marginLeft: "35px",
+                                }}
+                              >
+                                <NextButtonRound height={45} width={45} />
+                              </div>
+                            )}
+                      </>
+                    )}
                   </div>
                 )}
               </div>

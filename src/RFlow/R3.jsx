@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Confetti from "react-confetti";
 import * as Assets from "../utils/imageAudioLinks";
 import {
@@ -150,6 +150,15 @@ const R3 = ({
   const navigate = useNavigate();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAudioPlayedOnce, setIsAudioPlayedOnce] = useState(false);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setScale((prev) => (prev === 1 ? 1.2 : 1));
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
 
   steps = 1;
 
@@ -337,7 +346,12 @@ const R3 = ({
                       isPlaying ? Assets.pauseButtonImg : Assets.playButtonImg
                     }
                     alt="Audio"
-                    style={{ width: "55px", height: "55px" }}
+                    style={{
+                      width: "55px",
+                      height: "55px",
+                      transform: `scale(${scale})`,
+                      transition: "transform 0.5s ease-in-out",
+                    }}
                   />
                 </button>
               )}
@@ -446,9 +460,9 @@ const R3 = ({
             >
               <div
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.2)",
-                  padding: "16px",
-                  borderRadius: "18px",
+                  backgroundColor: "#FFFFFF",
+                  padding: "8px",
+                  borderRadius: "24px",
                   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                   border: "2px solid rgba(255, 255, 255, 0.5)",
                   width: "128px",
@@ -466,7 +480,7 @@ const R3 = ({
                 <img
                   src={correctImage}
                   alt={currentQuestion.correctWord}
-                  style={{ width: "80px", height: "80px" }}
+                  style={{ width: "110px", height: "110px" }}
                 />
               </div>
               <Box style={{ marginTop: "10px", marginBottom: "10px" }}>

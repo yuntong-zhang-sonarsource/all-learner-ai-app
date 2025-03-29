@@ -83,7 +83,7 @@ const PhrasesInAction = ({
 
   let currentLevel = practiceSteps?.[currentPracticeStep]?.titleThree || "L1";
 
-  if (String(level) === "10") {
+  if (String(level) === "10" || String(level) === "12") {
     currentLevel = practiceSteps?.[currentPracticeStep]?.name;
   }
 
@@ -486,6 +486,163 @@ const PhrasesInAction = ({
         },
       },
     ],
+
+    P3: [
+      {
+        step1: {
+          allwords: [{ img: "schoolCourtyardImg", text: "Open Courtyard" }],
+          audio: "schoolCourtyardAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "schoolCourtyardImg", text: "School Courtyard" },
+            { img: "busImg", text: "Bus" },
+            { img: "lunchBoxImg", text: "Lunch Box" },
+          ],
+          correctWordTwo: "School Courtyard",
+          audio: "schoolCourtyardAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "busImg", text: "Open Bus" }],
+          audio: "busAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "ticketImg", text: "Ticket" },
+            { img: "busImg", text: "Bus" },
+            { img: "trainImg", text: "Train" },
+          ],
+          correctWordTwo: "Bus",
+          audio: "busAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "airplaneImg", text: "Airplane" }],
+          audio: "airplaneAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "airplaneImg", text: "Airplane" },
+            { img: "boardingPassImg", text: "Boarding Pass" },
+            { img: "trainStationImg", text: "Train Station" },
+          ],
+          correctWordTwo: "Airplane",
+          audio: "airplaneAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "discountTagImg", text: "Discount Tag" }],
+          audio: "discountTagAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "shoppingCartImg", text: "Shopping Cart" },
+            { img: "discountTagImg", text: "Discount Tag" },
+            { img: "restaurantImg", text: "Restaurant" },
+          ],
+          correctWordTwo: "Discount Tag",
+          audio: "discountTagAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "exitSignImg", text: "Exit Sign" }],
+          audio: "exitSignAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "hospitalImg", text: "Hospital" },
+            { img: "exitSignImg", text: "Exit Sign" },
+            { img: "ambulanceImg", text: "Ambulance" },
+          ],
+          correctWordTwo: "Exit Sign",
+          audio: "exitSignAudio",
+        },
+      },
+    ],
+
+    P7: [
+      {
+        step1: {
+          allwords: [{ img: "discountTagImg", text: "Discount Tag" }],
+          audio: "discountTagAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "fruitsImg", text: "Fruits" },
+            { img: "vegetablesImg", text: "Vegetables" },
+            { img: "discountTagImg", text: "Discount Tag" },
+          ],
+          correctWordTwo: "Discount Tag",
+          audio: "discountTagAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "salmonDishImg", text: "Grilled Salmon" }],
+          audio: "grilledSalmonAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "salmonDishImg", text: "Grilled Salmon" },
+            { img: "potatoesImg", text: "Mashed Potatoes" },
+            { img: "restaurantImg", text: "Restaurant" },
+          ],
+          correctWordTwo: "Grilled Salmon",
+          audio: "grilledSalmonAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "exitSignImg", text: "Exit Sign" }],
+          audio: "libraryClosingAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "libraryImg", text: "Library" },
+            { img: "bookImg", text: "Book" },
+            { img: "exitSignImg", text: "Exit Sign" },
+          ],
+          correctWordTwo: "Exit Sign",
+          audio: "libraryClosingAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "trainImg", text: "Train" }],
+          audio: "trainArrivalAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "trainImg", text: "Train" },
+            { img: "platformImg", text: "Platform" },
+            { img: "ticketImg", text: "Ticket" },
+          ],
+          correctWordTwo: "Train",
+          audio: "trainArrivalAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "concertStageImg", text: "Concert Stage" }],
+          audio: "concertAnnouncementAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "audienceImg", text: "Audience" },
+            { img: "concertStageImg", text: "Concert Stage" },
+            { img: "TelephoneNewImg", text: "Mobile Phone" },
+          ],
+          correctWordTwo: "Concert Stage",
+          audio: "concertAnnouncementAudio",
+        },
+      },
+    ],
+
     P8: [
       {
         step1: {

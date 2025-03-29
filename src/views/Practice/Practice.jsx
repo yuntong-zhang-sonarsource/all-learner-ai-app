@@ -2149,6 +2149,17 @@ const Practice = () => {
             setEnableNext,
             loading,
             setOpenMessageDialog,
+            startShowCase,
+            setStartShowCase,
+            livesData,
+            setLivesData,
+            gameOverData,
+            highlightWords,
+            matchedChar: !isShowCase && questions[currentQuestion]?.matchedChar,
+            percentage,
+            fluency,
+            isNextButtonCalled,
+            setIsNextButtonCalled,
           }}
         />
       );
@@ -2276,7 +2287,7 @@ const Practice = () => {
             playTeacherAudio,
             callUpdateLearner: isShowCase,
             disableScreen,
-            isShowCase: true,
+            isShowCase,
             handleBack: !isShowCase && handleBack,
             setEnableNext,
             loading,
