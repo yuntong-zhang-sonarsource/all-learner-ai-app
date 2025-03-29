@@ -38,6 +38,8 @@ import {
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
 import { practiceSteps, getLocalData } from "../../utils/constants";
+import correctSound from "../../assets/correct.wav";
+import wrongSound from "../../assets/audio/wrong.wav";
 
 const levelMap = {
   10: level10,
@@ -265,6 +267,8 @@ const R3 = ({
     setSelectedText(text);
     setSelectedCheckbox(null);
     if (text === conversation[currentStep - 1]?.answer) {
+      const audio = new Audio(correctSound);
+      audio.play();
       setIsMatch(true);
       setShowConfetti(true);
       setShowRecordButton(true);
@@ -275,6 +279,8 @@ const R3 = ({
         setIsOpen(!isOpen);
       }, 4000);
     } else {
+      const audio = new Audio(wrongSound);
+      audio.play();
       setSelectedCheckbox(null);
       setIsMatch(false);
       setShowRecordButton(true);

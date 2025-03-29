@@ -47,8 +47,8 @@ export const fetchASROutput = async (
 export const handleTextEvaluation = async (teacherText, studentText) => {
   try {
     const formData = new FormData();
-    formData.append("teacherText", teacherText);
-    formData.append("studentText", studentText);
+    formData.append("teacherText", `1. ${teacherText}`);
+    formData.append("studentText", `1. ${studentText}`);
 
     const response = await fetch(
       "https://dev-ekstep-tell-ocr-service-985885894164.asia-south1.run.app/api/v1/ocr/gemini/evaluateText",

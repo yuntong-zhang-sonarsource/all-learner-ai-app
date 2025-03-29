@@ -22,6 +22,8 @@ import spinnerStop from "../../assets/pause.png";
 import raMic from "../../assets/listen.png";
 import raStop from "../../assets/pause.png";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
+import correctSound from "../../assets/correct.wav";
+import wrongSound from "../../assets/audio/wrong.wav";
 
 const levelMap = {
   10: level10,
@@ -85,6 +87,11 @@ const McqFlow = ({
       setIsRecordingComplete(false);
       setRecAudio("");
     }
+  };
+
+  const playAudio = () => {
+    const audio = new Audio(correctSound);
+    audio.play();
   };
 
   steps = 1;
@@ -209,7 +216,10 @@ const McqFlow = ({
                     name="mcq"
                     value={option.id}
                     checked={selectedOption === option.id}
-                    onChange={() => setSelectedOption(option.id)}
+                    onChange={() => {
+                      setSelectedOption(option.id);
+                      playAudio();
+                    }}
                     style={{
                       marginRight: "10px",
                       transform: "scale(1.5)",

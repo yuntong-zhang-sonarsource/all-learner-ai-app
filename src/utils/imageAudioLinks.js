@@ -2063,3 +2063,11 @@ export const blackboardImg =
   "https://github.com/anik200002/EkstepImg/blob/main/blackboardsImg.png?raw=true";
 export const helmetImg =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/86be4308485865ea1845ec0188b63d8d141f9bd8/helmet.svg";
+export const avatar1 =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/avatar1.png";
+export const avatar2 =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/avatar2.png";
+export const treeConvImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/418467ef556a2faeed302fdeb8d83055a434667a/treeImg.svg";
+export const superMarketImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/418467ef556a2faeed302fdeb8d83055a434667a/superMarketImg.svg";

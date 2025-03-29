@@ -194,9 +194,11 @@ const AudioRecorder = (props) => {
               >
                 {props.enableAfterLoad &&
                   props?.originalText &&
-                  (!props.dontShowListen || props.recordedAudio) && (
+                  (!props.dontShowListen ||
+                    props.recordedAudio ||
+                    !props.pageName === "m8") && (
                     <>
-                      {!props.isShowCase && (
+                      {!props.isShowCase && !props.pageName === "m8" && (
                         <Box>
                           {!props.pauseAudio ? (
                             <div

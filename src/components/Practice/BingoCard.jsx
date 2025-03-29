@@ -105,6 +105,15 @@ const BingoCard = ({
   const [syllAudios, setSyllAudios] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setScale((prev) => (prev === 1 ? 1.2 : 1));
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     let timer;
@@ -469,55 +478,60 @@ const BingoCard = ({
     screenWidth < 480 ? "40px" : screenWidth < 768 ? "50px" : "60px";
 
   const handleWordClick = (word) => {
-    if (!selectedWords.includes(word)) {
-      const updatedWords = [...selectedWords, word];
+    // if (!selectedWords.includes(word)) {
+    //   const updatedWords = [...selectedWords, word];
+    //   setSelectedWords(updatedWords);
+    // }
+
+    let updatedWords;
+
+    if (selectedWords.includes(word)) {
+      updatedWords = selectedWords.filter((w) => w !== word);
       setSelectedWords(updatedWords);
+    } else {
+      updatedWords = [...selectedWords, word];
+      setSelectedWords(updatedWords);
+    }
 
-      // if (Assets.LionAudio) {
-      //   const audio = new Audio(Assets.LionAudio);
-      //   audio.play();
-      // }
+    const validPairs = {
+      MICROWAVE: ["MIC", "RO", "WAVE"],
+      TELEPHONE: ["TEL", "E", "PHONE"],
+      PINEAPPLE: ["PINE", "AP", "PLE"],
+      SUBMARINE: ["SUB", "MA", "RINE"],
+      STRAWBERRY: ["STRAW", "BER", "RY"],
+      DOMINO: ["DOM", "I", "NO"],
+      CARAMEL: ["CAR", "A", "MEL"],
+      HAMBURGER: ["HAM", "BUR", "GER"],
+      POPSICLE: ["POP", "SI", "CLE"],
+      CUCUMBER: ["CU", "CUM", "BER"],
+      VOLCANO: ["VOL", "CA", "NO"],
+      TANGERINE: ["TAN", "GE", "RINE"],
+      PROJECTOR: ["PROJ", "EC", "TOR"],
+      DISHWASHER: ["DISH", "WASH", "ER"],
+      VACUUM: ["VAC", "U", "UM"],
+      OMELETTE: ["OME", "LET", "TE"],
+      VIOLIN: ["VI", "O", "LIN"],
+    };
 
-      const validPairs = {
-        MICROWAVE: ["MIC", "RO", "WAVE"],
-        TELEPHONE: ["TEL", "E", "PHONE"],
-        PINEAPPLE: ["PINE", "AP", "PLE"],
-        SUBMARINE: ["SUB", "MA", "RINE"],
-        STRAWBERRY: ["STRAW", "BER", "RY"],
-        DOMINO: ["DOM", "I", "NO"],
-        CARAMEL: ["CAR", "A", "MEL"],
-        HAMBURGER: ["HAM", "BUR", "GER"],
-        POPSICLE: ["POP", "SI", "CLE"],
-        CUCUMBER: ["CU", "CUM", "BER"],
-        VOLCANO: ["VOL", "CA", "NO"],
-        TANGERINE: ["TAN", "GE", "RINE"],
-        PROJECTOR: ["PROJ", "EC", "TOR"],
-        DISHWASHER: ["DISH", "WASH", "ER"],
-        VACUUM: ["VAC", "U", "UM"],
-        OMELETTE: ["OME", "LET", "TE"],
-        VIOLIN: ["VI", "O", "LIN"],
-      };
+    const currentWord = levels[currentLevel]?.arrM[currentWordIndex];
 
-      const currentWord = levels[currentLevel]?.arrM[currentWordIndex];
+    // const isCorrectPair = validPairs[currentWord]?.every((part) =>
+    //   updatedWords.includes(part)
+    // );
 
-      // const isCorrectPair = validPairs[currentWord]?.every((part) =>
-      //   updatedWords.includes(part)
-      // );
+    const requiredParts = validPairs[currentWord] || [];
 
-      const requiredParts = validPairs[currentWord] || [];
+    const isCorrectPair =
+      updatedWords.length === requiredParts.length &&
+      requiredParts.every((part) => updatedWords.includes(part));
 
-      const isCorrectPair =
-        updatedWords.length === requiredParts.length &&
-        requiredParts.every((part) => updatedWords.includes(part));
-
-      if (isCorrectPair) {
-        setShowRecording(true);
-      } else if (updatedWords.length >= requiredParts.length && !winEffect) {
-        setShowHint(false);
-        setShowWrongWord(true);
-        const audio = new Audio(wrongSound);
-        audio.play();
-      }
+    if (isCorrectPair) {
+      setShowRecording(true);
+    } else if (updatedWords.length >= requiredParts.length && !winEffect) {
+      setShowHint(false);
+      setShowWrongWord(true);
+      const audio = new Audio(wrongSound);
+      audio.play();
     }
   };
 
@@ -786,9 +800,11 @@ const BingoCard = ({
                   width: screenWidth < 768 ? "40px" : "50px",
                   height: screenWidth < 768 ? "40px" : "50px",
                   position: "absolute",
-                  left: screenWidth < 768 ? "75%" : "55%",
+                  left: screenWidth < 768 ? "72%" : "51%",
                   top: screenWidth < 768 ? "10%" : "5%",
-                  transform: "translateX(-50%)",
+                  //transform: "translateX(-50%)",
+                  transform: `scale(${scale})`,
+                  transition: "transform 0.5s ease-in-out",
                   zIndex: 100,
                   padding: screenWidth < 768 ? "8px 16px" : "10px 20px",
                 }}
@@ -938,9 +954,9 @@ const BingoCard = ({
               style={{
                 position: "absolute",
                 left: "50%",
-                top: "45%",
+                top: "50%",
                 transform: "translate(-50%, -50%)",
-                height: screenWidth < 768 ? "40px" : "65px",
+                height: screenWidth < 768 ? "50px" : "120px",
                 zIndex: 22,
               }}
             />
@@ -1163,13 +1179,13 @@ const BingoCard = ({
                   width: getSize(),
                   height: getSize(),
                   backgroundColor: isCorrectWord
-                    ? "#93E908"
+                    ? "#58CC02"
                     : selectedWords.includes(word)
                     ? showConfetti
-                      ? "#00FF00"
+                      ? "#58CC02"
                       : showWrongWord
-                      ? "#FF2D55"
-                      : "#1CB0F6"
+                      ? "#FF7F36"
+                      : "#58CC02"
                     : "#ffffff",
                   color:
                     selectedWords.includes(word) || isCorrectWord
@@ -1194,10 +1210,35 @@ const BingoCard = ({
                       ? "0.3px solid #4DBD25"
                       : "0.3px solid #000000",
                   fontFamily: "Quicksand",
-                  cursor: "pointer",
+                  cursor:
+                    showRecording ||
+                    startGame ||
+                    isCorrectWord ||
+                    showWrongWord ||
+                    showInitialEffect ||
+                    showCoinsImg ||
+                    winEffect ||
+                    showNextButton
+                      ? "not-allowed"
+                      : "pointer",
                   zIndex: 2,
                 }}
-                onClick={() => handleWordClick(word)}
+                onClick={() => {
+                  if (
+                    !(
+                      showRecording ||
+                      startGame ||
+                      isCorrectWord ||
+                      showWrongWord ||
+                      showInitialEffect ||
+                      showCoinsImg ||
+                      winEffect ||
+                      showNextButton
+                    )
+                  ) {
+                    handleWordClick(word);
+                  }
+                }}
               >
                 <p
                   style={{

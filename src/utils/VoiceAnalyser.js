@@ -272,9 +272,17 @@ function VoiceAnalyser(props) {
       };
       request.send();
     } else {
-      setLoader(false);
-      setRecordedAudioBase64("");
-      setApiResponse("");
+      if (props.pageName === "m8") {
+        setTimeout(() => {
+          setLoader(false);
+          setRecordedAudioBase64("");
+          setApiResponse("");
+        }, 1500);
+      } else {
+        setLoader(false);
+        setRecordedAudioBase64("");
+        setApiResponse("");
+      }
     }
   }, [recordedAudio]);
 
@@ -540,7 +548,13 @@ function VoiceAnalyser(props) {
           setPauseAudio(false);
         }
       }
-      setLoader(false);
+      if (props.pageName === "m8") {
+        setTimeout(() => {
+          setLoader(false);
+        }, 1500);
+      } else {
+        setLoader(false);
+      }
       if (props.setIsNextButtonCalled) {
         props.setIsNextButtonCalled(false);
       }

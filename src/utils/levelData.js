@@ -1271,7 +1271,9 @@ export const level12 = [
     mechanics: "AnouncementFlow",
     data: {
       instructions: {
-        type: "chat",
+        type: "announcement",
+        imageOne: "treeConvImg",
+        imageTwo: "superMarketImg",
         content: [
           {
             role: "System",
@@ -1601,7 +1603,7 @@ export const level12 = [
     },
   },
   {
-    level: "P3",
+    level: "P4",
     mechanics: "PhrasesInAction",
     data: [
       {
@@ -1618,15 +1620,6 @@ export const level12 = [
           correctWordTwo: "Open Textbooks",
           audio: "openTextbookAudio",
         },
-        step3: {
-          allwordsthree: [
-            {
-              img: "textbookImg",
-              correctSentence: "Open your textbooks to page 25.",
-            },
-          ],
-          allsentence: ["your", "Open", "to", "page", "25.", "textbooks"],
-        },
       },
       {
         step1: {
@@ -1641,15 +1634,6 @@ export const level12 = [
           ],
           correctWordTwo: "Listen Carefully",
           audio: "listenAudio",
-        },
-        step3: {
-          allwordsthree: [
-            {
-              img: "listenImg",
-              correctSentence: "Listen carefully and pay attention.",
-            },
-          ],
-          allsentence: ["attention.", "carefully", "Listen", "and", "pay"],
         },
       },
       {
@@ -1666,22 +1650,6 @@ export const level12 = [
           correctWordTwo: "Raise Hand",
           audio: "raiseHandAudio",
         },
-        step3: {
-          allwordsthree: [
-            {
-              img: "raiseHandImg",
-              correctSentence: "Please raise your hand before speaking.",
-            },
-          ],
-          allsentence: [
-            "hand",
-            "before",
-            "speaking.",
-            "your",
-            "raise",
-            "Please",
-          ],
-        },
       },
       {
         step1: {
@@ -1696,23 +1664,6 @@ export const level12 = [
           ],
           correctWordTwo: "Work in Pairs",
           audio: "workPairAudio",
-        },
-        step3: {
-          allwordsthree: [
-            {
-              img: "exerciseImg",
-              correctSentence: "Work in pairs and complete the exercise.",
-            },
-          ],
-          allsentence: [
-            "and",
-            "exercise.",
-            "Work",
-            "complete",
-            "in",
-            "pairs",
-            "the",
-          ],
         },
       },
       {
@@ -1729,86 +1680,96 @@ export const level12 = [
           correctWordTwo: "Write Date",
           audio: "writeDateAudio",
         },
-        step3: {
-          allwordsthree: [
-            {
-              img: "notebookImg",
-              correctSentence:
-                "Write today's date at the top of your notebook.",
-            },
+      },
+    ],
+  },
+  {
+    level: "P3",
+    mechanics: "PhrasesInAction",
+    data: [
+      {
+        step1: {
+          allwords: [{ img: "schoolCourtyardImg", text: "Open Courtyard" }],
+          audio: "schoolCourtyardAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "schoolCourtyardImg", text: "School Courtyard" },
+            { img: "busImg", text: "Bus" },
+            { img: "lunchBoxImg", text: "Lunch Box" },
           ],
-          allsentence: [
-            "your",
-            "notebook.",
-            "Write",
-            "top",
-            "of",
-            "the",
-            "today's",
-            "date",
-            "at",
+          correctWordTwo: "School Courtyard",
+          audio: "schoolCourtyardAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "busImg", text: "Open Bus" }],
+          audio: "busAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "ticketImg", text: "Ticket" },
+            { img: "busImg", text: "Bus" },
+            { img: "trainImg", text: "Train" },
           ],
+          correctWordTwo: "Bus",
+          audio: "busAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "airplaneImg", text: "Airplane" }],
+          audio: "airplaneAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "airplaneImg", text: "Airplane" },
+            { img: "boardingPassImg", text: "Boarding Pass" },
+            { img: "trainStationImg", text: "Train Station" },
+          ],
+          correctWordTwo: "Airplane",
+          audio: "airplaneAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "discountTagImg", text: "Discount Tag" }],
+          audio: "discountTagAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "shoppingCartImg", text: "Shopping Cart" },
+            { img: "discountTagImg", text: "Discount Tag" },
+            { img: "restaurantImg", text: "Restaurant" },
+          ],
+          correctWordTwo: "Discount Tag",
+          audio: "discountTagAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "exitSignImg", text: "Exit Sign" }],
+          audio: "exitSignAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "hospitalImg", text: "Hospital" },
+            { img: "exitSignImg", text: "Exit Sign" },
+            { img: "ambulanceImg", text: "Ambulance" },
+          ],
+          correctWordTwo: "Exit Sign",
+          audio: "exitSignAudio",
         },
       },
     ],
   },
   {
-    level: "P4",
-    mechanics: "SoundHunt",
-    data: [
-      {
-        allwords: [
-          { img: "schoolCourtyardImg", text: "School Courtyard" },
-          { img: "busImg", text: "Bus" },
-          { img: "lunchBoxImg", text: "Lunch Box" },
-        ],
-        correctWord: "School Courtyard",
-        audio: "schoolCourtyardAudio",
-      },
-      {
-        allwords: [
-          { img: "busImg", text: "Bus" },
-          { img: "ticketImg", text: "Ticket" },
-          { img: "trainImg", text: "Train" },
-        ],
-        correctWord: "Bus",
-        audio: "busAudio",
-      },
-      {
-        allwords: [
-          { img: "airplaneImg", text: "Airplane" },
-          { img: "boardingPassImg", text: "Boarding Pass" },
-          { img: "trainStationImg", text: "Train Station" },
-        ],
-        correctWord: "Airplane",
-        audio: "airplaneAudio",
-      },
-      {
-        allwords: [
-          { img: "shoppingCartImg", text: "Shopping Cart" },
-          { img: "discountTagImg", text: "Discount Tag" },
-          { img: "restaurantImg", text: "Restaurant" },
-        ],
-        correctWord: "Discount Tag",
-        audio: "discountTagAudio",
-      },
-      {
-        allwords: [
-          { img: "hospitalImg", text: "Hospital" },
-          { img: "exitSignImg", text: "Exit Sign" },
-          { img: "ambulanceImg", text: "Ambulance" },
-        ],
-        correctWord: "Exit Sign",
-        audio: "exitSignAudio",
-      },
-    ],
-  },
-  {
     level: "S1",
-    mechanics: "ReadAloudMcqM10",
+    mechanics: "AnouncementFlow",
     data: {
       instructions: {
-        type: "chat",
+        type: "announcement",
         content: [
           {
             role: "System",
@@ -1950,10 +1911,12 @@ export const level12 = [
   },
   {
     level: "P5",
-    mechanics: "ReadAloudMcqM10",
+    mechanics: "AnouncementFlow",
     data: {
       instructions: {
-        type: "chat",
+        type: "anouncement",
+        imageOne: "atm",
+        imageTwo: "mall",
         content: [
           {
             role: "System",
@@ -2097,8 +2060,64 @@ export const level12 = [
           {
             role: "System",
             message:
-              "Lilly: Hi friends, wait a second! You just threw those plastic bags on the road. \nFriend: Oh, it’s just a small plastic bag. What’s the issue in it?\nLilly: It actually is a big issue! Plastic doesn’t decompose easily, and it harms animals and the environment.\nFriend: Really? I never thought about that.\nLilly: Yes! Birds and animals might eat it by mistake and get sick. It also pollutes the ocean.\nFriend: Oh no! I didn’t realize it was that bad.\nLilly: That’s why we should always throw our trash in a dustbin. Let us keep our surroundings clean.\nFriend: You’re right, Lilly. Let’s pick it up and throw it in the bin.\nLilly: Great! And next time, let’s carry a bag for trash so we don’t litter.\nFriend: Good idea! Thanks for explaining, Lilly.\nLilly: No problem! Let’s all do our part to protect nature.",
-            audio: "level12P2Audio",
+              "Hi Rahul, wait a second! You just threw those plastic bags on the road.",
+            audio: "level12P2Audio_1",
+          },
+          {
+            role: "User",
+            message:
+              "Oh, it’s just a small plastic bag. What’s the issue in it?",
+            audio: "level12P2Audio_2",
+          },
+          {
+            role: "System",
+            message:
+              "It actually is a big issue! Plastic doesn’t decompose easily, and it harms animals and the environment.",
+            audio: "level12P2Audio_3",
+          },
+          {
+            role: "User",
+            message: "Really? I never thought about that.",
+            audio: "level12P2Audio_4",
+          },
+          {
+            role: "System",
+            message:
+              "Yes! Birds and animals might eat it by mistake and get sick. It also pollutes the ocean.",
+            audio: "level12P2Audio_5",
+          },
+          {
+            role: "User",
+            message: "Oh no! I didn’t realize it was that bad.",
+            audio: "level12P2Audio_6",
+          },
+          {
+            role: "System",
+            message:
+              "That’s why we should always throw our trash in a dustbin. Let us keep our surroundings clean.",
+            audio: "level12P2Audio_7",
+          },
+          {
+            role: "User",
+            message:
+              "You’re right, Lilly. Let’s pick it up and throw it in the bin.",
+            audio: "level12P2Audio_8",
+          },
+          {
+            role: "System",
+            message:
+              "Great! And next time, let’s carry a bag for trash so we don’t litter.",
+            audio: "level12P2Audio_9",
+          },
+          {
+            role: "User",
+            message: "Good idea! Thanks for explaining, Lilly.",
+            audio: "level12P2Audio_10",
+          },
+          {
+            role: "System",
+            message: "No problem! Let’s all do our part to protect nature.",
+            audio: "level12P2Audio_11",
           },
         ],
       },
@@ -2227,7 +2246,7 @@ export const level12 = [
     },
   },
   {
-    level: "P7",
+    level: "P8",
     mechanics: "PhrasesInAction",
     data: [
       {
@@ -2246,23 +2265,6 @@ export const level12 = [
           correctWordTwo: "Underline Important Points",
           audio: "underlineAudio",
         },
-        step3: {
-          allwordsthree: [
-            {
-              img: "underlineImg",
-              correctSentence: "Underline the important points in your notes.",
-            },
-          ],
-          allsentence: [
-            "Underline",
-            "the",
-            "important",
-            "points",
-            "in",
-            "your",
-            "notes.",
-          ],
-        },
       },
       {
         step1: {
@@ -2280,23 +2282,6 @@ export const level12 = [
           correctWordTwo: "Read Instructions Carefully",
           audio: "readInstructionsAudio",
         },
-        step3: {
-          allwordsthree: [
-            {
-              img: "readInstructionsImg",
-              correctSentence:
-                "Read the instructions carefully before answering.",
-            },
-          ],
-          allsentence: [
-            "Read",
-            "the",
-            "instructions",
-            "carefully",
-            "before",
-            "answering.",
-          ],
-        },
       },
       {
         step1: {
@@ -2311,24 +2296,6 @@ export const level12 = [
           ],
           correctWordTwo: "Sit Properly",
           audio: "sitProperlyAudio",
-        },
-        step3: {
-          allwordsthree: [
-            {
-              img: "sitProperlyImg",
-              correctSentence: "Sit properly and don’t lean on the desk.",
-            },
-          ],
-          allsentence: [
-            "Sit",
-            "properly",
-            "and",
-            "don’t",
-            "lean",
-            "on",
-            "the",
-            "desk.",
-          ],
         },
       },
       {
@@ -2345,23 +2312,6 @@ export const level12 = [
           correctWordTwo: "Take Out Notebooks",
           audio: "notebookAudio",
         },
-        step3: {
-          allwordsthree: [
-            {
-              img: "notebookImg",
-              correctSentence: "Take out your notebooks and start writing.",
-            },
-          ],
-          allsentence: [
-            "Take",
-            "out",
-            "your",
-            "notebooks",
-            "and",
-            "start",
-            "writing.",
-          ],
-        },
       },
       {
         step1: {
@@ -2377,95 +2327,104 @@ export const level12 = [
           correctWordTwo: "Submit Homework",
           audio: "submitHomeworkAudio",
         },
-        step3: {
-          allwordsthree: [
-            {
-              img: "submitHomeworkImg",
-              correctSentence: "Submit your homework before the bell rings.",
-            },
+      },
+    ],
+  },
+  {
+    level: "P7",
+    mechanics: "PhrasesInAction",
+    data: [
+      {
+        step1: {
+          allwords: [{ img: "discountTagImg", text: "Discount Tag" }],
+          audio: "discountTagAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "fruitsImg", text: "Fruits" },
+            { img: "vegetablesImg", text: "Vegetables" },
+            { img: "discountTagImg", text: "Discount Tag" },
           ],
-          allsentence: [
-            "Submit",
-            "your",
-            "homework",
-            "before",
-            "the",
-            "bell",
-            "rings.",
+          correctWordTwo: "Discount Tag",
+          audio: "discountTagAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "salmonDishImg", text: "Grilled Salmon" }],
+          audio: "grilledSalmonAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "salmonDishImg", text: "Grilled Salmon" },
+            { img: "potatoesImg", text: "Mashed Potatoes" },
+            { img: "restaurantImg", text: "Restaurant" },
           ],
+          correctWordTwo: "Grilled Salmon",
+          audio: "grilledSalmonAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "exitSignImg", text: "Exit Sign" }],
+          audio: "libraryClosingAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "libraryImg", text: "Library" },
+            { img: "bookImg", text: "Book" },
+            { img: "exitSignImg", text: "Exit Sign" },
+          ],
+          correctWordTwo: "Exit Sign",
+          audio: "libraryClosingAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "trainImg", text: "Train" }],
+          audio: "trainArrivalAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "trainImg", text: "Train" },
+            { img: "platformImg", text: "Platform" },
+            { img: "ticketImg", text: "Ticket" },
+          ],
+          correctWordTwo: "Train",
+          audio: "trainArrivalAudio",
+        },
+      },
+      {
+        step1: {
+          allwords: [{ img: "concertStageImg", text: "Concert Stage" }],
+          audio: "concertAnnouncementAudio",
+        },
+        step2: {
+          allwordsTwo: [
+            { img: "audienceImg", text: "Audience" },
+            { img: "concertStageImg", text: "Concert Stage" },
+            { img: "TelephoneNewImg", text: "Mobile Phone" },
+          ],
+          correctWordTwo: "Concert Stage",
+          audio: "concertAnnouncementAudio",
         },
       },
     ],
   },
   {
-    level: "P8",
-    mechanics: "SoundHunt",
-    data: [
-      {
-        allwords: [
-          { img: "fruitsImg", text: "Fruits" },
-          { img: "vegetablesImg", text: "Vegetables" },
-          { img: "discountTagImg", text: "Discount Tag" },
-        ],
-        correctWord: "Discount Tag",
-        audio: "discountTagAudio",
-      },
-      {
-        allwords: [
-          { img: "salmonDishImg", text: "Grilled Salmon" },
-          { img: "potatoesImg", text: "Mashed Potatoes" },
-          { img: "restaurantImg", text: "Restaurant" },
-        ],
-        correctWord: "Grilled Salmon",
-        audio: "grilledSalmonAudio",
-      },
-      {
-        allwords: [
-          { img: "libraryImg", text: "Library" },
-          { img: "bookImg", text: "Book" },
-          { img: "exitSignImg", text: "Exit Sign" },
-        ],
-        correctWord: "Exit Sign",
-        audio: "libraryClosingAudio",
-      },
-      {
-        allwords: [
-          { img: "trainImg", text: "Train" },
-          { img: "platformImg", text: "Platform" },
-          { img: "ticketImg", text: "Ticket" },
-        ],
-        correctWord: "Train",
-        audio: "trainArrivalAudio",
-      },
-      {
-        allwords: [
-          { img: "concertStageImg", text: "Concert Stage" },
-          { img: "audienceImg", text: "Audience" },
-          { img: "mobilePhoneImg", text: "Mobile Phone" },
-        ],
-        correctWord: "Concert Stage",
-        audio: "concertAnnouncementAudio",
-      },
-    ],
-  },
-  {
     level: "S2",
-    mechanics: "ReadAloudMcqM10",
+    mechanics: "AnouncementFlow",
     data: {
       instructions: {
-        type: "chat",
+        type: "anouncement",
+        imageOne: "dosaIce1",
+        imageTwo: "dosaIce2",
         content: [
           {
             role: "System",
             message:
-              "To go to the museum, take Bus Number 10 from the main bus stop. Get off at Museum Road and walk straight for two minutes. You will see the museum on your right.",
+              "Attention, everyone! If you're heading to the museum, take Bus Number 10 from the main bus stop. Get off at Museum Road and walk straight for two minutes. You will see the museum on your right. Apples are available at ₹50 per kilo. One kilo has been purchased. That’s all for now. Have a great day!",
             audio: "museumDirectionsAudio",
-          },
-          {
-            role: "System",
-            message:
-              "Raj: Hello! How much are the apples?\nShopkeeper: They are ₹50 per kilo.\nRaj: Okay, I will take one kilo.\nShopkeeper: Sure! Here you go.",
-            audio: "marketConversationAudio",
           },
         ],
       },
@@ -2521,7 +2480,7 @@ export const level12 = [
         {
           question: {
             type: "text",
-            value: "What does Raj want to buy?",
+            value: "Which fruit has been purchased?",
           },
           options: [
             {
