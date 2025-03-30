@@ -2071,3 +2071,7 @@ export const treeConvImg =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/418467ef556a2faeed302fdeb8d83055a434667a/treeImg.svg";
 export const superMarketImg =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/418467ef556a2faeed302fdeb8d83055a434667a/superMarketImg.svg";
+export const boyChildImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/a8d3cdb2f0ef051731f53acb104060043e285bbd/boyChild.svg";
+export const humanImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/a8d3cdb2f0ef051731f53acb104060043e285bbd/manImg.svg";

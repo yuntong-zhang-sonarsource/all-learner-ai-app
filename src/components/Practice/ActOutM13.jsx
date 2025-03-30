@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Box, CircularProgress } from "@mui/material";
+import * as Assets from "../../utils/imageAudioLinks";
 import boyboxImg from "../../assets/boybox.svg";
 import girlImg from "../../assets/girl.svg";
 import girlboxImg from "../../assets/girlbox.svg";
@@ -6,7 +8,12 @@ import guyImg from "../../assets/guy.svg";
 import mikeImg from "../../assets/mikee.svg";
 import pauseImg from "../../assets/pausse.svg";
 import effectImg from "../../assets/effects.svg";
-import { practiceSteps, getLocalData } from "../../utils/constants";
+import {
+  practiceSteps,
+  getLocalData,
+  NextButtonRound,
+  RetryIcon,
+} from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import {
   level13,
@@ -22,6 +29,8 @@ import SpeechRecognition, {
 import { trainStationImg } from "../../utils/imageAudioLinks";
 import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
+import VoiceAnalyser from "../../utils/VoiceAnalyser";
+import { fetchASROutput, handleTextEvaluation } from "../../utils/apiUtil";
 
 const levelMap = {
   10: level10,
@@ -228,12 +237,31 @@ const ActOutM13 = ({
   setOpenMessageDialog,
   audio,
   currentImg,
+  fluency,
+  startShowCase,
+  setStartShowCase,
+  livesData,
+  setLivesData,
+  gameOverData,
+  highlightWords,
+  matchedChar,
+  isNextButtonCalled,
+  setIsNextButtonCalled,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [girlState, setGirlState] = useState("mic");
   const [isComplete, setIsComplete] = useState(false);
   const [evaluationResults, setEvaluationResults] = useState({});
-
+  const [isRecordingComplete, setIsRecordingComplete] = useState(false);
+  const [recAudio, setRecAudio] = useState("");
+  const [completeAudio, setCompleteAudio] = useState(null);
+  const [imageData, setImageData] = useState({});
+  const [loader, setLoader] = useState(false);
+  const [apiResponse, setApiResponse] = useState("");
+  const [correctAnswerText, setCorrectAnswerText] = useState("");
+  const [finalTranscript, setFinalTranscript] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const {
     transcript,
     interimTranscript,
@@ -245,6 +273,7 @@ const ActOutM13 = ({
   const transcriptRef = useRef("");
   useEffect(() => {
     transcriptRef.current = transcript;
+    console.log("Live Transcript:", transcript);
   }, [transcript]);
 
   const startRecording = () => {
@@ -265,6 +294,7 @@ const ActOutM13 = ({
   };
 
   console.log("transcript", transcript, transcriptRef.current);
+  console.log("showcase", fluency, isShowCase, livesData, gameOverData);
 
   const getConversation = (level, currentLevel) => {
     const levelData = levelMap[level];
@@ -272,6 +302,14 @@ const ActOutM13 = ({
       (item) => item.level === currentLevel
     );
     return conversationObj?.data?.conversation || [];
+  };
+
+  const getImages = (level, currentLevel) => {
+    const levelData = levelMap[level];
+    const conversationObj = levelData?.find(
+      (item) => item.level === currentLevel
+    );
+    return conversationObj?.data || [];
   };
 
   steps = 1;
@@ -294,12 +332,84 @@ const ActOutM13 = ({
 
   const conversation = getConversation(level, currentLevel);
 
+  useEffect(() => {
+    setCorrectAnswerText(conversation[currentIndex]?.user);
+  }, []);
+
+  const handleStartRecording = () => {
+    if (!browserSupportsSpeechRecognition) {
+      alert("Speech recognition is not supported in your browser.");
+      return;
+    }
+    resetTranscript();
+    setIsRecording(true);
+    SpeechRecognition.startListening({
+      continuous: true,
+      interimResults: true,
+    });
+  };
+
+  const handleStopRecording = () => {
+    SpeechRecognition.stopListening();
+    setFinalTranscript(transcriptRef.current);
+    setIsRecording(false);
+    //console.log("Final Transcript:", transcriptRef.current);
+  };
+
+  const handleRecordingComplete = async (base64Data) => {
+    if (base64Data) {
+      setIsRecordingComplete(true);
+      setRecAudio(base64Data);
+      if (currentLevel === "S1" || currentLevel === "S2") {
+        const comprehension = await handleTextEvaluation(
+          correctAnswerText,
+          transcriptRef.current
+        );
+
+        if (comprehension) {
+          const options = {
+            originalText: correctAnswerText,
+            contentType: contentType,
+            contentId: contentId,
+            comprehension: comprehension,
+          };
+
+          fetchASROutput(base64Data, options, setLoader, setApiResponse);
+        } else {
+          console.error("Failed to get evaluation result.");
+        }
+      }
+    } else {
+      setIsRecordingComplete(false);
+      setRecAudio("");
+    }
+  };
+
+  const loadNextTask = () => {
+    setIsLoading(true);
+
+    setTimeout(() => {
+      let nextIndex = currentIndex + 1;
+
+      setRecAudio(null);
+      if (nextIndex <= conversation.length) {
+        setCurrentIndex(nextIndex);
+        setGirlState("mic");
+        handleNext();
+      } else {
+        setIsComplete(true);
+      }
+      setIsLoading(false);
+    }, 2000);
+  };
+
   console.log("levelM13", level, currentStep, currentLevel);
 
   useEffect(() => {
     setCurrentIndex(0);
     setIsComplete(false);
     setGirlState("mic");
+    setImageData(getImages(level, currentLevel));
   }, [currentLevel]);
 
   const handleMicClick = () => {
@@ -380,10 +490,11 @@ const ActOutM13 = ({
       enableNext={enableNext}
       showTimer={showTimer}
       points={points}
-      pageName={"m14"}
+      pageName={"m8"}
       //answer={answer}
       //isRecordingComplete={isRecordingComplete}
       parentWords={parentWords}
+      fluency={false}
       //={recAudio}
       {...{
         steps,
@@ -395,6 +506,13 @@ const ActOutM13 = ({
         handleBack,
         disableScreen,
         loading,
+        //fluency = false,
+        isShowCase,
+        startShowCase,
+        setStartShowCase,
+        livesData,
+        gameOverData,
+        setIsNextButtonCalled,
       }}
     >
       <div
@@ -412,13 +530,14 @@ const ActOutM13 = ({
           <div
             style={{
               width: "90%",
-              height: "70%",
+              height: "80%",
               backgroundColor: "white",
               borderRadius: "20px",
               padding: "20px",
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
+              alignItems: "flex-end",
+              justifyContent: "flex-end",
             }}
           >
             <div
@@ -432,17 +551,17 @@ const ActOutM13 = ({
             >
               <div style={{ position: "relative" }}>
                 <img
-                  src={guyImg}
+                  src={Assets[imageData?.images?.imageOne] || guyImg}
                   alt="Market Vendor"
-                  style={{ width: "470px", marginTop: "40px", height: "400px" }}
+                  style={{ marginTop: "10px", height: "300px" }}
                 />
                 <img
                   src={boyboxImg}
                   alt="Speech Bubble"
                   style={{
                     position: "absolute",
-                    top: "46px",
-                    left: "90%",
+                    bottom: "70%",
+                    left: "130%",
                     transform: "translateX(-50%)",
                     width: "220px",
                   }}
@@ -450,11 +569,13 @@ const ActOutM13 = ({
                 <p
                   style={{
                     position: "absolute",
-                    top: "75px",
-                    left: "80%",
+                    bottom: "100%",
+                    left: "100%",
                     fontSize: "13px",
                     fontWeight: "bold",
                     textAlign: "center",
+                    wordWrap: "break-word",
+                    width: "115px",
                   }}
                 >
                   {conversation[currentIndex]?.speaker}
@@ -462,11 +583,11 @@ const ActOutM13 = ({
               </div>
               <div style={{ position: "relative" }}>
                 <img
-                  src={girlImg}
+                  src={Assets[imageData?.images?.imageTwo] || girlImg}
                   alt="Girl"
                   style={{
-                    width: "155px",
-                    marginTop: "170px",
+                    height: "300px",
+                    //marginTop: "170px",
                     marginRight: "100px",
                   }}
                 />
@@ -475,18 +596,18 @@ const ActOutM13 = ({
                   alt="Speech Bubble"
                   style={{
                     position: "absolute",
-                    top: "0px",
-                    left: "10%",
+                    bottom: "70%",
+                    right: "40%",
                     transform: "translateX(-50%)",
                     width: "260px",
                   }}
                 />
-                {currentLevel !== "S1" && currentLevel !== "S2" && (
+                {currentLevel !== "F1" && currentLevel !== "F2" && (
                   <p
                     style={{
                       position: "absolute",
-                      top: "40px",
-                      left: "10%",
+                      bottom: "90%",
+                      right: "80%",
                       transform: "translateX(-50%)",
                       fontSize: "13px",
                       fontWeight: "bold",
@@ -498,50 +619,80 @@ const ActOutM13 = ({
                     {conversation[currentIndex]?.user}
                   </p>
                 )}
+
+                {/* Recording Div */}
+
                 <div
                   style={{
-                    position: "absolute",
-                    top:
-                      currentLevel === "S1" || currentLevel === "S2"
-                        ? "80px"
-                        : "120px",
-                    left: "5%",
+                    position: "fixed", // Use fixed to ensure it remains in the center regardless of scrolling
+                    top: "60%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    //backgroundColor: "rgba(255, 255, 255, 0.9)", // Light background for better visibility
+                    padding: "20px",
+                    borderRadius: "10px",
+                    //boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Adds slight shadow for better UI
+                    zIndex: 1000, // Ensure it's above all other content
+                    width: "auto", // Keep it flexible
+                    maxWidth: "90%",
                   }}
                 >
-                  {girlState === "mic" && (
-                    <img
-                      src={mikeImg}
-                      alt="Microphone"
-                      onClick={handleMicClick}
-                      style={{
-                        width: "32px",
-                        cursor: "pointer",
-                        position: "relative",
-                        marginBottom: "100px",
-                      }}
-                    />
-                  )}
-                  {girlState === "pause" && (
+                  {isLoading ? (
+                    <Box sx={{ display: "flex" }}>
+                      <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
+                    </Box>
+                  ) : (
                     <div
-                      onClick={handlePauseClick}
-                      style={{ position: "relative", cursor: "pointer" }}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
                     >
-                      <img
-                        src={pauseImg}
-                        alt="Pause"
-                        style={{ width: "33px" }}
-                      />
-                      <img
-                        src={effectImg}
-                        alt="Effect"
-                        style={{
-                          position: "absolute",
-                          top: "-26px",
-                          left: "40%",
-                          transform: "translateX(-50%)",
-                          width: "112px",
+                      <VoiceAnalyser
+                        pageName={"m8"}
+                        setVoiceText={setVoiceText}
+                        onAudioProcessed={handleRecordingComplete}
+                        setRecordedAudio={setRecordedAudio}
+                        setVoiceAnimate={setVoiceAnimate}
+                        storyLine={storyLine}
+                        dontShowListen={true}
+                        handleNext={handleNext}
+                        enableNext={enableNext}
+                        originalText={parentWords}
+                        audioLink={audio ? audio : null}
+                        buttonAnimation={true}
+                        handleStartRecording={handleStartRecording}
+                        handleStopRecording={handleStopRecording}
+                        {...{
+                          contentId,
+                          contentType,
+                          currentLine: currentStep - 1,
+                          playTeacherAudio,
+                          callUpdateLearner,
+                          isShowCase,
+                          setEnableNext,
+                          //showOnlyListen: answer !== "correct",
+                          showOnlyListen: false,
+                          setOpenMessageDialog,
                         }}
                       />
+                      {recAudio && (
+                        <div
+                          onClick={loadNextTask}
+                          style={{
+                            marginTop: "-10px",
+                            cursor: "pointer",
+                            //marginLeft: "30px",
+                          }}
+                        >
+                          <NextButtonRound height={45} width={45} />
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -549,6 +700,7 @@ const ActOutM13 = ({
             </div>
           </div>
         )}
+
         {isComplete && (
           <div
             style={{

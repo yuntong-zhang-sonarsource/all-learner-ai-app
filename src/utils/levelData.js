@@ -3,6 +3,10 @@ export const level14 = [
     level: "P1",
     mechanics: "askMore",
     data: {
+      images: {
+        imageOne: "boyChildImg",
+        imageTwo: "child",
+      },
       conversation: [
         { speaker: "What is your favourite season?", user: "I like winter." },
         {
@@ -21,10 +25,6 @@ export const level14 = [
           speaker: "What do people do in this season?",
           user: "People wear warm clothes like sweaters in winter.",
         },
-        {
-          speaker: "What do people do in this season?",
-          user: "People wear warm clothes like sweaters in winter.",
-        },
       ],
     },
   },
@@ -32,6 +32,10 @@ export const level14 = [
     level: "P2",
     mechanics: "askMore",
     data: {
+      images: {
+        imageOne: "humanImg",
+        imageTwo: "child",
+      },
       conversation: [
         { speaker: "What is your favourite animal?", user: "Dog" },
         {
@@ -61,6 +65,10 @@ export const level14 = [
     level: "P3",
     mechanics: "actOut",
     data: {
+      images: {
+        imageOne: "salesPerson",
+        imageTwo: "boyChildImg",
+      },
       conversation: [
         {
           speaker: "What do you see in the market?",
@@ -82,10 +90,6 @@ export const level14 = [
           speaker: "Why was your grandmother happy?",
           user: "She was very happy because now she won't burn her hands while making chapatis.",
         },
-        {
-          speaker: "Why was your grandmother happy?",
-          user: "She was very happy because now she won't burn her hands while making chapatis.",
-        },
       ],
     },
   },
@@ -93,6 +97,10 @@ export const level14 = [
     level: "P4",
     mechanics: "actOut",
     data: {
+      images: {
+        imageOne: "vegVendor",
+        imageTwo: "humanImg",
+      },
       conversation: [
         {
           speaker: "How are cricket and kabaddi different?",
@@ -114,10 +122,6 @@ export const level14 = [
           speaker: "Why do people enjoy cricket and kabaddi?",
           user: "People enjoy cricket because it is strategic and thrilling, but kabaddi is loved for its speed and physical action.",
         },
-        {
-          speaker: "Why do people enjoy cricket and kabaddi?",
-          user: "People enjoy cricket because it is strategic and thrilling, but kabaddi is loved for its speed and physical action.",
-        },
       ],
     },
   },
@@ -125,6 +129,10 @@ export const level14 = [
     level: "P5",
     mechanics: "askMore",
     data: {
+      images: {
+        imageOne: "salesPerson",
+        imageTwo: "boyChildImg",
+      },
       conversation: [
         {
           speaker: "What is your favourite sport?",
@@ -157,6 +165,10 @@ export const level14 = [
     level: "P6",
     mechanics: "askMore",
     data: {
+      images: {
+        imageOne: "vegVendor",
+        imageTwo: "child",
+      },
       conversation: [
         {
           speaker: "What is your favourite transport?",
@@ -189,6 +201,10 @@ export const level14 = [
     level: "P7",
     mechanics: "actOut",
     data: {
+      images: {
+        imageOne: "mother",
+        imageTwo: "child",
+      },
       conversation: [
         {
           speaker: "Where are you going?",
@@ -210,10 +226,6 @@ export const level14 = [
           speaker: "What happened while you were returning home?",
           user: "Suddenly, the wind stopped, and the sky became very dark.",
         },
-        {
-          speaker: "What happened while you were returning home?",
-          user: "Suddenly, the wind stopped, and the sky became very dark.",
-        },
       ],
     },
   },
@@ -221,6 +233,10 @@ export const level14 = [
     level: "P8",
     mechanics: "actOut",
     data: {
+      images: {
+        imageOne: "humanImg",
+        imageTwo: "boyChildImg",
+      },
       conversation: [
         {
           speaker: "How are dogs and cats different?",
@@ -242,10 +258,6 @@ export const level14 = [
           speaker: "Why do people like dogs and cats?",
           user: "People like dogs because they are loyal and protective, but cats are loved for being calm and independent.",
         },
-        {
-          speaker: "Why do people like dogs and cats?",
-          user: "People like dogs because they are loyal and protective, but cats are loved for being calm and independent.",
-        },
       ],
     },
   },
@@ -253,6 +265,10 @@ export const level14 = [
     level: "S1",
     mechanics: "actOut",
     data: {
+      images: {
+        imageOne: "vegVendor",
+        imageTwo: "child",
+      },
       conversation: [
         {
           speaker: "Which is your favourite season?",
@@ -271,7 +287,6 @@ export const level14 = [
           user: "It is colder and more pleasant.",
         },
         { speaker: "When does this season occur?", user: "December, January." },
-        { speaker: "When does this season occur?", user: "December, January." },
       ],
     },
   },
@@ -279,6 +294,10 @@ export const level14 = [
     level: "S2",
     mechanics: "actOut",
     data: {
+      images: {
+        imageOne: "salesPerson",
+        imageTwo: "boyChildImg",
+      },
       conversation: [
         {
           speaker: "What is your favourite type of road transport?",
@@ -292,11 +311,6 @@ export const level14 = [
         {
           speaker: "Where do you usually go when you use this transport?",
           user: "To school.",
-        },
-        {
-          speaker:
-            "How is this transport different from other types of transport?",
-          user: "It has fixed routes and stops.",
         },
         {
           speaker:
@@ -538,6 +552,7 @@ export const level13 = [
     level: "P3",
     mechanics: "arrangePicture",
     data: {
+      text: "Pls re-arrange these pictures",
       images: [
         { img: "level13P3One", id: "1" },
         { img: "level13P3Two", id: "4" },
@@ -976,6 +991,7 @@ export const level13 = [
     level: "P7",
     mechanics: "arrangePicture",
     data: {
+      text: "Pls re-arrange these pictures",
       images: [
         { img: "level13P7One", id: "1" },
         { img: "level13P7Two", id: "4" },

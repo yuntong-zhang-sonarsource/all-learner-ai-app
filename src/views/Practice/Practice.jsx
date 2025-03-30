@@ -2105,6 +2105,17 @@ const Practice = () => {
             setEnableNext,
             loading,
             setOpenMessageDialog,
+            startShowCase,
+            setStartShowCase,
+            livesData,
+            setLivesData,
+            gameOverData,
+            highlightWords,
+            matchedChar: !isShowCase && questions[currentQuestion]?.matchedChar,
+            percentage,
+            fluency,
+            isNextButtonCalled,
+            setIsNextButtonCalled,
           }}
         />
       );
