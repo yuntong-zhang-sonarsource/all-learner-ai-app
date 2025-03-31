@@ -8492,13 +8492,13 @@ export const levelGetContent = {
         title: "P3",
         criteria: "paragraph",
         template: "simple",
-        //mechanism: { id: "arrangePicture", name: "arrangePicture" },
+        mechanism: { id: "arrangePicture", name: "arrangePicture" },
       },
       {
         title: "P4",
         criteria: "paragraph",
         template: "simple",
-        //mechanism: { id: "mechanic_2", name: "readTheImage" },
+        mechanism: { id: "McqFlow", name: "McqFlow" },
       },
       {
         title: "S1",
@@ -8528,7 +8528,7 @@ export const levelGetContent = {
         title: "P8",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "ReadAloudMcqM10", name: "ReadAloudMcqM10" },
+        mechanism: { id: "AnouncementFlow", name: "AnouncementFlow" },
       },
       {
         title: "S2",

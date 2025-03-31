@@ -54,6 +54,7 @@ import rOneImg from "../../assets/R1.png";
 import rTwoMileImage from "../../assets/r2mile.png";
 import rThreeMileImage from "../../assets/r3mile.png";
 import rFourMileImage from "../../assets/r4mile.png";
+import zIndex from "@mui/material/styles/zIndex";
 
 const MainLayout = (props) => {
   const levelsImages = {
