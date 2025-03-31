@@ -125,214 +125,6 @@ const AnswerBox = ({ word, isSelected, isCorrect, onClick }) => (
   </div>
 );
 
-// function Step1({ onNext }) {
-//   const { question, image, correctAnswer } = content.L1[0];
-//   const [showPause, setShowPause] = useState(false);
-//   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
-//   const [showGreatJob, setShowGreatJob] = useState(false);
-//   const [showNext, setShowNext] = useState(false);
-
-//   const handleMikeClick = () => setShowPause(true);
-//   const handlePauseClick = () => {
-//     setShowPause(false);
-//     setShowCorrectAnswer(true);
-//     setTimeout(() => {
-//       setShowCorrectAnswer(false);
-//       setShowGreatJob(true);
-//       setTimeout(() => {
-//         setShowGreatJob(false);
-//         setShowNext(true);
-//       }, 2000);
-//     }, 2000);
-//   };
-
-//   return (
-//     <div
-//       style={{
-//         display: "flex",
-//         flexDirection: "column",
-//         alignItems: "center",
-//         background: "#F2F8FF",
-//         height: "100vh",
-//         justifyContent: "center",
-//         position: "relative",
-//       }}
-//     >
-//       <img
-//         src={profileImg}
-//         alt="Profile"
-//         style={{
-//           position: "absolute",
-//           top: "20px",
-//           left: "20px",
-//           width: "50px",
-//           height: "50px",
-//           borderRadius: "50%",
-//           zIndex: 3,
-//         }}
-//       />
-
-//       <h2
-//         style={{ color: "#1E1E1E", position: "relative", marginBottom: "50px" }}
-//       >
-//         {question}
-//       </h2>
-
-//       <div
-//         style={{
-//           position: "relative",
-//           background: "#FFFFFF",
-//           boxShadow: "0px 0px 24px 0px #00000040",
-//           display: "flex",
-//           flexDirection: "column",
-//           alignItems: "center",
-//           width: "470px",
-//           height: "281px",
-//           overflow: "visible",
-//           marginBottom: "130px",
-//         }}
-//       >
-//         <img
-//           src={image}
-//           alt="Scene"
-//           style={{ width: "50%", height: "100%", objectFit: "cover" }}
-//         />
-//         <Tape
-//           position={{
-//             top: "-27px",
-//             left: "-25px",
-//             transform: "rotate(107deg)",
-//           }}
-//         />
-//         <Tape
-//           position={{
-//             top: "-21px",
-//             right: "-27px",
-//             width: "110px",
-//             transform: "rotate(1deg)",
-//           }}
-//         />
-//         <Tape
-//           position={{
-//             bottom: "-22px",
-//             left: "-19px",
-//             width: "95px",
-//             transform: "rotate(-1deg)",
-//           }}
-//         />
-//         <Tape
-//           position={{
-//             bottom: "-26px",
-//             right: "-24px",
-//             width: "99px",
-//             transform: "rotate(110deg)",
-//           }}
-//         />
-//       </div>
-
-//       <BottomBar>
-//         {!showPause && !showCorrectAnswer && !showGreatJob && !showNext && (
-//           <button
-//             style={{
-//               background: "none",
-//               border: "none",
-//               padding: "5px",
-//             }}
-//             onClick={handleMikeClick}
-//           >
-//             <img
-//               src={micImg}
-//               alt="Microphone"
-//               style={{
-//                 width: "45px",
-//                 backgroundColor: "white",
-//                 borderRadius: "50%",
-//               }}
-//             />
-//           </button>
-//         )}
-
-//         {showPause && (
-//           <div style={{ display: "flex", alignItems: "center" }}>
-//             <img
-//               src={effectImg}
-//               alt="Effect"
-//               style={{ width: "150px", marginRight: "10px" }}
-//             />
-//             <button
-//               style={{
-//                 background: "none",
-//                 border: "none",
-//                 padding: "5px",
-//               }}
-//               onClick={handlePauseClick}
-//             >
-//               <img
-//                 src={pauseImg}
-//                 alt="Pause"
-//                 style={{
-//                   width: "45px",
-//                   backgroundColor: "white",
-//                   borderRadius: "50%",
-//                 }}
-//               />
-//             </button>
-//           </div>
-//         )}
-
-//         {showCorrectAnswer && (
-//           <div
-//             style={{
-//               background: "white",
-//               padding: "10px 20px",
-//               fontSize: "24px",
-//               fontWeight: "bold",
-//               fontFamily: "quicksand",
-//               color: "#333F61",
-//             }}
-//           >
-//             {correctAnswer}
-//           </div>
-//         )}
-
-//         {showGreatJob && (
-//           <div
-//             style={{
-//               background: "white",
-//               padding: "10px 20px",
-//               fontSize: "18px",
-//               fontWeight: "bold",
-//               color: "#333F61",
-//             }}
-//           >
-//             Great job!
-//           </div>
-//         )}
-
-//         {showNext && (
-//           <button
-//             style={{
-//               background: "none",
-//               border: "none",
-//               padding: "5px",
-//             }}
-//             onClick={onNext}
-//           >
-//             <img
-//               src={nextImg}
-//               alt="Next"
-//               style={{
-//                 width: "120px",
-//                 borderRadius: "30%",
-//               }}
-//             />
-//           </button>
-//         )}
-//       </BottomBar>
-//     </div>
-//   );
-// }
-
 function Step2({ handleNext, level, currentStep }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
@@ -375,7 +167,7 @@ function Step2({ handleNext, level, currentStep }) {
   const handleSelect = (word) => {
     setSelectedAnswer(word.text);
     const isAnswerCorrect =
-      word.text === conversation[currentStep]?.correctAnswer;
+      word.text === conversation[currentStep - 1]?.correctAnswer;
     setIsCorrect(isAnswerCorrect);
     setShowMessage(isAnswerCorrect);
 
@@ -454,7 +246,7 @@ function Step2({ handleNext, level, currentStep }) {
                 textAlign: "center",
               }}
             >
-              {conversation[currentStep]?.hints}
+              {conversation[currentStep - 1]?.hints}
             </div>
             <img
               src={hintsImg}
@@ -477,8 +269,8 @@ function Step2({ handleNext, level, currentStep }) {
       >
         <p>
           {finalState
-            ? conversation[currentStep]?.finalQuestion
-            : conversation[currentStep]?.question}
+            ? conversation[currentStep - 1]?.finalQuestion
+            : conversation[currentStep - 1]?.question}
         </p>
       </div>
 
@@ -491,7 +283,7 @@ function Step2({ handleNext, level, currentStep }) {
         }}
       >
         {!finalState
-          ? conversation[currentStep]?.allwords.map((word, index) => (
+          ? conversation[currentStep - 1]?.allwords.map((word, index) => (
               <AnswerBox
                 key={index}
                 word={word}
@@ -500,9 +292,10 @@ function Step2({ handleNext, level, currentStep }) {
                 onClick={() => handleSelect(word)}
               />
             ))
-          : conversation[currentStep]?.allwords
+          : conversation[currentStep - 1]?.allwords
               .filter(
-                (word) => word.text === conversation[currentStep]?.correctAnswer
+                (word) =>
+                  word.text === conversation[currentStep - 1]?.correctAnswer
               )
               .map((word, index) => <AnswerBox key={index} word={word} />)}
       </div>
@@ -677,7 +470,7 @@ function WhatsMissing({
       }}
     >
       <div>
-        {/* {currentStep === 1 && <Step1 onNext={handleNextStep} />} */}
+        {/* {currentStep - 1 === 1 && <Step1 onNext={handleNextStep} />} */}
         {currentSteps === 2 && (
           <Step2
             handleNext={handleNext}

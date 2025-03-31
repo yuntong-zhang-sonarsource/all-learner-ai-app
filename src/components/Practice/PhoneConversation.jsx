@@ -671,8 +671,8 @@ const PhoneConversation = ({
                       justifyContent: "center",
                       marginTop:
                         currentLevel === "S1" || currentLevel === "S2"
-                          ? "30px"
-                          : "15px",
+                          ? "35px"
+                          : "30px",
                       gap: "10px",
                     }}
                   >

@@ -14,6 +14,7 @@ import addSound from "../../assets/audio/add.mp3";
 import removeSound from "../../assets/remove.wav";
 import { splitGraphemes } from "split-graphemes";
 import usePreloadAudio from "../../hooks/usePreloadAudio";
+import { practiceSteps, getLocalData } from "../../utils/constants";
 
 const Mechanics4 = ({
   page,
@@ -60,6 +61,64 @@ const Mechanics4 = ({
   const removeSoundAudio = usePreloadAudio(removeSound);
   const [wordsAfterSplit, setWordsAfterSplit] = useState([]);
 
+  let progressDatas = getLocalData("practiceProgress");
+  const virtualId = String(getLocalData("virtualId"));
+
+  if (typeof progressDatas === "string") {
+    progressDatas = JSON.parse(progressDatas);
+  }
+
+  let currentPracticeStep;
+  if (progressDatas?.[virtualId]) {
+    currentPracticeStep = progressDatas[virtualId].currentPracticeStep;
+  }
+
+  let currentLevel = practiceSteps?.[currentPracticeStep]?.name || "L1";
+
+  if (level === 13 && currentLevel === "P3") {
+    switch (currentStep) {
+      case 1:
+        parentWords = "Tommy received a bright red balloon at the fair.";
+        break;
+      case 2:
+        parentWords =
+          "As he was walking home, a strong wind blew the balloon out of his hand.";
+        break;
+      case 3:
+        parentWords = "Tommy chased after it, but it was too fast.";
+        break;
+      case 4:
+        parentWords =
+          "A friendly neighbour saw the balloon and grabbed it with a long walking stick.";
+        break;
+      case 5:
+        parentWords = "She returned the balloon to Tommy, who was very happy.";
+        break;
+    }
+  } else if (level === 13 && currentLevel === "P7") {
+    switch (currentStep) {
+      case 1:
+        parentWords =
+          "Selvi was walking home from school when she saw a puppy trapped in a fence.";
+        break;
+      case 2:
+        parentWords =
+          "She gently freed the puppy and noticed it had a collar with a name tag Tom and a phone number.";
+        break;
+      case 3:
+        parentWords =
+          "Selvi called the number, and the owner, Mrs.Anu, answered.";
+        break;
+      case 4:
+        parentWords = "Mrs.Anu was very grateful and came to pick up Tom.";
+        break;
+      case 5:
+        parentWords =
+          "Selvi felt happy knowing she had helped reunite Tom with his owner.";
+        break;
+    }
+  }
+
   useEffect(() => {
     setSelectedWords([]);
   }, [contentId]);
@@ -82,8 +141,6 @@ const Mechanics4 = ({
     // Join the jumbled words back into a sentence
     return words;
   }
-
-  //console.log('Mechanics4');
 
   useEffect(() => {
     let wordsArr = jumbleSentence(parentWords);
@@ -148,6 +205,15 @@ const Mechanics4 = ({
       }
     }
   };
+
+  console.log(
+    "Mechanics4",
+    parentWords,
+    words,
+    wordsAfterSplit,
+    currentStep,
+    currentLevel
+  );
 
   const answer =
     selectedWords?.length !== wordsAfterSplit?.length

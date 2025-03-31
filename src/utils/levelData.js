@@ -332,9 +332,54 @@ export const level13 = [
         content: [
           {
             role: "System",
+            message: "Good morning! What is your problem?",
+            audio: "level13P1Audio1",
+          },
+          {
+            role: "User",
+            message: "Good morning! I have a headache and a fever.",
+            audio: "level13P1Audio2",
+          },
+          {
+            role: "System",
+            message: "How long have you been feeling this way?",
+            audio: "level13P1Audio3",
+          },
+          {
+            role: "User",
+            message: "Since yesterday evening.",
+            audio: "level13P1Audio4",
+          },
+          {
+            role: "System",
+            message: "Do you have a cough or cold?",
+            audio: "level13P1Audio5",
+          },
+          {
+            role: "User",
+            message: "Yes, I have a slight cough.",
+            audio: "level13P1Audio6",
+          },
+          {
+            role: "System",
             message:
-              "Doctor: Good morning! What is your problem?\nPatient: Good morning, doctor. I have a headache and a fever.\nDoctor: How long have you been feeling this way?\nPatient: Since yesterday evening.\nDoctor: Do you have a cough or cold?\nPatient: Yes, I have a slight cough.\nDoctor: Don’t worry. Take a rest and drink plenty of water. I will prescribe some medicine.\nPatient: Thank you, doctor. How many times should I take the medicine?\nDoctor: Take it twice a day after meals.\nPatient: Okay, doctor. Thank you!",
-            audio: "level13P1Audio",
+              "Don’t worry. Take a rest and drink plenty of water. I will prescribe some medicine.",
+            audio: "level13P1Audio7",
+          },
+          {
+            role: "User",
+            message: "Thank you! How many times should I take the medicine?",
+            audio: "level13P1Audio8",
+          },
+          {
+            role: "System",
+            message: "Take it twice a day after meals.",
+            audio: "level13P1Audio9",
+          },
+          {
+            role: "User",
+            message: "Okay, thank you!",
+            audio: "level13P1Audio10",
           },
         ],
       },
@@ -523,28 +568,6 @@ export const level13 = [
           correctAnswer: "Friend",
           hints: "A person you enjoy spending time with.",
         },
-        {
-          question: "Hey, have you decided where to go for your ________?",
-          finalQuestion: "Why did you choose this word?",
-          allwords: [
-            { img: "vacationImg", text: "Vacation" },
-            { img: "meetingImg", text: "Meeting" },
-            { img: "partyImg", text: "Party" },
-          ],
-          correctAnswer: "Vacation",
-          hints: "People take time off for this.",
-        },
-        {
-          question: "I’m thinking about going to ________, but I’m not sure.",
-          finalQuestion: "Why did you choose this word?",
-          allwords: [
-            { img: "bengaluruImg", text: "Bengaluru" },
-            { img: "hospitalImg", text: "Hospital" },
-            { img: "restaurantImg", text: "Restaurant" },
-          ],
-          correctAnswer: "Bengaluru",
-          hints: "It is a city where people travel.",
-        },
       ],
     },
   },
@@ -552,13 +575,34 @@ export const level13 = [
     level: "P3",
     mechanics: "arrangePicture",
     data: {
-      text: "Pls re-arrange these pictures",
       images: [
-        { img: "level13P3One", id: "1" },
-        { img: "level13P3Two", id: "4" },
-        { img: "level13P3Three", id: "3" },
-        { img: "level13P3Four", id: "5" },
-        { img: "level13P3Five", id: "2" },
+        { img: "fairOneImg", id: "1" },
+        { img: "fairFourImg", id: "4" },
+        { img: "fairThreeImg", id: "3" },
+        { img: "fairFiveImg", id: "5" },
+        { img: "fairTwoImg", id: "2" },
+      ],
+      audioData: [
+        {
+          audio: "fairOneAudio",
+          text: "Tommy received a bright red balloon at the fair.",
+        },
+        {
+          audio: "fairTwoAudio",
+          text: "As he was walking home, a strong wind blew the balloon out of his hand.",
+        },
+        {
+          audio: "fairThreeAudio",
+          text: "Tommy chased after it, but it was too fast.",
+        },
+        {
+          audio: "fairFourAudio",
+          text: "A friendly neighbour saw the balloon and grabbed it with a long walking stick.",
+        },
+        {
+          audio: "fairFiveAudio",
+          text: "She returned the balloon to Tommy, who was very happy.",
+        },
       ],
     },
   },
@@ -570,7 +614,7 @@ export const level13 = [
         content: [
           {
             type: "image",
-            value: "healthyHabits",
+            value: "healthyHabitsImg",
           },
         ],
       },
@@ -632,9 +676,34 @@ export const level13 = [
         content: [
           {
             role: "System",
+            message: "Hey, can I borrow your English book for today?",
+            audio: "level13S1Audio1",
+          },
+          {
+            role: "User",
+            message: "Sure! Do you need it for homework?",
+            audio: "level13S1Audio2",
+          },
+          {
+            role: "System",
+            message: "Yes, I forgot mine at home.",
+            audio: "level13S1Audio3",
+          },
+          {
+            role: "User",
+            message: "No problem! Just return it to me tomorrow.",
+            audio: "level13S1Audio4",
+          },
+          {
+            role: "System",
+            message: "Thanks a lot! I really appreciate it.",
+            audio: "level13S1Audio5",
+          },
+          {
+            role: "System",
             message:
-              "Mathi: Hey Oliver, can I borrow your English book for today?\nAkshaya: Sure! Do you need it for homework?\nMathi: Yes, I forgot mine at home.\nAkshaya: No problem! Just return it to me tomorrow.\nMathi: Thanks a lot! I really appreciate it.\n\nWe can help the environment in simple ways. Turn off the lights to save energy. Recycle things like paper and plastic to reduce waste. Planting trees gives us clean air. Use a reusable bag instead of plastic bags. Save water by taking short showers. Small actions can make a big difference.",
-            audio: "level13P1AudioNew",
+              "We can help the environment in simple ways. Turn off the lights to save energy. Recycle things like paper and plastic to reduce waste. Planting trees gives us clean air. Use a reusable bag instead of plastic bags. Save water by taking short showers. Small actions can make a big difference.",
+            audio: "level13S1Audio6",
           },
         ],
       },
@@ -771,9 +840,67 @@ export const level13 = [
         content: [
           {
             role: "System",
+            message: "Hello?",
+            audio: "level13P5Audio1",
+          },
+          {
+            role: "User",
+            message: "Hey! What are you doing?",
+            audio: "level13P5Audio2",
+          },
+          {
+            role: "System",
             message:
-              "Nancy: Hello?\nTina: Hey! What are you doing?\nNancy: Not much. My mom left me a message about lunch. She said my lunch is in the kitchen, and I need to warm it before eating.\nTina: That’s nice! What’s for lunch?\nNancy: I’m not sure yet. But there’s some curd in the pot if I want it.\nTina: Sounds good! So, what are you doing after lunch?\nNancy: My mom said I need to clean up the kitchen after eating. She’ll be back at 4 p.m.\nTina: Oh, okay. Want to come out and play later?\nNancy: Yes! I can go out at 3:30 p.m., but I need to be back by 5:30 p.m.\nTina: Great! Let’s meet at the park at 3:30 then.\nNancy: Sure! See you later.\nTina: See you! Bye!",
-            audio: "level13P5Audio",
+              "Not much. My mom left me a message about lunch. She said my lunch is in the kitchen, and I need to warm it before eating.",
+            audio: "level13P5Audio3",
+          },
+          {
+            role: "User",
+            message: "That’s nice! What’s for lunch?",
+            audio: "level13P5Audio4",
+          },
+          {
+            role: "System",
+            message:
+              "I’m not sure yet. But there’s some curd in the pot if I want it.",
+            audio: "level13P5Audio5",
+          },
+          {
+            role: "User",
+            message: "Sounds good! So, what are you doing after lunch?",
+            audio: "level13P5Audio6",
+          },
+          {
+            role: "System",
+            message:
+              "My mom said I need to clean up the kitchen after eating. She’ll be back at 4 p.m.",
+            audio: "level13P5Audio7",
+          },
+          {
+            role: "User",
+            message: "Oh, okay. Want to come out and play later?",
+            audio: "level13P5Audio8",
+          },
+          {
+            role: "System",
+            message:
+              "Yes! I can go out at 3:30 p.m., but I need to be back by 5:30 p.m.",
+            audio: "level13P5Audio9",
+          },
+          {
+            role: "User",
+            message: "Great! Let’s meet at the park at 3:30 then.",
+            audio: "level13P5Audio10",
+          },
+          {
+            role: "System",
+            message: "Sure! See you later.",
+            audio: "level13P5Audio11",
+          },
+          {
+            role: "User",
+            message: "See you! Bye!",
+            audio: "level13P5Audio12",
           },
         ],
       },
@@ -991,22 +1118,45 @@ export const level13 = [
     level: "P7",
     mechanics: "arrangePicture",
     data: {
-      text: "Pls re-arrange these pictures",
       images: [
-        { img: "level13P7One", id: "1" },
-        { img: "level13P7Two", id: "4" },
-        { img: "level13P7Three", id: "3" },
-        { img: "level13P7Four", id: "5" },
-        { img: "level13P7Five", id: "2" },
+        { img: "puppyOneImg", id: "1" },
+        { img: "puppyFourImg", id: "4" },
+        { img: "puppyThreeImg", id: "3" },
+        { img: "puppyFiveImg", id: "5" },
+        { img: "puppyTwoImg", id: "2" },
+      ],
+      audioData: [
+        {
+          audio: "puppyOneAudio",
+          text: "Selvi was walking home from school when she saw a puppy trapped in a fence.",
+        },
+        {
+          audio: "puppyTwoAudio",
+          text: "She gently freed the puppy and noticed it had a collar with a name tag Tom and a phone number.",
+        },
+        {
+          audio: "puppyThreeAudio",
+          text: "Selvi called the number, and the owner, Mrs.Anu, answered.",
+        },
+        {
+          audio: "puppyFourAudio",
+          text: "Mrs.Anu  was very grateful and came to pick up Tom.",
+        },
+        {
+          audio: "puppyFiveAudio",
+          text: "Selvi felt happy knowing she had helped reunite Tom with his owner.",
+        },
       ],
     },
   },
   {
     level: "P8",
-    mechanics: "ReadAloudMcqM10",
+    mechanics: "AnouncementFlow",
     data: {
       instructions: {
-        type: "chat",
+        type: "anouncement",
+        imageOne: "roadSafetyImg1",
+        imageTwo: "roadSafetyImg2",
         content: [
           {
             role: "System",
@@ -1149,9 +1299,29 @@ export const level13 = [
         content: [
           {
             role: "System",
+            message: "Do you want to watch a movie tonight?",
+            audio: "level13S2Audio1",
+          },
+          {
+            role: "User",
+            message: "Sure! What movie are you thinking of?",
+            audio: "level13S2Audio2",
+          },
+          {
+            role: "System",
+            message: "Maybe an action movie. Do you like those?",
+            audio: "level13S2Audio3",
+          },
+          {
+            role: "User",
+            message: "Yes! Let’s watch one at 7 p.m.",
+            audio: "level13S2Audio4",
+          },
+          {
+            role: "System",
             message:
-              "Alex: Raj, Do you want to watch a movie tonight?\nRaj: Sure! What movie are you thinking of?\nAlex: Maybe an action movie. Do you like those?\nRaj: Yes! Let’s watch one at 7 p.m.\n\nWater is very important for life. We can save water by turning off the tap while brushing our teeth. Take short showers instead of long baths. Fix leaking taps to stop water waste. Use a bucket instead of a hose to wash your car. Water plants in the morning or evening to save water. Every drop counts.",
-            audio: "level13S2Audio",
+              "Water is very important for life. We can save water by turning off the tap while brushing our teeth. Take short showers instead of long baths. Fix leaking taps to stop water waste. Use a bucket instead of a hose to wash your car. Water plants in the morning or evening to save water. Every drop counts.",
+            audio: "level13S2Audio5",
           },
         ],
       },

@@ -83,7 +83,11 @@ const PhrasesInAction = ({
 
   let currentLevel = practiceSteps?.[currentPracticeStep]?.titleThree || "L1";
 
-  if (String(level) === "10" || String(level) === "12") {
+  if (
+    String(level) === "10" ||
+    String(level) === "12" ||
+    String(level) === "13"
+  ) {
     currentLevel = practiceSteps?.[currentPracticeStep]?.name;
   }
 

@@ -550,75 +550,109 @@ const ActOutM13 = ({
               }}
             >
               <div style={{ position: "relative" }}>
+                {/* Market Vendor Image */}
                 <img
                   src={Assets[imageData?.images?.imageOne] || guyImg}
                   alt="Market Vendor"
                   style={{ marginTop: "10px", height: "300px" }}
                 />
-                <img
-                  src={boyboxImg}
-                  alt="Speech Bubble"
+
+                {/* Speech Bubble Wrapper */}
+                <div
                   style={{
                     position: "absolute",
                     bottom: "70%",
                     left: "130%",
                     transform: "translateX(-50%)",
                     width: "220px",
-                  }}
-                />
-                <p
-                  style={{
-                    position: "absolute",
-                    bottom: "100%",
-                    left: "100%",
-                    fontSize: "13px",
-                    fontWeight: "bold",
-                    textAlign: "center",
-                    wordWrap: "break-word",
-                    width: "115px",
+                    height: "auto",
                   }}
                 >
-                  {conversation[currentIndex]?.speaker}
-                </p>
+                  {/* Speech Bubble Image */}
+                  <img
+                    src={boyboxImg}
+                    alt="Speech Bubble"
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                    }}
+                  />
+
+                  {/* Text Inside Speech Bubble */}
+                  <p
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      width: "80%",
+                      maxWidth: "180px",
+                      padding: "5px",
+                      wordWrap: "break-word",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {conversation[currentIndex]?.speaker}
+                  </p>
+                </div>
               </div>
+
               <div style={{ position: "relative" }}>
+                {/* Girl Image */}
                 <img
                   src={Assets[imageData?.images?.imageTwo] || girlImg}
                   alt="Girl"
                   style={{
                     height: "300px",
-                    //marginTop: "170px",
                     marginRight: "100px",
                   }}
                 />
-                <img
-                  src={girlboxImg}
-                  alt="Speech Bubble"
+
+                {/* Speech Bubble */}
+                <div
                   style={{
                     position: "absolute",
                     bottom: "70%",
                     right: "40%",
                     transform: "translateX(-50%)",
                     width: "260px",
+                    height: "auto",
                   }}
-                />
-                {currentLevel !== "F1" && currentLevel !== "F2" && (
-                  <p
+                >
+                  <img
+                    src={girlboxImg}
+                    alt="Speech Bubble"
                     style={{
-                      position: "absolute",
-                      bottom: "90%",
-                      right: "80%",
-                      transform: "translateX(-50%)",
-                      fontSize: "13px",
-                      fontWeight: "bold",
-                      textAlign: "center",
-                      width: "180px",
-                      wordWrap: "break-word",
+                      width: "100%",
+                      height: "auto",
                     }}
-                  >
-                    {conversation[currentIndex]?.user}
-                  </p>
-                )}
+                  />
+
+                  {/* Text Inside Speech Bubble */}
+                  {currentLevel !== "F1" && currentLevel !== "F2" && (
+                    <p
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                        textAlign: "center",
+                        width: "80%",
+                        maxWidth: "200px",
+                        padding: "5px",
+                        wordWrap: "break-word",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {conversation[currentIndex]?.user}
+                    </p>
+                  )}
+                </div>
 
                 {/* Recording Div */}
 
