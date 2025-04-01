@@ -320,58 +320,79 @@ const Mechanics5 = ({
               {parentWords}
             </span>
           </Box>
-
-          {options && options.length > 0 ? (
-            options.map((option, i) => (
-              <Box
-                key={option.audio_url}
-                mt={3}
-                sx={{ display: "flex", alignItems: "center" }}
-              >
-                <Radio
-                  checked={selectedOption === i}
-                  onChange={(e) => handleOptionChange(e, i)}
-                  value={i}
-                  name="options"
-                  color="primary"
-                />
-                <audio
-                  ref={audiosRef.current[i]}
-                  preload="metadata"
-                  onPlaying={() => setPlayingIndex(i)}
-                  onPause={() => setPlayingIndex(null)}
-                >
-                  <source
-                    src={`${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/${option.audio_url}`}
-                    type="audio/wav"
-                  />
-                </audio>
+          <Box
+            sx={
+              localStorage.getItem("mechanism_id") === "mechanic_4"
+                ? { display: "flex", justifyContent: "center" }
+                : ""
+            }
+          >
+            {options && options.length > 0 ? (
+              options.map((option, i) => (
                 <Box
-                  sx={{ cursor: "pointer" }}
-                  onClick={() => togglePlayPause(i)}
+                  key={option.audio_url}
+                  mt={3}
+                  sx={{ display: "flex", alignItems: "center" }}
                 >
-                  {playingIndex === i ? (
-                    <StopAudioButton size={35} color={"#1CB0F6"} />
-                  ) : (
-                    <PlayAudioButton size={35} color={"#1CB0F6"} />
-                  )}
+                  <Radio
+                    checked={selectedOption === i}
+                    onChange={(e) => handleOptionChange(e, i)}
+                    value={i}
+                    name="options"
+                    color="primary"
+                  />
+                  <audio
+                    ref={audiosRef.current[i]}
+                    preload="metadata"
+                    onPlaying={() => setPlayingIndex(i)}
+                    onPause={() => setPlayingIndex(null)}
+                  >
+                    <source
+                      src={`${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/${option.audio_url}`}
+                      type="audio/wav"
+                    />
+                  </audio>
+                  <Box
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => togglePlayPause(i)}
+                  >
+                    {playingIndex === i ? (
+                      <StopAudioButton size={35} color={"#1CB0F6"} />
+                    ) : (
+                      <PlayAudioButton size={35} color={"#1CB0F6"} />
+                    )}
+                  </Box>
+                  <Box>
+                    {option.image_url && (
+                      <img
+                        src={`${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/${option.image_url}`}
+                        style={{
+                          borderRadius: "20px",
+                          maxWidth: "100%",
+                          height: "150px",
+                        }}
+                        alt=""
+                      />
+                    )}
+
+                    <span
+                      style={{
+                        color: "#262649",
+                        fontWeight: 600,
+                        fontSize: "26px",
+                        fontFamily: "Quicksand",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      {option?.text || "Text is missing"}
+                    </span>
+                  </Box>
                 </Box>
-                <span
-                  style={{
-                    color: "#262649",
-                    fontWeight: 600,
-                    fontSize: "26px",
-                    fontFamily: "Quicksand",
-                    marginLeft: "10px",
-                  }}
-                >
-                  {option?.text || "Text is missing"}
-                </span>
-              </Box>
-            ))
-          ) : (
-            <div>No options available</div>
-          )}
+              ))
+            ) : (
+              <div>No options available</div>
+            )}
+          </Box>
         </Grid>
       </Grid>
 
