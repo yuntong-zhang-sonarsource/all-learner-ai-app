@@ -286,7 +286,7 @@ const Practice = () => {
       {
         completeWord: "Kitten",
         syllable: ["Kit", "ten"],
-        img: Assets.Kitten,
+        img: Assets.catImage,
         syllablesAudio: [
           { name: "Kit", audio: Assets.Kit },
           { name: "ten", audio: Assets.Ten },
@@ -306,7 +306,7 @@ const Practice = () => {
       {
         completeWord: "Pocket",
         syllable: ["Pock", "et"],
-        img: Assets.Pocket,
+        img: Assets.pocketImage,
         syllablesAudio: [
           { name: "Pock", audio: Assets.Pock },
           { name: "et", audio: Assets.Et },

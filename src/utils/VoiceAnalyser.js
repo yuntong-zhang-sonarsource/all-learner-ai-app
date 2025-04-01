@@ -779,10 +779,10 @@ function VoiceAnalyser(props) {
             >
               <NextButtonRound
                 height={
-                  props.pageName == "m7" || props.pageName === "m8" ? 50 : 70
+                  props.pageName == "m7" || props.pageName === "m8" ? 45 : 70
                 }
                 width={
-                  props.pageName == "m7" || props.pageName === "m8" ? 50 : 70
+                  props.pageName == "m7" || props.pageName === "m8" ? 45 : 70
                 }
               />
             </Box>

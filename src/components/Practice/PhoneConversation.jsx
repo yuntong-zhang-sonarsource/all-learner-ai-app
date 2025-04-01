@@ -9,6 +9,8 @@ import {
   level12,
   level15,
 } from "../../utils/levelData";
+import listenImg2 from "../../assets/listen.png";
+import spinnerStop from "../../assets/pause.png";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
 import {
@@ -356,13 +358,13 @@ const PhoneConversation = ({
       //borderColor: '#aaa',
     },
     sonMessage: {
-      //backgroundColor: "#fde4b2",
+      backgroundColor: "#fde4b2",
       alignSelf: "flex-start",
       width: "300px",
       marginLeft: "80px",
     },
     callerMessage: {
-      //backgroundColor: "#f1f1f1",
+      backgroundColor: "#f1f1f1",
       alignSelf: "flex-end",
       width: "280px",
       marginRight: "180px",
@@ -534,12 +536,12 @@ const PhoneConversation = ({
                         : styles.callerMessage),
                     }}
                   >
-                    {/* <span style={styles.boldText}>{msg.role}: </span>
-                    {msg.message} */}
+                    <span style={styles.boldText}>{msg.role}: </span>
+                    {msg.message}
                     {msg?.role === "System" && (
                       <div
                         style={{
-                          marginLeft: "-50px",
+                          marginLeft: "-80px",
                           display: "flex",
                           justifyContent: "flex-start",
                           alignItems: "flex-start",
@@ -547,48 +549,44 @@ const PhoneConversation = ({
                         }}
                       >
                         <img
+                          src={
+                            isPlaying === msg.audio ? spinnerStop : listenImg2
+                          }
+                          alt="Audio"
+                          style={{
+                            height: "25px",
+                            width: "25px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => playAudio(msg?.audio)}
+                        />
+                        <img
                           src={Assets.avatar1}
                           alt="Boy"
                           width={"25px"}
                           height={"25px"}
-                        />
-                        <img
-                          src={
-                            isPlaying === msg.audio
-                              ? Assets.stopVoiceNote
-                              : Assets.startVoiceNote
-                          }
-                          alt="Audio"
-                          style={{
-                            height: "40px",
-                            width: "190px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => playAudio(msg?.audio)}
                         />
                       </div>
                     )}
                     {msg?.role === "User" && (
                       <div style={styles.callerIconsContainer}>
                         <img
-                          src={
-                            isPlaying === msg.audio
-                              ? Assets.stopVoiceNote
-                              : Assets.startVoiceNote
-                          }
-                          alt="Audio"
-                          style={{
-                            height: "40px",
-                            width: "190px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => playAudio(msg?.audio)}
-                        />
-                        <img
                           src={Assets.avatar2}
                           alt="Boy"
                           width={"25px"}
                           height={"25px"}
+                        />
+                        <img
+                          src={
+                            isPlaying === msg.audio ? spinnerStop : listenImg2
+                          }
+                          alt="Audio"
+                          style={{
+                            height: "25px",
+                            width: "25px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => playAudio(msg?.audio)}
                         />
                       </div>
                     )}

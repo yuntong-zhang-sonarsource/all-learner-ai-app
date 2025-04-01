@@ -41,7 +41,7 @@ export const CandleS =
 export const DisabledHint =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/DisabledHint.svg";
 export const Jacket =
-  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/Jacket.svg";
+  "https://github.com/anik200002/imagesEkstep/blob/main/JacketImg.png?raw=true";
 export const Jack =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/Jack.wav";
 export const Ket =
@@ -217,13 +217,11 @@ export const paperImg =
 export const tigerImg =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/tigerImg.jpeg";
 export const happyImg =
-  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/happyImg.jpeg";
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/JEMA%20GER%201714-15.jpg";
 export const puppetImg =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/puppetImg.png";
 export const ticketImg =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/ticketImg.png";
-export const jacketImg =
-  "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/jacketImg.jpg";
 export const candleImg =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/candleImg.jpeg";
 export const flowerImg =
@@ -273,92 +271,6 @@ export const chillarImg =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/chillar.png";
 export const nextImg =
   "https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.4.0-dev/src/assets/next.png";
-
-// export const mobilePhoneImg = "https://github.com/anik200002/EkstepImg/blob/main/mobilePhoneImg.png";
-// export const airplaneImg = "https://github.com/anik200002/EkstepImg/blob/main/airplaneImg.png";
-// export const aloneImg = "https://github.com/anik200002/EkstepImg/blob/main/aloneImg.png";
-// export const ambulanceImg = "https://github.com/anik200002/EkstepImg/blob/main/ambulanceImg.png";
-// export const answerSheetImg = "https://github.com/anik200002/EkstepImg/blob/main/answerSheetImg.png";
-// export const audienceImg = "https://github.com/anik200002/EkstepImg/blob/main/audienceImg.png";
-// export const bellImg = "https://github.com/anik200002/EkstepImg/blob/main/bellImg.jpeg";
-// export const bengaluruImg = "https://github.com/anik200002/EkstepImg/blob/main/bengaluruImg.jpeg";
-// export const blackboardImg = "https://github.com/anik200002/EkstepImg/blob/main/blackboardImg.jpeg";
-// export const boardingPassImg = "https://github.com/anik200002/EkstepImg/blob/main/boardingPassImg.jpeg";
-// export const bookImg = "https://github.com/anik200002/EkstepImg/blob/main/bookImg.jpeg";
-// export const BookSeller = "https://github.com/anik200002/EkstepImg/blob/main/BookSeller.jpeg";
-// export const boy = "https://github.com/anik200002/EkstepImg/blob/main/boy.jpeg";
-// export const burgerImg = "https://github.com/anik200002/EkstepImg/blob/main/burgerImg.jpeg";
-// export const busImg = "https://github.com/anik200002/EkstepImg/blob/main/busImg.png";
-// export const Buyer = "https://github.com/anik200002/EkstepImg/blob/main/Buyer.jpeg";
-// export const childrenDayImage = "https://github.com/anik200002/EkstepImg/blob/main/childrenDayImage.jpeg";
-// export const classroomImg = "https://github.com/anik200002/EkstepImg/blob/main/classroomImg.jpeg";
-// export const concertStageImg = "https://github.com/anik200002/EkstepImg/blob/main/concertStageImg.png";
-// export const Daughter = "https://github.com/anik200002/EkstepImg/blob/main/Daughter.jpeg";
-// export const deskImg = "https://github.com/anik200002/EkstepImg/blob/main/deskImg.jpeg";
-// export const discountTagImg = "https://github.com/anik200002/EkstepImg/blob/main/discountTagImg.png";
-// export const exerciseImg = "https://github.com/anik200002/EkstepImg/blob/main/exerciseImg.jpeg";
-// export const exitSignImg = "https://github.com/anik200002/EkstepImg/blob/main/exitSignImg.png";
-// export const familyImg = "https://github.com/anik200002/EkstepImg/blob/main/familyImg.jpeg";
-// export const Father = "https://github.com/anik200002/EkstepImg/blob/main/Father.jpeg";
-// export const fiveImg = "https://github.com/anik200002/EkstepImg/blob/main/fiveImg.jpeg";
-// export const friendImg = "https://github.com/anik200002/EkstepImg/blob/main/friendImg.jpeg";
-// export const fruitsImg = "https://github.com/anik200002/EkstepImg/blob/main/fruitsImg.png";
-// export const glovesImg = "https://github.com/anik200002/EkstepImg/blob/main/glovesImg.jpeg";
-// export const goodtouch = "https://github.com/anik200002/EkstepImg/blob/main/goodtouch.jpeg";
-// export const greenValleyImg = "https://github.com/anik200002/EkstepImg/blob/main/greenValleyImg.jpeg";
-// export const groupImg = "https://github.com/anik200002/EkstepImg/blob/main/groupImg.jpeg";
-// export const hatImg = "https://github.com/anik200002/EkstepImg/blob/main/hatImg.jpeg";
-// export const healthyHabits = "https://github.com/anik200002/EkstepImg/blob/main/healthyHabits.jpeg";
-// export const homeworkImg = "https://github.com/anik200002/EkstepImg/blob/main/homeworkImg.jpeg";
-// export const hospitalImg = "https://github.com/anik200002/EkstepImg/blob/main/hospitalImg.png";
-// export const importantPointsImg = "https://github.com/anik200002/EkstepImg/blob/main/importantPointsImg.png";
-// export const instructionsImg = "https://github.com/anik200002/EkstepImg/blob/main/instructionsImg.png";
-// export const juiceImg = "https://github.com/anik200002/EkstepImg/blob/main/juiceImg.jpeg";
-// export const libraryImg = "https://github.com/anik200002/EkstepImg/blob/main/libraryImg.png";
-// export const listenImg = "https://github.com/anik200002/EkstepImg/blob/main/listenImg.jpeg";
-// export const lunchBoxImg = "https://github.com/anik200002/EkstepImg/blob/main/lunchBoxImg.png";
-// export const mallImg = "https://github.com/anik200002/EkstepImg/blob/main/mallImg.jpeg";
-// export const meetingImg = "https://github.com/anik200002/EkstepImg/blob/main/meetingImg.png";
-// export const milkImg = "https://github.com/anik200002/EkstepImg/blob/main/milkImg.jpeg";
-// export const Mother = "https://github.com/anik200002/EkstepImg/blob/main/Mother.jpeg";
-// export const notebookImg = "https://github.com/anik200002/EkstepImg/blob/main/notebookImg.jpeg";
-// export const notesImg = "https://github.com/anik200002/EkstepImg/blob/main/notesImg.jpeg";
-// export const officeImg = "https://github.com/anik200002/EkstepImg/blob/main/officeImg.jpeg";
-// export const parkImg = "https://github.com/anik200002/EkstepImg/blob/main/parkImg.jpeg";
-// export const partyImg = "https://github.com/anik200002/EkstepImg/blob/main/partyImg.jpeg";
-// export const penImg = "https://github.com/anik200002/EkstepImg/blob/main/penImg.jpeg";
-// export const petImg = "https://github.com/anik200002/EkstepImg/blob/main/petImg.jpeg";
-// export const pizzaImg = "https://github.com/anik200002/EkstepImg/blob/main/pizzaImg.jpeg";
-// export const potatoesImg = "https://github.com/anik200002/EkstepImg/blob/main/potatoesImg.png";
-// export const raiseHandImg = "https://github.com/anik200002/EkstepImg/blob/main/raiseHandImg.jpeg";
-// export const restaurantImg = "https://github.com/anik200002/EkstepImg/blob/main/restaurantImg.jpeg";
-// export const salmonDishImg = "https://github.com/anik200002/EkstepImg/blob/main/salmonDishImg.png";
-// export const schoolCourtyardImg = "https://github.com/anik200002/EkstepImg/blob/main/schoolCourtyardImg.jpeg";
-// export const shoesImg= "https://github.com/anik200002/EkstepImg/blob/main/shoesImg.jpeg";
-// export const shoppingCartImg= "https://github.com/anik200002/EkstepImg/blob/main/shoppingCartImg.png";
-// export const sitProperlyImg= "https://github.com/anik200002/EkstepImg/blob/main/sitProperlyImg.jpeg";
-// export const sixtyImg= "https://github.com/anik200002/EkstepImg/blob/main/sixtyImg.jpeg";
-// export const smoothieImg= "https://github.com/anik200002/EkstepImg/blob/main/smoothieImg.jpeg";
-// export const Son = "https://github.com/anik200002/EkstepImg/blob/main/Son.jpeg";
-// export const studentImg = "https://github.com/anik200002/EkstepImg/blob/main/studentImg.jpeg";
-// export const studentSittingImg= "https://github.com/anik200002/EkstepImg/blob/main/studentSittingImg.jpeg";
-// export const submitImg= "https://github.com/anik200002/EkstepImg/blob/main/submitImg.jpeg";
-// export const teacherImg= "https://github.com/anik200002/EkstepImg/blob/main/teacherImg.jpeg";
-// export const tenImg= "https://github.com/anik200002/EkstepImg/blob/main/tenImg.jpeg";
-// export const textbookImg = "https://github.com/anik200002/EkstepImg/blob/main/textbookImg.jpeg";
-// export const thirtyImg= "https://github.com/anik200002/EkstepImg/blob/main/thirtyImg.jpeg";
-// export const ticketImg= "https://github.com/anik200002/EkstepImg/blob/main/ticketImg.png";
-// export const trainImg= "https://github.com/anik200002/EkstepImg/blob/main/trainImg.png";
-// export const trainStationImg= "https://github.com/anik200002/EkstepImg/blob/main/trainStationImg.jpeg";
-// export const twoImg = "https://github.com/anik200002/EkstepImg/blob/main/twoImg.jpeg";
-// export const underlineImg= "https://github.com/anik200002/EkstepImg/blob/main/underlineImg.png";
-// export const vacationImg = "https://github.com/anik200002/EkstepImg/blob/main/vacationImg.jpeg";
-// export const VegetableSeller= "https://github.com/anik200002/EkstepImg/blob/main/VegetableSeller.jpg";
-// export const waterImg= "https://github.com/anik200002/EkstepImg/blob/main/waterImg.jpeg";
-// export const workPairImg= "https://github.com/anik200002/EkstepImg/blob/main/workPairImg.jpeg";
-// export const writeDateImg = "https://github.com/anik200002/EkstepImg/blob/main/writeDateImg.jpeg";
-// export const writingImg = "https://github.com/anik200002/EkstepImg/blob/main/writingImg.jpeg";
-
 export const mobilePhoneImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/main/mobilePhoneImg.png";
 export const airplaneImg =
@@ -445,8 +357,6 @@ export const milkImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/main/milkImg.jpeg";
 export const motherImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/main/Mother.jpeg";
-export const notebookImg =
-  "https://raw.githubusercontent.com/anik200002/EkstepImg/main/notebookImg.jpeg";
 export const notesImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/main/notesImg.jpeg";
 export const officeImg =
@@ -1557,8 +1467,6 @@ export const TrafficNewImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/TrafficNewImg.png";
 export const UmbrellaNewImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/UmbrellaNewImg.png";
-export const WindowNewImg =
-  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/WindowNewImg.png";
 export const AnimalNewImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/AnimalNewImg.png";
 export const BananaNewImg =
@@ -1577,8 +1485,6 @@ export const CoconutNewImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/CoconutNewImg.png";
 export const ComputerNewImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/ComputerNewImg.png";
-export const DinnerNewImg =
-  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/DinnerNewImg.png";
 export const DoctorNewImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/DoctorNewImg.png";
 export const FurnitureNewImg =
@@ -1651,8 +1557,6 @@ export const goatR1TwoImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/goatR1TwoImg.svg";
 export const kiteR1ThreeImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/kiteR1ThreeImg.svg";
-export const mangoR1OneImg =
-  "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/mangoR1OneImg.svg";
 export const mangoR1TwoImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/mangoR1TwoImg.svg";
 export const mangoR1ThreeImg =
@@ -1837,8 +1741,6 @@ export const jetImg =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/jetImg.svg";
 export const pitImg =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/pitImg.svg";
-export const nutImg =
-  "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/nutImg.svg";
 export const vetImg =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/vetImg.svg";
 export const Group =
@@ -1951,7 +1853,6 @@ export const carRs =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/carRs.wav";
 export const treeRs =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/treeRs.wav";
-//export const goatRs = "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/goatRs.wav";
 export const rainRs =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/rainRs.wav";
 export const throneRs =
@@ -1989,7 +1890,7 @@ export const violinImg =
 export const dishwasherImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/refs/heads/main/dishwasherImg.png";
 export const shopImg =
-  "https://raw.githubusercontent.com/anik200002/EkstepImg/4821e92fe2bf4c8166205de4e6c243383503fd45/shoppImg.svg";
+  "https://github.com/anik200002/imagesEkstep/blob/main/shopImg.png?raw=true";
 
 export const chopImg =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/4821e92fe2bf4c8166205de4e6c243383503fd45/ChoppImg.svg";
@@ -2042,8 +1943,6 @@ export const level10S2Six =
   "https://github.com/anik200002/EkstepImg/raw/refs/heads/main/level10S2Six.wav";
 export const salesPerson =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/87ad60cf61024d89666b96af0c7bb6f56b5e0467/salesPerson.svg";
-export const catImage =
-  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/5b525e29c620db9755c0392e6705ca3c02c444db/catImg.svg";
 
 export const deskImg =
   "https://github.com/anik200002/EkstepImg/blob/main/desksImg.png?raw=true";
@@ -2062,7 +1961,7 @@ export const bellImg =
 export const blackboardImg =
   "https://github.com/anik200002/EkstepImg/blob/main/blackboardsImg.png?raw=true";
 export const helmetImg =
-  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/86be4308485865ea1845ec0188b63d8d141f9bd8/helmet.svg";
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/80c0c78d90d5921e398ecb01624320a3ff1b3780/helmetImg.svg";
 export const avatar1 =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/avatar1.png";
 export const avatar2 =
@@ -2185,3 +2084,23 @@ export const roadSafetyImg1 =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/739ce3a4b8cbb5a644260552606fb403e0529d40/roadSafetyImgOne.svg";
 export const roadSafetyImg2 =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/739ce3a4b8cbb5a644260552606fb403e0529d40/roadSafetyImgTwo.svg";
+export const mangoR1OneImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/74434830fb675948b35e7cf1a9cbf86f069f3951/mangoR1OneImg.svg";
+export const notebookImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/74434830fb675948b35e7cf1a9cbf86f069f3951/notebookImg.svg";
+export const nutImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/74434830fb675948b35e7cf1a9cbf86f069f3951/nutImg.png";
+export const jacketImg =
+  "https://github.com/anik200002/imagesEkstep/blob/main/JacketImg.png?raw=true";
+export const catImage =
+  "https://github.com/anik200002/imagesEkstep/blob/main/catImg.png?raw=true";
+export const pocketImage =
+  "https://github.com/anik200002/imagesEkstep/blob/main/pocketImg.png?raw=true";
+export const DinnerNewImg =
+  "https://raw.githubusercontent.com/anik200002/all-learner-ai-app/80fc411fa3d57a97dca97d182cb0459cbf439ece/dinnerImg.svg";
+export const WindowNewImg =
+  "https://raw.githubusercontent.com/anik200002/all-learner-ai-app/80fc411fa3d57a97dca97d182cb0459cbf439ece/windowImg.svg";
+export const trainImgOne =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/3b5a7cbc48d94402e1f7dcca956830dbe6e406b9/trainImgOne.svg";
+export const trainImgTwo =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/3b5a7cbc48d94402e1f7dcca956830dbe6e406b9/trainImgTwo.svg";

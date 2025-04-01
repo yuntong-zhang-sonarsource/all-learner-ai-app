@@ -597,12 +597,12 @@ export const level13 = [
         },
         {
           audio: "fairFourAudio",
-          text: "A friendly neighbour saw the balloon and grabbed it with a long walking stick.",
+          text: "A friendly neighbour saw the balloon and grabbed it with a long walking stick. She returned the balloon to Tommy, who was very happy.",
         },
-        {
-          audio: "fairFiveAudio",
-          text: "She returned the balloon to Tommy, who was very happy.",
-        },
+        // {
+        //   audio: "fairFiveAudio",
+        //   text: "She returned the balloon to Tommy, who was very happy.",
+        // },
       ],
     },
   },
@@ -1140,12 +1140,12 @@ export const level13 = [
         },
         {
           audio: "puppyFourAudio",
-          text: "Mrs.Anu  was very grateful and came to pick up Tom.",
+          text: "Mrs.Anu  was very grateful and came to pick up Tom. Selvi felt happy knowing she had helped reunite Tom with his owner.",
         },
-        {
-          audio: "puppyFiveAudio",
-          text: "Selvi felt happy knowing she had helped reunite Tom with his owner.",
-        },
+        // {
+        //   audio: "puppyFiveAudio",
+        //   text: "Selvi felt happy knowing she had helped reunite Tom with his owner.",
+        // },
       ],
     },
   },
@@ -4292,8 +4292,8 @@ export const level10 = [
     data: {
       instructions: {
         type: "announcement",
-        imageOne: "level10P1ImgOne",
-        imageTwo: "level10P1ImgTwo",
+        imageOne: "trainImgOne",
+        imageTwo: "trainImgTwo",
         content: [
           {
             role: "System",

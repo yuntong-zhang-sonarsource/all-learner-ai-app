@@ -563,11 +563,13 @@ const AnouncementFlow = ({
     mainContainer: {
       background:
         "linear-gradient(0deg, rgba(241, 153, 32, 0.32) 0%, rgba(243, 159, 39, 0.32) 23%, rgba(247, 176, 59, 0.32) 58%, rgba(254, 204, 92, 0.32) 100%)",
-      height: "100vh",
+      height: "100%",
+      //minHeight: "70vh",
       display: "flex",
+      alignItems: "center",
       justifyContent: "center",
       alignItems: "flex-end",
-      padding: "0px 20px",
+      padding: "20px 20px",
       overflowX: "hidden",
       position: "relative",
     },
@@ -577,11 +579,12 @@ const AnouncementFlow = ({
       padding: "20px",
       width: "100%",
       position: "relative",
+      maargin: "20px",
       boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
       overflowX: "hidden",
-      height: "80vh",
+      //minHeight: "60vh",
       overflowY: "hidden",
-      marginBottom: "40px",
+      //marginBottom: "40px",
     },
     phoneIcon: {
       marginLeft: "40px",
@@ -811,7 +814,7 @@ const AnouncementFlow = ({
                       justifyContent: "center",
                       alignItems: "center",
                       gap: "10px",
-                      marginTop: "50px",
+                      marginTop: "20px",
                     }}
                   >
                     {/* {allTexts.split(". ").map((sentence, index) => (
@@ -842,8 +845,8 @@ const AnouncementFlow = ({
                     <div
                       style={{
                         whiteSpace: "pre-wrap",
-                        width: "70%",
-                        lineHeight: "2",
+                        width: "75%",
+                        lineHeight: "1.8",
                       }}
                     >
                       {allTexts?.split(" ").map((word, wordIndex) => (
@@ -863,12 +866,13 @@ const AnouncementFlow = ({
                                 : "none",
                             color: "#000000",
                             fontSize: "18px",
-                            fontWeight: "500",
+                            fontWeight: "600",
                             textAlign: "center",
                             alignContent: "center",
                             alignSelf: "center",
                             alignItems: "center",
                             width: "50px",
+                            fontFamily: "Quicksand",
                           }}
                         >
                           {word}{" "}
@@ -885,7 +889,8 @@ const AnouncementFlow = ({
                     display: "flex",
                     alignItems: "center",
                     gap: "17px",
-                    marginTop: "100px",
+                    marginBottom: "150px",
+                    marginTop: "130px",
                   }}
                 >
                   <div
@@ -940,7 +945,7 @@ const AnouncementFlow = ({
                   height={"70px"}
                   width={"70px"}
                   onClick={handleReadAloud}
-                  style={{ cursor: "pointer", marginTop: "80px" }}
+                  style={{ cursor: "pointer", marginTop: "50px" }}
                 />
               )}
 
@@ -952,14 +957,14 @@ const AnouncementFlow = ({
                   height={"70px"}
                   width={"70px"}
                   onClick={handleReadAloud}
-                  style={{ cursor: "pointer", marginTop: "80px" }}
+                  style={{ cursor: "pointer", marginTop: "50px" }}
                 />
               )}
 
               {/* Replay & Next Buttons */}
               {step === "stopped" && (
                 <div
-                  style={{ display: "flex", gap: "20px", marginTop: "10px" }}
+                  style={{ display: "flex", gap: "20px", marginTop: "50px" }}
                 >
                   {/* <img
                     src={raRetry}

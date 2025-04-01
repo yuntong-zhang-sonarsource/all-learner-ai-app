@@ -287,11 +287,7 @@ const AudioRecorder = (props) => {
                     props?.originalText &&
                     !props.showOnlyListen && (
                       <Box
-                        marginLeft={
-                          !props.dontShowListen || props.recordedAudio
-                            ? "32px"
-                            : "0px"
-                        }
+                        marginLeft={props.recordedAudio ? "32px" : "0px"}
                         sx={{ cursor: "pointer" }}
                         onClick={startRecording}
                       >

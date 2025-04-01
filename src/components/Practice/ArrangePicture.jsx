@@ -345,6 +345,7 @@ function ArrangePicture({
                   onClick={() => {
                     if (isPressedOnce) {
                       handleNextStep();
+                      handleNext();
                     }
                   }}
                   className="flex items-center"
