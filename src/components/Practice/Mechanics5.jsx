@@ -181,7 +181,7 @@ const Mechanics5 = ({
 
       <Grid
         container
-        sx={{ width: "80%", justifyContent: "center", mb: 2, mt: 8 }}
+        sx={{ width: "70%", justifyContent: "center", mb: 2, mt: 8 }}
       >
         <Grid item xs={4} position="relative">
           {/* Image with full-width gradient overlay on top */}
@@ -362,7 +362,7 @@ const Mechanics5 = ({
                       <PlayAudioButton size={35} color={"#1CB0F6"} />
                     )}
                   </Box>
-                  <Box>
+                  <Box sx={{ textAlign: "center" }}>
                     {option.image_url && (
                       <img
                         src={`${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/${option.image_url}`}
