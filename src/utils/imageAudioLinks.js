@@ -2106,3 +2106,7 @@ export const trainImgTwo =
   "https://raw.githubusercontent.com/anik200002/imagesEkstep/3b5a7cbc48d94402e1f7dcca956830dbe6e406b9/trainImgTwo.svg";
 export const gradenAnouncementImg =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/gardenimg-removebg-preview.png";
+export const toyTrainAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/toyTrainAudio.wav";
+export const gardenAnouncementAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/gardenAudio.wav";
