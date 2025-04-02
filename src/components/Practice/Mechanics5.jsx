@@ -53,6 +53,7 @@ const Mechanics5 = ({
   gameOverData,
   correctness,
   audio,
+  mechanism,
 }) => {
   const audiosRef = useRef(
     new Array(options.length).fill(null).map(() => React.createRef())
@@ -322,7 +323,7 @@ const Mechanics5 = ({
           </Box>
           <Box
             sx={
-              localStorage.getItem("mechanism_id") === "mechanic_4"
+              mechanism === "mechanic_4"
                 ? { display: "flex", justifyContent: "center" }
                 : ""
             }
