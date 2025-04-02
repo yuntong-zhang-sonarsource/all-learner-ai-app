@@ -914,7 +914,7 @@ const BingoCard = ({
               alt="Cloud"
               style={{
                 //width: screenWidth < 768 ? "170px" : "230px",
-                height: screenWidth < 768 ? "90px" : "175px",
+                height: screenWidth < 768 ? "100px" : "185px",
                 zIndex: 21,
               }}
             />
@@ -926,7 +926,7 @@ const BingoCard = ({
                 left: "50%",
                 top: "50%",
                 transform: "translate(-50%, -50%)",
-                height: screenWidth < 768 ? "50px" : "120px",
+                height: screenWidth < 768 ? "40px" : "100px",
                 zIndex: 22,
               }}
             />
