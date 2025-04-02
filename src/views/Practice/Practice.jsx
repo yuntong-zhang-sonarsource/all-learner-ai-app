@@ -1840,6 +1840,7 @@ const Practice = () => {
             storyLine,
             handleNext,
             type: "word",
+            mechanism: mechanism?.id,
             image: mechanics_data
               ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/` +
                 mechanics_data[0]?.image_url
