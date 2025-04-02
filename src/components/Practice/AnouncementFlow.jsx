@@ -430,6 +430,7 @@ const AnouncementFlow = ({
     setIsCorrect(null);
     setShowConfetti(false);
     setShowQuestion(false);
+    setStep("initiate");
   }, [currentLevel]);
 
   console.log(

@@ -332,52 +332,62 @@ export const level13 = [
         content: [
           {
             role: "System",
+            name: "Doctor",
             message: "Good morning! What is your problem?",
             audio: "level13P1Audio1",
           },
           {
             role: "User",
+            name: "Patient",
             message: "Good morning! I have a headache and a fever.",
             audio: "level13P1Audio2",
           },
           {
             role: "System",
+            name: "Doctor",
             message: "How long have you been feeling this way?",
             audio: "level13P1Audio3",
           },
           {
             role: "User",
+            name: "Patient",
             message: "Since yesterday evening.",
             audio: "level13P1Audio4",
           },
           {
             role: "System",
+            name: "Doctor",
             message: "Do you have a cough or cold?",
             audio: "level13P1Audio5",
           },
           {
             role: "User",
+            name: "Patient",
             message: "Yes, I have a slight cough.",
             audio: "level13P1Audio6",
           },
           {
             role: "System",
+            name: "Doctor",
             message:
               "Don’t worry. Take a rest and drink plenty of water. I will prescribe some medicine.",
             audio: "level13P1Audio7",
           },
           {
             role: "User",
+            name: "Patient",
             message: "Thank you! How many times should I take the medicine?",
             audio: "level13P1Audio8",
           },
           {
             role: "System",
+            name: "Doctor",
             message: "Take it twice a day after meals.",
             audio: "level13P1Audio9",
           },
           {
             role: "User",
+            name: "Patient",
             message: "Okay, thank you!",
             audio: "level13P1Audio10",
           },
@@ -516,8 +526,8 @@ export const level13 = [
           question: "Hey, have you decided where to go for your ________?",
           finalQuestion: "Why did you choose this word?",
           allwords: [
-            { img: "vacationImg", text: "Vacation" },
             { img: "meetingImg", text: "Meeting" },
+            { img: "vacationImg", text: "Vacation" },
             { img: "partyImg", text: "Party" },
           ],
           correctAnswer: "Vacation",
@@ -538,9 +548,9 @@ export const level13 = [
           question: "Maybe for ________ days. I don’t have a lot of time off.",
           finalQuestion: "Why did you choose this word?",
           allwords: [
-            { img: "fiveImg", text: "Five" },
             { img: "twoImg", text: "Two" },
             { img: "tenImg", text: "Ten" },
+            { img: "fiveImg", text: "Five" },
           ],
           correctAnswer: "Five",
           hints: "It is more than two but less than ten.",
@@ -561,8 +571,8 @@ export const level13 = [
             "I’ll be going with my ________. We both love exploring new places.",
           finalQuestion: "Why did you choose this word?",
           allwords: [
-            { img: "friendImg", text: "Friend" },
             { img: "petImg", text: "Pet" },
+            { img: "friendImg", text: "Friend" },
             { img: "teacherImg", text: "Teacher" },
           ],
           correctAnswer: "Friend",
@@ -676,31 +686,37 @@ export const level13 = [
         content: [
           {
             role: "System",
+            name: "Mathi",
             message: "Hey, can I borrow your English book for today?",
             audio: "level13S1Audio1",
           },
           {
             role: "User",
+            name: "Akshaya",
             message: "Sure! Do you need it for homework?",
             audio: "level13S1Audio2",
           },
           {
             role: "System",
+            name: "Mathi",
             message: "Yes, I forgot mine at home.",
             audio: "level13S1Audio3",
           },
           {
             role: "User",
+            name: "Akshaya",
             message: "No problem! Just return it to me tomorrow.",
             audio: "level13S1Audio4",
           },
           {
             role: "System",
+            name: "Mathi",
             message: "Thanks a lot! I really appreciate it.",
             audio: "level13S1Audio5",
           },
           {
             role: "System",
+            name: "Mathi",
             message:
               "We can help the environment in simple ways. Turn off the lights to save energy. Recycle things like paper and plastic to reduce waste. Planting trees gives us clean air. Use a reusable bag instead of plastic bags. Save water by taking short showers. Small actions can make a big difference.",
             audio: "level13S1Audio6",
@@ -840,65 +856,77 @@ export const level13 = [
         content: [
           {
             role: "System",
+            name: "Nancy",
             message: "Hello?",
             audio: "level13P5Audio1",
           },
           {
             role: "User",
+            name: "Tina",
             message: "Hey! What are you doing?",
             audio: "level13P5Audio2",
           },
           {
             role: "System",
+            name: "Nancy",
             message:
               "Not much. My mom left me a message about lunch. She said my lunch is in the kitchen, and I need to warm it before eating.",
             audio: "level13P5Audio3",
           },
           {
             role: "User",
+            name: "Tina",
             message: "That’s nice! What’s for lunch?",
             audio: "level13P5Audio4",
           },
           {
             role: "System",
+            name: "Nancy",
             message:
               "I’m not sure yet. But there’s some curd in the pot if I want it.",
             audio: "level13P5Audio5",
           },
           {
             role: "User",
+            name: "Tina",
             message: "Sounds good! So, what are you doing after lunch?",
             audio: "level13P5Audio6",
           },
           {
             role: "System",
+            name: "Nancy",
             message:
               "My mom said I need to clean up the kitchen after eating. She’ll be back at 4 p.m.",
             audio: "level13P5Audio7",
           },
           {
             role: "User",
+            name: "Tina",
             message: "Oh, okay. Want to come out and play later?",
             audio: "level13P5Audio8",
           },
           {
             role: "System",
+            name: "Nancy",
             message:
               "Yes! I can go out at 3:30 p.m., but I need to be back by 5:30 p.m.",
             audio: "level13P5Audio9",
           },
           {
             role: "User",
+            name: "Tina",
             message: "Great! Let’s meet at the park at 3:30 then.",
             audio: "level13P5Audio10",
           },
           {
             role: "System",
+            name: "Nancy",
             message: "Sure! See you later.",
             audio: "level13P5Audio11",
           },
           {
             role: "User",
+            name: "Tina",
             message: "See you! Bye!",
             audio: "level13P5Audio12",
           },
@@ -1299,26 +1327,31 @@ export const level13 = [
         content: [
           {
             role: "System",
+            name: "Alex",
             message: "Do you want to watch a movie tonight?",
             audio: "level13S2Audio1",
           },
           {
             role: "User",
+            name: "Raj",
             message: "Sure! What movie are you thinking of?",
             audio: "level13S2Audio2",
           },
           {
             role: "System",
+            name: "Alex",
             message: "Maybe an action movie. Do you like those?",
             audio: "level13S2Audio3",
           },
           {
             role: "User",
+            name: "Raj",
             message: "Yes! Let’s watch one at 7 p.m.",
             audio: "level13S2Audio4",
           },
           {
             role: "System",
+            name: "Alex",
             message:
               "Water is very important for life. We can save water by turning off the tap while brushing our teeth. Take short showers instead of long baths. Fix leaking taps to stop water waste. Use a bucket instead of a hose to wash your car. Water plants in the morning or evening to save water. Every drop counts.",
             audio: "level13S2Audio5",
@@ -1602,63 +1635,74 @@ export const level12 = [
         content: [
           {
             role: "System",
+            name: "Lily",
             message:
               "Hi Rahul, wait a second! You just threw those plastic bags on the road.",
             audio: "level12P2Audio_1",
           },
           {
             role: "User",
+            name: "Rahul",
             message:
               "Oh, it’s just a small plastic bag. What’s the issue in it?",
             audio: "level12P2Audio_2",
           },
           {
             role: "System",
+            name: "Lily",
             message:
               "It actually is a big issue! Plastic doesn’t decompose easily, and it harms animals and the environment.",
             audio: "level12P2Audio_3",
           },
           {
             role: "User",
+            name: "Rahul",
             message: "Really? I never thought about that.",
             audio: "level12P2Audio_4",
           },
           {
             role: "System",
+            name: "Lily",
             message:
               "Yes! Birds and animals might eat it by mistake and get sick. It also pollutes the ocean.",
             audio: "level12P2Audio_5",
           },
           {
             role: "User",
+            name: "Rahul",
             message: "Oh no! I didn’t realize it was that bad.",
             audio: "level12P2Audio_6",
           },
           {
             role: "System",
+            name: "Lily",
             message:
               "That’s why we should always throw our trash in a dustbin. Let us keep our surroundings clean.",
             audio: "level12P2Audio_7",
           },
           {
             role: "User",
+            name: "Rahul",
             message:
               "You’re right, Lilly. Let’s pick it up and throw it in the bin.",
             audio: "level12P2Audio_8",
           },
           {
             role: "System",
+            name: "Lily",
             message:
               "Great! And next time, let’s carry a bag for trash so we don’t litter.",
             audio: "level12P2Audio_9",
           },
           {
             role: "User",
+            name: "Rahul",
             message: "Good idea! Thanks for explaining, Lilly.",
             audio: "level12P2Audio_10",
           },
           {
             role: "System",
+            name: "Lily",
             message: "No problem! Let’s all do our part to protect nature.",
             audio: "level12P2Audio_11",
           },
@@ -2245,63 +2289,74 @@ export const level12 = [
         content: [
           {
             role: "System",
+            name: "Lilly",
             message:
               "Hi Rahul, wait a second! You just threw those plastic bags on the road.",
             audio: "level12P2Audio_1",
           },
           {
             role: "User",
+            name: "Rahul",
             message:
               "Oh, it’s just a small plastic bag. What’s the issue in it?",
             audio: "level12P2Audio_2",
           },
           {
             role: "System",
+            name: "Lilly",
             message:
               "It actually is a big issue! Plastic doesn’t decompose easily, and it harms animals and the environment.",
             audio: "level12P2Audio_3",
           },
           {
             role: "User",
+            name: "Rahul",
             message: "Really? I never thought about that.",
             audio: "level12P2Audio_4",
           },
           {
             role: "System",
+            name: "Lilly",
             message:
               "Yes! Birds and animals might eat it by mistake and get sick. It also pollutes the ocean.",
             audio: "level12P2Audio_5",
           },
           {
             role: "User",
+            name: "Rahul",
             message: "Oh no! I didn’t realize it was that bad.",
             audio: "level12P2Audio_6",
           },
           {
             role: "System",
+            name: "Lilly",
             message:
               "That’s why we should always throw our trash in a dustbin. Let us keep our surroundings clean.",
             audio: "level12P2Audio_7",
           },
           {
             role: "User",
+            name: "Rahul",
             message:
               "You’re right, Lilly. Let’s pick it up and throw it in the bin.",
             audio: "level12P2Audio_8",
           },
           {
             role: "System",
+            name: "Lilly",
             message:
               "Great! And next time, let’s carry a bag for trash so we don’t litter.",
             audio: "level12P2Audio_9",
           },
           {
             role: "User",
+            name: "Rahul",
             message: "Good idea! Thanks for explaining, Lilly.",
             audio: "level12P2Audio_10",
           },
           {
             role: "System",
+            name: "Lilly",
             message: "No problem! Let’s all do our part to protect nature.",
             audio: "level12P2Audio_11",
           },
@@ -4587,84 +4642,105 @@ export const level10 = [
   },
   {
     level: "P4",
-    mechanics: "PhrasesInAction",
-    data: [
-      {
-        step1: {
-          allwords: [{ img: "textbookImg", text: "Open Textbooks" }],
-          audio: "openTextbookAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "textbookImg", text: "Open Textbooks" },
-            { img: "classroomImg", text: "Classroom" },
-            { img: "teacherImg", text: "Teacher" },
-          ],
-          correctWordTwo: "Open Textbooks",
-          audio: "openTextbookAudio",
-        },
+    mechanics: "AnnouncementFlow",
+    data: {
+      instructions: {
+        type: "announcement",
+        imageOne: "trainImgOne",
+        imageTwo: "trainImgTwo",
+        content: [
+          {
+            role: "System",
+            message:
+              "Attention, passengers! The toy train to Ooty is about to depart. Please ensure you have your tickets and belongings with you. During the journey, you will witness beautiful scenery, including mountains, monkeys, and landscapes. Kindly follow the train staff’s instructions and enjoy your trip!",
+            audio: "chennaiTrainAudio",
+          },
+        ],
       },
-      {
-        step1: {
-          allwords: [{ img: "listenImg", text: "Listen Carefully" }],
-          audio: "listenAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "listenImg", text: "Listen Carefully" },
-            { img: "blackboardImg", text: "Blackboard" },
-            { img: "notebookImg", text: "Notebook" },
+      tasks: [
+        {
+          question: {
+            type: "text",
+            value: "Where did the students and teachers go on the toy train?",
+          },
+          options: [
+            { type: "text", id: "option1", value: "Mysore" },
+            { type: "text", id: "option2", value: "Ooty" },
+            { type: "text", id: "option3", value: "Chennai" },
+            { type: "text", id: "option4", value: "Hyderabad" },
           ],
-          correctWordTwo: "Listen Carefully",
-          audio: "listenAudio",
+          answer: "option2",
         },
-      },
-      {
-        step1: {
-          allwords: [{ img: "raiseHandImg", text: "Raise Hand" }],
-          audio: "raiseHandAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "raiseHandImg", text: "Raise Hand" },
-            { img: "deskImg", text: "Desk" },
-            { img: "studentImg", text: "Students" },
+        {
+          question: {
+            type: "text",
+            value: "Why did the train stop during the journey?",
+          },
+          options: [
+            { type: "text", id: "option1", value: "Because of heavy rain" },
+            {
+              type: "text",
+              id: "option2",
+              value: "A baby elephant was sitting on the track",
+            },
+            {
+              type: "text",
+              id: "option3",
+              value: "The train had a technical issue",
+            },
+            {
+              type: "text",
+              id: "option4",
+              value: "Passengers wanted to take photos",
+            },
           ],
-          correctWordTwo: "Raise Hand",
-          audio: "raiseHandAudio",
+          answer: "option2",
         },
-      },
-      {
-        step1: {
-          allwords: [{ img: "workPairImg", text: "Work in Pairs" }],
-          audio: "workPairAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "workPairImg", text: "Work in Pairs" },
-            { img: "exerciseImg", text: "Exercise" },
-            { img: "classroomImg", text: "Classroom" },
+        {
+          question: {
+            type: "text",
+            value: "Who helped move the baby elephant from the track?",
+          },
+          options: [
+            { type: "text", id: "option1", value: "The train driver" },
+            { type: "text", id: "option2", value: "Muthu" },
+            { type: "text", id: "option3", value: "The station master" },
+            { type: "text", id: "option4", value: "A forest ranger" },
           ],
-          correctWordTwo: "Work in Pairs",
-          audio: "workPairAudio",
+          answer: "option2",
         },
-      },
-      {
-        step1: {
-          allwords: [{ img: "writeDateImg", text: "Write Date" }],
-          audio: "writeDateAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "writeDateImg", text: "Write Date" },
-            { img: "notebookImg", text: "Notebook" },
-            { img: "penImg", text: "Pen" },
+        {
+          question: {
+            type: "text",
+            value: "What did Muthu use to move the baby elephant?",
+          },
+          options: [
+            { type: "text", id: "option1", value: "Apples" },
+            { type: "text", id: "option2", value: "Bananas" },
+            { type: "text", id: "option3", value: "Water" },
+            { type: "text", id: "option4", value: "Grass" },
           ],
-          correctWordTwo: "Write Date",
-          audio: "writeDateAudio",
+          answer: "option2",
         },
-      },
-    ],
+        {
+          question: {
+            type: "text",
+            value: "What did the passengers enjoy seeing during the journey?",
+          },
+          options: [
+            {
+              type: "text",
+              id: "option1",
+              value: "Monkeys, mountains, and landscapes",
+            },
+            { type: "text", id: "option2", value: "Rivers and oceans" },
+            { type: "text", id: "option3", value: "Skyscrapers and buildings" },
+            { type: "text", id: "option4", value: "Cars and highways" },
+          ],
+          answer: "option1",
+        },
+      ],
+    },
   },
   {
     level: "S1",
@@ -5107,88 +5183,89 @@ export const level10 = [
   },
   {
     level: "P8",
-    mechanics: "PhrasesInAction",
-    data: [
-      {
-        step1: {
-          allwords: [
-            { img: "underlineImg", text: "Underline Important Points" },
-          ],
-          audio: "underlineAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "underlineImg", text: "Underline Important Points" },
-            { img: "sitProperlyImg", text: "Sit Properly" },
-            { img: "notebookImg", text: "Notebook" },
-          ],
-          correctWordTwo: "Notebook",
-          audio: "underlineAudio",
-        },
+    mechanics: "AnnouncementFlow",
+    data: {
+      instructions: {
+        type: "announcement",
+        imageOne: "gradenAnouncementImg",
+        imageTwo: "child",
+        content: [
+          {
+            role: "System",
+            message:
+              "Attention, young gardeners! A child has started planting a beautiful garden. She bought seeds and tools, dug holes in the soil, and carefully planted the seeds. Every day, she watered the garden, and soon, the plants grew. Finally, she harvested fresh vegetables! Gardening takes patience and care. Keep nurturing your plants and enjoy the rewards!",
+            audio: "chennaiTrainAudio",
+          },
+        ],
       },
-      {
-        step1: {
-          allwords: [
-            { img: "readInstructionsImg", text: "Read Instructions Carefully" },
+      tasks: [
+        {
+          question: {
+            type: "text",
+            value: "What did the child want to plant?",
+          },
+          options: [
+            { type: "text", id: "option1", value: "A tree" },
+            { type: "text", id: "option2", value: "A garden" },
+            { type: "text", id: "option3", value: "A flower pot" },
+            { type: "text", id: "option4", value: "A forest" },
           ],
-          audio: "readInstructionsAudio",
+          answer: "option2",
         },
-        step2: {
-          allwordsTwo: [
-            { img: "pencilImg", text: "Question Paper" },
-            { img: "penImg", text: "Pen" },
-            { img: "readInstructionsImg", text: "Read Instructions Carefully" },
+        {
+          question: {
+            type: "text",
+            value: "What did the child buy for planting?",
+          },
+          options: [
+            { type: "text", id: "option1", value: "Books and toys" },
+            { type: "text", id: "option2", value: "Seeds and tools" },
+            { type: "text", id: "option3", value: "Shoes and clothes" },
+            { type: "text", id: "option4", value: "Fruits and vegetables" },
           ],
-          correctWordTwo: "Read Instructions Carefully",
-          audio: "readInstructionsAudio",
+          answer: "option2",
         },
-      },
-      {
-        step1: {
-          allwords: [{ img: "sitProperlyImg", text: "Sit Properly" }],
-          audio: "sitProperlyAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "sitProperlyImg", text: "Sit Properly" },
-            { img: "deskImg", text: "Desk" },
-            { img: "pillowImg", text: "Pillow" },
+        {
+          question: {
+            type: "text",
+            value: "What did the child do after digging holes in the soil?",
+          },
+          options: [
+            { type: "text", id: "option1", value: "Planted the seeds" },
+            { type: "text", id: "option2", value: "Watered the soil" },
+            { type: "text", id: "option3", value: "Added fertilizer" },
+            { type: "text", id: "option4", value: "Collected leaves" },
           ],
-          correctWordTwo: "Sit Properly",
-          audio: "sitProperlyAudio",
+          answer: "option1",
         },
-      },
-      {
-        step1: {
-          allwords: [{ img: "notebookImg", text: "Take Out Notebooks" }],
-          audio: "noteBookAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "penImg", text: "Pen" },
-            { img: "notebookImg", text: "Take Out Notebooks" },
-            { img: "textbookImg", text: "Textbook" },
+        {
+          question: {
+            type: "text",
+            value: "Why did the child water the garden every day?",
+          },
+          options: [
+            { type: "text", id: "option1", value: "To keep the soil wet" },
+            { type: "text", id: "option2", value: "To help the plants grow" },
+            { type: "text", id: "option3", value: "To wash the plants" },
+            { type: "text", id: "option4", value: "To remove weeds" },
           ],
-          correctWordTwo: "Take Out Notebooks",
-          audio: "noteBookAudio",
+          answer: "option2",
         },
-      },
-      {
-        step1: {
-          allwords: [{ img: "submitHomeworkImg", text: "Submit Homework" }],
-          audio: "submitHomeworkAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "submitHomeworkImg", text: "Submit Homework" },
-            { img: "bellImg", text: "Bell" },
-            { img: "questionPaperImg", text: "Teacher’s Desk" },
+        {
+          question: {
+            type: "text",
+            value: "What did the child harvest from the garden?",
+          },
+          options: [
+            { type: "text", id: "option1", value: "Flowers" },
+            { type: "text", id: "option2", value: "Vegetables" },
+            { type: "text", id: "option3", value: "Fruits" },
+            { type: "text", id: "option4", value: "Grains" },
           ],
-          correctWordTwo: "Submit Homework",
-          audio: "submitHomeworkAudio",
+          answer: "option2",
         },
-      },
-    ],
+      ],
+    },
   },
   {
     level: "S2",
@@ -5199,51 +5276,60 @@ export const level10 = [
         content: [
           {
             role: "System",
+            name: "Son",
             message: "Hello?",
             audio: "level10S2One",
           },
           {
             role: "User",
+            name: "Ram",
             message: "Hi, good morning! Am I speaking to Mr. Raghav?",
             audio: "level10S2Two",
           },
           {
             role: "System",
+            name: "Son",
             message:
               "Good morning! Actually, my dad isn’t at home right now. He accidentally took my mom’s phone and left his phone here. May I know who’s calling?",
             audio: "level10S2Three",
           },
           {
             role: "User",
+            name: "Ram",
             message:
               "Oh! This is Ram, his colleague from the office. I need to inform him about an urgent meeting. Do you know when he’ll be back?",
             audio: "level10S2Four",
           },
           {
             role: "System",
+            name: "Son",
             message:
               "He just went for a morning walk. He should be back soon. Would you like me to pass a message?",
             audio: "level10S2Five",
           },
           {
             role: "User",
+            name: "Ram",
             message:
               "Yes, please. Let him know that he has to be at the office half an hour earlier today for an urgent meeting before the regular one. It’s important that he doesn’t miss it.",
             audio: "level10S2Six",
           },
           {
             role: "System",
+            name: "Son",
             message:
               "Now, I’ll call my Mom’s number which is with him and inform about it. Anything else?",
             audio: "level10S2Seven",
           },
           {
             role: "User",
+            name: "Ram",
             message: "No, that’s all. Thanks for your help.",
             audio: "level10S2Eight",
           },
           {
             role: "System",
+            name: "Son",
             message: "You’re welcome. Have a nice day!",
             audio: "level10S2Nine",
           },

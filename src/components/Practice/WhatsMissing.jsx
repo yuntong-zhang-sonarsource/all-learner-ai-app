@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Box } from "@mui/material";
 import schoolsImg from "../../assets/schools.svg";
 import parkImg from "../../assets/park.svg";
 import marketImg from "../../assets/market.svg";
@@ -20,7 +21,14 @@ import {
 } from "../../utils/levelData";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
-import { practiceSteps, getLocalData } from "../../utils/constants";
+import {
+  practiceSteps,
+  getLocalData,
+  NextButtonRound,
+  StopButton,
+  SpeakButton,
+  ListenButton,
+} from "../../utils/constants";
 
 const levelMap = {
   10: level10,
@@ -318,24 +326,41 @@ function Step2({ handleNext, level, currentStep }) {
         {finalState && (
           <>
             {showMic && (
-              <button
-                onClick={handleMicClick}
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: "5px",
-                }}
-              >
-                <img
-                  src={micImg}
-                  alt="Microphone"
-                  style={{
-                    width: "45px",
-                    backgroundColor: "white",
-                    borderRadius: "50%",
+              <div>
+                <Box
+                  sx={{
+                    marginTop: "7px",
+                    position: "relative",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                    cursor: "pointer",
+                    //marginLeft: getMarginLeft(0),
                   }}
-                />
-              </button>
+                  onClick={handleMicClick}
+                >
+                  <SpeakButton height={45} width={45} />
+                </Box>
+              </div>
+              // <button
+              //   onClick={handleMicClick}
+              //   style={{
+              //     background: "none",
+              //     border: "none",
+              //     padding: "5px",
+              //   }}
+              // >
+              //   <img
+              //     src={micImg}
+              //     alt="Microphone"
+              //     style={{
+              //       width: "45px",
+              //       backgroundColor: "white",
+              //       borderRadius: "50%",
+              //     }}
+              //   />
+              // </button>
             )}
 
             {showPause && (
@@ -349,7 +374,24 @@ function Step2({ handleNext, level, currentStep }) {
                     style={{ width: "160px" }}
                   />
                 )}
-                <button
+                <div>
+                  <Box
+                    sx={{
+                      marginTop: "7px",
+                      position: "relative",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                      cursor: "pointer",
+                      //marginLeft: getMarginLeft(0),
+                    }}
+                    onClick={handlePauseClick}
+                  >
+                    <StopButton height={45} width={45} />
+                  </Box>
+                </div>
+                {/* <button
                   onClick={handlePauseClick}
                   style={{
                     background: "none",
@@ -366,17 +408,12 @@ function Step2({ handleNext, level, currentStep }) {
                       borderRadius: "50%",
                     }}
                   />
-                </button>
+                </button> */}
               </div>
             )}
 
             {showNext && (
-              <button
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: "3px",
-                }}
+              <div
                 onClick={() => {
                   handleNext();
                   setSelectedAnswer(null);
@@ -389,16 +426,39 @@ function Step2({ handleNext, level, currentStep }) {
                   setShowEffect(false);
                   setShowRedRectangle(false);
                 }}
+                style={{ cursor: "pointer" }}
               >
-                <img
-                  src={nextImg}
-                  alt="Next"
-                  style={{
-                    width: "130px",
-                    borderRadius: "30%",
-                  }}
-                />
-              </button>
+                <NextButtonRound height={50} width={50} />
+              </div>
+              // <button
+              //   style={{
+              //     background: "none",
+              //     border: "none",
+              //     padding: "3px",
+              //   }}
+              //   onClick={() => {
+              //     handleNext();
+              //     setSelectedAnswer(null);
+              //     setIsCorrect(null);
+              //     setShowMessage(false);
+              //     setFinalState(false);
+              //     setShowMic(true);
+              //     setShowPause(false);
+              //     setShowNext(false);
+              //     setShowEffect(false);
+              //     setShowRedRectangle(false);
+              //   }}
+              // >
+              //   <img
+              //     src={nextImg}
+              //     alt="Next"
+              //     style={{
+              //       width: "130px",
+              //       borderRadius: "30%",
+              //     }}
+              //   />
+
+              // </button>
             )}
           </>
         )}

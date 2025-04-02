@@ -311,7 +311,7 @@ const PhoneConversation = ({
     mainContainer: {
       background:
         "linear-gradient(0deg, rgba(241, 153, 32, 0.32) 0%, rgba(243, 159, 39, 0.32) 23%, rgba(247, 176, 59, 0.32) 58%, rgba(254, 204, 92, 0.32) 100%)",
-      height: "100vh",
+      height: "100%",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -327,7 +327,7 @@ const PhoneConversation = ({
       position: "relative",
       boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
       overflowX: "hidden",
-      height: "80vh",
+      //height: "80vh",
       overflowY: "hidden",
       marginBottom: "40px",
     },
@@ -368,7 +368,7 @@ const PhoneConversation = ({
       alignSelf: "flex-end",
       width: "280px",
       marginRight: "180px",
-      marginBottom: "-60px",
+      marginBottom: "-30px",
     },
     boldText: {
       fontWeight: "bold",
@@ -393,9 +393,12 @@ const PhoneConversation = ({
       width: "25px",
       height: "25px",
       position: "absolute",
-      left: "-30px",
+      left: "-70px",
       bottom: "10%",
+      display: "flex",
+      alignItems: "center",
       transform: "translateY(50%)",
+      gap: "10px",
     },
     callerIconsContainer: {
       position: "absolute",
@@ -413,6 +416,7 @@ const PhoneConversation = ({
       width: "50px",
       height: "50px",
       cursor: "pointer",
+      marginRight: "10px",
     },
     questionBox: {
       backgroundColor: "#f8f2ff",
@@ -536,18 +540,10 @@ const PhoneConversation = ({
                         : styles.callerMessage),
                     }}
                   >
-                    <span style={styles.boldText}>{msg.role}: </span>
+                    <span style={styles.boldText}>{msg.name}: </span>
                     {msg.message}
                     {msg?.role === "System" && (
-                      <div
-                        style={{
-                          marginLeft: "-80px",
-                          display: "flex",
-                          justifyContent: "flex-start",
-                          alignItems: "flex-start",
-                          gap: "10px",
-                        }}
-                      >
+                      <div style={styles.boyIcon}>
                         <img
                           src={
                             isPlaying === msg.audio ? spinnerStop : listenImg2
@@ -593,12 +589,15 @@ const PhoneConversation = ({
                   </div>
                 ))}
               </div>
-              <img
+              {/* <img
                 src={Assets.nextimg}
                 alt="Next"
                 style={styles.nextButton}
                 onClick={handleNextClick}
-              />
+              /> */}
+              <div onClick={handleNextClick} style={styles.nextButton}>
+                <NextButtonRound height={50} width={50} />
+              </div>
             </>
           ) : (
             tasks[currentTaskIndex] && (
