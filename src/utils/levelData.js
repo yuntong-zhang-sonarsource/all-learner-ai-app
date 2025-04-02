@@ -4653,7 +4653,7 @@ export const level10 = [
             role: "System",
             message:
               "Attention, passengers! The toy train to Ooty is about to depart. Please ensure you have your tickets and belongings with you. During the journey, you will witness beautiful scenery, including mountains, monkeys, and landscapes. Kindly follow the train staff’s instructions and enjoy your trip!",
-            audio: "chennaiTrainAudio",
+            audio: "toyTrainAudio",
           },
         ],
       },
@@ -5194,7 +5194,7 @@ export const level10 = [
             role: "System",
             message:
               "Attention, young gardeners! A child has started planting a beautiful garden. She bought seeds and tools, dug holes in the soil, and carefully planted the seeds. Every day, she watered the garden, and soon, the plants grew. Finally, she harvested fresh vegetables! Gardening takes patience and care. Keep nurturing your plants and enjoy the rewards!",
-            audio: "chennaiTrainAudio",
+            audio: "gardenAnouncementAudio",
           },
         ],
       },
