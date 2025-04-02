@@ -198,7 +198,7 @@ const AudioRecorder = (props) => {
                     props.recordedAudio ||
                     !props.pageName === "m8") && (
                     <>
-                      {!props.isShowCase && !props.pageName === "m8" && (
+                      {!props.isShowCase && !(props.pageName === "m8") && (
                         <Box>
                           {!props.pauseAudio ? (
                             <div
@@ -250,7 +250,7 @@ const AudioRecorder = (props) => {
                       )}
                       <Box
                         sx={{
-                          marginLeft: props.isShowCase ? "" : "2px",
+                          marginLeft: props.isShowCase ? "" : "30px",
                           cursor: "pointer",
                         }}
                       >

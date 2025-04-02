@@ -337,7 +337,7 @@ const SpeakSentenceComponent = () => {
           storyLine,
           handleNext,
           type: questions[currentQuestion]?.contentType,
-          image: elephant,
+          // image: elephant,
           enableNext,
           showTimer: false,
           points,

@@ -1334,18 +1334,23 @@ const Practice = () => {
   console.log("mec", mechanism, level, rFlow);
 
   const renderMechanics = () => {
-    if (!mechanism && rFlow !== "true") {
+    if ((!mechanism && rFlow !== "true") || mechanism.id === "mechanic_15") {
       return (
         <WordsOrImage
           {...{
             level: level,
             header:
-              questions[currentQuestion]?.contentType === "image"
+              mechanism?.id &&
+              (mechanism?.id === "mechanic_15"
+                ? "Read the question and record your response"
+                : questions[currentQuestion]?.contentType === "image"
                 ? `Guess the below image`
-                : `Speak the below ${questions[currentQuestion]?.contentType}`,
+                : `Speak the below ${questions[currentQuestion]?.contentType}`),
             words:
               level === 1 || level === 2 || level === 3
                 ? levelOneWord
+                : mechanism?.id === "mechanic_15"
+                ? questions[currentQuestion]?.mechanics_data?.[0]?.text
                 : questions[currentQuestion]?.contentSourceData?.[0]?.text,
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
@@ -1355,6 +1360,10 @@ const Practice = () => {
             storyLine,
             handleNext,
             type: questions[currentQuestion]?.contentType,
+            image:
+              mechanism?.id === "mechanic_15"
+                ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/${questions[currentQuestion]?.mechanics_data[0]?.image_url}`
+                : "",
             // image: elephant,
             enableNext,
             showTimer: false,
@@ -1822,7 +1831,9 @@ const Practice = () => {
           {...{
             level: !isShowCase && level,
             header:
-              "Look at the picture and speak the correct answer from below",
+              mechanism?.id === "mechanic_16"
+                ? "Read the question and select correct answer"
+                : "Look at the picture and speak the correct answer from below",
             parentWords: mechanics_data
               ? mechanics_data[0].text
               : questions[currentQuestion]?.contentSourceData?.[0]?.text,
