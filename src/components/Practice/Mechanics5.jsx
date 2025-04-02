@@ -368,7 +368,7 @@ const Mechanics5 = ({
                         src={`${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/${option.image_url}`}
                         style={{
                           borderRadius: "20px",
-                          maxWidth: "100%",
+                          width: "150px",
                           height: "150px",
                         }}
                         alt=""
