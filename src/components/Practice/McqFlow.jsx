@@ -196,9 +196,11 @@ const McqFlow = ({
           />
 
           {/* MCQ Section on the right */}
-          <div>
+          <div style={{ width: "50%" }}>
             {typeof tasks?.[currentStep - 1]?.question === "string" ? (
-              <h3>{tasks[currentStep - 1].question}</h3>
+              <h3 style={{ fontFamily: "Quicksand", fontWeight: "700" }}>
+                {tasks[currentStep - 1].question}
+              </h3>
             ) : null}
 
             <div>
@@ -226,7 +228,14 @@ const McqFlow = ({
                       cursor: "pointer",
                     }}
                   />
-                  <label style={{ fontSize: "16px", cursor: "pointer" }}>
+                  <label
+                    style={{
+                      fontSize: "17px",
+                      cursor: "pointer",
+                      fontWeight: "600",
+                      fontFamily: "Quicksand",
+                    }}
+                  >
                     {option.value}
                   </label>
                 </div>

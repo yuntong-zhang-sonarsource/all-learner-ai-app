@@ -530,7 +530,8 @@ const Mechanics7 = ({
           <img
             src={currentImg?.img}
             alt="pencil"
-            width={"150px"}
+            height={"200px"}
+            width={"200px"}
             style={{
               zIndex: 2,
             }}
