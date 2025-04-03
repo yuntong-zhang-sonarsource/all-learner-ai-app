@@ -30,10 +30,10 @@ const content = {
       allwords: [
         { img: Assets.Apple, text: "Apple" },
         { img: Assets.dogsBarkImg, text: "Dog" },
-        { img: Assets.juiceImg, text: "Mug" },
+        { img: Assets.hatR1OneImg, text: "Hat" },
       ],
       correctWord: "Apple",
-      audio: Assets.appleRoneAudio,
+      audio: Assets.appleNewAudio,
       flowName: "P1",
     },
     {
@@ -43,7 +43,7 @@ const content = {
         { img: Assets.penImg, text: "Pen" },
       ],
       correctWord: "Pen",
-      audio: Assets.penRoneAudio,
+      audio: Assets.penNewAudio,
       flowName: "P2",
     },
     {
@@ -105,6 +105,76 @@ const content = {
       correctWord: "Hat",
       audio: Assets.hatR1OneAudio,
       flowName: "P8",
+    },
+    {
+      allwords: [
+        { img: Assets.TigerNewImg, text: "Tiger" },
+        { img: Assets.hatR1TwoImg, text: "Bat" },
+        { img: Assets.hatR1ThreeImg, text: "Carpet" },
+      ],
+      correctWord: "Tiger",
+      audio: Assets.TigerAudio,
+      flowName: "P9",
+    },
+    {
+      allwords: [
+        { img: Assets.glassRImg, text: "Glass" },
+        { img: Assets.batRImg, text: "Bat" },
+        { img: Assets.fanR1ThreeImg, text: "Lamp" },
+      ],
+      correctWord: "Bat",
+      audio: Assets.batRAudio,
+      flowName: "P10",
+    },
+    {
+      allwords: [
+        { img: Assets.puzzleRImg, text: "Puzzle" },
+        { img: Assets.aimRImg, text: "Aim" },
+        { img: Assets.hatR1ThreeImg, text: "Carpet" },
+      ],
+      correctWord: "Puzzle",
+      audio: Assets.puzzleRAudio,
+      flowName: "P11",
+    },
+    {
+      allwords: [
+        { img: Assets.capR1TwoImg, text: "Belt" },
+        { img: Assets.lemonRImg, text: "Lemon" },
+        { img: Assets.capR1ThreeImg, text: "Tie" },
+      ],
+      correctWord: "Lemon",
+      audio: Assets.lemonRAudio,
+      flowName: "P12",
+    },
+    {
+      allwords: [
+        { img: Assets.drumRImg, text: "Drum" },
+        { img: Assets.dogR1TwoImg, text: "Cat" },
+        { img: Assets.dogR1ThreeImg, text: "Horse" },
+      ],
+      correctWord: "Drum",
+      audio: Assets.drumRAudio,
+      flowName: "P13",
+    },
+    {
+      allwords: [
+        { img: Assets.eggR1TwoImg, text: "Fan" },
+        { img: Assets.basketRImg, text: "Basket" },
+        { img: Assets.eggR1ThreeImg, text: "Goat" },
+      ],
+      correctWord: "Basket",
+      audio: Assets.basketRAudio,
+      flowName: "P14",
+    },
+    {
+      allwords: [
+        { img: Assets.DinnerNewImg, text: "Dinner" },
+        { img: Assets.shoutRImg, text: "Shout" },
+        { img: Assets.fanR1ThreeImg, text: "Lamp" },
+      ],
+      correctWord: "Dinner",
+      audio: Assets.DinnerAudio,
+      flowName: "P15",
     },
   ],
 };
