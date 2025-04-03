@@ -37,7 +37,11 @@ import {
 } from "../../utils/levelData";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
-import { practiceSteps, getLocalData } from "../../utils/constants";
+import {
+  practiceSteps,
+  getLocalData,
+  NextButtonRound,
+} from "../../utils/constants";
 import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 
@@ -578,12 +582,15 @@ const R3 = ({
                   zIndex: 1000,
                 }}
               >
-                <img
+                {/* <img
                   src={r3Next}
                   alt="Listen"
                   style={{ height: "80px", cursor: "pointer" }}
                   onClick={handleNextClick}
-                />
+                /> */}
+                <div onClick={handleNextClick} style={{ cursor: "pointer" }}>
+                  <NextButtonRound height={60} width={60} />
+                </div>
               </div>
             )}
 

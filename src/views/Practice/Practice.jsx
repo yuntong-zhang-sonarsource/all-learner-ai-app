@@ -286,7 +286,7 @@ const Practice = () => {
       {
         completeWord: "Kitten",
         syllable: ["Kit", "ten"],
-        img: Assets.Kitten,
+        img: Assets.catImage,
         syllablesAudio: [
           { name: "Kit", audio: Assets.Kit },
           { name: "ten", audio: Assets.Ten },
@@ -306,7 +306,7 @@ const Practice = () => {
       {
         completeWord: "Pocket",
         syllable: ["Pock", "et"],
-        img: Assets.Pocket,
+        img: Assets.pocketImage,
         syllablesAudio: [
           { name: "Pock", audio: Assets.Pock },
           { name: "et", audio: Assets.Et },
@@ -337,6 +337,79 @@ const Practice = () => {
     ],
   };
 
+  const levelTwo = {
+    P1: [
+      { completeWord: "Sister", syllable: ["Sis", "ter"] },
+      { completeWord: "Brother", syllable: ["Bro", "ther"] },
+      { completeWord: "Eraser", syllable: ["E", "raser"] },
+      { completeWord: "Teacher", syllable: ["Tea", "cher"] },
+      { completeWord: "Bottle", syllable: ["Bot", "tle"] },
+    ],
+    P2: [
+      { completeWord: "Table", syllable: ["Ta", "ble"] },
+      { completeWord: "Temple", syllable: ["Tem", "ple"] },
+      { completeWord: "Jacket", syllable: ["Jack", "et"] },
+      { completeWord: "Summer", syllable: ["Sum", "mer"] },
+      { completeWord: "Winter", syllable: ["Win", "ter"] },
+    ],
+    S1: [
+      { completeWord: "Rainy", syllable: ["Rai", "ny"] },
+      { completeWord: "Picture", syllable: ["Pic", "ture"] },
+      { completeWord: "Sunday", syllable: ["Sun", "day"] },
+      { completeWord: "Morning", syllable: ["Mor", "ning"] },
+      { completeWord: "Evening", syllable: ["Eve", "ning"] },
+    ],
+    P3: [
+      { completeWord: "Dinner", syllable: ["Din", "ner"] },
+      { completeWord: "Pocket", syllable: ["Poc", "ket"] },
+      { completeWord: "Butter", syllable: ["But", "ter"] },
+      { completeWord: "Orange", syllable: ["O", "range"] },
+      { completeWord: "Lemon", syllable: ["Le", "mon"] },
+    ],
+    P4: [
+      { completeWord: "Circle", syllable: ["Cir", "cle"] },
+      { completeWord: "Rabbit", syllable: ["Rab", "bit"] },
+      { completeWord: "Color", syllable: ["Co", "lor"] },
+      { completeWord: "Village", syllable: ["Vil", "lage"] },
+      { completeWord: "Farmer", syllable: ["Far", "mer"] },
+    ],
+    S2: [
+      { completeWord: "Coward", syllable: ["Cow", "ard"] },
+      { completeWord: "Ladder", syllable: ["Lad", "der"] },
+      { completeWord: "River", syllable: ["Ri", "ver"] },
+      { completeWord: "People", syllable: ["Peo", "ple"] },
+      { completeWord: "Silver", syllable: ["Sil", "ver"] },
+    ],
+    L1: [
+      { completeWord: "Coward", syllable: ["Cow", "ard"] },
+      { completeWord: "Ladder", syllable: ["Lad", "der"] },
+      { completeWord: "River", syllable: ["Ri", "ver"] },
+      { completeWord: "People", syllable: ["Peo", "ple"] },
+      { completeWord: "Silver", syllable: ["Sil", "ver"] },
+    ],
+    L2: [
+      { completeWord: "Coward", syllable: ["Cow", "ard"] },
+      { completeWord: "Ladder", syllable: ["Lad", "der"] },
+      { completeWord: "River", syllable: ["Ri", "ver"] },
+      { completeWord: "People", syllable: ["Peo", "ple"] },
+      { completeWord: "Silver", syllable: ["Sil", "ver"] },
+    ],
+    L3: [
+      { completeWord: "Coward", syllable: ["Cow", "ard"] },
+      { completeWord: "Ladder", syllable: ["Lad", "der"] },
+      { completeWord: "River", syllable: ["Ri", "ver"] },
+      { completeWord: "People", syllable: ["Peo", "ple"] },
+      { completeWord: "Silver", syllable: ["Sil", "ver"] },
+    ],
+    L4: [
+      { completeWord: "Coward", syllable: ["Cow", "ard"] },
+      { completeWord: "Ladder", syllable: ["Lad", "der"] },
+      { completeWord: "River", syllable: ["Ri", "ver"] },
+      { completeWord: "People", syllable: ["Peo", "ple"] },
+      { completeWord: "Silver", syllable: ["Sil", "ver"] },
+    ],
+  };
+
   const handleComplete = (nextStep) => {
     setRStep(nextStep);
     setLocalData("rStep", nextStep);
@@ -359,16 +432,29 @@ const Practice = () => {
   const rFlow = getLocalData("rFlow");
 
   useEffect(() => {
+    console.log("levelsssss", level);
+
+    let currentLevelMap;
+    let currentImageMap;
+
+    if (level === 2) {
+      currentLevelMap = practiceSteps?.[currentPracticeStep]?.titleNew || "P1";
+      currentImageMap =
+        practiceSteps[progressData.currentPracticeStep]?.titleNew || "P1";
+    } else {
+      currentLevelMap = practiceSteps?.[currentPracticeStep]?.title || "P1";
+      currentImageMap =
+        practiceSteps[progressData.currentPracticeStep]?.title || "P1";
+    }
+
     if (
       progressData?.currentPracticeStep !== undefined &&
       progressData?.currentPracticeStep !== null
     ) {
-      const currentLevel =
-        practiceSteps[progressData.currentPracticeStep]?.title;
-      const currentImage =
-        practiceSteps[progressData.currentPracticeStep]?.title;
-      const levelData = levels[currentLevel];
-      const levelImage = levels[currentImage];
+      const selectedLevels = level === 2 ? levelTwo : levels;
+
+      const levelData = selectedLevels[currentLevelMap];
+      const levelImage = selectedLevels[currentImageMap];
       const currentWord = levelData[currentQuestion];
 
       setCurrentImage(levelImage[currentQuestion]);

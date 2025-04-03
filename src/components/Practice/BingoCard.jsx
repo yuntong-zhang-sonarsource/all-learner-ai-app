@@ -129,71 +129,6 @@ const BingoCard = ({
     return () => clearTimeout(timer);
   }, [showWrongWord]);
 
-  // const initializeRecognition = () => {
-  //   let recognitionInstance;
-
-  //   const SpeechRecognition =
-  //     window.SpeechRecognition || window.webkitSpeechRecognition;
-
-  //   if (SpeechRecognition) {
-  //     recognitionInstance = new SpeechRecognition();
-  //   } else {
-  //     alert("Your browser does not support Speech Recognition.");
-  //     return;
-  //   }
-
-  //   if (recognitionInstance) {
-  //     recognitionInstance.continuous = true;
-  //     recognitionInstance.interimResults = true;
-  //     recognitionInstance.lang = "en-US";
-  //     recognitionInstance.maxAlternatives = 1;
-
-  //     recognitionInstance.onstart = () => {};
-
-  //     recognitionInstance.onresult = (event) => {
-  //       const transcript = event.results[0][0].transcript;
-  //       setIsRecording(false);
-  //       setIsProcessing(false);
-  //       setIsMicOn(false);
-  //       const matchPercentage = phoneticMatch(
-  //         levels[currentLevel]?.arrM[currentWordIndex],
-  //         transcript
-  //       );
-  //       console.log("matchPercentage", matchPercentage);
-  //     };
-
-  //     recognitionInstance.onerror = (event) => {
-  //       setIsRecording(false);
-  //       setIsProcessing(false);
-  //       setIsMicOn(false);
-  //       console.error("Speech recognition error:", event.error);
-  //       if (event.error === "no-speech") {
-  //         console.log("No Speech!");
-  //       } else if (event.error === "aborted") {
-  //         recognitionInstance.start();
-  //       }
-  //     };
-
-  //     recognitionInstance.onend = () => {
-  //       setIsProcessing(false);
-  //     };
-
-  //     setRecognition(recognitionInstance);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   return () => {
-  //     if (recognition) {
-  //       recognition.onstart = null;
-  //       recognition.onresult = null;
-  //       recognition.onerror = null;
-  //       recognition.onend = null;
-  //       recognition.stop();
-  //     }
-  //   };
-  // }, [recognition]);
-
   const startRecording = (word, isSelected) => {
     //console.log('recs', recognition);
     if (isChrome) {
@@ -303,130 +238,159 @@ const BingoCard = ({
   const levels = {
     L1: {
       words: [
-        "SUB",
-        "BER",
-        "TEL",
-        "NO",
-        "PINE",
-        "RINE",
-        "DOM",
+        "MAN",
+        "WA",
+        "GO",
+        "CIL",
+        "MO",
+        "THER",
+        "FA",
+        "TER",
+        "SIS",
+        "BRO",
+        "PEN",
         "E",
-        "AP",
-        "PHONE",
-        "I",
-        "PLE",
-        "STRAW",
-        "MA",
-        "RY",
-        "BAT",
       ],
       imageAudioMap: {
-        TELEPHONE: {
-          image: Assets.TelephoneNewImg,
-          audio: Assets.telephoneAudio,
+        MANGO: {
+          image: Assets.mangoR1OneImg,
+          audio: Assets.mangoNewAudio,
         },
-        PINEAPPLE: {
-          image: Assets.PineappleNewImg,
-          audio: Assets.pineappleAudio,
+        WATER: {
+          image: Assets.waterImg,
+          audio: Assets.waterNewAudio,
         },
-        SUBMARINE: { image: Assets.submarineImg, audio: Assets.submarineAudio },
-        STRAWBERRY: {
-          image: Assets.strawberryImg,
-          audio: Assets.strawberryAudio,
+        MOTHER: {
+          image: Assets.motherImg,
+          audio: Assets.motherNewAudio,
         },
-        DOMINO: { image: Assets.dominoImg, audio: Assets.dominoAudio },
+        FATHER: {
+          image: Assets.fatherImg,
+          audio: Assets.fatherNewAudio,
+        },
+        PENCIL: {
+          image: Assets.pencilImg,
+          audio: Assets.pencilNewAudio,
+        },
       },
-      arrM: ["TELEPHONE", "PINEAPPLE", "SUBMARINE", "STRAWBERRY", "DOMINO"],
+      arrM: ["MANGO", "WATER", "MOTHER", "FATHER", "PENCIL"],
     },
     L2: {
       words: [
-        "BUR",
-        "CAN",
-        "MIC",
-        "SI",
-        "GER",
-        "CUM",
-        "A",
-        "RO",
-        "CLE",
-        "HAM",
-        "WAVE",
-        "MEL",
-        "CAR",
-        "CU",
-        "POP",
-        "BER",
+        "MAR",
+        "BAS",
+        "DOW",
+        "TOR",
+        "KET",
+        "CRICK",
+        "DOC",
+        "WIN",
+        "BOT",
+        "CHER",
+        "TLE",
+        "ET",
       ],
       imageAudioMap: {
-        MICROWAVE: { image: Assets.microwaveImg, audio: Assets.microwaveAudio },
-        CARAMEL: { image: Assets.caramelImg, audio: Assets.caramelAudio },
-        HAMBURGER: { image: Assets.hamburgerImg, audio: Assets.hamburgerAudio },
-        POPSICLE: { image: Assets.popsicleImg, audio: Assets.popsicleAudio },
-        CUCUMBER: { image: Assets.cucumberImg, audio: Assets.cucumberAudio },
+        DOCTOR: {
+          image: Assets.doctorImg,
+          audio: Assets.doctorNewAudio,
+        },
+        MARKET: {
+          image: Assets.marketImg,
+          audio: Assets.marketNewAudio,
+        },
+        BASKET: {
+          image: Assets.basketImg,
+          audio: Assets.basketNewAudio,
+        },
+        CRICKET: {
+          image: Assets.cricketImg,
+          audio: Assets.cricketNewAudio,
+        },
+        WINDOW: {
+          image: Assets.WindowNewImg,
+          audio: Assets.windowNewAudio,
+        },
       },
-      arrM: ["MICROWAVE", "CARAMEL", "HAMBURGER", "POPSICLE", "CUCUMBER"],
+      arrM: ["DOCTOR", "MARKET", "BASKET", "CRICKET", "WINDOW"],
     },
     L3: {
       words: [
-        "VI",
-        "O",
-        "LIN",
-        "GE",
-        "SUB",
-        "NO",
-        "BI",
-        "CA",
-        "STRAW",
-        "I",
-        "RINE",
-        "BER",
-        "TAN",
-        "MA",
-        "RY",
-        "VOL",
+        "BAL",
+        "CLE",
+        "GAR",
+        "DLE",
+        "LOON",
+        "CAN",
+        "TEM",
+        "SCOO",
+        "CY",
+        "DEN",
+        "TER",
+        "PLE",
       ],
       imageAudioMap: {
-        SUBMARINE: { image: Assets.submarineImg, audio: Assets.submarineAudio },
-        VOLCANO: { image: Assets.volcanoImg, audio: Assets.volcanoAudio },
-        STRAWBERRY: {
-          image: Assets.strawberryImg,
-          audio: Assets.strawberryAudio,
+        BALLOON: {
+          image: Assets.balloonImg,
+          audio: Assets.balloonNewAudio,
         },
-        TANGERINE: { image: Assets.tangerineImg, audio: Assets.tangerineAudio },
-        VIOLIN: { image: Assets.violinImg, audio: Assets.violinAudio },
+        GARDEN: {
+          image: Assets.gardenImg,
+          audio: Assets.gardenNewAudio,
+        },
+        CANDLE: {
+          image: Assets.candleImg,
+          audio: Assets.candleNewAudio,
+        },
+        SCOOTER: {
+          image: Assets.scooterImg,
+          audio: Assets.scooterNewAudio,
+        },
+        CYCLE: {
+          image: Assets.bicycleRImg,
+          audio: Assets.cycleNewAudio,
+        },
       },
-      arrM: ["SUBMARINE", "VOLCANO", "STRAWBERRY", "TANGERINE", "VIOLIN"],
+      arrM: ["BALLOON", "GARDEN", "CANDLE", "SCOOTER", "CYCLE"],
     },
     L4: {
       words: [
-        "BAT",
-        "U",
-        "TOR",
-        "CU",
-        "PROJ",
-        "UM",
-        "LET",
-        "EC",
-        "BER",
-        "OME",
-        "DISH",
-        "CUM",
-        "WASH",
+        "FLOW",
+        "PY",
+        "MUS",
+        "OL",
         "ER",
-        "TE",
-        "VAC",
+        "PUP",
+        "PER",
+        "STU",
+        "IC",
+        "DENT",
+        "SCHO",
+        "PA",
       ],
       imageAudioMap: {
-        CUCUMBER: { image: Assets.cucumberImg, audio: Assets.cucumberAudio },
-        PROJECTOR: { image: Assets.projectorImg, audio: Assets.projectorAudio },
-        DISHWASHER: {
-          image: Assets.dishwasherImg,
-          audio: Assets.dishwasherAudio,
+        FLOWER: {
+          image: Assets.flowerRImg,
+          audio: Assets.flowerNewAudio,
         },
-        VACUUM: { image: Assets.vacuumImg, audio: Assets.vacuumAudio },
-        OMELETTE: { image: Assets.OmletteImg, audio: Assets.omeletteAudio },
+        MUSIC: {
+          image: Assets.musicImg,
+          audio: Assets.musicNewAudio,
+        },
+        PUPPY: {
+          image: Assets.puppyImg,
+          audio: Assets.puppyNewAudio,
+        },
+        STUDENT: {
+          image: Assets.studentImg,
+          audio: Assets.studentNewAudio,
+        },
+        PAPER: {
+          image: Assets.paperImg,
+          audio: Assets.paperNewAudio,
+        },
       },
-      arrM: ["CUCUMBER", "PROJECTOR", "DISHWASHER", "VACUUM", "OMELETTE"],
+      arrM: ["FLOWER", "MUSIC", "PUPPY", "STUDENT", "PAPER"],
     },
   };
 
@@ -494,23 +458,29 @@ const BingoCard = ({
     }
 
     const validPairs = {
-      MICROWAVE: ["MIC", "RO", "WAVE"],
-      TELEPHONE: ["TEL", "E", "PHONE"],
-      PINEAPPLE: ["PINE", "AP", "PLE"],
-      SUBMARINE: ["SUB", "MA", "RINE"],
-      STRAWBERRY: ["STRAW", "BER", "RY"],
-      DOMINO: ["DOM", "I", "NO"],
-      CARAMEL: ["CAR", "A", "MEL"],
-      HAMBURGER: ["HAM", "BUR", "GER"],
-      POPSICLE: ["POP", "SI", "CLE"],
-      CUCUMBER: ["CU", "CUM", "BER"],
-      VOLCANO: ["VOL", "CA", "NO"],
-      TANGERINE: ["TAN", "GE", "RINE"],
-      PROJECTOR: ["PROJ", "EC", "TOR"],
-      DISHWASHER: ["DISH", "WASH", "ER"],
-      VACUUM: ["VAC", "U", "UM"],
-      OMELETTE: ["OME", "LET", "TE"],
-      VIOLIN: ["VI", "O", "LIN"],
+      MANGO: ["MAN", "GO"],
+      WATER: ["WA", "TER"],
+      MOTHER: ["MO", "THER"],
+      FATHER: ["FA", "THER"],
+      PENCIL: ["PEN", "CIL"],
+      DOCTOR: ["DOC", "TOR"],
+      MARKET: ["MAR", "KET"],
+      BASKET: ["BAS", "KET"],
+      TABLE: ["TA", "BLE"],
+      WINDOW: ["WIN", "DOW"],
+      POCKET: ["POCK", "ET"],
+      WINDOW: ["WIN", "DOW"],
+      CRICKET: ["CRICK", "ET"],
+      BALLOON: ["BAL", "LOON"],
+      GARDEN: ["GAR", "DEN"],
+      CANDLE: ["CAN", "DLE"],
+      SCOOTER: ["SCOO", "TER"],
+      CYCLE: ["CY", "CLE"],
+      FLOWER: ["FLOW", "ER"],
+      MUSIC: ["MUS", "IC"],
+      PUPPY: ["PUP", "PY"],
+      STUDENT: ["STU", "DENT"],
+      PAPER: ["PA", "PER"],
     };
 
     const currentWord = levels[currentLevel]?.arrM[currentWordIndex];
@@ -944,7 +914,7 @@ const BingoCard = ({
               alt="Cloud"
               style={{
                 //width: screenWidth < 768 ? "170px" : "230px",
-                height: screenWidth < 768 ? "90px" : "175px",
+                height: screenWidth < 768 ? "100px" : "185px",
                 zIndex: 21,
               }}
             />
@@ -956,7 +926,7 @@ const BingoCard = ({
                 left: "50%",
                 top: "50%",
                 transform: "translate(-50%, -50%)",
-                height: screenWidth < 768 ? "50px" : "120px",
+                height: screenWidth < 768 ? "40px" : "100px",
                 zIndex: 22,
               }}
             />
@@ -1134,7 +1104,7 @@ const BingoCard = ({
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
+            gridTemplateColumns: "repeat(3, 1fr)",
             gap: screenWidth < 768 ? "10px 30px" : "20px 50px",
             position: "absolute",
             right: screenWidth < 768 ? "10%" : "10%",
@@ -1145,23 +1115,27 @@ const BingoCard = ({
         >
           {levels[currentLevel]?.words.map((word, index) => {
             const validPairs = {
-              MICROWAVE: ["MIC", "RO", "WAVE"],
-              TELEPHONE: ["TEL", "E", "PHONE"],
-              PINEAPPLE: ["PINE", "AP", "PLE"],
-              SUBMARINE: ["SUB", "MA", "RINE"],
-              STRAWBERRY: ["STRAW", "BER", "RY"],
-              DOMINO: ["DOM", "I", "NO"],
-              CARAMEL: ["CAR", "A", "MEL"],
-              HAMBURGER: ["HAM", "BUR", "GER"],
-              POPSICLE: ["POP", "SI", "CLE"],
-              CUCUMBER: ["CU", "CUM", "BER"],
-              VOLCANO: ["VOL", "CA", "NO"],
-              TANGERINE: ["TAN", "GE", "RINE"],
-              PROJECTOR: ["PROJ", "EC", "TOR"],
-              DISHWASHER: ["DISH", "WASH", "ER"],
-              VACUUM: ["VAC", "U", "UM"],
-              OMELETTE: ["OME", "LET", "TE"],
-              VIOLIN: ["VI", "O", "LIN"],
+              MANGO: ["MAN", "GO"],
+              WATER: ["WA", "TER"],
+              MOTHER: ["MO", "THER"],
+              FATHER: ["FA", "THER"],
+              PENCIL: ["PEN", "CIL"],
+              DOCTOR: ["DOC", "TOR"],
+              MARKET: ["MAR", "KET"],
+              BASKET: ["BAS", "KET"],
+              TABLE: ["TA", "BLE"],
+              WINDOW: ["WIN", "DOW"],
+              CRICKET: ["CRICK", "ET"],
+              BALLOON: ["BAL", "LOON"],
+              GARDEN: ["GAR", "DEN"],
+              CANDLE: ["CAN", "DLE"],
+              SCOOTER: ["SCOO", "TER"],
+              CYCLE: ["CY", "CLE"],
+              FLOWER: ["FLOW", "ER"],
+              MUSIC: ["MUS", "IC"],
+              PUPPY: ["PUP", "PY"],
+              STUDENT: ["STU", "DENT"],
+              PAPER: ["PA", "PER"],
             };
 
             const isCorrectWord =

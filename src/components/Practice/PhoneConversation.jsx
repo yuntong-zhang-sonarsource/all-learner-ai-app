@@ -9,6 +9,8 @@ import {
   level12,
   level15,
 } from "../../utils/levelData";
+import listenImg2 from "../../assets/listen.png";
+import spinnerStop from "../../assets/pause.png";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
 import {
@@ -309,7 +311,7 @@ const PhoneConversation = ({
     mainContainer: {
       background:
         "linear-gradient(0deg, rgba(241, 153, 32, 0.32) 0%, rgba(243, 159, 39, 0.32) 23%, rgba(247, 176, 59, 0.32) 58%, rgba(254, 204, 92, 0.32) 100%)",
-      height: "100vh",
+      height: "100%",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -325,7 +327,7 @@ const PhoneConversation = ({
       position: "relative",
       boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
       overflowX: "hidden",
-      height: "80vh",
+      //height: "80vh",
       overflowY: "hidden",
       marginBottom: "40px",
     },
@@ -356,17 +358,17 @@ const PhoneConversation = ({
       //borderColor: '#aaa',
     },
     sonMessage: {
-      //backgroundColor: "#fde4b2",
+      backgroundColor: "#fde4b2",
       alignSelf: "flex-start",
       width: "300px",
       marginLeft: "80px",
     },
     callerMessage: {
-      //backgroundColor: "#f1f1f1",
+      backgroundColor: "#f1f1f1",
       alignSelf: "flex-end",
       width: "280px",
       marginRight: "180px",
-      marginBottom: "-60px",
+      marginBottom: "-30px",
     },
     boldText: {
       fontWeight: "bold",
@@ -391,9 +393,12 @@ const PhoneConversation = ({
       width: "25px",
       height: "25px",
       position: "absolute",
-      left: "-30px",
+      left: "-70px",
       bottom: "10%",
+      display: "flex",
+      alignItems: "center",
       transform: "translateY(50%)",
+      gap: "10px",
     },
     callerIconsContainer: {
       position: "absolute",
@@ -411,6 +416,7 @@ const PhoneConversation = ({
       width: "50px",
       height: "50px",
       cursor: "pointer",
+      marginRight: "10px",
     },
     questionBox: {
       backgroundColor: "#f8f2ff",
@@ -534,73 +540,64 @@ const PhoneConversation = ({
                         : styles.callerMessage),
                     }}
                   >
-                    {/* <span style={styles.boldText}>{msg.role}: </span>
-                    {msg.message} */}
+                    <span style={styles.boldText}>{msg.name}: </span>
+                    {msg.message}
                     {msg?.role === "System" && (
-                      <div
-                        style={{
-                          marginLeft: "-50px",
-                          display: "flex",
-                          justifyContent: "flex-start",
-                          alignItems: "flex-start",
-                          gap: "10px",
-                        }}
-                      >
+                      <div style={styles.boyIcon}>
+                        <img
+                          src={
+                            isPlaying === msg.audio ? spinnerStop : listenImg2
+                          }
+                          alt="Audio"
+                          style={{
+                            height: "25px",
+                            width: "25px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => playAudio(msg?.audio)}
+                        />
                         <img
                           src={Assets.avatar1}
                           alt="Boy"
                           width={"25px"}
                           height={"25px"}
                         />
-                        <img
-                          src={
-                            isPlaying === msg.audio
-                              ? Assets.stopVoiceNote
-                              : Assets.startVoiceNote
-                          }
-                          alt="Audio"
-                          style={{
-                            height: "40px",
-                            width: "190px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => playAudio(msg?.audio)}
-                        />
                       </div>
                     )}
                     {msg?.role === "User" && (
                       <div style={styles.callerIconsContainer}>
-                        <img
-                          src={
-                            isPlaying === msg.audio
-                              ? Assets.stopVoiceNote
-                              : Assets.startVoiceNote
-                          }
-                          alt="Audio"
-                          style={{
-                            height: "40px",
-                            width: "190px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => playAudio(msg?.audio)}
-                        />
                         <img
                           src={Assets.avatar2}
                           alt="Boy"
                           width={"25px"}
                           height={"25px"}
                         />
+                        <img
+                          src={
+                            isPlaying === msg.audio ? spinnerStop : listenImg2
+                          }
+                          alt="Audio"
+                          style={{
+                            height: "25px",
+                            width: "25px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => playAudio(msg?.audio)}
+                        />
                       </div>
                     )}
                   </div>
                 ))}
               </div>
-              <img
+              {/* <img
                 src={Assets.nextimg}
                 alt="Next"
                 style={styles.nextButton}
                 onClick={handleNextClick}
-              />
+              /> */}
+              <div onClick={handleNextClick} style={styles.nextButton}>
+                <NextButtonRound height={50} width={50} />
+              </div>
             </>
           ) : (
             tasks[currentTaskIndex] && (
