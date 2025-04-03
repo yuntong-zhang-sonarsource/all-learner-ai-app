@@ -1428,7 +1428,7 @@ const Practice = () => {
             header:
               mechanism?.id &&
               (mechanism?.id === "mechanic_15"
-                ? "Read the question and record your response"
+                ? "observe the image and record your answer"
                 : questions[currentQuestion]?.contentType === "image"
                 ? `Guess the below image`
                 : `Speak the below ${questions[currentQuestion]?.contentType}`),
