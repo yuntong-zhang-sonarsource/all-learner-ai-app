@@ -33,7 +33,7 @@ const WordsOrImage = ({
   header,
   type,
   words,
-  hints,
+  hints = "",
   image,
   setVoiceText,
   setRecordedAudio,
@@ -363,39 +363,41 @@ const WordsOrImage = ({
       }}
     >
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Box
-          sx={{
-            position: "absolute",
-            right: "20px",
-            textAlign: "center",
-            cursor: "pointer",
-            width: "100px",
-          }}
-          onClick={() => setShowHint(!showHint)}
-        >
-          <img style={{ height: "55px" }} src={hintsImg} alt="" />
-          <p>Hint</p>
-          {showHint && (
-            <Box
-              sx={{
-                position: "absolute",
-                top: "80px",
-                width: "100%",
-                right: "0px",
-                background: "white",
-                boxShadow: "0px 0px 5px rgba(0,0,0,0.3)",
-                padding: "10px",
-                borderRadius: "5px",
-                fontSize: "14px",
-                color: "#333F61",
-                fontWeight: 600,
-                backgroundColor: "#ffff12",
-              }}
-            >
-              {hints}
-            </Box>
-          )}
-        </Box>
+        {hints && (
+          <Box
+            sx={{
+              position: "absolute",
+              right: "20px",
+              textAlign: "center",
+              cursor: "pointer",
+              width: "100px",
+            }}
+            onClick={() => setShowHint(!showHint)}
+          >
+            <img style={{ height: "55px" }} src={hintsImg} alt="" />
+            <p>Hint</p>
+            {showHint && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "80px",
+                  width: "100%",
+                  right: "0px",
+                  background: "white",
+                  boxShadow: "0px 0px 5px rgba(0,0,0,0.3)",
+                  padding: "10px",
+                  borderRadius: "5px",
+                  fontSize: "14px",
+                  color: "#333F61",
+                  fontWeight: 600,
+                  backgroundColor: "#ffff12",
+                }}
+              >
+                {hints}
+              </Box>
+            )}
+          </Box>
+        )}
         <Typography
           variant="h5"
           component="h4"
