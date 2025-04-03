@@ -536,9 +536,9 @@ const WordsOrImage = ({
                     }}
                     style={{
                       width: "80%", // Image will take full width of the parent container
-                      maxWidth: "500px", // Limit the width to 500px
+                      maxWidth: "400px", // Limit the width to 500px
                       height: "auto", // Maintain aspect ratio
-                      maxHeight: "500px", // Cap the height at 200px
+                      maxHeight: "400px", // Cap the height at 200px
                       marginBottom: "40px",
                       objectFit: "contain", // Ensures the image fits well within the dimensions
                     }}
