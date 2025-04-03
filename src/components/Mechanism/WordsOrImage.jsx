@@ -3,6 +3,7 @@ import { createRef, useState, useEffect, useRef } from "react";
 import v11 from "../../assets/audio/V10.mp3";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import RecordVoiceVisualizer from "../../utils/RecordVoiceVisualizer";
+import hintsImg from "../../assets/hints.svg";
 import {
   PlayAudioButton,
   StopAudioButton,
@@ -32,6 +33,7 @@ const WordsOrImage = ({
   header,
   type,
   words,
+  hints,
   image,
   setVoiceText,
   setRecordedAudio,
@@ -79,6 +81,7 @@ const WordsOrImage = ({
   const [showListenRetryButtons, setShowListenRetryButtons] = useState(false);
   const [answer, setAnswer] = useState(null);
   const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
+  const [showHint, setShowHint] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const audioRef = useRef(null);
@@ -299,6 +302,7 @@ const WordsOrImage = ({
 
   useEffect(() => {
     updateStoredData();
+    setShowHint(false);
   }, [handleNext]);
 
   const togglePlayPause = () => {
@@ -358,22 +362,57 @@ const WordsOrImage = ({
         setIsNextButtonCalled,
       }}
     >
-      <Typography
-        variant="h5"
-        component="h4"
-        sx={{
-          color: "#333F61",
-          fontSize: "30px",
-          letterSpacing: "1.5px",
-          lineHeight: "normal",
-          fontWeight: 600,
-          fontFamily: "Quicksand",
-          marginLeft: "20px",
-          textAlign: "center",
-        }}
-      >
-        {header}
-      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Box
+          sx={{
+            position: "absolute",
+            right: "20px",
+            textAlign: "center",
+            cursor: "pointer",
+            width: "100px",
+          }}
+          onClick={() => setShowHint(!showHint)}
+        >
+          <img style={{ height: "55px" }} src={hintsImg} alt="" />
+          <p>Hint</p>
+          {showHint && (
+            <Box
+              sx={{
+                position: "absolute",
+                top: "80px",
+                width: "100%",
+                right: "0px",
+                background: "white",
+                boxShadow: "0px 0px 5px rgba(0,0,0,0.3)",
+                padding: "10px",
+                borderRadius: "5px",
+                fontSize: "14px",
+                color: "#333F61",
+                fontWeight: 600,
+                backgroundColor: "#ffff12",
+              }}
+            >
+              {hints}
+            </Box>
+          )}
+        </Box>
+        <Typography
+          variant="h5"
+          component="h4"
+          sx={{
+            color: "#333F61",
+            fontSize: "30px",
+            letterSpacing: "1.5px",
+            lineHeight: "normal",
+            fontWeight: 600,
+            fontFamily: "Quicksand",
+            marginLeft: "20px",
+            textAlign: "center",
+          }}
+        >
+          {header}
+        </Typography>
+      </Box>
       <CardContent
         sx={{
           overflow: "hidden",

@@ -1438,6 +1438,7 @@ const Practice = () => {
                 : mechanism?.id === "mechanic_15"
                 ? questions[currentQuestion]?.mechanics_data?.[0]?.text
                 : questions[currentQuestion]?.contentSourceData?.[0]?.text,
+            hints: questions[currentQuestion]?.mechanics_data?.[0]?.hints?.text,
             contentType: currentContentType,
             contentId: questions[currentQuestion]?.contentId,
             setVoiceText,

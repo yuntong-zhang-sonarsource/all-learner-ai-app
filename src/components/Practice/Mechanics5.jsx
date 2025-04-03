@@ -354,7 +354,7 @@ const Mechanics5 = ({
                     />
                   </audio>
                   <Box
-                    sx={{ cursor: "pointer" }}
+                    sx={{ cursor: "pointer", zIndex: 10, margin: "10px" }}
                     onClick={() => togglePlayPause(i)}
                   >
                     {playingIndex === i ? (
