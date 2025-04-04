@@ -2356,3 +2356,7 @@ export const gardenNewAudio =
   "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/gardenNewAudio.wav";
 export const candleNewAudio =
   "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/candleNewAudio.wav";
+export const appleNewAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/appleNewAudio.wav";
+export const penNewAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/penNewAudio.wav";
