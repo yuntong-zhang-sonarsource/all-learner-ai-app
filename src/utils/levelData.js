@@ -3773,7 +3773,7 @@ export const level15 = [
     data: {
       images: {
         imageOne: "child",
-        imageTwo: "childboyChildImg",
+        imageTwo: "boyChildImg",
       },
       conversation: [
         {
@@ -3809,7 +3809,7 @@ export const level15 = [
     data: {
       images: {
         imageOne: "child",
-        imageTwo: "childboyChildImg",
+        imageTwo: "boyChildImg",
       },
       conversation: [
         {
@@ -3916,7 +3916,7 @@ export const level15 = [
     },
   },
   {
-    level: "P4",
+    level: "S1",
     mechanics: "actOut",
     data: {
       images: {
@@ -3948,7 +3948,7 @@ export const level15 = [
     },
   },
   {
-    level: "S1",
+    level: "P4",
     mechanics: "soundMatchR3",
     data: {
       tasks: [

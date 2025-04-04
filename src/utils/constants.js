@@ -8682,13 +8682,13 @@ export const levelGetContent = {
         title: "P4",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "actOut", name: "actOut" },
+        mechanism: { id: "r3", name: "r3" },
       },
       {
         title: "S1",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "r3", name: "r3" },
+        mechanism: { id: "actOut", name: "actOut" },
       },
       {
         title: "P5",

@@ -280,7 +280,10 @@ const R3 = ({
         setIsMatch(null);
         setSelectedText(null);
         setShowConfetti(false);
-        setIsOpen(!isOpen);
+        setShowRecordButton(false);
+        setShowReset(false);
+        handleNext();
+        reset();
       }, 4000);
     } else {
       const audio = new Audio(wrongSound);
