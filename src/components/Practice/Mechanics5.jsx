@@ -290,7 +290,7 @@ const Mechanics5 = ({
         </Grid>
 
         <Grid item xs={8} paddingLeft={2}>
-          <Box paddingBottom={3} sx={{ display: "flex" }}>
+          <Box paddingBottom={3} marginLeft={-10} sx={{ display: "flex" }}>
             <audio
               key={question_audio} // Key added to force remount when source changes
               ref={questionAudioRef}
@@ -369,7 +369,7 @@ const Mechanics5 = ({
                         src={`${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_images/${option.image_url}`}
                         style={{
                           borderRadius: "20px",
-                          width: "150px",
+                          width: "200px",
                           height: "150px",
                         }}
                         alt=""
@@ -380,7 +380,7 @@ const Mechanics5 = ({
                       style={{
                         color: "#262649",
                         fontWeight: 600,
-                        fontSize: "26px",
+                        fontSize: "24px",
                         fontFamily: "Quicksand",
                         marginLeft: "10px",
                       }}
