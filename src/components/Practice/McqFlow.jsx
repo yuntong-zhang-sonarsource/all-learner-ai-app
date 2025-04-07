@@ -178,27 +178,59 @@ const McqFlow = ({
         loading,
       }}
     >
-      <div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          //justifyContent: "center",
+          alignItems: "center",
+          //gap: "20px",
+          //margin: "30px 30px",
+        }}
+      >
+        {conversation?.instruction?.content[0]?.text && (
+          <span
+            style={{
+              fontFamily: "Quicksand",
+              fontWeight: "600",
+              fontSize: "28px",
+              marginTop: "30px",
+            }}
+          >
+            {conversation?.instruction?.content[0]?.text}
+          </span>
+        )}
+
         <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             gap: "20px",
+            width: "90%",
             margin: "30px 30px",
           }}
         >
           {/* Image on the left */}
-          <img
-            src={Assets[conversation?.instruction?.content[0]?.value]}
-            alt="Children's Day"
-            style={{ width: "250px", height: "250px", borderRadius: "15px" }}
-          />
+
+          {conversation?.instruction?.content[0]?.value && (
+            <img
+              src={Assets[conversation?.instruction?.content[0]?.value]}
+              alt="Children's Day"
+              style={{ width: "250px", height: "250px", borderRadius: "15px" }}
+            />
+          )}
 
           {/* MCQ Section on the right */}
           <div style={{ width: "50%" }}>
             {typeof tasks?.[currentStep - 1]?.question === "string" ? (
-              <h3 style={{ fontFamily: "Quicksand", fontWeight: "700" }}>
+              <h3
+                style={{
+                  fontFamily: "Quicksand",
+                  fontSize: "22px",
+                  fontWeight: "800",
+                }}
+              >
                 {tasks[currentStep - 1].question}
               </h3>
             ) : null}
