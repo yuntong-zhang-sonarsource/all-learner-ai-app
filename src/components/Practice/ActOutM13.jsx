@@ -362,13 +362,13 @@ const ActOutM13 = ({
       setRecAudio(base64Data);
       if (currentLevel === "S1" || currentLevel === "S2") {
         const comprehension = await handleTextEvaluation(
-          correctAnswerText,
+          conversation[currentIndex]?.user,
           transcriptRef.current
         );
 
         if (comprehension) {
           const options = {
-            originalText: correctAnswerText,
+            originalText: conversation[currentIndex]?.user,
             contentType: contentType,
             contentId: contentId,
             comprehension: comprehension,

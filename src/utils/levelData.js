@@ -3771,7 +3771,15 @@ export const level15 = [
     level: "P1",
     mechanics: "askMore",
     data: {
+      images: {
+        imageOne: "child",
+        imageTwo: "boyChildImg",
+      },
       conversation: [
+        {
+          speaker: "Hi!",
+          user: "Hello!",
+        },
         {
           speaker: "What happened to Tom's balloon?",
           user: "Tom felt sad watching his balloon fly away.",
@@ -3792,10 +3800,6 @@ export const level15 = [
           speaker: "How did Tom feel after getting a new balloon?",
           user: "Tom smiled and held the new balloon tightly.",
         },
-        {
-          speaker: "How did Tom feel after getting a new balloon?",
-          user: "Tom smiled and held the new balloon tightly.",
-        },
       ],
     },
   },
@@ -3803,6 +3807,10 @@ export const level15 = [
     level: "P2",
     mechanics: "askMore",
     data: {
+      images: {
+        imageOne: "child",
+        imageTwo: "boyChildImg",
+      },
       conversation: [
         {
           speaker: "Where did Tom get the balloon from?",
@@ -3819,10 +3827,6 @@ export const level15 = [
         {
           speaker: "What did Tom’s mother do when he was sad?",
           user: "His mother gave him a new balloon to cheer him up.",
-        },
-        {
-          speaker: "How did Tom react after getting a new balloon?",
-          user: "Tom smiled and held the new balloon tightly.",
         },
         {
           speaker: "How did Tom react after getting a new balloon?",
@@ -3912,9 +3916,13 @@ export const level15 = [
     },
   },
   {
-    level: "P4",
+    level: "S1",
     mechanics: "actOut",
     data: {
+      images: {
+        imageOne: "child",
+        imageTwo: "vegVendor",
+      },
       conversation: [
         {
           speaker: "What did the train do as it moved up the hillside?",
@@ -3936,15 +3944,11 @@ export const level15 = [
           speaker: "What happens to the stations as the train moves?",
           user: "Colorful stations pass by quickly.",
         },
-        {
-          speaker: "What happens to the stations as the train moves?",
-          user: "Colorful stations pass by quickly.",
-        },
       ],
     },
   },
   {
-    level: "S1",
+    level: "P4",
     mechanics: "soundMatchR3",
     data: {
       tasks: [
@@ -4015,6 +4019,10 @@ export const level15 = [
     level: "P5",
     mechanics: "askMore",
     data: {
+      images: {
+        imageOne: "salesPerson",
+        imageTwo: "mother",
+      },
       conversation: [
         {
           speaker: "How do turtles swim?",
@@ -4043,6 +4051,10 @@ export const level15 = [
     level: "P6",
     mechanics: "askMore",
     data: {
+      images: {
+        imageOne: "salesPerson",
+        imageTwo: "humanImg",
+      },
       conversation: [
         {
           speaker: "How do dolphins move in water?",
@@ -4143,56 +4155,104 @@ export const level15 = [
         content: [
           {
             type: "image",
-            value: "greenValleyImg",
+            value: "",
+            text: "Find out the parallel phrase",
           },
         ],
       },
       tasks: [
         {
-          question: "The view of the ______ will stay in my memory forever.",
+          question: "I will never forget the sight of the verdant bowl.",
           options: [
-            { id: "option1", value: "lush green valley" },
-            { id: "option2", value: "empty road" },
-            { id: "option3", value: "twinkling stars" },
+            {
+              id: "option1",
+              value:
+                "The view of the lush green valley will stay in my memory forever.",
+            },
+            {
+              id: "option2",
+              value: "The night sky was filled with twinkling stars.",
+            },
+            { id: "option3", value: "She quickly forgot what she had seen." },
           ],
           answer: "option1",
         },
         {
           question:
-            "She ______ to the cow for dear life as it charged up the road.",
+            "She clung to the cow for dear life as it charged up the road.",
           options: [
-            { id: "option1", value: "clung" },
-            { id: "option2", value: "gently placed a flower" },
-            { id: "option3", value: "stood calmly" },
+            {
+              id: "option1",
+              value: "She gently placed a flower on the table and admired it.",
+            },
+            {
+              id: "option2",
+              value:
+                "She held on tightly to the cow as it ran wildly down the street.",
+            },
+            {
+              id: "option3",
+              value: "The cow stood grazing very calmly in the field.",
+            },
+          ],
+          answer: "option1",
+        },
+        {
+          question: "The horses panicked and scattered in a regular stampede.",
+          options: [
+            {
+              id: "option1",
+              value: "The horses walked in a straight line during the march.",
+            },
+            {
+              id: "option2",
+              value: "The birds sat quietly on the fence chirping.",
+            },
+            {
+              id: "option3",
+              value:
+                "The frightened horses bolted in all directions during the chaos.",
+            },
           ],
           answer: "option1",
         },
         {
           question:
-            "The frightened horses ______ in all directions during the chaos.",
+            "The trees on either side of the road had become one green blur.",
           options: [
-            { id: "option1", value: "bolted" },
-            { id: "option2", value: "walked in a straight line" },
-            { id: "option3", value: "sat quietly on the fence" },
+            {
+              id: "option1",
+              value:
+                "As the car sped past, the trees merged into a streak of green.",
+            },
+            {
+              id: "option2",
+              value: "The trees stood still, swaying gently in the breeze.",
+            },
+            {
+              id: "option3",
+              value: "The road was empty, with no trees in sight.",
+            },
           ],
           answer: "option1",
         },
         {
           question:
-            "As the car sped past, the trees merged into a streak of ______.",
+            "The baby just sat there looking frightened, and the mother kept trumpeting.",
           options: [
-            { id: "option1", value: "green" },
-            { id: "option2", value: "blue" },
-            { id: "option3", value: "red" },
-          ],
-          answer: "option1",
-        },
-        {
-          question: "The baby remained still in fear while the mother ______.",
-          options: [
-            { id: "option1", value: "let out loud calls" },
-            { id: "option2", value: "laughed happily" },
-            { id: "option3", value: "bought a trumpet" },
+            {
+              id: "option1",
+              value: "The baby laughed happily while the mother stayed silent.",
+            },
+            {
+              id: "option2",
+              value:
+                "The baby remained still in fear while the mother let out loud calls.",
+            },
+            {
+              id: "option3",
+              value: "The mother and baby walked away quietly buying a trumpet",
+            },
           ],
           answer: "option1",
         },
@@ -4201,15 +4261,17 @@ export const level15 = [
   },
   {
     level: "S2",
-    mechanics: "ReadAloudMcqM10",
+    mechanics: "AnouncementFlow",
     data: {
       instructions: {
-        type: "chat",
+        type: "anouncement",
+        imageOne: "child",
+        imageTwo: "mall",
         content: [
           {
             role: "System",
             message:
-              "You went to the supermarket and bought these five items: Apples, Bread, Milk, Sugar, and Paneer.\n\nEmma found a magic book in the library. When she opened it, a bright light appeared, and she was transported to a jungle. She met a talking parrot, a friendly monkey, and a wise old tortoise who gave her a secret key. The key unlocked a treasure chest filled with glowing stars!",
+              "You went to the supermarket and bought these five items: Apples, Bread, Milk, Sugar, and Paneer. Your friend emma found a magic book in the library. When she opened it, a bright light appeared, and she was transported to a jungle. She met a talking parrot, a friendly monkey, and a wise old tortoise who gave her a secret key. The key unlocked a treasure chest filled with glowing stars!",
             audio: "supermarketMagicStoryAudio",
           },
         ],
