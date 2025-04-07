@@ -1425,10 +1425,11 @@ const Practice = () => {
         <WordsOrImage
           {...{
             level: level,
+            mechanism_id: mechanism.id,
             header:
               mechanism?.id &&
               (mechanism?.id === "mechanic_15"
-                ? "observe the image and record your answer"
+                ? "Read the question and record your response"
                 : questions[currentQuestion]?.contentType === "image"
                 ? `Guess the below image`
                 : `Speak the below ${questions[currentQuestion]?.contentType}`),
