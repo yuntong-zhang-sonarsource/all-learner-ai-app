@@ -1425,7 +1425,7 @@ const Practice = () => {
         <WordsOrImage
           {...{
             level: level,
-            mechanism_id: mechanism.id,
+            mechanism_id: mechanism?.id,
             header:
               mechanism?.id &&
               (mechanism?.id === "mechanic_15"
