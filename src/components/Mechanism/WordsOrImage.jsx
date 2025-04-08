@@ -1,4 +1,11 @@
-import { Box, CardContent, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  CardContent,
+  Typography,
+  CircularProgress,
+  Avatar,
+} from "@mui/material";
+import { motion } from "framer-motion";
 import { createRef, useState, useEffect, useRef } from "react";
 import v11 from "../../assets/audio/V10.mp3";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
@@ -21,6 +28,8 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
+import teacherImg from "../../assets/teacher.png";
+import studentImg from "../../assets/student.png";
 
 const isChrome =
   /Chrome/.test(navigator.userAgent) &&
@@ -29,6 +38,7 @@ const isChrome =
 
 const WordsOrImage = ({
   handleNext,
+  mechanism_id = "",
   background,
   header,
   type,
@@ -363,41 +373,6 @@ const WordsOrImage = ({
       }}
     >
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        {hints && (
-          <Box
-            sx={{
-              position: "absolute",
-              right: "20px",
-              textAlign: "center",
-              cursor: "pointer",
-              width: "100px",
-            }}
-            onClick={() => setShowHint(!showHint)}
-          >
-            <img style={{ height: "55px" }} src={hintsImg} alt="" />
-            <p>Hint</p>
-            {showHint && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "80px",
-                  width: "100%",
-                  right: "0px",
-                  background: "white",
-                  boxShadow: "0px 0px 5px rgba(0,0,0,0.3)",
-                  padding: "10px",
-                  borderRadius: "5px",
-                  fontSize: "14px",
-                  color: "#333F61",
-                  fontWeight: 600,
-                  backgroundColor: "#ffff12",
-                }}
-              >
-                {hints}
-              </Box>
-            )}
-          </Box>
-        )}
         <Typography
           variant="h5"
           component="h4"
@@ -412,7 +387,7 @@ const WordsOrImage = ({
             textAlign: "center",
           }}
         >
-          {header}
+          {mechanism_id === "mechanic_15" ? header : ""}
         </Typography>
       </Box>
       <CardContent
@@ -513,9 +488,10 @@ const WordsOrImage = ({
           ) : (
             <Box
               sx={{
+                position: "relative",
                 display: {
                   xs: "",
-                  md: imageLoaded ? "flex" : "",
+                  // md: imageLoaded ? "flex" : "",
                 },
                 justifyContent: "center",
                 width: "100%",
@@ -529,32 +505,90 @@ const WordsOrImage = ({
                     width: "100%",
                   }}
                 >
-                  <img
-                    src={image}
-                    onLoad={() => setImageLoaded(true)} // When image loads, set state to true
-                    onError={(e) => {
-                      e.target.style.display = "none"; // Hide if error occurs
-                      setImageLoaded(false);
-                    }}
-                    style={{
-                      width: "80%", // Image will take full width of the parent container
-                      maxWidth: "400px", // Limit the width to 500px
-                      height: "auto", // Maintain aspect ratio
-                      maxHeight: "400px", // Cap the height at 200px
-                      marginBottom: "40px",
-                      objectFit: "contain", // Ensures the image fits well within the dimensions
-                    }}
-                    alt="Responsive content" // Adding alt text for accessibility
-                  />
+                  <Box sx={{ position: "relative" }}>
+                    <img
+                      src={image}
+                      onLoad={() => setImageLoaded(true)} // When image loads, set state to true
+                      onError={(e) => {
+                        e.target.style.display = "none"; // Hide if error occurs
+                        setImageLoaded(false);
+                      }}
+                      style={{
+                        width: "100%", // Image will take full width of the parent container
+                        maxWidth: "400px", // Limit the width to 500px
+                        marginBottom: "40px",
+                        height: "auto", // Maintain aspect ratio
+                        maxHeight: "340px", // Cap the height at 200px
+                        objectFit: "contain", // Ensures the image fits well within the dimensions
+                      }}
+                      alt="Responsive content" // Adding alt text for accessibility
+                    />
+                    {hints && (
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          right: "-100px",
+                          top: "0px",
+                          textAlign: "center",
+                          cursor: "pointer",
+                          width: "100px",
+                          zIndex: 1000,
+                        }}
+                        onClick={() => setShowHint(!showHint)}
+                      >
+                        <img style={{ height: "55px" }} src={hintsImg} alt="" />
+                        <p>Hint</p>
+                        {showHint && (
+                          <Box
+                            sx={{
+                              position: "absolute",
+                              bottom: "0px",
+                              left: "90px",
+                              width: "150px",
+                              backgroundColor: "#ffff12",
+                              padding: "10px 15px",
+                              borderRadius: "20px",
+                              fontSize: "20px",
+                              color: "#333F61",
+                              fontWeight: 600,
+                              fontFamily:
+                                '"Comic Sans MS", cursive, sans-serif',
+                              boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                              maxWidth: "150px",
+                              textAlign: "center",
+                              lineHeight: "1.4",
+                              textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
+                              zIndex: 1001,
+                              "&::before": {
+                                content: '""',
+                                position: "absolute",
+                                bottom: "20px",
+                                left: "-15px",
+                                width: "15px",
+                                height: "15px",
+                                backgroundColor: "#ffff12",
+                                borderRadius: "50%",
+                                boxShadow: "10px 10px 0 0 #ffff12",
+                              },
+                            }}
+                          >
+                            {hints}
+                          </Box>
+                        )}
+                      </Box>
+                    )}
+                  </Box>
                 </Box>
               )}
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center", // Centers content vertically
+                  // flexDirection: "column",
+                  justifyContent: "space-around", // Centers content vertically
                   alignItems: "center", // Centers content horizontally
                   width: "100%",
+                  gap: 4,
+                  marginBottom: "40px",
                 }}
               >
                 {!words && (
@@ -563,22 +597,129 @@ const WordsOrImage = ({
                   </Box>
                 )}
                 {words && !matchedChar && (
-                  <Typography
-                    variant="h5"
-                    component="h4"
+                  <Box
                     sx={{
-                      mb: 4,
-                      color: getAnswerColor(answer),
-                      textAlign: "center",
-                      fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
-                      fontWeight: 700,
-                      fontFamily: "Quicksand",
-                      lineHeight: "50px",
+                      ...(mechanism_id === "mechanic_15"
+                        ? {
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 2,
+                            mb: 8,
+                          }
+                        : ""),
                     }}
-                    fontSize={{ md: "40px", xs: "25px" }}
                   >
-                    {words ? words[0].toUpperCase() + words.slice(1) : ""}
-                  </Typography>
+                    {mechanism_id === "mechanic_15" && (
+                      <Avatar
+                        src={teacherImg}
+                        sx={{ bgcolor: "green", height: "60px", width: "60px" }}
+                      >
+                        Teacher
+                      </Avatar>
+                    )}
+
+                    <Typography
+                      variant="h5"
+                      component="h4"
+                      sx={{
+                        fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
+                        fontWeight: 700,
+                        fontFamily: "Quicksand",
+                        lineHeight: "50px",
+                        ...(mechanism_id === "mechanic_15"
+                          ? {
+                              position: "relative",
+                              backgroundColor: "#FAD7A0",
+                              padding: "10px 20px",
+                              borderRadius: "20px",
+                              boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                              "&::before": {
+                                content: '""',
+                                position: "absolute",
+                                top: "50%",
+                                left: "-10px",
+                                transform: "translateY(-50%)",
+                                width: 0,
+                                height: 0,
+                                borderTop: "10px solid transparent",
+                                borderBottom: "10px solid transparent",
+                                borderRight: "10px solid #d8d8d8",
+                              },
+                            }
+                          : {
+                              mb: 4,
+                              color: getAnswerColor(answer),
+                              textAlign: "center",
+                            }),
+                      }}
+                      fontSize={{ md: "40px", xs: "25px" }}
+                    >
+                      {words ? words[0].toUpperCase() + words.slice(1) : ""}
+                    </Typography>
+                  </Box>
+                )}
+                {mechanism_id === "mechanic_15" && (
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                    <Typography
+                      variant="h5"
+                      component="h4"
+                      sx={{
+                        position: "relative",
+                        backgroundColor: "#D7BDE2",
+                        padding: "10px 20px",
+                        borderRadius: "20px",
+                        fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
+                        fontWeight: 700,
+                        fontFamily: "Quicksand",
+                        lineHeight: "50px",
+                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                        "&::after": {
+                          content: '""',
+                          position: "absolute",
+                          top: "50%",
+                          right: "-10px",
+                          transform: "translateY(-50%)",
+                          width: 0,
+                          height: 0,
+                          borderTop: "10px solid transparent",
+                          borderBottom: "10px solid transparent",
+                          borderLeft: "10px solid #d8d8d8",
+                        },
+                      }}
+                      fontSize={{ md: "40px", xs: "25px" }}
+                    >
+                      <motion.div style={{ display: "flex", gap: "5px" }}>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                        >
+                          Speak
+                          {[...Array(3)].map((_, i) => (
+                            <motion.span
+                              key={i}
+                              style={{
+                                width: "8px",
+                                height: "8px",
+                                borderRadius: "50%",
+                                background: "black",
+                              }}
+                              animate={{ y: [0, -5, 0] }}
+                              transition={{
+                                duration: 0.5,
+                                repeat: Infinity,
+                                delay: i * 0.2,
+                              }}
+                            />
+                          ))}
+                        </Box>
+                      </motion.div>
+                    </Typography>
+                    <Avatar
+                      src={studentImg}
+                      sx={{ bgcolor: "green", height: "60px", width: "60px" }}
+                    >
+                      N
+                    </Avatar>
+                  </Box>
                 )}
                 {matchedChar && (
                   <Box
