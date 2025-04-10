@@ -114,7 +114,7 @@ const PhoneConversation = ({
 
   console.log("showcase", fluency, isShowCase, livesData, gameOverData);
 
-  steps = 1;
+  //steps = 1;
 
   const getConversation = (level, currentLevel) => {
     const levelData = levelMap[level];

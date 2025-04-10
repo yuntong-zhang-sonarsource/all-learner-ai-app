@@ -553,7 +553,7 @@ export const museumDirectionsAudio =
 export const openTextbookAudio =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/main/openTextbookAudio.wav";
 export const patelRoadAudio =
-  "https://raw.githubusercontent.com/anik200002/EkstepImg/main/patelRoadAudio.wav";
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/patelAudio.wav";
 export const patnaAudio =
   "https://raw.githubusercontent.com/anik200002/EkstepImg/main/patnaAudio.wav";
 export const PianoAudio =
@@ -2360,3 +2360,5 @@ export const appleNewAudio =
   "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/appleNewAudio.wav";
 export const penNewAudio =
   "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/penNewAudio.wav";
+export const cowStep =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/5d5054404ee5b7505b6bf791dbc905aefc67e770/cowWalkthrough.svg";

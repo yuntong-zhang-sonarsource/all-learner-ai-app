@@ -129,7 +129,7 @@ const AskMoreM14 = ({
     return conversationObj?.data || [];
   };
 
-  steps = 1;
+  //steps = 1;
 
   let progressDatas = getLocalData("practiceProgress");
   const virtualId = String(getLocalData("virtualId"));

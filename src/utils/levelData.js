@@ -2007,12 +2007,12 @@ export const level12 = [
               "Walk straight along the Patel Road. Walk past the ATM and turn right. After walking for a few minutes, you will see a shopping mall.",
             audio: "patelRoadAudio",
           },
-          // {
-          //   role: "System",
-          //   message:
-          //     "Customer: Hello, I want to open a bank account.\nBank Clerk: Sure. Do you have your ID and address proof?\nCustomer: Yes, here they are.\nBank Clerk: Thank you! Please fill out this form.",
-          //   audio: "bankConversationAudio",
-          // },
+          {
+            role: "User",
+            message:
+              "Customer: Hello, I want to open a bank account.\nBank Clerk: Sure. Do you have your ID and address proof?\nCustomer: Yes, here they are.\nBank Clerk: Thank you! Please fill out this form.",
+            audio: "bankConversationAudio",
+          },
         ],
       },
       tasks: [
@@ -4599,7 +4599,7 @@ export const level10 = [
             { id: "option2", value: "GHSS, Pudhur" },
             { id: "option3", value: "DEF International School" },
           ],
-          answer: "option1",
+          answer: "option2",
         },
         {
           question:
@@ -4615,21 +4615,21 @@ export const level10 = [
           question:
             "The picture shows children playing happily in a ______ (place).",
           options: [
-            { id: "option1", value: "park" },
-            { id: "option2", value: "classroom" },
+            { id: "option1", value: "classroom" },
+            { id: "option2", value: "park" },
             { id: "option3", value: "library" },
           ],
-          answer: "option1",
+          answer: "option2",
         },
         {
           question:
             "The message at the bottom of the image says: ______ are the heart of our Nation!’",
           options: [
-            { id: "option1", value: "Children" },
-            { id: "option2", value: "Teachers" },
-            { id: "option3", value: "Parents" },
+            { id: "option1", value: "Teachers" },
+            { id: "option2", value: "Parents" },
+            { id: "option3", value: "Children" },
           ],
-          answer: "option1",
+          answer: "option3",
         },
       ],
     },

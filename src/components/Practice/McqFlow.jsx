@@ -24,6 +24,9 @@ import raStop from "../../assets/pause.png";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
+import { Modal } from "@mui/material";
+import ZoomInIcon from "@mui/icons-material/ZoomIn";
+import CloseIcon from "@mui/icons-material/Close";
 
 const levelMap = {
   10: level10,
@@ -78,6 +81,7 @@ const McqFlow = ({
   const [recAudio, setRecAudio] = useState("");
   const [completeAudio, setCompleteAudio] = useState(null);
   const [imageData, setImageData] = useState({});
+  const [zoomOpen, setZoomOpen] = useState(false);
 
   const handleRecordingComplete = (base64Data) => {
     if (base64Data) {
@@ -89,8 +93,13 @@ const McqFlow = ({
     }
   };
 
-  const playAudio = () => {
+  const playAudioCorrect = () => {
     const audio = new Audio(correctSound);
+    audio.play();
+  };
+
+  const playAudioWrong = () => {
+    const audio = new Audio(wrongSound);
     audio.play();
   };
 
@@ -214,12 +223,111 @@ const McqFlow = ({
           {/* Image on the left */}
 
           {conversation?.instruction?.content[0]?.value && (
-            <img
-              src={Assets[conversation?.instruction?.content[0]?.value]}
-              alt="Children's Day"
-              style={{ width: "250px", height: "250px", borderRadius: "15px" }}
-            />
+            // <img
+            //   src={Assets[conversation?.instruction?.content[0]?.value]}
+            //   alt="Children's Day"
+            //   style={{ width: "250px", height: "250px", borderRadius: "15px" }}
+            // />
+            <Box sx={{ position: "relative", cursor: "zoom-in" }}>
+              <img
+                src={Assets[conversation?.instruction?.content[0]?.value]}
+                style={{
+                  borderRadius: "20px",
+                  maxWidth: "100%",
+                  height: "250px",
+                }}
+                alt="contentImage"
+                onClick={() => setZoomOpen(true)} // Open modal on click
+              />
+
+              {/* Subtle gradient overlay across the top */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: "40px", // Height of the gradient overlay
+                  background:
+                    "linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent)",
+                  borderTopLeftRadius: "20px",
+                  borderTopRightRadius: "20px",
+                  display: "flex",
+                  alignItems: "center",
+                  paddingLeft: "8px",
+                }}
+              >
+                {/* Zoom icon positioned in the top-left corner */}
+                <ZoomInIcon
+                  onClick={() => setZoomOpen(true)}
+                  sx={{ color: "white", fontSize: "22px", cursor: "pointer" }}
+                />
+              </Box>
+            </Box>
           )}
+
+          <Modal
+            open={zoomOpen}
+            onClose={() => setZoomOpen(false)}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: "99999",
+            }}
+          >
+            <Box
+              sx={{
+                position: "relative",
+                outline: "none",
+                height: "500px",
+                width: "500px",
+              }}
+            >
+              {/* Subtle gradient overlay at the top of the zoomed image */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: "40px", // Adjust height as needed
+                  background:
+                    "linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  paddingRight: "8px",
+                  borderTopLeftRadius: "8px",
+                  borderTopRightRadius: "8px",
+                }}
+              >
+                {/* Close icon positioned within the gradient overlay */}
+                <CloseIcon
+                  onClick={() => setZoomOpen(false)}
+                  sx={{
+                    color: "white",
+                    fontSize: "24px",
+                    cursor: "pointer",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    borderRadius: "50%",
+                    padding: "4px",
+                  }}
+                />
+              </Box>
+
+              <img
+                src={Assets[conversation?.instruction?.content[0]?.value]}
+                alt="Zoomed content"
+                style={{
+                  // maxWidth: "90vw",
+                  // maxHeight: "90vh",
+                  width: "100%",
+                  borderRadius: "8px",
+                }}
+              />
+            </Box>
+          </Modal>
 
           {/* MCQ Section on the right */}
           <div style={{ width: "50%" }}>
@@ -252,7 +360,14 @@ const McqFlow = ({
                     checked={selectedOption === option.id}
                     onChange={() => {
                       setSelectedOption(option.id);
-                      playAudio();
+                      if (
+                        option.id ===
+                        conversation?.tasks[currentStep - 1]?.answer
+                      ) {
+                        playAudioCorrect();
+                      } else {
+                        playAudioWrong();
+                      }
                     }}
                     style={{
                       marginRight: "10px",
