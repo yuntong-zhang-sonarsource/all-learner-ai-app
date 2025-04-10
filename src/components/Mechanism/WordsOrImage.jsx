@@ -1,8 +1,16 @@
-import { Box, CardContent, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  CardContent,
+  Typography,
+  CircularProgress,
+  Avatar,
+} from "@mui/material";
+import { motion } from "framer-motion";
 import { createRef, useState, useEffect, useRef } from "react";
 import v11 from "../../assets/audio/V10.mp3";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import RecordVoiceVisualizer from "../../utils/RecordVoiceVisualizer";
+import hintsImg from "../../assets/hints.svg";
 import {
   PlayAudioButton,
   StopAudioButton,
@@ -20,6 +28,8 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
+import teacherImg from "../../assets/teacher.png";
+import studentImg from "../../assets/student.png";
 
 const isChrome =
   /Chrome/.test(navigator.userAgent) &&
@@ -28,10 +38,12 @@ const isChrome =
 
 const WordsOrImage = ({
   handleNext,
+  mechanism_id = "",
   background,
   header,
   type,
   words,
+  hints = "",
   image,
   setVoiceText,
   setRecordedAudio,
@@ -79,6 +91,8 @@ const WordsOrImage = ({
   const [showListenRetryButtons, setShowListenRetryButtons] = useState(false);
   const [answer, setAnswer] = useState(null);
   const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
+  const [showHint, setShowHint] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const audioRef = useRef(null);
   const currentWordRef = useRef(null);
@@ -298,6 +312,7 @@ const WordsOrImage = ({
 
   useEffect(() => {
     updateStoredData();
+    setShowHint(false);
   }, [handleNext]);
 
   const togglePlayPause = () => {
@@ -357,6 +372,24 @@ const WordsOrImage = ({
         setIsNextButtonCalled,
       }}
     >
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Typography
+          variant="h5"
+          component="h4"
+          sx={{
+            color: "#333F61",
+            fontSize: "30px",
+            letterSpacing: "1.5px",
+            lineHeight: "normal",
+            fontWeight: 600,
+            fontFamily: "Quicksand",
+            marginLeft: "20px",
+            textAlign: "center",
+          }}
+        >
+          {mechanism_id === "mechanic_15" ? header : ""}
+        </Typography>
+      </Box>
       <CardContent
         sx={{
           overflow: "hidden",
@@ -365,133 +398,347 @@ const WordsOrImage = ({
           pointerEvents: disableScreen ? "none" : "initial",
         }}
       >
-        {type === "image" ? (
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <img
-              src={image}
-              style={{
-                maxWidth: "450px",
-                maxHeight: "130px",
-                marginBottom: "40px",
-              }}
-            />
-          </Box>
-        ) : type === "phonics" ? (
-          <Box
-            position="relative"
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              mb: "40px",
-            }}
-          >
+        <Box>
+          {type === "image" ? (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <img
+                src={image}
+                style={{
+                  maxWidth: "450px",
+                  maxHeight: "130px",
+                  marginBottom: "40px",
+                }}
+              />
+            </Box>
+          ) : type === "phonics" ? (
             <Box
               position="relative"
               sx={{
-                minWidth: "403px",
-                borderRadius: "15px",
-                background: "rgba(255, 161, 50, 0.1)",
-                height: "88px",
+                width: "100%",
                 display: "flex",
+                justifyContent: "center",
+                mb: "40px",
               }}
             >
-              <audio
-                ref={audioRefs}
-                preload="metadata"
-                onCanPlay={(e) => {
-                  setIsReady(true);
-                }}
-                onPlaying={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-              >
-                <source type="audio/mp3" src={v11} />
-              </audio>
-
               <Box
+                position="relative"
                 sx={{
+                  minWidth: "403px",
+                  borderRadius: "15px",
+                  background: "rgba(255, 161, 50, 0.1)",
                   height: "88px",
                   display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
                 }}
               >
+                <audio
+                  ref={audioRefs}
+                  preload="metadata"
+                  onCanPlay={(e) => {
+                    setIsReady(true);
+                  }}
+                  onPlaying={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                >
+                  <source type="audio/mp3" src={v11} />
+                </audio>
+
                 <Box
                   sx={{
-                    cursor: "pointer",
-                    marginLeft: "20px",
-                    marginTop: "5px",
-                  }}
-                  onClick={() => {
-                    togglePlayPause();
+                    height: "88px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
                 >
-                  {isReady &&
-                    (isPlaying ? (
-                      <StopAudioButton color={"#FFA132"} />
-                    ) : (
-                      <PlayAudioButton color={"#FFA132"} />
-                    ))}
+                  <Box
+                    sx={{
+                      cursor: "pointer",
+                      marginLeft: "20px",
+                      marginTop: "5px",
+                    }}
+                    onClick={() => {
+                      togglePlayPause();
+                    }}
+                  >
+                    {isReady &&
+                      (isPlaying ? (
+                        <StopAudioButton color={"#FFA132"} />
+                      ) : (
+                        <PlayAudioButton color={"#FFA132"} />
+                      ))}
+                  </Box>
+                  <Typography
+                    variant="h5"
+                    component="h4"
+                    sx={{
+                      color: "#333F61",
+                      fontSize: "44px",
+                      letterSpacing: "2.2px",
+                      lineHeight: "normal",
+                      fontWeight: 600,
+                      fontFamily: "Quicksand",
+                      marginLeft: "20px",
+                    }}
+                  >
+                    {"REF LECTION"}
+                  </Typography>
                 </Box>
-                <Typography
-                  variant="h5"
-                  component="h4"
-                  sx={{
-                    color: "#333F61",
-                    fontSize: "44px",
-                    letterSpacing: "2.2px",
-                    lineHeight: "normal",
-                    fontWeight: 600,
-                    fontFamily: "Quicksand",
-                    marginLeft: "20px",
-                  }}
-                >
-                  {"REF LECTION"}
-                </Typography>
               </Box>
             </Box>
-          </Box>
-        ) : (
-          <Box>
-            {!words && (
-              <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
-              </Box>
-            )}
-            {words && !matchedChar && (
-              <Typography
-                variant="h5"
-                component="h4"
-                sx={{
-                  mb: 4,
-                  color: getAnswerColor(answer),
-                  textAlign: "center",
-                  fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
-                  fontWeight: 700,
-                  fontFamily: "Quicksand",
-                  lineHeight: "50px",
-                }}
-                fontSize={{ md: "40px", xs: "25px" }}
-              >
-                {words ? words[0].toUpperCase() + words.slice(1) : ""}
-              </Typography>
-            )}
-            {matchedChar && (
+          ) : (
+            <Box
+              sx={{
+                position: "relative",
+                display: {
+                  xs: "",
+                  // md: imageLoaded ? "flex" : "",
+                },
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
+              {image && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                >
+                  <Box sx={{ position: "relative" }}>
+                    <img
+                      src={image}
+                      onLoad={() => setImageLoaded(true)} // When image loads, set state to true
+                      onError={(e) => {
+                        e.target.style.display = "none"; // Hide if error occurs
+                        setImageLoaded(false);
+                      }}
+                      style={{
+                        width: "100%", // Image will take full width of the parent container
+                        maxWidth: "400px", // Limit the width to 500px
+                        marginBottom: "40px",
+                        height: "auto", // Maintain aspect ratio
+                        maxHeight: "340px", // Cap the height at 200px
+                        objectFit: "contain", // Ensures the image fits well within the dimensions
+                      }}
+                      alt="Responsive content" // Adding alt text for accessibility
+                    />
+                    {hints && (
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          right: "-100px",
+                          top: "0px",
+                          textAlign: "center",
+                          cursor: "pointer",
+                          width: "100px",
+                          zIndex: 1000,
+                        }}
+                        onClick={() => setShowHint(!showHint)}
+                      >
+                        <img style={{ height: "55px" }} src={hintsImg} alt="" />
+                        <p>Hint</p>
+                        {showHint && (
+                          <Box
+                            sx={{
+                              position: "absolute",
+                              bottom: "0px",
+                              left: "90px",
+                              width: "150px",
+                              backgroundColor: "#ffff12",
+                              padding: "10px 15px",
+                              borderRadius: "20px",
+                              fontSize: "20px",
+                              color: "#333F61",
+                              fontWeight: 600,
+                              fontFamily:
+                                '"Comic Sans MS", cursive, sans-serif',
+                              boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                              maxWidth: "150px",
+                              textAlign: "center",
+                              lineHeight: "1.4",
+                              textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
+                              zIndex: 1001,
+                              "&::before": {
+                                content: '""',
+                                position: "absolute",
+                                bottom: "20px",
+                                left: "-15px",
+                                width: "15px",
+                                height: "15px",
+                                backgroundColor: "#ffff12",
+                                borderRadius: "50%",
+                                boxShadow: "10px 10px 0 0 #ffff12",
+                              },
+                            }}
+                          >
+                            {hints}
+                          </Box>
+                        )}
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+              )}
               <Box
-                display={"flex"}
-                mb={4}
                 sx={{
-                  color: "red",
+                  display: "flex",
+                  // flexDirection: "column",
+                  justifyContent: "space-around", // Centers content vertically
+                  alignItems: "center", // Centers content horizontally
                   width: "100%",
-                  justifyContent: "center",
-                  flexWrap: "wrap",
+                  gap: 4,
+                  marginBottom: "40px",
                 }}
               >
-                {highlightWords(words, matchedChar, getAnswerColor(answer))}
+                {!words && (
+                  <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
+                  </Box>
+                )}
+                {words && !matchedChar && (
+                  <Box
+                    sx={{
+                      ...(mechanism_id === "mechanic_15"
+                        ? {
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 2,
+                            mb: 8,
+                          }
+                        : ""),
+                    }}
+                  >
+                    {mechanism_id === "mechanic_15" && (
+                      <Avatar
+                        src={teacherImg}
+                        sx={{ bgcolor: "green", height: "60px", width: "60px" }}
+                      >
+                        Teacher
+                      </Avatar>
+                    )}
+
+                    <Typography
+                      variant="h5"
+                      component="h4"
+                      sx={{
+                        fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
+                        fontWeight: 700,
+                        fontFamily: "Quicksand",
+                        lineHeight: "50px",
+                        ...(mechanism_id === "mechanic_15"
+                          ? {
+                              position: "relative",
+                              backgroundColor: "#FAD7A0",
+                              padding: "10px 20px",
+                              borderRadius: "20px",
+                              boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                              "&::before": {
+                                content: '""',
+                                position: "absolute",
+                                top: "50%",
+                                left: "-10px",
+                                transform: "translateY(-50%)",
+                                width: 0,
+                                height: 0,
+                                borderTop: "10px solid transparent",
+                                borderBottom: "10px solid transparent",
+                                borderRight: "10px solid #d8d8d8",
+                              },
+                            }
+                          : {
+                              mb: 4,
+                              color: getAnswerColor(answer),
+                              textAlign: "center",
+                            }),
+                      }}
+                      fontSize={{ md: "40px", xs: "25px" }}
+                    >
+                      {words ? words[0].toUpperCase() + words.slice(1) : ""}
+                    </Typography>
+                  </Box>
+                )}
+                {mechanism_id === "mechanic_15" && (
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                    <Typography
+                      variant="h5"
+                      component="h4"
+                      sx={{
+                        position: "relative",
+                        backgroundColor: "#D7BDE2",
+                        padding: "10px 20px",
+                        borderRadius: "20px",
+                        fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
+                        fontWeight: 700,
+                        fontFamily: "Quicksand",
+                        lineHeight: "50px",
+                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                        "&::after": {
+                          content: '""',
+                          position: "absolute",
+                          top: "50%",
+                          right: "-10px",
+                          transform: "translateY(-50%)",
+                          width: 0,
+                          height: 0,
+                          borderTop: "10px solid transparent",
+                          borderBottom: "10px solid transparent",
+                          borderLeft: "10px solid #d8d8d8",
+                        },
+                      }}
+                      fontSize={{ md: "40px", xs: "25px" }}
+                    >
+                      <motion.div style={{ display: "flex", gap: "5px" }}>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                        >
+                          Speak
+                          {[...Array(3)].map((_, i) => (
+                            <motion.span
+                              key={i}
+                              style={{
+                                width: "8px",
+                                height: "8px",
+                                borderRadius: "50%",
+                                background: "black",
+                              }}
+                              animate={{ y: [0, -5, 0] }}
+                              transition={{
+                                duration: 0.5,
+                                repeat: Infinity,
+                                delay: i * 0.2,
+                              }}
+                            />
+                          ))}
+                        </Box>
+                      </motion.div>
+                    </Typography>
+                    <Avatar
+                      src={studentImg}
+                      sx={{ bgcolor: "green", height: "60px", width: "60px" }}
+                    >
+                      N
+                    </Avatar>
+                  </Box>
+                )}
+                {matchedChar && (
+                  <Box
+                    display={"flex"}
+                    mb={4}
+                    sx={{
+                      color: "red",
+                      width: "100%",
+                      justifyContent: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {highlightWords(words, matchedChar, getAnswerColor(answer))}
+                  </Box>
+                )}
               </Box>
-            )}
-          </Box>
-        )}
+            </Box>
+          )}
+        </Box>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           {(level === 1 || level === 2 || level === 3) && !isShowCase ? (
             <div>
