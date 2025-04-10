@@ -303,6 +303,11 @@ function ArrangePicture({
                   width: "100%",
                   lineHeight: "2",
                   marginTop: "25px",
+                  // alignContent: "center",
+                  // display: "flex",
+                  // alignSelf: "center",
+                  // alignItems: "center",
+                  // justifyContent: "center"
                 }}
               >
                 {allTexts?.split(" ").map((word, wordIndex) => (

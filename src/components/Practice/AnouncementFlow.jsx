@@ -152,7 +152,7 @@ const AnouncementFlow = ({
   //   }
   // };
 
-  steps = 1;
+  //steps = 1;
 
   const getConversation = (level, currentLevel) => {
     const levelData = levelMap[level];
@@ -532,9 +532,9 @@ const AnouncementFlow = ({
       const audio = new Audio(wrongSound);
       audio.play();
       setIsCorrect(false);
-      setTimeout(() => {
-        resetState();
-      }, 500);
+      // setTimeout(() => {
+      //   resetState();
+      // }, 500);
     }
   };
 
@@ -1152,7 +1152,8 @@ const AnouncementFlow = ({
                       />
                       {currentLevel !== "S1" && currentLevel !== "S2"
                         ? selectedOption !== null &&
-                          recAudio && (
+                          recAudio &&
+                          isCorrect && (
                             <div
                               onClick={loadNextTask}
                               style={{ cursor: "pointer", marginLeft: "35px" }}
