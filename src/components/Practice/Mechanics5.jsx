@@ -290,7 +290,13 @@ const Mechanics5 = ({
         </Grid>
 
         <Grid item xs={8} paddingLeft={2}>
-          <Box paddingBottom={3} marginLeft={-10} sx={{ display: "flex" }}>
+          <Box
+            paddingBottom={3}
+            sx={{
+              display: "flex",
+              marginLeft: mechanism === "mechanic_4" ? "-10px" : "",
+            }}
+          >
             <audio
               key={question_audio} // Key added to force remount when source changes
               ref={questionAudioRef}
