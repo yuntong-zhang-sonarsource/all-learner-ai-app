@@ -26,12 +26,12 @@ import SpeechRecognition, {
 import RecordVoiceVisualizer from "../../utils/RecordVoiceVisualizer";
 import Joyride from "react-joyride";
 
-const isChrome =
-  /Chrome/.test(navigator.userAgent) &&
-  /Google Inc/.test(navigator.vendor) &&
-  !/Edg/.test(navigator.userAgent);
+// const isChrome =
+//   /Chrome/.test(navigator.userAgent) &&
+//   /Google Inc/.test(navigator.vendor) &&
+//   !/Edg/.test(navigator.userAgent);
 
-//const isChrome = true;
+const isChrome = true;
 
 const Mechanics7 = ({
   setVoiceText,
@@ -427,7 +427,7 @@ const Mechanics7 = ({
       SpeechRecognition.stopListening();
       stopAudioRecording();
       const finalTranscript = transcriptRef.current;
-      console.log("textR", currentText, finalTranscript, transcript);
+      //console.log("textR", currentText, finalTranscript, transcript);
 
       const matchPercentage = phoneticMatch(currentText, transcript);
 
@@ -513,12 +513,13 @@ const Mechanics7 = ({
   }, [currentImg]);
 
   const handleWordsLogic = (word, transcribedText, isSelected) => {
-    const matchPercentage = phoneticMatch(currentText, transcribedText);
-
-    console.log("inside handle", currentText, transcribedText);
+    const matchPercentage = phoneticMatch(currentText, transcript);
 
     if (matchPercentage < 40) {
-      setIncorrectWords((prevState) => ({ ...prevState, [currentText]: true }));
+      setIncorrectWords((prevState) => ({
+        ...prevState,
+        [currentText]: true,
+      }));
     } else {
       setIncorrectWords((prevState) => ({
         ...prevState,
@@ -789,112 +790,6 @@ const Mechanics7 = ({
         />
         {false && (
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {/* <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              mb: 2,
-              mt: 2,
-            }}
-          >
-            <Box
-              sx={{
-                minWidth: "230px",
-                minHeight: "37px",
-                display: "flex",
-                justifyContent: "center",
-                flexWrap: "wrap",
-                alignItems: "center",
-                borderRadius: "15px",
-                border: `2px solid ${getBorderColor()}`,
-                cursor: "pointer",
-                letterSpacing: answer != "correct" ? "5px" : "normal",
-                background: "#FBFBFB",
-                paddingX: type === "word" ? 0 : "20px",
-              }}
-            >
-              {selectedWordsRef.current?.map((elem, index) => {
-                const parentWordsArray =
-                  typeof parentWords === "string"
-                    ? parentWords.split(" ")
-                    : parentWords;
-
-                let remainingParts = parentWordsArray.filter(
-                  (word) => !selectedWordsRef.current.includes(word)
-                );
-
-                const isIncorrect = incorrectWords[elem];
-
-                const colors = getColor(type, isIncorrect, answer);
-
-                return (
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => handleWordsLogic(elem, "", true)}
-                    className={
-                      answer === "wrong"
-                        ? `audioSelectedWrongWord ${shake ? "shakeImage" : ""}`
-                        : ""
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === " ") {
-                        e.preventDefault();
-                      }
-                    }}
-                    style={{
-                      borderRadius: "12px",
-                      padding:
-                        answer === "correct" ? "0px" : "5px 10px 5px 10px",
-                      border: getBorder(),
-                      color: colors,
-                      fontWeight: type === "word" ? 600 : 700,
-                      fontSize: "22px",
-                      fontFamily: "Quicksand",
-                      cursor: "pointer",
-                      marginLeft:
-                        type === "word" ? 0 : answer != "correct" ? "20px" : 0,
-                    }}
-                  >
-                    {elem}
-                    {remainingParts.length > 0 && (
-                      <span
-                        style={{
-                          color: "#1897DE1A",
-                          fontWeight: 700,
-                          fontSize: "22px",
-                          fontFamily: "Quicksand",
-                          marginLeft: "5px",
-                          role: "button",
-                        }}
-                      >
-                        {remainingParts.join(" ")}
-                      </span>
-                    )}
-                  </span>
-                );
-              })}
-            </Box>
-          </Box> */}
-            {/* {!isRecordingComplete && !isRecording && !isProcessing && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            maskBorderWidth: 6,
-          }}
-        >
-          <img
-            src={currentImg?.img}
-            alt="pencil"
-            height={"85px"}
-            style={{
-              zIndex: 2,
-            }}
-          />
-        </Box>
-      )} */}
             <Box
               sx={{
                 display: "flex",
@@ -941,53 +836,6 @@ const Mechanics7 = ({
                           //marginLeft: getMarginLeft(wIndex),
                         }}
                       >
-                        {/* {wIndex == 0 && (
-                        <Box sx={{ position: "absolute" }}>
-                          <WordRedCircle height={getCircleHeight(elem)} />
-                        </Box>
-                      )} */}
-                        {/* {wIndex == 0 && (
-                        <Box
-                          onClick={(e) => {
-                            if (
-                              !isRecordingComplete &&
-                              !isRecording &&
-                              !isProcessing
-                            ) {
-                              e.stopPropagation();
-                              handlePlayAudio(elem);
-                            } else {
-                              e.stopPropagation();
-                            }
-                          }}
-                          sx={{
-                            zIndex: "99999",
-                            position: "absolute",
-                            left:
-                              wordsRef.current?.length > 1
-                                ? "-100px"
-                                : undefined,
-                            right:
-                              wordsRef.current?.length == 1
-                                ? "-100px"
-                                : undefined,
-                            mb: "18px",
-                          }}
-                        >
-                          <img
-                            src={
-                              !(
-                                !isRecordingComplete &&
-                                !isRecording &&
-                                !isProcessing
-                              )
-                                ? Assets.bulbHint
-                                : Assets.bulbHint
-                            }
-                            alt="bulbHint"
-                          />
-                        </Box>
-                      )} */}
                         <Box
                           sx={{
                             backgroundColor: "#1CB0F60F",
@@ -1015,46 +863,6 @@ const Mechanics7 = ({
                           ))}
                         </Box>
                       </Box>
-                      {/* 
-                {wIndex === 0 &&
-                  (!recordingStates[elem] &&
-                  !isRecordingComplete &&
-                  !isRecording &&
-                  !isProcessing ? (
-                    <Box
-                      sx={{
-                        marginTop: "7px",
-                        position: "relative",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        //height: { xs: "30px", sm: "40px", md: "50px" },
-                        minWidth: { xs: "50px", sm: "60px", md: "70px" },
-                        cursor: `url(${clapImage}) 32 24, auto`,
-                        marginLeft: getMarginLeft(wIndex),
-                      }}
-                      onClick={() => handleWords(elem)}
-                    >
-                      <SpeakButton height={45} width={45} />
-                    </Box>
-                  ) : (
-                    <Box
-                      sx={{
-                        marginTop: "7px",
-                        position: "relative",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        //height: { xs: "30px", sm: "40px", md: "50px" },
-                        minWidth: { xs: "50px", sm: "60px", md: "70px" },
-                        cursor: `url(${clapImage}) 32 24, auto`,
-                        marginLeft: getMarginLeft(wIndex),
-                      }}
-                      onClick={() => stopRecording(elem)}
-                    >
-                      <StopButton height={45} width={45} />
-                    </Box>
-                  ))} */}
                     </div>
                   ) : (
                     <Box
@@ -1091,201 +899,6 @@ const Mechanics7 = ({
                 </React.Fragment>
               ))}
             </Box>
-
-            {/* {words &&
-            words.length > 0 &&
-            (!isRecordingComplete && !isRecording && !isProcessing ? (
-              <Box
-                sx={{
-                  //marginBottom: "25px",
-                  position: "relative",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "50px",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  //height: { xs: "30px", sm: "40px", md: "50px" },
-                  minWidth: { xs: "50px", sm: "60px", md: "70px" },
-                  cursor: `url(${clapImage}) 32 24, auto`,
-                }}
-              >
-                {isPlaying ? (
-                  <div>
-                    <Box
-                      sx={{
-                        marginTop: "7px",
-                        position: "relative",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        minWidth: { xs: "50px", sm: "60px", md: "70px" },
-                        cursor: "pointer",
-                        marginLeft: getMarginLeft(0),
-                      }}
-                      onClick={stopCompleteAudio}
-                    >
-                      <StopButton height={45} width={45} />
-                    </Box>
-                  </div>
-                ) : (
-                  <div>
-                    <Box
-                      sx={{
-                        marginTop: "7px",
-                        position: "relative",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        minWidth: { xs: "50px", sm: "60px", md: "70px" },
-                        cursor: `url(${clapImage}) 32 24, auto`,
-                        marginLeft: getMarginLeft(0),
-                      }}
-                      onClick={playCompleteAudio}
-                    >
-                      <ListenButton height={45} width={45} />
-                    </Box>
-                  </div>
-                )}
-                <Box
-                  sx={{
-                    position: "relative",
-                    width: "90px",
-                    height: "90px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginTop: "7px",
-                    marginLeft: getMarginLeft(0),
-                    cursor: `url(${clapImage}) 32 24, auto`,
-                  }}
-                  onClick={() => handleWords(wordsRef?.current[0])}
-                >
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      width: "90px",
-                      height: "90px",
-                      backgroundColor: "#58CC0233",
-                      borderRadius: "50%",
-                      animation: "pulse 1.2s linear infinite",
-                      "@keyframes pulse": {
-                        "0%": {
-                          transform: "scale(0.6)",
-                          opacity: 0,
-                        },
-                        "50%": {
-                          opacity: 1,
-                        },
-                        "100%": {
-                          transform: "scale(1.4)",
-                          opacity: 0,
-                        },
-                      },
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      position: "relative",
-                      zIndex: 1,
-                    }}
-                  >
-                    <SpeakButton height={45} width={45} />
-                  </Box>
-                </Box>
-              </Box>
-            ) : (
-
-              <Box
-                sx={{
-                  marginTop: "7px",
-                  position: "relative",
-                  display: "flex",
-                  gap: "50px",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  //height: { xs: "30px", sm: "40px", md: "50px" },
-                  minWidth: { xs: "50px", sm: "60px", md: "70px" },
-                  cursor: `url(${clapImage}) 32 24, auto`,
-                }}
-              >
-                <Box
-                  sx={{
-                    position: "relative",
-                    width: "90px",
-                    height: "90px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    //marginTop: "7px",
-                    marginLeft: getMarginLeft(0),
-                    cursor: `url(${clapImage}) 32 24, auto`,
-                    borderRadius: "50%",
-                  }}
-                  onClick={() => stopRecording(wordsRef?.current[0])}
-                >
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      width: "90px",
-                      height: "90px",
-                      backgroundColor: "#FF4B4B33",
-                      borderRadius: "50%",
-                      animation: "pulse 1.2s linear infinite",
-                      "@keyframes pulse": {
-                        "0%": {
-                          transform: "scale(0.6)",
-                          opacity: 0,
-                        },
-                        "50%": {
-                          opacity: 1,
-                        },
-                        "100%": {
-                          transform: "scale(1.4)",
-                          opacity: 0,
-                        },
-                      },
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      position: "relative",
-                      zIndex: 1,
-                    }}
-                  >
-                    <StopButton height={45} width={45} />
-                  </Box>
-                </Box>
-              </Box>
-            ))} */}
-
-            {/* {words && words.length === 0 && !isRecording && (
-            <Box sx={{ display: "flex", justifyContent: "center", mt: "15px" }}>
-              <VoiceAnalyser
-                pageName={"m7"}
-                setVoiceText={setVoiceText}
-                onAudioProcessed={handleRecordingComplete}
-                setRecordedAudio={setRecordedAudio}
-                setVoiceAnimate={setVoiceAnimate}
-                storyLine={storyLine}
-                dontShowListen={type === "image" || isDiscover}
-                handleNext={handleNext}
-                enableNext={enableNext}
-                originalText={parentWords}
-                audioLink={audio ? audio : completeAudio}
-                {...{
-                  contentId,
-                  contentType,
-                  currentLine: currentStep - 1,
-                  playTeacherAudio,
-                  callUpdateLearner,
-                  isShowCase,
-                  setEnableNext,
-                  showOnlyListen: answer !== "correct",
-                  setOpenMessageDialog,
-                }}
-              />
-            </Box>
-          )} */}
           </div>
         )}
         <Box textAlign="center">
@@ -1293,12 +906,12 @@ const Mechanics7 = ({
             sx={{
               backgroundColor: !isRecorded
                 ? "#1CB0F60F" // default background
-                : isIncorrectWord
+                : !isIncorrectWord
                 ? "#FF7F360F" // red background
                 : "#58CC020F", // green background
               border: !isRecorded
                 ? "2px solid #1CB0F633" // default border
-                : isIncorrectWord
+                : !isIncorrectWord
                 ? "2px solid #FF7F36" // red border
                 : "2px solid #58CC02", // green border
               borderRadius: "16px",
@@ -1319,7 +932,7 @@ const Mechanics7 = ({
             >
               {isRecorded && (
                 <img
-                  src={!isIncorrectWord ? Assets.tick : Assets.wrongTick}
+                  src={isIncorrectWord ? Assets.tick : Assets.wrongTick}
                   alt="tick"
                   style={{ marginRight: "16px", width: "56px", height: "56px" }}
                 />
@@ -1330,7 +943,7 @@ const Mechanics7 = ({
                   style={{
                     color: !isRecorded
                       ? "#333F61" // default background
-                      : isIncorrectWord
+                      : !isIncorrectWord
                       ? "#FF7F36" // red background
                       : "#58CC02",
                     //color: isRecorded ? "#58CC02" : "#333F61",

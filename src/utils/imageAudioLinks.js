@@ -2673,3 +2673,47 @@ export const supermarketAnouncementImg =
   "https://raw.githubusercontent.com/anik200002/imagesEkstep/be1c441b8aef50cd90037ad4356a216ffb19bb60/supermarketAnouncementImg.svg";
 export const level10S2Announcement =
   "https://github.com/Ayansaha20/EkStepImages/raw/refs/heads/main/level10S2Announcement.wav";
+export const musicIcon =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/39a0a3000ab3d1bde895db9670d419f2419233db/speakerImg.svg";
+export const level12P3OneAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P3OneAudio.wav";
+export const level12P8FiveAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P8FiveAudio.wav";
+export const level12P8FourAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P8FourAudio.wav";
+export const level12P8ThreeAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P8ThreeAudio.wav";
+export const level12P8TwoAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P8TwoAudio.wav";
+export const level12P8OneAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P8OneAudio.wav";
+export const level12P7FiveAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P7FiveAudio.wav";
+export const level12P7FourAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P7FourAudio.wav";
+export const level12P7ThreeAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P7ThreeAudio.wav";
+export const level12P7TwoAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P7TwoAudio.wav";
+export const level12P7OneAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P7OneAudio.wav";
+export const level12P4FiveAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P4FiveAudio.wav";
+export const level12P4FourAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P4FourAudio.wav";
+export const level12P4ThreeAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P4ThreeAudio.wav";
+export const level12P4TwoAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P4TwoAudio.wav";
+export const level12P4OneAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P4OneAudio.wav";
+export const level12P3FiveAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P3FiveAudio.wav";
+export const level12P3FourAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P3FourAudio.wav";
+export const level12P3ThreeAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P3ThreeAudio.wav";
+export const level12P3TwoAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P3TwoAudio.wav";
+export const sadBear =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/e559f51e9830bde05f85e3e18c1880bb80c93380/sadBear.svg";

@@ -8414,6 +8414,8 @@ export const levelGetContent = {
         criteria: "sentence",
         template: "simple",
         mechanism: { id: "AnouncementFlow", name: "AnouncementFlow" },
+        //tags: "CEFR_ENG",
+        //competency: "L2.1",
       },
       {
         title: "P2",
@@ -8550,13 +8552,13 @@ export const levelGetContent = {
         title: "P3",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "PhrasesInAction", name: "PhrasesInAction" },
+        mechanism: { id: "jumbledWord", name: "jumbledWord" },
       },
       {
         title: "P4",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "PhrasesInAction", name: "PhrasesInAction" },
+        mechanism: { id: "jumbledWord", name: "jumbledWord" },
       },
       {
         title: "S1",
@@ -8581,13 +8583,13 @@ export const levelGetContent = {
         title: "P7",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "PhrasesInAction", name: "PhrasesInAction" },
+        mechanism: { id: "jumbledWord", name: "jumbledWord" },
       },
       {
         title: "P8",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "PhrasesInAction", name: "PhrasesInAction" },
+        mechanism: { id: "jumbledWord", name: "jumbledWord" },
       },
       {
         title: "S2",

@@ -521,6 +521,21 @@ const BingoCard = ({
     startAudio(currentWordIndex);
   };
 
+  const retry = () => {
+    setShowHint(false);
+    setHideButtons(false);
+    setSelectedWords([]);
+    setWinEffect(false);
+    setShowWrongWord(false);
+    setHighlightCorrectWords(false);
+    setShowCoinsImg(false);
+    setShowEmptyImg(false);
+    setHideCoinsImg(false);
+    setShowConfetti(false);
+    setShowNextButton(false);
+    setShowInitialEffect(true);
+  };
+
   useEffect(() => {
     if (showEmptyImg) {
       const timer = setTimeout(() => {
@@ -728,7 +743,7 @@ const BingoCard = ({
           }}
         >
           <img
-            src={Assets.monkeyImg}
+            src={showWrongWord ? Assets.sadBear : Assets.monkeyImg}
             alt="Monkey"
             style={{
               width: screenWidth < 768 ? "150px" : "250px",
@@ -890,7 +905,10 @@ const BingoCard = ({
                   cursor: "pointer",
                   zIndex: "5",
                 }}
-                onClick={handleNextButton}
+                onClick={() => {
+                  retry();
+                  handleNextButton();
+                }}
               >
                 <NextButtonRound
                   height={screenWidth < 768 ? 40 : 50}
