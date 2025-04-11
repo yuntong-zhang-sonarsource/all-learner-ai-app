@@ -1901,163 +1901,167 @@ export const level12 = [
   },
   {
     level: "P4",
-    mechanics: "PhrasesInAction",
+    mechanics: "jumbledWord",
     data: [
       {
-        step1: {
-          allwords: [{ img: "textbookImg", text: "Open Textbooks" }],
-          audio: "openTextbookAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "textbookImg", text: "Open Textbooks" },
-            { img: "classroomImg", text: "Classroom" },
-            { img: "teacherImg", text: "Teacher" },
-          ],
-          correctWordTwo: "Open Textbooks",
-          audio: "openTextbookAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P4OneAudio",
+            correctSentence:
+              "Students, gather in the courtyard by 8:30 AM with slips and lunch.",
+          },
+        ],
+        jumbledWords: [
+          "with slips",
+          "courtyard by",
+          "Students, gather",
+          "8:30 AM",
+          "in the",
+          "and lunch.",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "listenImg", text: "Listen Carefully" }],
-          audio: "listenAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "listenImg", text: "Listen Carefully" },
-            { img: "blackboardImg", text: "Blackboard" },
-            { img: "notebookImg", text: "Notebook" },
-          ],
-          correctWordTwo: "Listen Carefully",
-          audio: "listenAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P4TwoAudio",
+            correctSentence:
+              "Next downtown bus arrives in 5 mins. Have tickets ready.",
+          },
+        ],
+        jumbledWords: [
+          "mins. Have",
+          "bus arrives",
+          "Next downtown",
+          "in 5",
+          "tickets ready.",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "raiseHandImg", text: "Raise Hand" }],
-          audio: "raiseHandAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "raiseHandImg", text: "Raise Hand" },
-            { img: "deskImg", text: "Desk" },
-            { img: "studentImg", text: "Students" },
-          ],
-          correctWordTwo: "Raise Hand",
-          audio: "raiseHandAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P4ThreeAudio",
+            correctSentence:
+              "Flight 234 to Delhi boarding at Gate 7 in 10 mins. Keep ID ready.",
+          },
+        ],
+        jumbledWords: [
+          "boarding at",
+          "in 10",
+          "ID ready.",
+          "Flight 234",
+          "Gate 7",
+          "mins. Keep",
+          "to Delhi",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "workPairImg", text: "Work in Pairs" }],
-          audio: "workPairAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "workPairImg", text: "Work in Pairs" },
-            { img: "exerciseImg", text: "Exercise" },
-            { img: "classroomImg", text: "Classroom" },
-          ],
-          correctWordTwo: "Work in Pairs",
-          audio: "workPairAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P4FourAudio",
+            correctSentence:
+              "Electronics sale at 2 PM today. Don't miss the deals!",
+          },
+        ],
+        jumbledWords: [
+          "at 2",
+          "Electronics sale",
+          "Don't miss",
+          "PM today.",
+          "the deals!",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "writeDateImg", text: "Write Date" }],
-          audio: "writeDateAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "writeDateImg", text: "Write Date" },
-            { img: "notebookImg", text: "Notebook" },
-            { img: "penImg", text: "Pen" },
-          ],
-          correctWordTwo: "Write Date",
-          audio: "writeDateAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P4FiveAudio",
+            correctSentence:
+              "Visiting hours over. Please exit via the main gate. Thank you!",
+          },
+        ],
+        jumbledWords: [
+          "exit via",
+          "Thank you!",
+          "the main",
+          "over. Please",
+          "Visiting hours",
+          "gate.",
+        ],
       },
     ],
   },
   {
     level: "P3",
-    mechanics: "PhrasesInAction",
+    mechanics: "jumbledWord",
     data: [
       {
-        step1: {
-          allwords: [{ img: "schoolCourtyardImg", text: "Open Courtyard" }],
-          audio: "schoolCourtyardAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "schoolCourtyardImg", text: "School Courtyard" },
-            { img: "busImg", text: "Bus" },
-            { img: "lunchBoxImg", text: "Lunch Box" },
-          ],
-          correctWordTwo: "School Courtyard",
-          audio: "schoolCourtyardAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P3OneAudio",
+            correctSentence: "Open your textbooks to page 25.",
+          },
+        ],
+        jumbledWords: ["Open", "your", "to", "page", "textbooks", "25."],
       },
       {
-        step1: {
-          allwords: [{ img: "busImg", text: "Open Bus" }],
-          audio: "busAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "ticketImg", text: "Ticket" },
-            { img: "busImg", text: "Bus" },
-            { img: "trainImg", text: "Train" },
-          ],
-          correctWordTwo: "Bus",
-          audio: "busAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P3TwoAudio",
+            correctSentence: "Listen carefully and pay attention.",
+          },
+        ],
+        jumbledWords: ["attention.", "carefully", "Listen", "and", "pay"],
       },
       {
-        step1: {
-          allwords: [{ img: "airplaneImg", text: "Airplane" }],
-          audio: "airplaneAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "airplaneImg", text: "Airplane" },
-            { img: "boardingPassImg", text: "Boarding Pass" },
-            { img: "trainStationImg", text: "Train Station" },
-          ],
-          correctWordTwo: "Airplane",
-          audio: "airplaneAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P3ThreeAudio",
+            correctSentence: "Please raise your hand before speaking.",
+          },
+        ],
+        jumbledWords: [
+          "before",
+          "speaking.",
+          "Please",
+          "raise",
+          "hand",
+          "your",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "discountTagImg", text: "Discount Tag" }],
-          audio: "discountTagAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "shoppingCartImg", text: "Shopping Cart" },
-            { img: "discountTagImg", text: "Discount Tag" },
-            { img: "restaurantImg", text: "Restaurant" },
-          ],
-          correctWordTwo: "Discount Tag",
-          audio: "discountTagAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P3FourAudio",
+            correctSentence: "Work in pairs and complete the exercise.",
+          },
+        ],
+        jumbledWords: [
+          "the",
+          "exercise.",
+          "Work",
+          "in",
+          "pairs",
+          "and",
+          "complete",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "exitSignImg", text: "Exit Sign" }],
-          audio: "exitSignAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "hospitalImg", text: "Hospital" },
-            { img: "exitSignImg", text: "Exit Sign" },
-            { img: "ambulanceImg", text: "Ambulance" },
-          ],
-          correctWordTwo: "Exit Sign",
-          audio: "exitSignAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P3FiveAudio",
+            correctSentence: "Write today's date at the top of your notebook.",
+          },
+        ],
+        jumbledWords: [
+          "Write",
+          "today's",
+          "your",
+          "notebook.",
+          "top",
+          "of",
+          "the",
+          "date",
+          "at",
+        ],
       },
     ],
   },
@@ -2550,168 +2554,143 @@ export const level12 = [
     },
   },
   {
-    level: "P8",
-    mechanics: "PhrasesInAction",
+    level: "P7",
+    mechanics: "jumbledWord",
     data: [
       {
-        step1: {
-          allwords: [
-            { img: "underlineImg", text: "Underline Important Points" },
-          ],
-          audio: "underlineAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "underlineImg", text: "Underline Important Points" },
-            { img: "highlighterImg", text: "Highlighter" },
-            { img: "notebookImg", text: "Notebook" },
-          ],
-          correctWordTwo: "Underline Important Points",
-          audio: "underlineAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P7OneAudio",
+            correctSentence: "Underline the important points in your notes.",
+          },
+        ],
+        jumbledWords: [
+          "Underline",
+          "points",
+          "notes.",
+          "in your",
+          "the important",
+        ],
       },
       {
-        step1: {
-          allwords: [
-            { img: "readInstructionsImg", text: "Read Instructions Carefully" },
-          ],
-          audio: "readInstructionsAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "readInstructionsImg", text: "Read Instructions Carefully" },
-            { img: "questionPaperImg", text: "Question Paper" },
-            { img: "penImg", text: "Pen" },
-          ],
-          correctWordTwo: "Read Instructions Carefully",
-          audio: "readInstructionsAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P7TwoAudio",
+            correctSentence:
+              "Read the instructions carefully before answering.",
+          },
+        ],
+        jumbledWords: [
+          "Read",
+          "carefully",
+          "before",
+          "the instructions",
+          "answering.",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "sitProperlyImg", text: "Sit Properly" }],
-          audio: "sitProperlyAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "sitProperlyImg", text: "Sit Properly" },
-            { img: "deskImg", text: "Desk" },
-            { img: "chairImg", text: "Chair" },
-          ],
-          correctWordTwo: "Sit Properly",
-          audio: "sitProperlyAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P7ThreeAudio",
+            correctSentence: "Sit properly and don't lean on the desk.",
+          },
+        ],
+        jumbledWords: ["and don't", "Sit properly", "on the", "lean", "desk."],
       },
       {
-        step1: {
-          allwords: [{ img: "notebookImg", text: "Take Out Notebooks" }],
-          audio: "notebookAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "notebookImg", text: "Take Out Notebooks" },
-            { img: "penImg", text: "Pen" },
-            { img: "textbookImg", text: "Textbook" },
-          ],
-          correctWordTwo: "Take Out Notebooks",
-          audio: "notebookAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P7FourAudio",
+            correctSentence: "Take out your notebooks and start writing.",
+          },
+        ],
+        jumbledWords: [
+          "Take out",
+          "writing.",
+          "notebooks",
+          "and start",
+          "your",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "submitHomeworkImg", text: "Submit Homework" }],
-          audio: "submitHomeworkAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "submitHomeworkImg", text: "Submit Homework" },
-            { img: "bellImg", text: "Bell" },
-            { img: "teacherDeskImg", text: "Teacher’s Desk" },
-          ],
-          correctWordTwo: "Submit Homework",
-          audio: "submitHomeworkAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P7FiveAudio",
+            correctSentence: "Submit your homework before the bell rings.",
+          },
+        ],
+        jumbledWords: [
+          "Submit",
+          "rings.",
+          "homework",
+          "before",
+          "your",
+          "the bell",
+        ],
       },
     ],
   },
   {
-    level: "P7",
-    mechanics: "PhrasesInAction",
+    level: "P8",
+    mechanics: "jumbledWord",
     data: [
       {
-        step1: {
-          allwords: [{ img: "discountTagImg", text: "Discount Tag" }],
-          audio: "discountTagAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "fruitsImg", text: "Fruits" },
-            { img: "vegetablesImg", text: "Vegetables" },
-            { img: "discountTagImg", text: "Discount Tag" },
-          ],
-          correctWordTwo: "Discount Tag",
-          audio: "discountTagAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P8OneAudio",
+            correctSentence: "20% off on fruits & veggies today!",
+          },
+        ],
+        jumbledWords: ["20% off", "on", "& veggies", "fruits", "today!"],
       },
       {
-        step1: {
-          allwords: [{ img: "salmonDishImg", text: "Grilled Salmon" }],
-          audio: "grilledSalmonAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "salmonDishImg", text: "Grilled Salmon" },
-            { img: "potatoesImg", text: "Mashed Potatoes" },
-            { img: "restaurantImg", text: "Restaurant" },
-          ],
-          correctWordTwo: "Grilled Salmon",
-          audio: "grilledSalmonAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P8TwoAudio",
+            correctSentence: "Try our special – grilled salmon & mash.",
+          },
+        ],
+        jumbledWords: ["grilled", "Try our", "salmon", "& mash.", "special –"],
       },
       {
-        step1: {
-          allwords: [{ img: "exitSignImg", text: "Exit Sign" }],
-          audio: "libraryClosingAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "libraryImg", text: "Library" },
-            { img: "bookImg", text: "Book" },
-            { img: "exitSignImg", text: "Exit Sign" },
-          ],
-          correctWordTwo: "Exit Sign",
-          audio: "libraryClosingAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P8ThreeAudio",
+            correctSentence: "Library closes in 15 mins. Return items.",
+          },
+        ],
+        jumbledWords: ["Library", "15 mins.", "closes in", "items.", "Return"],
       },
       {
-        step1: {
-          allwords: [{ img: "trainImg", text: "Train" }],
-          audio: "trainArrivalAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "trainImg", text: "Train" },
-            { img: "platformImg", text: "Platform" },
-            { img: "ticketImg", text: "Ticket" },
-          ],
-          correctWordTwo: "Train",
-          audio: "trainArrivalAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P8FourAudio",
+            correctSentence: "Train 5678 to Chennai in 5 mins at Platform 3.",
+          },
+        ],
+        jumbledWords: [
+          "in 5 mins",
+          "Train 5678",
+          "Platform 3.",
+          "to Chennai",
+          "at",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "concertStageImg", text: "Concert Stage" }],
-          audio: "concertAnnouncementAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "audienceImg", text: "Audience" },
-            { img: "concertStageImg", text: "Concert Stage" },
-            { img: "TelephoneNewImg", text: "Mobile Phone" },
-          ],
-          correctWordTwo: "Concert Stage",
-          audio: "concertAnnouncementAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P8FiveAudio",
+            correctSentence:
+              "Concert starts in 10 mins. Take seats & silence phones.",
+          },
+        ],
+        jumbledWords: [
+          "Take seats",
+          "Concert starts",
+          "phones.",
+          "in 10 mins.",
+          "& silence",
+        ],
       },
     ],
   },

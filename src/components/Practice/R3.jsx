@@ -511,7 +511,7 @@ const R3 = ({
                       onClick={() => playAudio(audio.value)}
                     >
                       <img
-                        src={musicIcon}
+                        src={Assets.musicIcon}
                         alt="Mike"
                         style={{
                           width: "45px",
