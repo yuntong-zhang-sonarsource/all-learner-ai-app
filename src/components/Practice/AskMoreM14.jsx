@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as Assets from "../../utils/imageAudioLinks";
 import { practiceSteps, getLocalData } from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
@@ -15,11 +15,17 @@ import {
   RetryIcon,
   SpeakButton,
   StopButton,
+  NextButtonRound,
 } from "../../utils/constants";
 import RecordVoiceVisualizer from "../../utils/RecordVoiceVisualizer";
 import { Box, CircularProgress } from "@mui/material";
 import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
+import VoiceAnalyser from "../../utils/VoiceAnalyser";
+import { fetchASROutput, handleTextEvaluation } from "../../utils/apiUtil";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
 const levelMap = {
   10: level10,
@@ -82,6 +88,16 @@ const AskMoreM14 = ({
   setOpenMessageDialog,
   audio,
   currentImg,
+  fluency,
+  startShowCase,
+  setStartShowCase,
+  livesData,
+  setLivesData,
+  gameOverData,
+  highlightWords,
+  matchedChar,
+  isNextButtonCalled,
+  setIsNextButtonCalled,
 }) => {
   const [currentSteps, setCurrentStep] = useState(-1);
   const [isMikeClicked, setIsMikeClicked] = useState(false);
@@ -90,6 +106,129 @@ const AskMoreM14 = ({
   const [showPandaText, setShowPandaText] = useState(false);
   const [showClock, setShowClock] = useState(false);
   const [imageData, setImageData] = useState({});
+  const [isReading, setIsReading] = useState(false);
+  const [currentWordIndex, setCurrentWordIndex] = useState(-1);
+  const [showVoice, setShowVoice] = useState(false);
+  const [words, setWords] = useState([]);
+  const utteranceRef = useRef(null);
+  const [isRecordingComplete, setIsRecordingComplete] = useState(false);
+  const [recAudio, setRecAudio] = useState("");
+  const [completeAudio, setCompleteAudio] = useState(null);
+  //const [imageData, setImageData] = useState({});
+  const [loader, setLoader] = useState(false);
+  const [apiResponse, setApiResponse] = useState("");
+  const [correctAnswerText, setCorrectAnswerText] = useState("");
+  const [finalTranscript, setFinalTranscript] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [audioInstance, setAudioInstance] = useState(null);
+  const {
+    transcript,
+    interimTranscript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+  const audioRef = useRef(null);
+  const transcriptRef = useRef("");
+  useEffect(() => {
+    transcriptRef.current = transcript;
+    console.log("Live Transcript:", transcript);
+  }, [transcript]);
+
+  const handleStartRecording = () => {
+    if (!browserSupportsSpeechRecognition) {
+      alert("Speech recognition is not supported in your browser.");
+      return;
+    }
+    resetTranscript();
+    setIsRecording(true);
+    handleMikeClick();
+    SpeechRecognition.startListening({
+      continuous: true,
+      interimResults: true,
+    });
+  };
+
+  const playWordAudio = (audio) => {
+    if (audio) {
+      audioRef.current.src = audio;
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch((error) => {
+          console.error("Error playing audio:", error);
+        });
+    }
+  };
+
+  const stopCompleteAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  };
+
+  const handleStopRecording = () => {
+    SpeechRecognition.stopListening();
+    setFinalTranscript(transcriptRef.current);
+    setIsRecording(false);
+    //console.log("Final Transcript:", transcriptRef.current);
+  };
+
+  const handleRecordingComplete = async (base64Data) => {
+    if (base64Data) {
+      setIsRecordingComplete(true);
+      setRecAudio(base64Data);
+      if (currentLevel === "S1" || currentLevel === "S2") {
+        const comprehension = await handleTextEvaluation(
+          conversation[currentSteps]?.user,
+          transcriptRef.current
+        );
+
+        if (comprehension) {
+          const options = {
+            originalText: conversation[currentSteps]?.user,
+            contentType: contentType,
+            contentId: contentId,
+            comprehension: comprehension,
+          };
+
+          fetchASROutput(base64Data, options, setLoader, setApiResponse);
+        } else {
+          console.error("Failed to get evaluation result.");
+        }
+      }
+    } else {
+      setIsRecordingComplete(false);
+      setRecAudio("");
+    }
+  };
+
+  const playAudio = (audioKey) => {
+    if (isPlaying) {
+      // If already playing, stop the audio
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+      setIsPlaying(false);
+    } else {
+      if (audioKey) {
+        const audio = new Audio(audioKey);
+
+        audio.onended = () => setIsPlaying(false);
+
+        audio.play();
+        setAudioInstance(audio);
+        setIsPlaying(true);
+      } else {
+        console.error("Audio file not found:", audioKey);
+      }
+    }
+  };
 
   const getPulseAnimationStyle = (color) => ({
     position: "absolute",
@@ -172,17 +311,56 @@ const AskMoreM14 = ({
     setShowClock(false);
   }, [currentLevel]);
 
+  // useEffect(() => {
+  //   if (currentSteps >= 0 && currentSteps < conversation.length) {
+  //     if (currentSteps === 0) {
+  //       setCloudText(conversation[0].speaker);
+  //       setTimeout(() => {
+  //         setShowPandaText(true);
+  //       }, 4000);
+  //     } else {
+  //       setCloudText(conversation[currentSteps].speaker);
+  //       setTimeout(() => {
+  //         setShowPandaText(true);
+  //       }, 4000);
+  //     }
+  //   }
+  // }, [currentSteps]);
+
   useEffect(() => {
     if (currentSteps >= 0 && currentSteps < conversation.length) {
-      if (currentSteps === 0) {
+      const textToSpeak = conversation[currentSteps].speaker;
+      const splitWords = textToSpeak.split(" ");
+      setCloudText(textToSpeak);
+      setWords(splitWords);
+      setCurrentWordIndex(-1);
+      setShowPandaText(false);
+
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
+
+      // Track each word being spoken
+      utterance.onboundary = (event) => {
+        if (event.name === "word") {
+          const charIndex = event.charIndex;
+          const spokenWordIndex = splitWords.findIndex((word, i) => {
+            const joined = splitWords.slice(0, i + 1).join(" ");
+            return joined.length >= charIndex;
+          });
+          setCurrentWordIndex(spokenWordIndex);
+        }
+      };
+
+      utterance.onend = () => {
+        setCurrentWordIndex(-1);
+        setShowVoice(true);
         setTimeout(() => {
-          setCloudText(conversation[0].speaker);
+          setShowVoice(false);
           setShowPandaText(true);
-        }, 2000);
-      } else {
-        setCloudText(conversation[currentSteps].speaker);
-        setShowPandaText(true);
-      }
+        }, 1500);
+      };
+
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
     }
   }, [currentSteps]);
 
@@ -210,18 +388,21 @@ const AskMoreM14 = ({
       audio.play();
       setCurrentStep((prev) => prev + 1);
       handleNext();
+      setShowPandaText(false);
     } else {
       const audio = new Audio(correctSound);
       audio.play();
       setCurrentStep(conversation.length);
       //console.log('texxxxxt');
       handleNext();
+      setShowPandaText(false);
       // for (let i = 0; i < 5; i++) {
       //   handleNext();
       // }
     }
     setIsMikeClicked(false);
     setShowClock(false);
+    setRecAudio("");
   };
 
   const handleMikeClick = () => {
@@ -247,6 +428,8 @@ const AskMoreM14 = ({
       //isRecordingComplete={isRecordingComplete}
       parentWords={parentWords}
       //={recAudio}
+      fluency={false}
+      //={recAudio}
       {...{
         steps,
         currentStep,
@@ -257,6 +440,13 @@ const AskMoreM14 = ({
         handleBack,
         disableScreen,
         loading,
+        //fluency = false,
+        isShowCase,
+        startShowCase,
+        setStartShowCase,
+        livesData,
+        gameOverData,
+        setIsNextButtonCalled,
       }}
     >
       <div
@@ -387,17 +577,38 @@ const AskMoreM14 = ({
                   top: "50%",
                   left: "50%",
                   transform: "translate(-50%, -50%)",
+                  width: "80%",
                   fontSize: "15px",
                   fontWeight: "bold",
                   color: "#333F61",
                   textAlign: "center",
+                  fontFamily: "Quicksand",
+                  //lineHeight: 1.4,
+                  wordBreak: "keep-all",
+                  whiteSpace: "normal",
+                  overflowWrap: "break-word",
                 }}
               >
-                {cloudText}
+                {words.map((word, i) => (
+                  <span
+                    key={i}
+                    style={{
+                      backgroundColor:
+                        i === currentWordIndex ? "yellow" : "transparent",
+                      padding: "1px 2px",
+                      borderRadius: "4px",
+                      marginRight: "4px",
+                      color: i === currentWordIndex ? "#000" : "#333F61",
+                      display: "inline-block",
+                    }}
+                  >
+                    {word}
+                  </span>
+                ))}
               </span>
             </div>
 
-            {showPandaText && (
+            {!showPandaText && (
               <div
                 style={{
                   position: "absolute",
@@ -407,127 +618,234 @@ const AskMoreM14 = ({
                   textAlign: "center",
                 }}
               >
-                <img
-                  src={Assets.cloudPandaImg}
-                  alt="Cloud Panda"
-                  style={{ width: "130%" }}
-                />
-                <span
+                <div
                   style={{
-                    position: "absolute",
-                    top: "33%",
-                    left: "60%",
-                    transform: "translate(-50%, -50%)",
-                    fontSize: "15px",
-                    fontWeight: "bold",
-                    color: "#333F61",
-                    textAlign: "center",
-                    wordBreak: "wrap",
-                    width: "165px",
+                    position: "relative",
+                    width: "130%",
+                    margin: "0 auto",
                   }}
                 >
-                  {conversation[currentSteps].user}
-                </span>
+                  <img
+                    src={Assets.cloudPandaImg}
+                    alt="Cloud Panda"
+                    style={{ width: "100%" }}
+                  />
+                  <img
+                    src={Assets.listeningImg}
+                    alt="Listening Icon"
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      height: "80px",
+                      pointerEvents: "none",
+                    }}
+                  />
+                </div>
               </div>
             )}
-            {!isMikeClicked ? (
-              // <img
-              //   src={Assets.mikeImg}
-              //   alt="Microphone"
-              //   style={{
-              //     position: "absolute",
-              //     top: "70%",
-              //     left: "50%",
-              //     transform: "translate(-50%, -50%)",
-              //     width: "35px",
-              //     cursor: "pointer",
-              //     zIndex: "9999",
-              //   }}
-              //   onClick={handleMikeClick}
-              // />
-              <Box
-                // marginLeft={
-                //   !props.dontShowListen || props.recordedAudio
-                //     ? "32px"
-                //     : "0px"
-                // }
+
+            {showVoice && (
+              <div
                 style={{
                   position: "absolute",
-                  top: "70%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  width: "35px",
-                  cursor: "pointer",
-                  zIndex: "9999",
+                  top: "18%",
+                  right: "21%",
+                  width: "195px",
+                  textAlign: "center",
                 }}
-                sx={{ cursor: "pointer" }}
-                onClick={handleMikeClick}
               >
-                <Box
-                  sx={{
-                    width: "90px",
-                    height: "90px",
-                    borderRadius: "50%",
+                <div
+                  style={{
                     position: "relative",
+                    width: "130%",
+                    margin: "0 auto",
+                  }}
+                >
+                  <img
+                    src={Assets.cloudPandaImg}
+                    alt="Cloud Panda"
+                    style={{ width: "100%" }}
+                  />
+                  <img
+                    src={Assets.voiceImg}
+                    alt="Voice Icon"
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      height: "80px",
+                      pointerEvents: "none",
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {showPandaText &&
+              currentLevel !== "S1" &&
+              currentLevel !== "S2" && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "18%",
+                    right: "21%",
                     display: "flex",
-                    justifyContent: "center",
                     alignItems: "center",
                   }}
                 >
-                  <Box sx={getPulseAnimationStyle("#58CC0233")} />
-                  <Box
-                    sx={{
+                  {/* 👂 Audio Button on the left */}
+                  <div style={{ marginRight: "10px" }}>
+                    {isPlaying ? (
+                      <Box
+                        sx={{
+                          marginTop: "7px",
+                          position: "relative",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                          cursor: "pointer",
+                        }}
+                        onClick={stopCompleteAudio}
+                      >
+                        <StopButton height={45} width={45} />
+                      </Box>
+                    ) : (
+                      <Box
+                        //className="walkthrough-step-1"
+                        sx={{
+                          marginTop: "7px",
+                          position: "relative",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                          //cursor: `url(${clapImage}) 32 24, auto`,
+                        }}
+                        onClick={() => {
+                          playAudio(Assets[conversation[currentSteps]?.audio]);
+                        }}
+                      >
+                        <ListenButton height={50} width={50} />
+                      </Box>
+                    )}
+                  </div>
+
+                  {/* 🐼 Cloud and text */}
+                  <div
+                    style={{
                       position: "relative",
-                      zIndex: 1,
+                      width: "195px",
+                      textAlign: "center",
                     }}
                   >
-                    <SpeakButton height={45} width={45} />
-                  </Box>
-                </Box>
-              </Box>
-            ) : (
-              <>
-                <Box
-                  // marginLeft={
-                  //   !props.dontShowListen || props.recordedAudio
-                  //     ? "32px"
-                  //     : "0px"
-                  // }
-                  style={{
-                    position: "absolute",
-                    top: "70%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    width: "35px",
-                    cursor: "pointer",
-                    zIndex: "9999",
-                  }}
-                  sx={{ cursor: "pointer" }}
-                  onClick={handlePauseClick}
-                >
-                  <Box
-                    sx={{
-                      width: "90px",
-                      height: "90px",
-                      borderRadius: "50%",
-                      position: "relative",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box sx={getPulseAnimationStyle("#FF4B4B33")} />
-                    <Box
-                      sx={{
-                        position: "relative",
-                        zIndex: 1,
+                    <img
+                      src={Assets.yellowCloud}
+                      alt="Cloud Panda"
+                      style={{ width: "130%" }}
+                    />
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "33%",
+                        left: "60%",
+                        width: "80%",
+                        transform: "translate(-50%, -50%)",
+                        fontFamily: "Quicksand",
+                        fontSize: "15px",
+                        fontWeight: "bold",
+                        color: "#333F61",
+                        textAlign: "center",
+                        wordBreak: "break-word",
+                        width: "165px",
                       }}
                     >
-                      <StopButton height={45} width={45} />
-                    </Box>
+                      {conversation[currentSteps]?.user}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+            {showPandaText && (
+              <div
+                style={{
+                  display: "flex",
+                  //width: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop:
+                    currentLevel === "S1" || currentLevel === "S2"
+                      ? "30px"
+                      : "15px",
+                  gap: "10px",
+                  position: "fixed", // Use fixed to ensure it remains in the center regardless of scrolling
+                  top: "60%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  flexDirection: "column",
+                  //backgroundColor: "rgba(255, 255, 255, 0.9)", // Light background for better visibility
+                  padding: "20px",
+                  borderRadius: "10px",
+                  //boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Adds slight shadow for better UI
+                  zIndex: 1000, // Ensure it's above all other content
+                  width: "auto", // Keep it flexible
+                  maxWidth: "90%",
+                }}
+              >
+                {isLoading ? (
+                  <Box sx={{ display: "flex" }}>
+                    <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
                   </Box>
-                </Box>
-              </>
+                ) : (
+                  <>
+                    <VoiceAnalyser
+                      pageName={"m8"}
+                      setVoiceText={setVoiceText}
+                      onAudioProcessed={handleRecordingComplete}
+                      setRecordedAudio={setRecordedAudio}
+                      setVoiceAnimate={setVoiceAnimate}
+                      storyLine={storyLine}
+                      dontShowListen={true}
+                      handleNext={handleNext}
+                      enableNext={enableNext}
+                      originalText={parentWords}
+                      audioLink={audio ? audio : completeAudio}
+                      buttonAnimation={true}
+                      handleStartRecording={handleStartRecording}
+                      handleStopRecording={handleStopRecording}
+                      {...{
+                        contentId,
+                        contentType,
+                        currentLine: currentStep - 1,
+                        playTeacherAudio,
+                        callUpdateLearner,
+                        isShowCase,
+                        setEnableNext,
+                        //showOnlyListen: answer !== "correct",
+                        showOnlyListen: false,
+                        setOpenMessageDialog,
+                      }}
+                    />
+                    {recAudio && (
+                      <div
+                        onClick={handlePauseClick}
+                        style={{ cursor: "pointer", marginLeft: "33px" }}
+                      >
+                        <NextButtonRound height={45} width={45} />
+                      </div>
+                    )}
+                  </>
+                )}
+                <audio
+                  ref={audioRef}
+                  //onEnded={handleAudioEnd}
+                  src={completeAudio}
+                  hidden
+                />
+              </div>
             )}
           </>
         ) : (

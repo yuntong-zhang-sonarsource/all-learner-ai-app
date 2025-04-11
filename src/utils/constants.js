@@ -8467,7 +8467,7 @@ export const levelGetContent = {
         title: "S2",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "ReadAloudMcqM10", name: "ReadAloudMcqM10" },
+        mechanism: { id: "AnouncementFlow", name: "AnouncementFlow" },
       },
     ],
     11: [
@@ -8675,19 +8675,19 @@ export const levelGetContent = {
         title: "P3",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "actOut", name: "actOut" },
+        mechanism: { id: "askMore", name: "askMore" },
       },
       {
         title: "P4",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "actOut", name: "actOut" },
+        mechanism: { id: "askMore", name: "askMore" },
       },
       {
         title: "S1",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "actOut", name: "actOut" },
+        mechanism: { id: "askMore", name: "askMore" },
       },
       {
         title: "P5",
@@ -8705,19 +8705,19 @@ export const levelGetContent = {
         title: "P7",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "actOut", name: "actOut" },
+        mechanism: { id: "askMore", name: "askMore" },
       },
       {
         title: "P8",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "actOut", name: "actOut" },
+        mechanism: { id: "askMore", name: "askMore" },
       },
       {
         title: "S2",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "actOut", name: "actOut" },
+        mechanism: { id: "askMore", name: "askMore" },
       },
     ],
     15: [
@@ -8749,7 +8749,7 @@ export const levelGetContent = {
         title: "S1",
         criteria: "paragraph",
         template: "simple",
-        mechanism: { id: "actOut", name: "actOut" },
+        mechanism: { id: "askMore", name: "askMore" },
       },
       {
         title: "P5",

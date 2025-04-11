@@ -888,53 +888,83 @@ const AnouncementFlow = ({
                 <div
                   style={{
                     display: "flex",
+                    flexDirection: "column",
                     alignItems: "center",
-                    gap: "17px",
-                    marginBottom: "150px",
-                    marginTop: "130px",
+                    marginTop: "20px",
+                    marginBottom: "50px",
                   }}
                 >
+                  {/* Circular Image + Play Button */}
                   <div
                     style={{
-                      backgroundColor: "transparent",
-                      border: "none",
-                      padding: "0",
-                      cursor: "pointer",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      marginBottom: "40px",
                     }}
-                    onClick={handleHintClick}
                   >
                     <img
-                      src={Assets.hintNew}
-                      alt="Hint"
+                      src={
+                        Assets[
+                          imageData?.imageThree || Assets.railAnouncementImg
+                        ]
+                      }
+                      alt="Circular"
                       style={{
-                        width: "50px",
-                        height: "50px",
-                        marginLeft: "12px",
+                        width: "250px",
+                        height: "250px",
+                        borderRadius: "50%",
+                        objectFit: "cover",
                       }}
                     />
+                    <img
+                      src={isPlaying ? spinnerStop : listenImg2}
+                      alt="Audio"
+                      style={{
+                        height: "50px",
+                        width: "50px",
+                        marginTop: "-20px", // pulls it up to touch the image
+                        cursor: "pointer",
+                      }}
+                      onClick={() => playAudio(conversationData[0]?.audio)}
+                    />
                   </div>
-                  <img
-                    src={isPlaying ? spinnerStop : listenImg2}
-                    alt="Audio"
+
+                  {/* Bottom Buttons - Hint & Next */}
+                  <div
                     style={{
-                      height: "50px",
-                      width: "50px",
-                      cursor: "pointer",
-                      //marginTop: "5px",
-                      //marginRight: "15px"
+                      display: "flex",
+                      alignItems: "center",
+                      marginTop: "10px",
+                      gap: "45px",
                     }}
-                    onClick={() => playAudio(conversationData[0]?.audio)}
-                  />
-                  {/* <img
-                    src={raNext}
-                    alt="Next"
-                    height={"70px"}
-                    width={"70px"}
-                    onClick={handleNextClick}
-                    style={{ cursor: "pointer" }}
-                  /> */}
-                  <div onClick={handleNextClick} style={{ cursor: "pointer" }}>
-                    <NextButtonRound height={50} width={50} />
+                  >
+                    <div
+                      style={{
+                        backgroundColor: "transparent",
+                        border: "none",
+                        padding: "0",
+                        cursor: "pointer",
+                      }}
+                      onClick={handleHintClick}
+                    >
+                      <img
+                        src={Assets.hintNew}
+                        alt="Hint"
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          marginLeft: "12px",
+                        }}
+                      />
+                    </div>
+
+                    <div
+                      onClick={handleNextClick}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <NextButtonRound height={50} width={50} />
+                    </div>
                   </div>
                 </div>
               )}

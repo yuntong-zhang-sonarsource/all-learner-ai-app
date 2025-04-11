@@ -731,7 +731,7 @@ const Mechanics7 = ({
           //width: "80%"
         }}
       >
-        {/* 
+        {/*         
         <Joyride
           steps={walkSteps}
           run={run}
