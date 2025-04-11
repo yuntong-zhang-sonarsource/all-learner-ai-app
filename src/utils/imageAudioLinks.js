@@ -657,7 +657,7 @@ export const stopVoiceNote =
 export const atm =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/atm.svg";
 export const hintNew =
-  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/hintNew.svg";
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/bc136d2ecfa899ed0b4261264fb305f53e34ced1/hintNewImg.svg";
 export const mall =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/mall.svg";
 export const beerImg =
@@ -2362,3 +2362,314 @@ export const penNewAudio =
   "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/penNewAudio.wav";
 export const cowStep =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/5d5054404ee5b7505b6bf791dbc905aefc67e770/cowWalkthrough.svg";
+export const catintroductionAnouncementImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/60c99fddd8bf5801be07a0c1c47fe319671843f2/catintroductionAnouncementImg.svg";
+export const selfintroductionAnouncementImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/60c99fddd8bf5801be07a0c1c47fe319671843f2/selfintroductionAnouncementImg.svg";
+export const SouthIndianAnouncementImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/60c99fddd8bf5801be07a0c1c47fe319671843f2/SouthIndianAnouncementImg.svg";
+export const roadsafetyAnouncementImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/60c99fddd8bf5801be07a0c1c47fe319671843f2/roadsafetyAnouncementImg.svg";
+export const museumAnouncementImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/60c99fddd8bf5801be07a0c1c47fe319671843f2/museumAnouncementImg.svg";
+export const shoppingmallAnouncementImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/60c99fddd8bf5801be07a0c1c47fe319671843f2/shoppingmallAnouncementImg.svg";
+export const bankAnouncementImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/60c99fddd8bf5801be07a0c1c47fe319671843f2/bankAnouncementImg.svg";
+export const biharAnouncementImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/60c99fddd8bf5801be07a0c1c47fe319671843f2/biharAnouncementImg.svg";
+export const railAnouncementImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/60c99fddd8bf5801be07a0c1c47fe319671843f2/railAnouncementImg.svg";
+export const friendintroductionAnouncementImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/60c99fddd8bf5801be07a0c1c47fe319671843f2/friendintroductionAnouncementImg.svg";
+export const yellowCloud =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/eb08f916412686ced0349035402562cf9541b55a/yellowCloud.svg";
+export const listeningImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/cbfae3588ea0f47632cdb84fcd95218ff8130f1a/Listening.svg";
+export const voiceImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/cbfae3588ea0f47632cdb84fcd95218ff8130f1a/Voice.svg";
+export const level15P1TwoAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1TwoAudio.wav";
+export const level15P1TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1TwoUAudio.wav";
+export const level15P2FiveAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P2FiveAudio.wav";
+export const level15P2FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P2FiveUAudio.wav";
+export const level15P2FourAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P2FourAudio.wav";
+export const level15P2FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P2FourUAudio.wav";
+export const level15P2OneAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P2OneAudio.wav";
+export const level15P2OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P2OneUAudio.wav";
+export const level15P2ThreeAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P2ThreeAudio.wav";
+export const level15P2ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P2ThreeUAudio.wav";
+export const level15P2TwoAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P2TwoAudio.wav";
+export const level15P2TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P2TwoUAudio.wav";
+export const level15S1FiveAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15S1FiveAudio.wav";
+export const level15S1FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15S1FiveUAudio.wav";
+export const level15S1FourAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15S1FourAudio.wav";
+export const level15S1FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15S1FourUAudio.wav";
+export const level15S1OneAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15S1OneAudio.wav";
+export const level15S1OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15S1OneUAudio.wav";
+export const level15S1ThreeAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15S1ThreeAudio.wav";
+export const level15S1ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15S1ThreeUAudio.wav";
+export const level15S1TwoAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15S1TwoAudio.wav";
+export const level15S1TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15S1TwoUAudio.wav";
+export const level15P1FiveAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1FiveAudio.wav";
+export const level15P1FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1FiveUAudio.wav";
+export const level15P1FourAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1FourAudio.wav";
+export const level15P1FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1FourUAudio.wav";
+export const level15P1OneAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1OneAudio.wav";
+export const level15P1OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1OneUAudio.wav";
+export const level15P1SixAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1SixAudio.wav";
+export const level15P1SixUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1SixUAudio.wav";
+export const level15P1ThreeAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1ThreeAudio.wav";
+export const level15P1ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1ThreeUAudio.wav";
+export const level11P3ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P3ThreeUAudio.wav";
+export const level11P3TwoAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P3TwoAudio.wav";
+export const level11P3TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P3TwoUAudio.wav";
+export const level11P4FiveAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P4FiveAudio.wav";
+export const level11P4FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P4FiveUAudio.wav";
+export const level11P4FourAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P4FourAudio.wav";
+export const level11P4FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P4FourUAudio.wav";
+export const level11P4OneAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P4OneAudio.wav";
+export const level11P4OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P4OneUAudio.wav";
+export const level11P4ThreeAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P4ThreeAudio.wav";
+export const level11P4ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P4ThreeUAudio.wav";
+export const level11P4TwoAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P4TwoAudio.wav";
+export const level11P4TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P4TwoUAudio.wav";
+export const level11P7FiveAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P7FiveAudio.wav";
+export const level11P7FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P7FiveUAudio.wav";
+export const level11P7FourAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P7FourAudio.wav";
+export const level11P7FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P7FourUAudio.wav";
+export const level11P7OneAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P7OneAudio.wav";
+export const level11P7OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P7OneUAudio.wav";
+export const level11P7ThreeAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P7ThreeAudio.wav";
+export const level11P7ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P7ThreeUAudio.wav";
+export const level11P7TwoAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P7TwoAudio.wav";
+export const level11P7TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P7TwoUAudio.wav";
+export const level11P3FiveAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P3FiveAudio.wav";
+export const level11P3FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P3FiveUAudio.wav";
+export const level11P3FourAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P3FourAudio.wav";
+export const level11P3FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P3FourUAudio.wav";
+export const level11P3OneAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P3OneAudio.wav";
+export const level11P3OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P3OneUAudio.wav";
+export const level11P3ThreeAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P3ThreeAudio.wav";
+export const level14P6SixUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P6SixUAudio.wav";
+export const level14P6FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P6FiveUAudio.wav";
+export const level14P6FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P6FourUAudio.wav";
+export const level14P6ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P6ThreeUAudio.wav";
+export const level14P6TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P6TwoUAudio.wav";
+export const level14P6OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P6OneUAudio.wav";
+
+export const level14P5SixUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P5SixUAudio.wav";
+export const level14P5FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P5FiveUAudio.wav";
+export const level14P5FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P5FourUAudio.wav";
+export const level14P5ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P5ThreeUAudio.wav";
+export const level14P5TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P5TwoUAudio.wav";
+export const level14P5OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P5OneUAudio.wav";
+
+export const level14P4FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P4FiveUAudio.wav";
+export const level14P4FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P4FourUAudio.wav";
+export const level14P4ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P4ThreeUAudio.wav";
+export const level14P4TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P4TwoUAudio.wav";
+export const level14P4OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P4OneUAudio.wav";
+
+export const level14P3FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P3FiveUAudio.wav";
+export const level14P3FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P3FourUAudio.wav";
+export const level14P3ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P3ThreeUAudio.wav";
+export const level14P3TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P3TwoUAudio.wav";
+export const level14P3OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P3OneUAudio.wav";
+
+export const level14P2SixUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P2SixUAudio.wav";
+export const level14P2FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P2FiveUAudio.wav";
+export const level14P2FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P2FourUAudio.wav";
+export const level14P2ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P2ThreeUAudio.wav";
+export const level14P2TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P2TwoUAudio.wav";
+export const level14P2OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P2OneUAudio.wav";
+
+export const level14P1FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P1FiveUAudio.wav";
+export const level14P1FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P1FourUAudio.wav";
+export const level14P1ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P1ThreeUAudio.wav";
+export const level14P1TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P1TwoUAudio.wav";
+export const level14P1OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P1OneUAudio.wav";
+
+export const level14S2FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14S2FiveUAudio.wav";
+export const level14S2FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14S2FourUAudio.wav";
+export const level14S2ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14S2ThreeUAudio.wav";
+export const level14S2TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14S2TwoUAudio.wav";
+export const level14S2OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14S2OneUAudio.wav";
+
+export const level14S1FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14S1FiveUAudio.wav";
+export const level14S1FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14S1FourUAudio.wav";
+export const level14S1ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14S1ThreeUAudio.wav";
+export const level14S1TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14S1TwoUAudio.wav";
+export const level14S1OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14S1OneUAudio.wav";
+
+export const level14P8FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P8FiveUAudio.wav";
+export const level14P8FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P8FourUAudio.wav";
+export const level14P8ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P8ThreeUAudio.wav";
+export const level14P8TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P8TwoUAudio.wav";
+export const level14P8OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P8OneUAudio.wav";
+
+export const level14P7FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P7FiveUAudio.wav";
+export const level14P7FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P7FourUAudio.wav";
+export const level14P7ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P7ThreeUAudio.wav";
+export const level14P7TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P7TwoUAudio.wav";
+export const level14P7OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level14P7OneUAudio.wav";
+export const level15P6FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P6FourUAudio.wav";
+export const level15P6FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P6FiveUAudio.wav";
+export const level15P6FiveAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P6FiveAudio.wav";
+export const level15P6FourAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P6FourAudio.wav";
+export const level15P6ThreeAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P6ThreeAudio.wav";
+export const level15P6TwoAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P6TwoAudio.wav";
+export const level15P6OneAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P6OneAudio.wav";
+export const level15P5FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P5FiveUAudio.wav";
+export const level15P5FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P5FourUAudio.wav";
+export const level15P5ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P5ThreeUAudio.wav";
+export const level15P5TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P5TwoUAudio.wav";
+export const level15P5OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P5OneUAudio.wav";
+export const level15P5FiveAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P5FiveAudio.wav";
+export const level15P5FourAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P5FourAudio.wav";
+export const level15P5ThreeAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P5ThreeAudio.wav";
+export const level15P5TwoAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P5TwoAudio.wav";
+export const level15P5OneAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P5OneAudio.wav";
+export const level15P6OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P6OneUAudio.wav";
+export const level15P6TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P6TwoUAudio.wav";
+export const level15P6ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P6ThreeUAudio.wav";
+export const cycloneAnouncementImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/be1c441b8aef50cd90037ad4356a216ffb19bb60/cycloneAnouncementImg.svg";
+export const supermarketAnouncementImg =
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/be1c441b8aef50cd90037ad4356a216ffb19bb60/supermarketAnouncementImg.svg";
+export const level10S2Announcement =
+  "https://github.com/Ayansaha20/EkStepImages/raw/refs/heads/main/level10S2Announcement.wav";

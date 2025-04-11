@@ -652,14 +652,6 @@ const BingoCard = ({
                 }}
                 onClick={handleReset}
               >
-                {/* <img
-                src={Assets.resetImg}
-                alt="Reset"
-                style={{
-                  width: screenWidth < 768 ? "40px" : "50px",
-                  height: screenWidth < 768 ? "40px" : "50px",
-                }}
-              /> */}
                 <RetryIcon
                   height={screenWidth < 768 ? 40 : 50}
                   width={screenWidth < 768 ? 40 : 50}
@@ -678,15 +670,6 @@ const BingoCard = ({
                   }}
                   onClick={handleNextButton}
                 >
-                  {/* <img
-                  src={Assets.nextImg}
-                  alt="Next"
-                  style={{
-                    width: screenWidth < 768 ? "40px" : "50px",
-                    height: screenWidth < 768 ? "40px" : "50px",
-                  }}
-                /> */}
-
                   <NextButtonRound
                     height={screenWidth < 768 ? 40 : 50}
                     width={screenWidth < 768 ? 40 : 50}
@@ -862,39 +845,60 @@ const BingoCard = ({
           <div
             style={{
               position: "absolute",
-              left: screenWidth < 768 ? "30%" : "27%",
-              bottom: screenWidth < 768 ? "220px" : "330px",
+              left: screenWidth < 768 ? "30%" : "280px",
+              bottom: screenWidth < 768 ? "220px" : "318px",
               width: screenWidth < 768 ? "140px" : "240px",
               height: screenWidth < 768 ? "90px" : "130px",
               zIndex: 1000,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transform: "translateX(-50%)", // Center the div itself
             }}
           >
             <img
-              src={Assets.cloudText}
-              alt="Cloud"
+              src={Assets.emptyImg}
+              alt="Empty Placeholder"
               style={{
-                height: screenWidth < 768 ? "85px" : "175px",
-                zIndex: 21,
+                transform: "translateX(-50%)",
+                //width: screenWidth < 768 ? "120px" : "170px",
+                height: screenWidth < 768 ? "90px" : "165px",
+                zIndex: 100,
               }}
             />
-            <img
-              src={showWrongTick ? Assets.wrongTick : Assets.reset}
-              alt={showWrongTick ? "Wrong" : "Bingo Reset"}
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: "50%",
-                transform: "translate(-50%, -50%)", // Ensures the image stays centered
-                height: screenWidth < 768 ? "35px" : "65px",
-                zIndex: 22,
-                cursor: showWrongTick ? "default" : "pointer",
-              }}
-              onClick={!showWrongTick ? handleReset : undefined}
-            />
+            <div style={{ display: "flex", marginTop: "10px", gap: "15px" }}>
+              <button
+                style={{
+                  position: "absolute",
+                  right: "90%",
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                  zIndex: "5",
+                }}
+                onClick={handleReset}
+              >
+                <RetryIcon
+                  height={screenWidth < 768 ? 40 : 50}
+                  width={screenWidth < 768 ? 40 : 50}
+                />
+              </button>
+
+              {/* {showNextButton && ( */}
+              <button
+                style={{
+                  position: "absolute",
+                  right: "55%",
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                  zIndex: "5",
+                }}
+                onClick={handleNextButton}
+              >
+                <NextButtonRound
+                  height={screenWidth < 768 ? 40 : 50}
+                  width={screenWidth < 768 ? 40 : 50}
+                />
+              </button>
+              {/* )} */}
+            </div>
           </div>
         )}
 
