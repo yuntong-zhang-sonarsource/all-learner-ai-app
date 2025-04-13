@@ -7741,6 +7741,9 @@ export const practiceSteps = [
   {
     name: "P1",
     fullName: "Practice 1",
+    fullNameMOne: "Learn 1",
+    fullNameMTwo: "Practice 1",
+    fullNameMThree: "Practice 1",
     title: "L1",
     titleNew: "P1",
     titleThree: "P1",
@@ -7748,6 +7751,9 @@ export const practiceSteps = [
   {
     name: "P2",
     fullName: "Practice 2",
+    fullNameMOne: "Learn 2",
+    fullNameMTwo: "Learn 1",
+    fullNameMThree: "Learn 1",
     title: "L2",
     titleNew: "L1",
     titleThree: "L1",
@@ -7755,6 +7761,9 @@ export const practiceSteps = [
   {
     name: "P3",
     fullName: "Practice 3",
+    fullNameMOne: "Practice 1",
+    fullNameMTwo: "Learn 2",
+    fullNameMThree: "Learn 2",
     title: "P1",
     titleNew: "L2",
     titleThree: "L2",
@@ -7762,6 +7771,9 @@ export const practiceSteps = [
   {
     name: "P4",
     fullName: "Practice 4",
+    fullNameMOne: "Practice 2",
+    fullNameMTwo: "Practice 2",
+    fullNameMThree: "Practice 2",
     title: "P2",
     titleNew: "P2",
     titleThree: "P2",
@@ -7769,6 +7781,9 @@ export const practiceSteps = [
   {
     name: "S1",
     fullName: "Showcase 1",
+    fullNameMOne: "Showcase 1",
+    fullNameMTwo: "Showcase 1",
+    fullNameMThree: "Showcase 1",
     title: "S1",
     titleNew: "S1",
     titleThree: "S1",
@@ -7776,6 +7791,9 @@ export const practiceSteps = [
   {
     name: "P5",
     fullName: "Practice 5",
+    fullNameMOne: "Learn 3",
+    fullNameMTwo: "Learn 3",
+    fullNameMThree: "Learn 3",
     title: "L3",
     titleNew: "L3",
     titleThree: "L3",
@@ -7783,6 +7801,9 @@ export const practiceSteps = [
   {
     name: "P6",
     fullName: "Practice 6",
+    fullNameMOne: "Learn 4",
+    fullNameMTwo: "Learn 4",
+    fullNameMThree: "Practice 3",
     title: "L4",
     titleNew: "L4",
     titleThree: "P3",
@@ -7790,6 +7811,9 @@ export const practiceSteps = [
   {
     name: "P7",
     fullName: "Practice 7",
+    fullNameMOne: "Practice 3",
+    fullNameMTwo: "Practice 3",
+    fullNameMThree: "Learn 4",
     title: "P3",
     titleNew: "P3",
     titleThree: "L4",
@@ -7797,6 +7821,9 @@ export const practiceSteps = [
   {
     name: "P8",
     fullName: "Practice 8",
+    fullNameMOne: "Practice 4",
+    fullNameMTwo: "Practice 4",
+    fullNameMThree: "Practice 4",
     title: "P4",
     titleNew: "P4",
     titleThree: "P4",
@@ -7804,6 +7831,9 @@ export const practiceSteps = [
   {
     name: "S2",
     fullName: "Showcase 2",
+    fullNameMOne: "Showcase 2",
+    fullNameMTwo: "Showcase 2",
+    fullNameMThree: "Showcase 2",
     title: "S2",
     titleNew: "S2",
     titleThree: "S2",

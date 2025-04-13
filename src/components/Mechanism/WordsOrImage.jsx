@@ -229,6 +229,8 @@ const WordsOrImage = ({
       SpeechRecognition.stopListening();
       stopAudioRecording();
       const finalTranscript = transcriptRef.current;
+      console.log("transcript", finalTranscript, currentWordRef.current);
+
       const matchPercentage = phoneticMatch(
         currentWordRef.current,
         finalTranscript

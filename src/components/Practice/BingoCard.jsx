@@ -221,8 +221,38 @@ const BingoCard = ({
   console.log("loggslevel", currentLevel, currentPracticeStep);
 
   useEffect(() => {
-    setStartGame(true);
+    setShowHint(false);
+    setHideButtons(false);
+    setSelectedWords([]);
+    setWinEffect(false);
+    setCoins(0);
+    setShowWrongWord(false);
+    setHighlightCorrectWords(false);
+    setHighlightedButtonIndex(-1);
+    setShowCoinsImg(false);
+    setShowEmptyImg(false);
+    setHideCoinsImg(false);
+    setShowConfetti(false);
+    setShowNextButton(false);
     setCurrentWordIndex(0);
+    setShowInitialEffect(false);
+    setStartGame(true);
+    setShowRecording(false);
+    setShowWrongTick(true);
+    setWordsAfterSplit([]);
+    setRecAudio("");
+    setIsRecordingComplete(false);
+    setIsRecording(false);
+    setIsProcessing(false);
+    setCurrentWord("");
+    setCurrentIsSelected(false);
+    setRecognition(null);
+    setSelectedWordsNew([]);
+    setIncorrectWords({});
+    setIsMicOn(false);
+    setSyllAudios([]);
+    setIsPlaying(false);
+    setScale(1);
   }, [currentLevel]);
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);

@@ -98,6 +98,7 @@ const PhoneConversation = ({
   const [finalTranscript, setFinalTranscript] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [visibleMessages, setVisibleMessages] = useState([]);
   const {
     transcript,
     interimTranscript,
@@ -192,6 +193,24 @@ const PhoneConversation = ({
     setShowConfetti(false);
     setShowQuestion(false);
   }, [currentLevel]);
+
+  useEffect(() => {
+    let index = 0;
+    setVisibleMessages([]);
+
+    const interval = setInterval(() => {
+      if (index < conversationData.length) {
+        setVisibleMessages((prev) => [...prev, conversationData[index]]);
+        index++;
+        const audio = new Audio(correctSound);
+        audio.play();
+      } else {
+        clearInterval(interval);
+      }
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, [conversationData]);
 
   console.log("m1011", currentLevel, selectedOption, recAudio);
 
@@ -346,7 +365,7 @@ const PhoneConversation = ({
     },
     message: {
       padding: "10px",
-      borderRadius: "10px",
+      //borderRadius: "24px",
       maxWidth: "60%",
       fontSize: "16px",
       position: "relative",
@@ -359,12 +378,20 @@ const PhoneConversation = ({
     },
     sonMessage: {
       backgroundColor: "#fde4b2",
+      borderTopLeftRadius: "24px",
+      borderTopRightRadius: "24px",
+      borderBottomRightRadius: "24px",
+      borderBottomLeftRadius: "1px",
       alignSelf: "flex-start",
       width: "300px",
       marginLeft: "80px",
     },
     callerMessage: {
       backgroundColor: "#f1f1f1",
+      borderTopLeftRadius: "24px",
+      borderTopRightRadius: "24px",
+      borderBottomRightRadius: "1px",
+      borderBottomLeftRadius: "24px",
       alignSelf: "flex-end",
       width: "280px",
       marginRight: "180px",
@@ -416,7 +443,8 @@ const PhoneConversation = ({
       width: "50px",
       height: "50px",
       cursor: "pointer",
-      marginRight: "10px",
+      marginRight: "30px",
+      marginBottom: "20px",
     },
     questionBox: {
       backgroundColor: "#f8f2ff",
@@ -479,6 +507,90 @@ const PhoneConversation = ({
     },
   };
 
+  const MessageBubble = ({
+    msg,
+    isPlaying,
+    playAudio,
+    styles,
+    Assets,
+    isLast,
+  }) => {
+    const [showMessage, setShowMessage] = useState(!isLast);
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setShowMessage(true);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }, [isLast]);
+
+    return (
+      <div
+        style={{
+          ...styles.message,
+          ...(msg.role === "System" ? styles.sonMessage : styles.callerMessage),
+        }}
+      >
+        {showMessage ? (
+          <>
+            <span style={styles.boldText}>{msg.name}: </span>
+            {msg.message}
+          </>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              //height: "40px",
+            }}
+          >
+            <img
+              src={Assets.chatLoader}
+              alt="Loading"
+              style={{ width: "80px", margin: "15px 0px" }}
+            />
+          </div>
+        )}
+
+        {msg?.role === "System" && (
+          <div style={styles.boyIcon}>
+            <img
+              src={isPlaying === msg.audio ? spinnerStop : listenImg2}
+              alt="Audio"
+              style={{ height: "25px", width: "25px", cursor: "pointer" }}
+              onClick={() => playAudio(msg?.audio)}
+            />
+            <img
+              src={Assets.avatar1}
+              alt="Boy"
+              width={"25px"}
+              height={"25px"}
+            />
+          </div>
+        )}
+
+        {msg?.role === "User" && (
+          <div style={styles.callerIconsContainer}>
+            <img
+              src={Assets.avatar2}
+              alt="Boy"
+              width={"25px"}
+              height={"25px"}
+            />
+            <img
+              src={isPlaying === msg.audio ? spinnerStop : listenImg2}
+              alt="Audio"
+              style={{ height: "25px", width: "25px", cursor: "pointer" }}
+              onClick={() => playAudio(msg?.audio)}
+            />
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <MainLayout
       background={background}
@@ -530,7 +642,7 @@ const PhoneConversation = ({
                   overflowY: "auto",
                 }}
               >
-                {conversationData?.map((msg, index) => (
+                {/* {visibleMessages?.map((msg, index) => (
                   <div
                     key={index}
                     style={{
@@ -587,6 +699,17 @@ const PhoneConversation = ({
                       </div>
                     )}
                   </div>
+                ))} */}
+                {visibleMessages.map((msg, index) => (
+                  <MessageBubble
+                    key={index}
+                    msg={msg}
+                    isPlaying={isPlaying}
+                    playAudio={playAudio}
+                    styles={styles}
+                    Assets={Assets}
+                    isLast={index === visibleMessages.length - 1}
+                  />
                 ))}
               </div>
               {/* <img
