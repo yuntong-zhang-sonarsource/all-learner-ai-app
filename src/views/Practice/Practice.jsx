@@ -411,6 +411,79 @@ const Practice = () => {
     ],
   };
 
+  const levelThree = {
+    P1: [
+      { completeWord: "I run.", syllable: ["I", "run."] },
+      { completeWord: "We play.", syllable: ["We", "play."] },
+      { completeWord: "She reads.", syllable: ["She", "reads."] },
+      { completeWord: "He eats.", syllable: ["He", "eats."] },
+      { completeWord: "They jump.", syllable: ["They", "jump."] },
+    ],
+    P2: [
+      { completeWord: "We walk.", syllable: ["We", "walk."] },
+      { completeWord: "I sleep.", syllable: ["I", "sleep."] },
+      { completeWord: "You swim.", syllable: ["You", "swim."] },
+      { completeWord: "She sings.", syllable: ["She", "sings."] },
+      { completeWord: "He dances.", syllable: ["He", "dances."] },
+    ],
+    P3: [
+      { completeWord: "It rains.", syllable: ["It", "rains."] },
+      { completeWord: "We win.", syllable: ["We", "win."] },
+      { completeWord: "You cook.", syllable: ["You", "cook."] },
+      { completeWord: "They laugh.", syllable: ["They", "laugh."] },
+      { completeWord: "I dream.", syllable: ["I", "dream."] },
+    ],
+    P4: [
+      { completeWord: "You learn.", syllable: ["You", "learn."] },
+      { completeWord: "We talk.", syllable: ["We", "talk."] },
+      { completeWord: "He listens.", syllable: ["He", "listens."] },
+      { completeWord: "She smiles.", syllable: ["She", "smiles."] },
+      { completeWord: "Birds fly.", syllable: ["Birds", "fly."] },
+    ],
+    S1: [
+      { completeWord: "Cats meow.", syllable: ["Cats", "meow."] },
+      { completeWord: "Dogs bark.", syllable: ["Dogs", "bark."] },
+      { completeWord: "Fish swim.", syllable: ["Fish", "swim."] },
+      { completeWord: "Sun shines.", syllable: ["Sun", "shines."] },
+      { completeWord: "Stars twinkle.", syllable: ["Stars", "twinkle."] },
+    ],
+    S2: [
+      { completeWord: "Baby cries.", syllable: ["Baby", "cries."] },
+      { completeWord: "Fire burns.", syllable: ["Fire", "burns."] },
+      { completeWord: "Flowers bloom.", syllable: ["Flowers", "bloom."] },
+      { completeWord: "Wind blows.", syllable: ["Wind", "blows."] },
+      { completeWord: "Bells ring.", syllable: ["Bells", "ring."] },
+    ],
+    L1: [
+      { completeWord: "I run.", syllable: ["I", "run."] },
+      { completeWord: "We play.", syllable: ["We", "play."] },
+      { completeWord: "She reads.", syllable: ["She", "reads."] },
+      { completeWord: "He eats.", syllable: ["He", "eats."] },
+      { completeWord: "They jump.", syllable: ["They", "jump."] },
+    ],
+    L2: [
+      { completeWord: "I run.", syllable: ["I", "run."] },
+      { completeWord: "We play.", syllable: ["We", "play."] },
+      { completeWord: "She reads.", syllable: ["She", "reads."] },
+      { completeWord: "He eats.", syllable: ["He", "eats."] },
+      { completeWord: "They jump.", syllable: ["They", "jump."] },
+    ],
+    L3: [
+      { completeWord: "I run.", syllable: ["I", "run."] },
+      { completeWord: "We play.", syllable: ["We", "play."] },
+      { completeWord: "She reads.", syllable: ["She", "reads."] },
+      { completeWord: "He eats.", syllable: ["He", "eats."] },
+      { completeWord: "They jump.", syllable: ["They", "jump."] },
+    ],
+    L4: [
+      { completeWord: "I run.", syllable: ["I", "run."] },
+      { completeWord: "We play.", syllable: ["We", "play."] },
+      { completeWord: "She reads.", syllable: ["She", "reads."] },
+      { completeWord: "He eats.", syllable: ["He", "eats."] },
+      { completeWord: "They jump.", syllable: ["They", "jump."] },
+    ],
+  };
+
   const handleComplete = (nextStep) => {
     setRStep(nextStep);
     setLocalData("rStep", nextStep);
@@ -442,6 +515,11 @@ const Practice = () => {
       currentLevelMap = practiceSteps?.[currentPracticeStep]?.titleNew || "P1";
       currentImageMap =
         practiceSteps[progressData.currentPracticeStep]?.titleNew || "P1";
+    } else if (level === 3) {
+      currentLevelMap =
+        practiceSteps?.[currentPracticeStep]?.titleThree || "P1";
+      currentImageMap =
+        practiceSteps[progressData.currentPracticeStep]?.titleThree || "P1";
     } else {
       currentLevelMap = practiceSteps?.[currentPracticeStep]?.title || "P1";
       currentImageMap =
@@ -452,14 +530,16 @@ const Practice = () => {
       progressData?.currentPracticeStep !== undefined &&
       progressData?.currentPracticeStep !== null
     ) {
-      const selectedLevels = level === 2 ? levelTwo : levels;
+      const selectedLevels =
+        level === 2 ? levelTwo : level === 3 ? levelThree : levels;
 
       const levelData = selectedLevels[currentLevelMap];
       const levelImage = selectedLevels[currentImageMap];
+      console.log("levelsNew", level, levelData);
       const currentWord = levelData[currentQuestion];
 
       setCurrentImage(levelImage[currentQuestion]);
-      setParentWords(currentWord.syllable.join(" "));
+      setParentWords(currentWord?.syllable?.join(" "));
       setLevelOneWord(levelImage[currentQuestion]?.completeWord);
     }
   }, [progressData]);
@@ -498,8 +578,20 @@ const Practice = () => {
       callConfettiAndPlay();
 
       setTimeout(() => {
+        const step = practiceSteps[currentPracticeStep];
+        let stepName;
+
+        if (level === 1) {
+          stepName = step.fullNameMOne;
+        } else if (level === 2) {
+          stepName = step.fullNameMTwo;
+        } else if (level === 3) {
+          stepName = step.fullNameMThree;
+        } else {
+          stepName = step.fullName;
+        }
         setOpenMessageDialog({
-          message: `You have successfully completed ${practiceSteps[currentPracticeStep].fullName} `,
+          message: `You have successfully completed ${stepName} `,
         });
       }, 1200);
     }
@@ -764,7 +856,10 @@ const Practice = () => {
               // catch error
             }
           } else if (currentLevel === "S2" && (level === 1 || level === 2)) {
-            setLocalData("rFlow", true);
+            setLocalData("mFail", true);
+            setTimeout(() => {
+              setLocalData("rFlow", true);
+            }, 10000);
           }
         }
 
@@ -1421,7 +1516,10 @@ const Practice = () => {
   console.log("mec", mechanism, level, rFlow);
 
   const renderMechanics = () => {
-    if ((!mechanism && rFlow !== "true") || mechanism.id === "mechanic_15") {
+    if (
+      (!mechanism && rFlow !== "true") ||
+      (mechanism?.id === "mechanic_15" && rFlow !== "true")
+    ) {
       return (
         <WordsOrImage
           {...{

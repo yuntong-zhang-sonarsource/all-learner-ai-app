@@ -2717,3 +2717,7 @@ export const level12P3TwoAudio =
   "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level12P3TwoAudio.wav";
 export const sadBear =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/e559f51e9830bde05f85e3e18c1880bb80c93380/sadBear.svg";
+export const chatLoader =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/chat-bubble-loading%20(2).png";
+export const starNewImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/5d597391e16156cddd7d740eed8fdac0c1bb4365/starImg.svg";

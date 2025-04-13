@@ -1,6 +1,8 @@
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
+import listenImg2 from "../../assets/listen.png";
+import spinnerStop from "../../assets/pause.png";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import clapImage from "../../assets/hand-ic.svg";
 // import bulbHint from "../../assets/hint.svg";
@@ -128,19 +130,28 @@ const Mechanics7 = ({
   //const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
   const chunksRef = useRef([]);
 
-  console.log("wordsL1", parentWords, currentImg);
-
   const syllableCount = currentImg?.syllablesAudio?.length || 0;
   const isLastSyllable = stepIndex === syllableCount;
+  const [currentText, setCurrentText] = useState("");
 
-  const currentText = isLastSyllable
-    ? currentImg?.completeWord
-    : currentImg?.syllablesAudio?.[stepIndex]?.name || "";
+  // Update currentText whenever currentImg or stepIndex changes
+  useEffect(() => {
+    const text = isLastSyllable
+      ? currentImg?.completeWord
+      : currentImg?.syllablesAudio?.[stepIndex]?.name || "";
+    setCurrentText(text);
+  }, [currentImg, stepIndex, isLastSyllable]);
+
+  // const currentText = isLastSyllable
+  //   ? currentImg?.completeWord
+  //   : currentImg?.syllablesAudio?.[stepIndex]?.name || "";
 
   const currentAudio = isLastSyllable
     ? currentImg?.completeAudio
     : currentImg?.syllablesAudio?.[stepIndex]?.audio || null;
   const [stepsIndex, setStepsIndex] = useState(0);
+
+  console.log("wordSyl", currentText);
 
   const walkSteps = [
     {
@@ -427,9 +438,9 @@ const Mechanics7 = ({
       SpeechRecognition.stopListening();
       stopAudioRecording();
       const finalTranscript = transcriptRef.current;
-      //console.log("textR", currentText, finalTranscript, transcript);
+      console.log("textR", word, finalTranscript);
 
-      const matchPercentage = phoneticMatch(currentText, transcript);
+      const matchPercentage = phoneticMatch(word, finalTranscript);
 
       if (matchPercentage < 40) {
         setIncorrectWords((prevState) => ({
@@ -443,7 +454,7 @@ const Mechanics7 = ({
         }));
       }
 
-      handleWordsLogic(currentText, finalTranscript, currentIsSelected);
+      handleWordsLogic(word, finalTranscript, currentIsSelected);
       setIsMicOn(false);
       setIsRecording(false);
       setIsProcessing(false);
@@ -513,17 +524,19 @@ const Mechanics7 = ({
   }, [currentImg]);
 
   const handleWordsLogic = (word, transcribedText, isSelected) => {
-    const matchPercentage = phoneticMatch(currentText, transcript);
+    console.log("wordsZ", word, transcribedText);
+
+    const matchPercentage = phoneticMatch(word, transcribedText);
 
     if (matchPercentage < 40) {
       setIncorrectWords((prevState) => ({
         ...prevState,
-        [currentText]: true,
+        [word]: true,
       }));
     } else {
       setIncorrectWords((prevState) => ({
         ...prevState,
-        [currentText]: false,
+        [word]: false,
       }));
     }
 
@@ -906,13 +919,13 @@ const Mechanics7 = ({
             sx={{
               backgroundColor: !isRecorded
                 ? "#1CB0F60F" // default background
-                : !isIncorrectWord
-                ? "#FF7F360F" // red background
+                : isIncorrectWord
+                ? "#58CC020F" // red FF7F360F
                 : "#58CC020F", // green background
               border: !isRecorded
                 ? "2px solid #1CB0F633" // default border
-                : !isIncorrectWord
-                ? "2px solid #FF7F36" // red border
+                : isIncorrectWord
+                ? "2px solid #58CC02" // red FF7F36
                 : "2px solid #58CC02", // green border
               borderRadius: "16px",
               display: "flex",
@@ -932,7 +945,8 @@ const Mechanics7 = ({
             >
               {isRecorded && (
                 <img
-                  src={isIncorrectWord ? Assets.tick : Assets.wrongTick}
+                  //src={!isIncorrectWord ? Assets.tick : Assets.wrongTick}
+                  src={Assets.tick}
                   alt="tick"
                   style={{ marginRight: "16px", width: "56px", height: "56px" }}
                 />
@@ -943,8 +957,8 @@ const Mechanics7 = ({
                   style={{
                     color: !isRecorded
                       ? "#333F61" // default background
-                      : !isIncorrectWord
-                      ? "#FF7F36" // red background
+                      : isIncorrectWord
+                      ? "#58CC02" // red FF7F36
                       : "#58CC02",
                     //color: isRecorded ? "#58CC02" : "#333F61",
                     fontWeight: 700,
@@ -1036,7 +1050,7 @@ const Mechanics7 = ({
                 }}
                 onClick={() => {
                   setIsRecording(true);
-                  startRecording();
+                  startRecording(currentText);
                   //startAudioRecording();
                 }}
               >
@@ -1118,7 +1132,7 @@ const Mechanics7 = ({
                   onClick={() => {
                     setIsRecording(false);
                     setIsRecorded(true);
-                    stopRecording();
+                    stopRecording(currentText);
                     //stopAudioRecording();
                   }}
                 >
@@ -1206,7 +1220,16 @@ const Mechanics7 = ({
                         }}
                         onClick={stopCompleteAudio}
                       >
-                        <StopButton height={50} width={50} />
+                        <img
+                          src={spinnerStop}
+                          alt="Audio"
+                          style={{
+                            height: "50px",
+                            width: "50px",
+                            cursor: "pointer",
+                          }}
+                        />
+                        {/* <StopButton height={50} width={50} /> */}
                       </Box>
                     </div>
                   ) : (
@@ -1227,7 +1250,16 @@ const Mechanics7 = ({
                           playAudioFromBlob(recordedAudioBlob);
                         }}
                       >
-                        <ListenButton height={50} width={50} />
+                        <img
+                          src={listenImg2}
+                          alt="Audio"
+                          style={{
+                            height: "50px",
+                            width: "50px",
+                            cursor: "pointer",
+                          }}
+                        />
+                        {/* <ListenButton height={50} width={50} /> */}
                       </Box>
                     </div>
                   )}
@@ -1236,7 +1268,7 @@ const Mechanics7 = ({
                   onClick={() => {
                     setIsRecorded(false);
                     setIsRecording(true);
-                    startRecording();
+                    startRecording(currentText);
                   }}
                   style={{
                     //marginTop: "-10px",
