@@ -105,6 +105,7 @@ const AnouncementFlow = ({
   const [finalTranscript, setFinalTranscript] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPressedOnce, setIsPressedOnce] = useState(false);
   const {
     transcript,
     interimTranscript,
@@ -251,6 +252,7 @@ const AnouncementFlow = ({
 
   const handleHintClick = () => {
     setStep("start");
+    setIsPressedOnce(true);
   };
 
   const playAudio = (audioKey) => {
@@ -493,6 +495,7 @@ const AnouncementFlow = ({
 
   const handleNextClick = () => {
     setShowQuestion(true);
+    setIsPressedOnce(false);
   };
 
   const handleOptionClick = (optionId) => {
@@ -541,6 +544,7 @@ const AnouncementFlow = ({
   const resetState = () => {
     setSelectedOption(null);
     setIsCorrect(null);
+    setIsPressedOnce(false);
   };
 
   const loadNextTask = () => {
@@ -926,7 +930,10 @@ const AnouncementFlow = ({
                         marginTop: "-20px", // pulls it up to touch the image
                         cursor: "pointer",
                       }}
-                      onClick={() => playAudio(conversationData[0]?.audio)}
+                      onClick={() => {
+                        setIsPressedOnce(true);
+                        playAudio(conversationData[0]?.audio);
+                      }}
                     />
                   </div>
 
@@ -960,8 +967,14 @@ const AnouncementFlow = ({
                     </div>
 
                     <div
-                      onClick={handleNextClick}
-                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        if (isPressedOnce) {
+                          handleNextClick();
+                        }
+                      }}
+                      style={{
+                        cursor: isPressedOnce ? "pointer" : "not-allowed",
+                      }}
                     >
                       <NextButtonRound height={50} width={50} />
                     </div>
@@ -1152,34 +1165,40 @@ const AnouncementFlow = ({
                     </Box>
                   ) : (
                     <>
-                      <VoiceAnalyser
-                        pageName={"m8"}
-                        setVoiceText={setVoiceText}
-                        onAudioProcessed={handleRecordingComplete}
-                        setRecordedAudio={setRecordedAudio}
-                        setVoiceAnimate={setVoiceAnimate}
-                        storyLine={storyLine}
-                        dontShowListen={true}
-                        handleNext={handleNext}
-                        enableNext={enableNext}
-                        originalText={parentWords}
-                        audioLink={audio ? audio : completeAudio}
-                        buttonAnimation={selectedOption}
-                        handleStartRecording={handleStartRecording}
-                        handleStopRecording={handleStopRecording}
-                        {...{
-                          contentId,
-                          contentType,
-                          currentLine: currentStep - 1,
-                          playTeacherAudio,
-                          callUpdateLearner,
-                          isShowCase,
-                          setEnableNext,
-                          //showOnlyListen: answer !== "correct",
-                          showOnlyListen: false,
-                          setOpenMessageDialog,
-                        }}
-                      />
+                      {((currentLevel !== "S1" &&
+                        currentLevel !== "S2" &&
+                        selectedOption) ||
+                        currentLevel === "S1" ||
+                        currentLevel === "S2") && (
+                        <VoiceAnalyser
+                          pageName={"m8"}
+                          setVoiceText={setVoiceText}
+                          onAudioProcessed={handleRecordingComplete}
+                          setRecordedAudio={setRecordedAudio}
+                          setVoiceAnimate={setVoiceAnimate}
+                          storyLine={storyLine}
+                          dontShowListen={true}
+                          handleNext={handleNext}
+                          enableNext={enableNext}
+                          originalText={parentWords}
+                          audioLink={audio ? audio : completeAudio}
+                          buttonAnimation={selectedOption}
+                          handleStartRecording={handleStartRecording}
+                          handleStopRecording={handleStopRecording}
+                          {...{
+                            contentId,
+                            contentType,
+                            currentLine: currentStep - 1,
+                            playTeacherAudio,
+                            callUpdateLearner,
+                            isShowCase,
+                            setEnableNext,
+                            //showOnlyListen: answer !== "correct",
+                            showOnlyListen: false,
+                            setOpenMessageDialog,
+                          }}
+                        />
+                      )}
                       {currentLevel !== "S1" && currentLevel !== "S2"
                         ? selectedOption !== null &&
                           recAudio &&

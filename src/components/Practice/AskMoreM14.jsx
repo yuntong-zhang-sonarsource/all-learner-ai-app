@@ -638,7 +638,7 @@ const AskMoreM14 = ({
                       top: "50%",
                       left: "50%",
                       transform: "translate(-50%, -50%)",
-                      height: "80px",
+                      height: "150px",
                       pointerEvents: "none",
                     }}
                   />
@@ -646,7 +646,7 @@ const AskMoreM14 = ({
               </div>
             )}
 
-            {showVoice && (
+            {/* {showVoice && (
               <div
                 style={{
                   position: "absolute",
@@ -682,21 +682,20 @@ const AskMoreM14 = ({
                   />
                 </div>
               </div>
-            )}
+            )} */}
 
-            {showPandaText &&
-              currentLevel !== "S1" &&
-              currentLevel !== "S2" && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "18%",
-                    right: "21%",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  {/* 👂 Audio Button on the left */}
+            {showPandaText && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "18%",
+                  right: "21%",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                {/* 👂 Audio Button on the left */}
+                {currentLevel !== "S1" && currentLevel !== "S2" && (
                   <div style={{ marginRight: "10px" }}>
                     {isPlaying ? (
                       <Box
@@ -733,41 +732,36 @@ const AskMoreM14 = ({
                       </Box>
                     )}
                   </div>
+                )}
 
-                  {/* 🐼 Cloud and text */}
-                  <div
+                {/* 🐼 Cloud and text */}
+                <div
+                  style={{
+                    position: "relative",
+                    width: "195px",
+                    textAlign: "center",
+                  }}
+                >
+                  <img
+                    src={Assets.cloudPandaImg}
+                    alt="Cloud Panda"
+                    style={{ width: "130%" }}
+                  />
+                  <img
+                    src={Assets.voiceImg}
+                    alt="Voice Icon"
                     style={{
-                      position: "relative",
-                      width: "195px",
-                      textAlign: "center",
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      height: "150px",
+                      pointerEvents: "none",
                     }}
-                  >
-                    <img
-                      src={Assets.yellowCloud}
-                      alt="Cloud Panda"
-                      style={{ width: "130%" }}
-                    />
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "33%",
-                        left: "60%",
-                        width: "80%",
-                        transform: "translate(-50%, -50%)",
-                        fontFamily: "Quicksand",
-                        fontSize: "15px",
-                        fontWeight: "bold",
-                        color: "#333F61",
-                        textAlign: "center",
-                        wordBreak: "break-word",
-                        width: "165px",
-                      }}
-                    >
-                      {conversation[currentSteps]?.user}
-                    </span>
-                  </div>
+                  />
                 </div>
-              )}
+              </div>
+            )}
 
             {showPandaText && (
               <div
@@ -832,7 +826,13 @@ const AskMoreM14 = ({
                     {recAudio && (
                       <div
                         onClick={handlePauseClick}
-                        style={{ cursor: "pointer", marginLeft: "33px" }}
+                        style={{
+                          cursor: "pointer",
+                          marginLeft:
+                            currentLevel === "S1" || currentLevel === "S2"
+                              ? "0px"
+                              : "33px",
+                        }}
                       >
                         <NextButtonRound height={45} width={45} />
                       </div>

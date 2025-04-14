@@ -2385,9 +2385,9 @@ export const friendintroductionAnouncementImg =
 export const yellowCloud =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/eb08f916412686ced0349035402562cf9541b55a/yellowCloud.svg";
 export const listeningImg =
-  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/cbfae3588ea0f47632cdb84fcd95218ff8130f1a/Listening.svg";
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/gif2.gif";
 export const voiceImg =
-  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/cbfae3588ea0f47632cdb84fcd95218ff8130f1a/Voice.svg";
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/gif1.gif";
 export const level15P1TwoAudio =
   "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level15P1TwoAudio.wav";
 export const level15P1TwoUAudio =

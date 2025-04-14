@@ -273,6 +273,21 @@ const content = {
 
 const colors = ["#4CDAFE", "#FC8AFF", "#FFB213"];
 
+const styles = [
+  {
+    background: "linear-gradient(279.15deg, #0780B9 0%, #4CC5FF 90.43%)",
+    boxShadow: "0px 0px 20px 8px #40B9F357",
+  },
+  {
+    background: "linear-gradient(278.71deg, #C20281 0%, #FF4BC2 84.1%)",
+    boxShadow: "0px 0px 20px 8px #FF4BC257",
+  },
+  {
+    background: "linear-gradient(279.36deg, #710EDC 0%, #A856FF 100%)",
+    boxShadow: "0px 0px 24px 8px #8224E757",
+  },
+];
+
 const R2 = ({
   setVoiceText,
   setRecordedAudio,
@@ -361,17 +376,17 @@ const R2 = ({
 
   console.log("cq", currentQuestion, rStep);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) =>
-        prev < content?.L1[currentQuestionIndex + 1]?.options.length - 1
-          ? prev + 1
-          : 0
-      );
-    }, 1000);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setActiveIndex((prev) =>
+  //       prev < content?.L1[currentQuestionIndex + 1]?.options.length - 1
+  //         ? prev + 1
+  //         : 0
+  //     );
+  //   }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   useEffect(() => {
     let interval = setInterval(() => {
@@ -381,7 +396,7 @@ const R2 = ({
           stopLoader();
           return 100;
         }
-        return prev + 5;
+        return prev + 2;
       });
     }, 1000);
 
@@ -490,13 +505,14 @@ const R2 = ({
       {currentQuestion?.question ? (
         <div
           style={{
-            height: "100vh",
+            height: "100%",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            background:
-              "linear-gradient(128.49deg, rgb(158, 197, 255) 0%, rgb(225, 166, 248) 100%)",
+            // background:
+            //   "linear-gradient(128.49deg, rgb(158, 197, 255) 0%, rgb(225, 166, 248) 100%)",
+            backgroundColor: "#FFFFFF",
           }}
         >
           {showConfetti && (
@@ -568,14 +584,15 @@ const R2 = ({
                   flexDirection: "column",
                   alignItems: "center",
                   gap: "10px",
-                  background: "white",
+                  background: "#FF7F361A",
                   borderRadius: "20px",
                   padding: "20px 50px",
                   maxWidth: "50%",
                   height: "120px",
+                  border: "2px dotted var(--Button-Orange, #FF7F36)",
                   //boxShadow: "0px 6px 0px 1px rgb(245, 245, 255)",
-                  boxShadow:
-                    "rgb(245, 245, 255) 0px 6px 0px 1px, rgb(102, 102, 133) 0px 11px 0px 1px",
+                  // boxShadow:
+                  //   "rgb(245, 245, 255) 0px 6px 0px 1px, rgb(102, 102, 133) 0px 11px 0px 1px",
                 }}
               >
                 {/* <img
@@ -629,97 +646,129 @@ const R2 = ({
                   <div
                     style={{
                       display: "flex",
-                      gap: "20px",
+                      gap: "50px",
                       marginTop: "20px",
                     }}
                   >
                     {content?.L1[currentQuestionIndex]?.options.map(
-                      (audio, index) => (
-                        <div
-                          key={index}
-                          style={{
-                            position: "relative",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            gap: "10px",
-                          }}
-                        >
-                          {index === activeIndex && (
-                            <img
-                              src={handIconGif}
-                              alt="Hint"
-                              style={{
-                                position: "absolute",
-                                top: "-40px",
-                                left: "-30px",
-                                transform: "rotate(-45deg)",
-                                height: "80px",
-                              }}
-                            />
-                          )}
+                      (audio, index) => {
+                        const style = styles[index % styles.length];
+
+                        return (
                           <div
+                            key={index}
                             style={{
-                              gap: "5px",
-                              width: "90px",
-                              height: "60px",
-                              background:
-                                selectedText === audio.id
-                                  ? isMatch
-                                    ? "#58CC02"
-                                    : "#FF0000"
-                                  : colors[index % colors.length],
-                              borderRadius: "8px",
-                              display: "flex",
-                              border: "2px solid white",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontSize: "30px",
-                              fontWeight: "bold",
-                              boxShadow: `0px 4px 0px 0px ${
-                                colors[index % colors.length]
-                              }90`,
-                              cursor: "pointer",
-                              color: "#FFFFFF",
-                            }}
-                            onClick={() => playAudio(audio.value)}
-                          >
-                            <img
-                              src={Assets.musicIcon}
-                              alt="Mike"
-                              style={{
-                                width: "45px",
-                                height: "45px",
-                                cursor: "pointer",
-                              }}
-                            />
-                            {index + 1}
-                          </div>
-                          <input
-                            type="checkbox"
-                            id={`checkbox-${audio.id}`}
-                            checked={selectedCheckbox === audio.id}
-                            onChange={() => handleCheckboxChange(audio.id)}
-                            style={{
-                              width: "60px",
-                              height: "60px",
-                              appearance: "none",
-                              backgroundColor:
-                                selectedCheckbox === audio.id
-                                  ? "#58CC02"
-                                  : "#BB81D066",
-                              border: "2px solid white",
-                              borderRadius: "8px",
-                              cursor: "pointer",
                               position: "relative",
                               display: "flex",
+                              flexDirection: "column",
                               alignItems: "center",
-                              justifyContent: "center",
-                              marginTop: "15px",
+                              gap: "10px",
                             }}
-                          />
+                          >
+                            {index === activeIndex && (
+                              <img
+                                src={handIconGif}
+                                alt="Hint"
+                                style={{
+                                  position: "absolute",
+                                  bottom: "40px",
+                                  left: "-30px",
+                                  transform: "rotate(-45deg)",
+                                  height: "80px",
+                                }}
+                              />
+                            )}
+                            <div
+                              style={{
+                                display: "flex",
+                                //border: "2px solid white",
+                                gap: "10px",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  color: "#000000",
+                                  fontFamily: "Quicksand",
+                                  fontWeight: 700,
+                                  fontSize: "36px",
+                                  lineHeight: "60px",
+                                  letterSpacing: "0%",
+                                  textAlign: "center",
+                                  verticalAlign: "middle",
+                                }}
+                              >
+                                {index + 1}
+                              </span>
+                              <div
+                                style={{
+                                  gap: "5px",
+                                  width: "80px",
+                                  height: "80px",
+                                  background:
+                                    selectedText === audio.id
+                                      ? isMatch
+                                        ? "#58CC02"
+                                        : "#FF0000"
+                                      : style.background,
+                                  borderRadius: "50%",
+                                  display: "flex",
+                                  //border: "2px solid white",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  fontSize: "30px",
+                                  fontWeight: "bold",
+                                  boxShadow:
+                                    selectedText === audio.id
+                                      ? "none"
+                                      : style.boxShadow,
+                                  cursor: "pointer",
+                                  color: "#FFFFFF",
+                                }}
+                                onClick={() => {
+                                  setActiveIndex(index);
+                                  playAudio(audio.value);
+                                }}
+                              >
+                                <img
+                                  src={Assets.musicIcon}
+                                  alt="Mike"
+                                  style={{
+                                    width: "40px",
+                                    height: "40px",
+                                    cursor: "pointer",
+                                  }}
+                                />
+                                {/* {index + 1} */}
+                              </div>
+                            </div>
+                            <input
+                              type="checkbox"
+                              id={`checkbox-${audio.id}`}
+                              checked={selectedCheckbox === audio.id}
+                              onChange={() => handleCheckboxChange(audio.id)}
+                              style={{
+                                width: "60px",
+                                height: "60px",
+                                appearance: "none",
+                                backgroundColor:
+                                  selectedCheckbox === audio.id
+                                    ? "#58CC02"
+                                    : "#BB81D066",
+                                border: "2px solid white",
+                                borderRadius: "8px",
+                                cursor: "pointer",
+                                position: "relative",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginTop: "15px",
+                                marginLeft: "30px",
+                              }}
+                            />
 
-                          {/* {selectedCheckbox === audio.text && (
+                            {/* {selectedCheckbox === audio.text && (
                             <div
                               style={{
                                 position: "absolute",
@@ -745,8 +794,9 @@ const R2 = ({
                               </svg>
                             </div>
                           )} */}
-                        </div>
-                      )
+                          </div>
+                        );
+                      }
                     )}
                   </div>
                 )}
@@ -760,12 +810,9 @@ const R2 = ({
                     zIndex: 1000,
                   }}
                 >
-                  <img
-                    src={r3Next}
-                    alt="Listen"
-                    style={{ height: "80px", cursor: "pointer" }}
-                    onClick={handleNextClick}
-                  />
+                  <div onClick={handleNextClick} style={{ cursor: "pointer" }}>
+                    <NextButtonRound height={60} width={60} />
+                  </div>
                 </div>
               )}
 
