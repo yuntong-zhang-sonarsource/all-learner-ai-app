@@ -244,18 +244,40 @@ const JumbledWord = ({
     }
   }, [selectedWords]);
 
-  const handleWordClick = (word) => {
-    if (
-      currentSteps === "step3" &&
-      selectedWords.length < levelData?.jumbledWords?.length
-    ) {
+  // const handleWordClick = (word, index) => {
+  //   if (
+  //     currentSteps === "step3" &&
+  //     selectedWords.length < levelData?.jumbledWords?.length
+  //   ) {
+  //     const audio = new Audio(correctSound);
+  //     audio.play();
+  //     setSelectedWords((prevSelectedWords) => {
+  //       if (!prevSelectedWords.includes(word)) {
+  //         return [...prevSelectedWords, word];
+  //       }
+  //       return prevSelectedWords;
+  //     });
+  //   }
+  // };
+
+  const handleWordClick = (word, index) => {
+    if (currentSteps === "step3") {
       const audio = new Audio(correctSound);
       audio.play();
       setSelectedWords((prevSelectedWords) => {
-        if (!prevSelectedWords.includes(word)) {
-          return [...prevSelectedWords, word];
+        if (prevSelectedWords.includes(word)) {
+          // If the word is already in selectedWords, remove it
+          const updatedWords = prevSelectedWords.filter(
+            (selectedWord) => selectedWord !== word
+          );
+          return updatedWords;
+        } else {
+          // Otherwise, add the word to selectedWords
+          if (selectedWords.length < levelData?.jumbledWords?.length) {
+            return [...prevSelectedWords, word];
+          }
+          return prevSelectedWords;
         }
-        return prevSelectedWords;
       });
     }
   };
@@ -477,6 +499,9 @@ const JumbledWord = ({
                     levelData?.jumbledWords?.map((_, index) => (
                       <span
                         key={index}
+                        onClick={() =>
+                          handleWordClick(selectedWords[index], index)
+                        }
                         style={{
                           margin: "0 13px",
                           borderBottom: "1.6px solid #754F4F80",
@@ -485,6 +510,7 @@ const JumbledWord = ({
                           textAlign: "center",
                           height: "30px",
                           lineHeight: "30px",
+                          cursor: "pointer",
                         }}
                       >
                         {selectedWords[index] || ""}
