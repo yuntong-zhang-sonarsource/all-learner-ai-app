@@ -563,6 +563,7 @@ const R1 = ({
                   setIsPlaying(false);
                   if (currentQuestionIndex === content.L1.length - 1) {
                     setLocalData("rFlow", false);
+                    setLocalData("mFail", false);
                     window.location.reload();
                   } else {
                     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
@@ -612,6 +613,7 @@ const R1 = ({
                     setRecording("no");
                     if (currentQuestionIndex === content.L1.length - 1) {
                       setLocalData("rFlow", false);
+                      setLocalData("mFail", false);
                       if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
                         navigate("/");
                       } else {

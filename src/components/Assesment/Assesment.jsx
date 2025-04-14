@@ -902,7 +902,7 @@ const Assesment = ({ discoverStart }) => {
             >
               <Box
                 sx={{
-                  width: "165px",
+                  width: rFlow === "true" ? "190px" : "165px",
                   height: "64px",
                   background: levelConfig[level].color,
                   borderRadius: "10px",
@@ -926,7 +926,7 @@ const Assesment = ({ discoverStart }) => {
                   }}
                 >
                   {rFlow === "true"
-                    ? `Start R${level === 1 ? "1" : rStep}`
+                    ? `Start Refresher ${level === 1 ? "1" : rStep}`
                     : `Start Level ${level}`}
                 </span>
               </Box>

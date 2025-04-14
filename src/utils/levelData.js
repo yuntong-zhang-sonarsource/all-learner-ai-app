@@ -8,22 +8,30 @@ export const level14 = [
         imageTwo: "child",
       },
       conversation: [
-        { speaker: "What is your favourite season?", user: "I like winter." },
+        {
+          speaker: "What is your favourite season?",
+          user: "I like winter.",
+          audio: "level14P1OneUAudio",
+        },
         {
           speaker: "Why do you like this season?",
           user: "Winter is cool and comfortable.",
+          audio: "level14P1TwoUAudio",
         },
         {
           speaker: "When does this season start and end in Tamil Nadu?",
           user: "Winter is from December to February in Tamil Nadu.",
+          audio: "level14P1ThreeUAudio",
         },
         {
           speaker: "How is this season different from summer/winter?",
           user: "Winter feels cool and nice, but summer is very hot.",
+          audio: "level14P1FourUAudio",
         },
         {
           speaker: "What do people do in this season?",
           user: "People wear warm clothes like sweaters in winter.",
+          audio: "level14P1FiveUAudio",
         },
       ],
     },
@@ -37,26 +45,35 @@ export const level14 = [
         imageTwo: "child",
       },
       conversation: [
-        { speaker: "What is your favourite animal?", user: "Dog" },
+        {
+          speaker: "What is your favourite animal?",
+          user: "Dog",
+          audio: "level14P2OneUAudio",
+        },
         {
           speaker: "Why do you like this animal?",
           user: "Because it is friendly and loyal.",
+          audio: "level14P2TwoUAudio",
         },
         {
           speaker: "Where does this animal live?",
           user: "Dogs live in homes and streets.",
+          audio: "level14P2ThreeUAudio",
         },
         {
           speaker: "What does this animal eat?",
           user: "Meat, bones, and rice.",
+          audio: "level14P2FourUAudio",
         },
         {
           speaker: "How does this animal help people?",
           user: "It guards homes and helps the police.",
+          audio: "level14P2FiveUAudio",
         },
         {
           speaker: "Why do people like this animal?",
           user: "Because it is loving and protective.",
+          audio: "level14P2SixUAudio",
         },
       ],
     },
@@ -73,22 +90,27 @@ export const level14 = [
         {
           speaker: "What do you see in the market?",
           user: "I see colourful shops, sweets, and toys everywhere.",
+          audio: "level14P3OneUAudio",
         },
         {
           speaker: "What do you want to buy?",
           user: "I want to buy something special for my grandmother.",
+          audio: "level14P3TwoUAudio",
         },
         {
           speaker: "Do you have a lot of money?",
           user: "No, I don't have much money, but I will find something useful.",
+          audio: "level14P3ThreeUAudio",
         },
         {
           speaker: "What did you buy?",
           user: "I bought a pair of tongs for my grandmother.",
+          audio: "level14P3FourUAudio",
         },
         {
           speaker: "Why was your grandmother happy?",
           user: "She was very happy because now she won't burn her hands while making chapatis.",
+          audio: "level14P3FiveUAudio",
         },
       ],
     },
@@ -105,22 +127,27 @@ export const level14 = [
         {
           speaker: "How are cricket and kabaddi different?",
           user: "Cricket is played with a bat and ball, but kabaddi is a physical game where players tag opponents and return to their side.",
+          audio: "level14P4OneUAudio",
         },
         {
           speaker: "Which sport do you like more and why?",
           user: "I like kabaddi more because it is fast and exciting.",
+          audio: "level14P4TwoUAudio",
         },
         {
           speaker: "Where do we play cricket and kabaddi?",
           user: "Cricket is played on a large field, but kabaddi is played on a small court.",
+          audio: "level14P4ThreeUAudio",
         },
         {
           speaker: "What equipment do players use in cricket and kabaddi?",
           user: "Cricket players use bats, balls, and protective gear, but kabaddi players need no equipment.",
+          audio: "level14P4FourUAudio",
         },
         {
           speaker: "Why do people enjoy cricket and kabaddi?",
           user: "People enjoy cricket because it is strategic and thrilling, but kabaddi is loved for its speed and physical action.",
+          audio: "level14P4FiveUAudio",
         },
       ],
     },
@@ -137,26 +164,32 @@ export const level14 = [
         {
           speaker: "What is your favourite sport?",
           user: "My favourite sport is cricket.",
+          audio: "level14P5OneUAudio",
         },
         {
           speaker: "Why do you like this sport?",
           user: "I like cricket because it is exciting and popular.",
+          audio: "level14P5TwoUAudio",
         },
         {
           speaker: "Where do you play this sport?",
           user: "I play cricket on a big field with a pitch.",
+          audio: "level14P5ThreeUAudio",
         },
         {
           speaker: "How is this sport different from others?",
           user: "Cricket is played with a bat and ball.",
+          audio: "level14P5FourUAudio",
         },
         {
           speaker: "What do players wear while playing?",
           user: "Cricket players wear helmets, gloves, and pads.",
+          audio: "level14P5FiveUAudio",
         },
         {
           speaker: "Why do people like this sport?",
           user: "People like cricket because it is thrilling and famous.",
+          audio: "level14P5SixUAudio",
         },
       ],
     },
@@ -173,26 +206,32 @@ export const level14 = [
         {
           speaker: "What is your favourite transport?",
           user: "My favourite mode of transport is a bicycle.",
+          audio: "level14P6OneUAudio",
         },
         {
           speaker: "Why do you like this transport?",
           user: "I like bicycles because they are fun.",
+          audio: "level14P6TwoUAudio",
         },
         {
           speaker: "Where do you use this transport?",
           user: "I use a bicycle to go to school.",
+          audio: "level14P6TwoUAudio",
         },
         {
           speaker: "How is this transport different from others?",
           user: "A bicycle has no engine.",
+          audio: "level14P6ThreeUAudio",
         },
         {
           speaker: "What do people carry while travelling?",
           user: "People carry a school bag and water bottle.",
+          audio: "level14P6FourUAudio",
         },
         {
           speaker: "Why do people like this transport?",
           user: "People like bicycles because they are healthy.",
+          audio: "level14P6FiveUAudio",
         },
       ],
     },
@@ -209,22 +248,27 @@ export const level14 = [
         {
           speaker: "Where are you going?",
           user: "I am going to the bazaar today.",
+          audio: "level14P7OneUAudio",
         },
         {
           speaker: "What do you want to buy?",
           user: "I need to buy some spices and slippers for my mother.",
+          audio: "level14P7TwoUAudio",
         },
         {
           speaker: "Is someone going with you?",
           user: "No, I am going alone because Binya is busy at home.",
+          audio: "level14P7ThreeUAudio",
         },
         {
           speaker: "Who did you meet in the bazaar?",
           user: "I met my aunt, and she invited me for tea.",
+          audio: "level14P7FourUAudio",
         },
         {
           speaker: "What happened while you were returning home?",
           user: "Suddenly, the wind stopped, and the sky became very dark.",
+          audio: "level14P7FiveUAudio",
         },
       ],
     },
@@ -241,22 +285,27 @@ export const level14 = [
         {
           speaker: "How are dogs and cats different?",
           user: "Dogs are social and active, but cats are independent and quiet.",
+          audio: "level14P8OneUAudio",
         },
         {
           speaker: "Which pet do you like more and why?",
           user: "I like dogs more because they are friendly and loyal.",
+          audio: "level14P8TwoUAudio",
         },
         {
           speaker: "How do we take care of dogs and cats?",
           user: "Dogs need daily walks and training, but cats need a litter box and a quiet space.",
+          audio: "level14P8ThreeUAudio",
         },
         {
           speaker: "What do dogs and cats eat?",
           user: "Dogs eat meat, kibble, and sometimes vegetables, but cats mostly eat meat and fish.",
+          audio: "level14P8FourUAudio",
         },
         {
           speaker: "Why do people like dogs and cats?",
           user: "People like dogs because they are loyal and protective, but cats are loved for being calm and independent.",
+          audio: "level14P8FiveUAudio",
         },
       ],
     },
@@ -273,20 +322,28 @@ export const level14 = [
         {
           speaker: "Which is your favourite season?",
           user: "My favourite season is winter.",
+          audio: "level14S1OneUAudio",
         },
         {
           speaker: "Why do you like this season?",
           user: "Because it is cold and comfortable.",
+          audio: "level14S1TwoUAudio",
         },
         {
           speaker: "What kind of dress do you wear in this season?",
           user: "I wear jumpers, sweaters, and woollen clothes.",
+          audio: "level14S1ThreeUAudio",
         },
         {
           speaker: "How is this season different from other seasons?",
           user: "It is colder and more pleasant.",
+          audio: "level14S1FourUAudio",
         },
-        { speaker: "When does this season occur?", user: "December, January." },
+        {
+          speaker: "When does this season occur?",
+          user: "December, January.",
+          audio: "level14S1FiveUAudio",
+        },
       ],
     },
   },
@@ -302,20 +359,28 @@ export const level14 = [
         {
           speaker: "What is your favourite type of road transport?",
           user: "I like travelling by bus.",
+          audio: "level14S2OneUAudio",
         },
         {
           speaker: "Why do you like this type of transport?",
           user: "It is comfortable.",
+          audio: "level14S2TwoUAudio",
         },
-        { speaker: "How often do you travel using it?", user: "Every day." },
+        {
+          speaker: "How often do you travel using it?",
+          user: "Every day.",
+          audio: "level14S2ThreeUAudio",
+        },
         {
           speaker: "Where do you usually go when you use this transport?",
           user: "To school.",
+          audio: "level14S2FourUAudio",
         },
         {
           speaker:
             "How is this transport different from other types of transport?",
           user: "It has fixed routes and stops.",
+          audio: "level14S2FiveUAudio",
         },
       ],
     },
@@ -1185,6 +1250,7 @@ export const level13 = [
         type: "anouncement",
         imageOne: "roadSafetyImg1",
         imageTwo: "roadSafetyImg2",
+        imageThree: "roadsafetyAnouncementImg",
         content: [
           {
             role: "System",
@@ -1493,6 +1559,7 @@ export const level12 = [
         type: "announcement",
         imageOne: "treeConvImg",
         imageTwo: "superMarketImg",
+        imageThree: "supermarketAnouncementImg",
         content: [
           {
             role: "System",
@@ -1834,163 +1901,167 @@ export const level12 = [
   },
   {
     level: "P4",
-    mechanics: "PhrasesInAction",
+    mechanics: "jumbledWord",
     data: [
       {
-        step1: {
-          allwords: [{ img: "textbookImg", text: "Open Textbooks" }],
-          audio: "openTextbookAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "textbookImg", text: "Open Textbooks" },
-            { img: "classroomImg", text: "Classroom" },
-            { img: "teacherImg", text: "Teacher" },
-          ],
-          correctWordTwo: "Open Textbooks",
-          audio: "openTextbookAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P4OneAudio",
+            correctSentence:
+              "Students, gather in the courtyard by 8:30 AM with slips and lunch.",
+          },
+        ],
+        jumbledWords: [
+          "with slips",
+          "courtyard by",
+          "Students, gather",
+          "8:30 AM",
+          "in the",
+          "and lunch.",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "listenImg", text: "Listen Carefully" }],
-          audio: "listenAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "listenImg", text: "Listen Carefully" },
-            { img: "blackboardImg", text: "Blackboard" },
-            { img: "notebookImg", text: "Notebook" },
-          ],
-          correctWordTwo: "Listen Carefully",
-          audio: "listenAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P4TwoAudio",
+            correctSentence:
+              "Next downtown bus arrives in 5 mins. Have tickets ready.",
+          },
+        ],
+        jumbledWords: [
+          "mins. Have",
+          "bus arrives",
+          "Next downtown",
+          "in 5",
+          "tickets ready.",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "raiseHandImg", text: "Raise Hand" }],
-          audio: "raiseHandAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "raiseHandImg", text: "Raise Hand" },
-            { img: "deskImg", text: "Desk" },
-            { img: "studentImg", text: "Students" },
-          ],
-          correctWordTwo: "Raise Hand",
-          audio: "raiseHandAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P4ThreeAudio",
+            correctSentence:
+              "Flight 234 to Delhi boarding at Gate 7 in 10 mins. Keep ID ready.",
+          },
+        ],
+        jumbledWords: [
+          "boarding at",
+          "in 10",
+          "ID ready.",
+          "Flight 234",
+          "Gate 7",
+          "mins. Keep",
+          "to Delhi",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "workPairImg", text: "Work in Pairs" }],
-          audio: "workPairAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "workPairImg", text: "Work in Pairs" },
-            { img: "exerciseImg", text: "Exercise" },
-            { img: "classroomImg", text: "Classroom" },
-          ],
-          correctWordTwo: "Work in Pairs",
-          audio: "workPairAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P4FourAudio",
+            correctSentence:
+              "Electronics sale at 2 PM today. Don't miss the deals!",
+          },
+        ],
+        jumbledWords: [
+          "at 2",
+          "Electronics sale",
+          "Don't miss",
+          "PM today.",
+          "the deals!",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "writeDateImg", text: "Write Date" }],
-          audio: "writeDateAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "writeDateImg", text: "Write Date" },
-            { img: "notebookImg", text: "Notebook" },
-            { img: "penImg", text: "Pen" },
-          ],
-          correctWordTwo: "Write Date",
-          audio: "writeDateAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P4FiveAudio",
+            correctSentence:
+              "Visiting hours over. Please exit via the main gate. Thank you!",
+          },
+        ],
+        jumbledWords: [
+          "exit via",
+          "Thank you!",
+          "the main",
+          "over. Please",
+          "Visiting hours",
+          "gate.",
+        ],
       },
     ],
   },
   {
     level: "P3",
-    mechanics: "PhrasesInAction",
+    mechanics: "jumbledWord",
     data: [
       {
-        step1: {
-          allwords: [{ img: "schoolCourtyardImg", text: "Open Courtyard" }],
-          audio: "schoolCourtyardAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "schoolCourtyardImg", text: "School Courtyard" },
-            { img: "busImg", text: "Bus" },
-            { img: "lunchBoxImg", text: "Lunch Box" },
-          ],
-          correctWordTwo: "School Courtyard",
-          audio: "schoolCourtyardAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P3OneAudio",
+            correctSentence: "Open your textbooks to page 25.",
+          },
+        ],
+        jumbledWords: ["Open", "your", "to", "page", "textbooks", "25."],
       },
       {
-        step1: {
-          allwords: [{ img: "busImg", text: "Open Bus" }],
-          audio: "busAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "ticketImg", text: "Ticket" },
-            { img: "busImg", text: "Bus" },
-            { img: "trainImg", text: "Train" },
-          ],
-          correctWordTwo: "Bus",
-          audio: "busAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P3TwoAudio",
+            correctSentence: "Listen carefully and pay attention.",
+          },
+        ],
+        jumbledWords: ["attention.", "carefully", "Listen", "and", "pay"],
       },
       {
-        step1: {
-          allwords: [{ img: "airplaneImg", text: "Airplane" }],
-          audio: "airplaneAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "airplaneImg", text: "Airplane" },
-            { img: "boardingPassImg", text: "Boarding Pass" },
-            { img: "trainStationImg", text: "Train Station" },
-          ],
-          correctWordTwo: "Airplane",
-          audio: "airplaneAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P3ThreeAudio",
+            correctSentence: "Please raise your hand before speaking.",
+          },
+        ],
+        jumbledWords: [
+          "before",
+          "speaking.",
+          "Please",
+          "raise",
+          "hand",
+          "your",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "discountTagImg", text: "Discount Tag" }],
-          audio: "discountTagAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "shoppingCartImg", text: "Shopping Cart" },
-            { img: "discountTagImg", text: "Discount Tag" },
-            { img: "restaurantImg", text: "Restaurant" },
-          ],
-          correctWordTwo: "Discount Tag",
-          audio: "discountTagAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P3FourAudio",
+            correctSentence: "Work in pairs and complete the exercise.",
+          },
+        ],
+        jumbledWords: [
+          "the",
+          "exercise.",
+          "Work",
+          "in",
+          "pairs",
+          "and",
+          "complete",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "exitSignImg", text: "Exit Sign" }],
-          audio: "exitSignAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "hospitalImg", text: "Hospital" },
-            { img: "exitSignImg", text: "Exit Sign" },
-            { img: "ambulanceImg", text: "Ambulance" },
-          ],
-          correctWordTwo: "Exit Sign",
-          audio: "exitSignAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P3FiveAudio",
+            correctSentence: "Write today's date at the top of your notebook.",
+          },
+        ],
+        jumbledWords: [
+          "Write",
+          "today's",
+          "your",
+          "notebook.",
+          "top",
+          "of",
+          "the",
+          "date",
+          "at",
+        ],
       },
     ],
   },
@@ -2000,19 +2071,14 @@ export const level12 = [
     data: {
       instructions: {
         type: "announcement",
+        imageThree: "bankAnouncementImg",
         content: [
           {
             role: "System",
             message:
-              "Walk straight along the Patel Road. Walk past the ATM and turn right. After walking for a few minutes, you will see a shopping mall.",
+              "Walk straight along the Patel Road. Walk past the ATM and turn right. After walking for a few minutes, you will see a shopping mall. Cross the road at the zebra crossing and continue until you reach a bus stop. Take the second left and you will find the city library beside a coffee shop.",
             audio: "patelRoadAudio",
           },
-          // {
-          //   role: "System",
-          //   message:
-          //     "Customer: Hello, I want to open a bank account.\nBank Clerk: Sure. Do you have your ID and address proof?\nCustomer: Yes, here they are.\nBank Clerk: Thank you! Please fill out this form.",
-          //   audio: "bankConversationAudio",
-          // },
         ],
       },
       tasks: [
@@ -2067,47 +2133,47 @@ export const level12 = [
         {
           question: {
             type: "text",
-            value: "What does the customer want to do at the bank?",
+            value: "Where do you cross the road?",
           },
           options: [
             {
               type: "text",
               id: "option1",
-              value: "Withdraw money",
+              value: "At the roundabout",
             },
             {
               type: "text",
               id: "option2",
-              value: "Open a bank account",
+              value: "At the traffic light",
             },
             {
               type: "text",
               id: "option3",
-              value: "Deposit a check",
+              value: "At the zebra crossing",
             },
           ],
-          answer: "option2",
+          answer: "option3",
         },
         {
           question: {
             type: "text",
-            value: "What documents does the bank clerk ask for?",
+            value: "What do you reach after the zebra crossing?",
           },
           options: [
             {
               type: "text",
               id: "option1",
-              value: "ID and address proof",
+              value: "A bus stop",
             },
             {
               type: "text",
               id: "option2",
-              value: "Electricity bill and passport",
+              value: "A petrol station",
             },
             {
               type: "text",
               id: "option3",
-              value: "Bank passbook and ATM card",
+              value: "A park",
             },
           ],
           answer: "option1",
@@ -2115,26 +2181,26 @@ export const level12 = [
         {
           question: {
             type: "text",
-            value: "What does the bank clerk give to the customer?",
+            value: "What is located beside the city library?",
           },
           options: [
             {
               type: "text",
               id: "option1",
-              value: "A checkbook",
+              value: "A coffee shop",
             },
             {
               type: "text",
               id: "option2",
-              value: "A form to fill out",
+              value: "A bank",
             },
             {
               type: "text",
               id: "option3",
-              value: "An ATM card",
+              value: "A school",
             },
           ],
-          answer: "option2",
+          answer: "option1",
         },
       ],
     },
@@ -2147,6 +2213,7 @@ export const level12 = [
         type: "anouncement",
         imageOne: "atm",
         imageTwo: "mall",
+        imageThree: "supermarketAnouncementImg",
         content: [
           {
             role: "System",
@@ -2487,168 +2554,143 @@ export const level12 = [
     },
   },
   {
-    level: "P8",
-    mechanics: "PhrasesInAction",
+    level: "P7",
+    mechanics: "jumbledWord",
     data: [
       {
-        step1: {
-          allwords: [
-            { img: "underlineImg", text: "Underline Important Points" },
-          ],
-          audio: "underlineAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "underlineImg", text: "Underline Important Points" },
-            { img: "highlighterImg", text: "Highlighter" },
-            { img: "notebookImg", text: "Notebook" },
-          ],
-          correctWordTwo: "Underline Important Points",
-          audio: "underlineAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P7OneAudio",
+            correctSentence: "Underline the important points in your notes.",
+          },
+        ],
+        jumbledWords: [
+          "Underline",
+          "points",
+          "notes.",
+          "in your",
+          "the important",
+        ],
       },
       {
-        step1: {
-          allwords: [
-            { img: "readInstructionsImg", text: "Read Instructions Carefully" },
-          ],
-          audio: "readInstructionsAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "readInstructionsImg", text: "Read Instructions Carefully" },
-            { img: "questionPaperImg", text: "Question Paper" },
-            { img: "penImg", text: "Pen" },
-          ],
-          correctWordTwo: "Read Instructions Carefully",
-          audio: "readInstructionsAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P7TwoAudio",
+            correctSentence:
+              "Read the instructions carefully before answering.",
+          },
+        ],
+        jumbledWords: [
+          "Read",
+          "carefully",
+          "before",
+          "the instructions",
+          "answering.",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "sitProperlyImg", text: "Sit Properly" }],
-          audio: "sitProperlyAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "sitProperlyImg", text: "Sit Properly" },
-            { img: "deskImg", text: "Desk" },
-            { img: "chairImg", text: "Chair" },
-          ],
-          correctWordTwo: "Sit Properly",
-          audio: "sitProperlyAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P7ThreeAudio",
+            correctSentence: "Sit properly and don't lean on the desk.",
+          },
+        ],
+        jumbledWords: ["and don't", "Sit properly", "on the", "lean", "desk."],
       },
       {
-        step1: {
-          allwords: [{ img: "notebookImg", text: "Take Out Notebooks" }],
-          audio: "notebookAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "notebookImg", text: "Take Out Notebooks" },
-            { img: "penImg", text: "Pen" },
-            { img: "textbookImg", text: "Textbook" },
-          ],
-          correctWordTwo: "Take Out Notebooks",
-          audio: "notebookAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P7FourAudio",
+            correctSentence: "Take out your notebooks and start writing.",
+          },
+        ],
+        jumbledWords: [
+          "Take out",
+          "writing.",
+          "notebooks",
+          "and start",
+          "your",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "submitHomeworkImg", text: "Submit Homework" }],
-          audio: "submitHomeworkAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "submitHomeworkImg", text: "Submit Homework" },
-            { img: "bellImg", text: "Bell" },
-            { img: "teacherDeskImg", text: "Teacher’s Desk" },
-          ],
-          correctWordTwo: "Submit Homework",
-          audio: "submitHomeworkAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P7FiveAudio",
+            correctSentence: "Submit your homework before the bell rings.",
+          },
+        ],
+        jumbledWords: [
+          "Submit",
+          "rings.",
+          "homework",
+          "before",
+          "your",
+          "the bell",
+        ],
       },
     ],
   },
   {
-    level: "P7",
-    mechanics: "PhrasesInAction",
+    level: "P8",
+    mechanics: "jumbledWord",
     data: [
       {
-        step1: {
-          allwords: [{ img: "discountTagImg", text: "Discount Tag" }],
-          audio: "discountTagAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "fruitsImg", text: "Fruits" },
-            { img: "vegetablesImg", text: "Vegetables" },
-            { img: "discountTagImg", text: "Discount Tag" },
-          ],
-          correctWordTwo: "Discount Tag",
-          audio: "discountTagAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P8OneAudio",
+            correctSentence: "20% off on fruits & veggies today!",
+          },
+        ],
+        jumbledWords: ["20% off", "on", "& veggies", "fruits", "today!"],
       },
       {
-        step1: {
-          allwords: [{ img: "salmonDishImg", text: "Grilled Salmon" }],
-          audio: "grilledSalmonAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "salmonDishImg", text: "Grilled Salmon" },
-            { img: "potatoesImg", text: "Mashed Potatoes" },
-            { img: "restaurantImg", text: "Restaurant" },
-          ],
-          correctWordTwo: "Grilled Salmon",
-          audio: "grilledSalmonAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P8TwoAudio",
+            correctSentence: "Try our special – grilled salmon & mash.",
+          },
+        ],
+        jumbledWords: ["grilled", "Try our", "salmon", "& mash.", "special –"],
       },
       {
-        step1: {
-          allwords: [{ img: "exitSignImg", text: "Exit Sign" }],
-          audio: "libraryClosingAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "libraryImg", text: "Library" },
-            { img: "bookImg", text: "Book" },
-            { img: "exitSignImg", text: "Exit Sign" },
-          ],
-          correctWordTwo: "Exit Sign",
-          audio: "libraryClosingAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P8ThreeAudio",
+            correctSentence: "Library closes in 15 mins. Return items.",
+          },
+        ],
+        jumbledWords: ["Library", "15 mins.", "closes in", "items.", "Return"],
       },
       {
-        step1: {
-          allwords: [{ img: "trainImg", text: "Train" }],
-          audio: "trainArrivalAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "trainImg", text: "Train" },
-            { img: "platformImg", text: "Platform" },
-            { img: "ticketImg", text: "Ticket" },
-          ],
-          correctWordTwo: "Train",
-          audio: "trainArrivalAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P8FourAudio",
+            correctSentence: "Train 5678 to Chennai in 5 mins at Platform 3.",
+          },
+        ],
+        jumbledWords: [
+          "in 5 mins",
+          "Train 5678",
+          "Platform 3.",
+          "to Chennai",
+          "at",
+        ],
       },
       {
-        step1: {
-          allwords: [{ img: "concertStageImg", text: "Concert Stage" }],
-          audio: "concertAnnouncementAudio",
-        },
-        step2: {
-          allwordsTwo: [
-            { img: "audienceImg", text: "Audience" },
-            { img: "concertStageImg", text: "Concert Stage" },
-            { img: "TelephoneNewImg", text: "Mobile Phone" },
-          ],
-          correctWordTwo: "Concert Stage",
-          audio: "concertAnnouncementAudio",
-        },
+        correctWord: [
+          {
+            audio: "level12P8FiveAudio",
+            correctSentence:
+              "Concert starts in 10 mins. Take seats & silence phones.",
+          },
+        ],
+        jumbledWords: [
+          "Take seats",
+          "Concert starts",
+          "phones.",
+          "in 10 mins.",
+          "& silence",
+        ],
       },
     ],
   },
@@ -2660,6 +2702,7 @@ export const level12 = [
         type: "anouncement",
         imageOne: "dosaIce1",
         imageTwo: "dosaIce2",
+        imageThree: "museumAnouncementImg",
         content: [
           {
             role: "System",
@@ -2805,6 +2848,7 @@ export const level11 = [
         type: "announcement",
         imageOne: "dosaIce1",
         imageTwo: "dosaIce2",
+        imageThree: "SouthIndianAnouncementImg",
         content: [
           {
             role: "System",
@@ -2940,6 +2984,7 @@ export const level11 = [
         type: "announcement",
         imageOne: "rahulOne",
         imageTwo: "rahulTwo",
+        imageThree: "friendintroductionAnouncementImg",
         content: [
           {
             role: "System",
@@ -3079,22 +3124,27 @@ export const level11 = [
         {
           speaker: "Good morning, dear! How can I help you?",
           user: "Good morning, sir. I need some potatoes.",
+          audio: "level11P3OneUAudio",
         },
         {
           speaker: "How many kilos do you want?",
           user: "Two kilograms, please.",
+          audio: "level11P3TwoUAudio",
         },
         {
           speaker: "One kilo of potatoes costs Rs. 30.",
           user: "That’s fine. I also need half a kilo of carrots and beans.",
+          audio: "level11P3ThreeUAudio",
         },
         {
           speaker: "Anything else?",
           user: "No, that’s all. What is the total amount?",
+          audio: "level11P3FourUAudio",
         },
         {
           speaker: "The total amount is Rs. 100.",
           user: "Here is the money. Thank you, sir.",
+          audio: "level11P3FiveUAudio",
         },
       ],
     },
@@ -3111,22 +3161,27 @@ export const level11 = [
         {
           speaker: "Arivu, can you help me in the kitchen?",
           user: "Sure, Mom! What should I do?",
+          audio: "level11P4OneUAudio",
         },
         {
           speaker: "Please bring me the tomatoes from the fridge.",
           user: "Here they are, Mom. Do you need anything else?",
+          audio: "level11P4TwoUAudio",
         },
         {
           speaker: "Yes, wash these vegetables and put them in the basket.",
           user: "Okay, I have washed them. What’s next?",
+          audio: "level11P4ThreeUAudio",
         },
         {
           speaker: "Can you get me the salt from the shelf?",
           user: "Here it is, Mom. Are you making sambar?",
+          audio: "level11P4FourUAudio",
         },
         {
           speaker: "Yes, and your favourite potato fry too!",
           user: "Wow! I can’t wait to eat. Thank you, Mom!",
+          audio: "level11P4FiveUAudio",
         },
       ],
     },
@@ -3139,6 +3194,7 @@ export const level11 = [
         type: "announcement",
         imageOne: "bf1",
         imageTwo: "bf2",
+        imageThree: "SouthIndianAnouncementImg",
         content: [
           {
             role: "System",
@@ -3334,6 +3390,7 @@ export const level11 = [
         type: "announcement",
         imageOne: "dosaIce1",
         imageTwo: "dosaIce2",
+        imageThree: "selfintroductionAnouncementImg",
         content: [
           {
             role: "System",
@@ -3451,6 +3508,7 @@ export const level11 = [
         type: "announcement",
         imageOne: "rahulOne",
         imageTwo: "rahulTwo",
+        imageThree: "friendintroductionAnouncementImg",
         content: [
           {
             role: "System",
@@ -3571,22 +3629,27 @@ export const level11 = [
         {
           speaker: "Good morning! How can I help you?",
           user: "Good morning, sir. I need a notebook and some pens.",
+          audio: "level11P7OneUAudio",
         },
         {
           speaker: "What type of notebook do you need?",
           user: "A ruled notebook, please. How much does it cost?",
+          audio: "level11P7TwoUAudio",
         },
         {
           speaker: "It costs Rs. 50. How many pens do you want?",
           user: "Two blue pens and one black pen, please.",
+          audio: "level11P7ThreeUAudio",
         },
         {
           speaker: "Anything else?",
           user: "No, that’s all. What is the total amount?",
+          audio: "level11P7FourUAudio",
         },
         {
           speaker: "The total is Rs. 100.",
           user: "Here is the money. Thank you, sir!",
+          audio: "level11P7FiveUAudio",
         },
       ],
     },
@@ -3603,22 +3666,27 @@ export const level11 = [
         {
           speaker: "Nila, are you ready for school?",
           user: "Yes, Dad! But I can’t find my water bottle.",
+          audio: "level11P8OneUAudio",
         },
         {
           speaker: "Check your bag. Is it inside?",
           user: "No, I don’t see it.",
+          audio: "level11P8TwoUAudio",
         },
         {
           speaker: "Look at the dining table. I saw it there.",
           user: "Oh yes! Here it is. Thank you, Dad.",
+          audio: "level11P8ThreeUAudio",
         },
         {
           speaker: "Good! Do you have your books and lunch box?",
           user: "Yes, everything is packed.",
+          audio: "level11P8FourUAudio",
         },
         {
           speaker: "Great! Let’s leave early to avoid traffic.",
           user: "Okay, Dad! Let’s go.",
+          audio: "level11P8FiveUAudio",
         },
       ],
     },
@@ -3631,6 +3699,7 @@ export const level11 = [
         type: "announcement",
         imageOne: "child",
         imageTwo: "catImage",
+        imageThree: "catintroductionAnouncementImg",
         content: [
           {
             role: "System",
@@ -3779,26 +3848,32 @@ export const level15 = [
         {
           speaker: "Hi!",
           user: "Hello!",
+          audio: "level15P1OneUAudio",
         },
         {
           speaker: "What happened to Tom's balloon?",
           user: "Tom felt sad watching his balloon fly away.",
+          audio: "level15P1TwoUAudio",
         },
         {
           speaker: "How did the balloon fly away?",
           user: "Suddenly, the balloon slipped from his hand and floated into the sky!",
+          audio: "level15P1ThreeUAudio",
         },
         {
           speaker: "Where did Tom get the balloon from?",
           user: "Tom bought a red balloon from the shop.",
+          audio: "level15P1FourUAudio",
         },
         {
           speaker: "What did Tom’s mother do when he was sad?",
           user: "His mother gave him a new balloon to cheer him up.",
+          audio: "level15P1FiveUAudio",
         },
         {
           speaker: "How did Tom feel after getting a new balloon?",
           user: "Tom smiled and held the new balloon tightly.",
+          audio: "level15P1SixUAudio",
         },
       ],
     },
@@ -3815,22 +3890,27 @@ export const level15 = [
         {
           speaker: "Where did Tom get the balloon from?",
           user: "Tom bought a red balloon from the shop.",
+          audio: "level15P2OneUAudio",
         },
         {
           speaker: "What happened to Tom’s balloon?",
           user: "Suddenly, the balloon slipped from his hand and floated into the sky!",
+          audio: "level15P2TwoUAudio",
         },
         {
           speaker: "How did Tom feel after losing his balloon?",
           user: "Tom felt sad watching his balloon fly away.",
+          audio: "level15P2ThreeUAudio",
         },
         {
           speaker: "What did Tom’s mother do when he was sad?",
           user: "His mother gave him a new balloon to cheer him up.",
+          audio: "level15P2FourUAudio",
         },
         {
           speaker: "How did Tom react after getting a new balloon?",
           user: "Tom smiled and held the new balloon tightly.",
+          audio: "level15P2FiveUAudio",
         },
       ],
     },
@@ -3927,22 +4007,27 @@ export const level15 = [
         {
           speaker: "What did the train do as it moved up the hillside?",
           user: "The train twisted and turned up the rugged hillside, winding its path through dense woods.",
+          audio: "level15S1OneUAudio",
         },
         {
           speaker: "How did she react when she got scared?",
           user: "She shrieked in fear and quickly stepped away.",
+          audio: "level15S1TwoUAudio",
         },
         {
           speaker: "How did the scene appear in the movie?",
           user: "It looked like a scene from a beautiful dream.",
+          audio: "level15S1ThreeUAudio",
         },
         {
           speaker: "What should you focus on to win?",
           user: "Focus on winning! Just win! I believe in you.",
+          audio: "level15S1FourUAudio",
         },
         {
           speaker: "What happens to the stations as the train moves?",
           user: "Colorful stations pass by quickly.",
+          audio: "level15S1FiveUAudio",
         },
       ],
     },
@@ -4267,6 +4352,7 @@ export const level15 = [
         type: "anouncement",
         imageOne: "child",
         imageTwo: "mall",
+        imageThree: "supermarketAnouncementImg",
         content: [
           {
             role: "System",
@@ -4411,6 +4497,7 @@ export const level10 = [
         type: "announcement",
         imageOne: "trainImgOne",
         imageTwo: "trainImgTwo",
+        imageThree: "railAnouncementImg",
         content: [
           {
             role: "System",
@@ -4599,7 +4686,7 @@ export const level10 = [
             { id: "option2", value: "GHSS, Pudhur" },
             { id: "option3", value: "DEF International School" },
           ],
-          answer: "option1",
+          answer: "option2",
         },
         {
           question:
@@ -4615,21 +4702,21 @@ export const level10 = [
           question:
             "The picture shows children playing happily in a ______ (place).",
           options: [
-            { id: "option1", value: "park" },
-            { id: "option2", value: "classroom" },
+            { id: "option1", value: "classroom" },
+            { id: "option2", value: "park" },
             { id: "option3", value: "library" },
           ],
-          answer: "option1",
+          answer: "option2",
         },
         {
           question:
             "The message at the bottom of the image says: ______ are the heart of our Nation!’",
           options: [
-            { id: "option1", value: "Children" },
-            { id: "option2", value: "Teachers" },
-            { id: "option3", value: "Parents" },
+            { id: "option1", value: "Teachers" },
+            { id: "option2", value: "Parents" },
+            { id: "option3", value: "Children" },
           ],
-          answer: "option1",
+          answer: "option3",
         },
       ],
     },
@@ -4710,6 +4797,7 @@ export const level10 = [
         type: "announcement",
         imageOne: "trainImgOne",
         imageTwo: "trainImgTwo",
+        imageThree: "railAnouncementImg",
         content: [
           {
             role: "System",
@@ -4812,6 +4900,7 @@ export const level10 = [
         type: "announcement",
         imageOne: "patna1",
         imageTwo: "patna2",
+        imageThree: "biharAnouncementImg",
         content: [
           {
             role: "System",
@@ -4978,6 +5067,7 @@ export const level10 = [
         type: "announcement",
         imageOne: "reporter1",
         imageTwo: "reporter2",
+        imageThree: "cycloneAnouncementImg",
         content: [
           {
             role: "System",
@@ -5251,6 +5341,7 @@ export const level10 = [
         type: "announcement",
         imageOne: "gradenAnouncementImg",
         imageTwo: "child",
+        imageThree: "friendintroductionAnouncementImg",
         content: [
           {
             role: "System",
@@ -5331,69 +5422,20 @@ export const level10 = [
   },
   {
     level: "S2",
-    mechanics: "ReadAloudMcqM10",
+    mechanics: "AnnouncementFlow",
     data: {
       instructions: {
-        type: "chat",
+        type: "announcement",
+        imageOne: "humanImg",
+        imageTwo: "child",
+        imageThree: "shoppingmallAnouncementImg",
         content: [
           {
             role: "System",
-            name: "Son",
-            message: "Hello?",
-            audio: "level10S2One",
-          },
-          {
-            role: "User",
-            name: "Ram",
-            message: "Hi, good morning! Am I speaking to Mr. Raghav?",
-            audio: "level10S2Two",
-          },
-          {
-            role: "System",
-            name: "Son",
+            name: "Announcement",
             message:
-              "Good morning! Actually, my dad isn’t at home right now. He accidentally took my mom’s phone and left his phone here. May I know who’s calling?",
-            audio: "level10S2Three",
-          },
-          {
-            role: "User",
-            name: "Ram",
-            message:
-              "Oh! This is Ram, his colleague from the office. I need to inform him about an urgent meeting. Do you know when he’ll be back?",
-            audio: "level10S2Four",
-          },
-          {
-            role: "System",
-            name: "Son",
-            message:
-              "He just went for a morning walk. He should be back soon. Would you like me to pass a message?",
-            audio: "level10S2Five",
-          },
-          {
-            role: "User",
-            name: "Ram",
-            message:
-              "Yes, please. Let him know that he has to be at the office half an hour earlier today for an urgent meeting before the regular one. It’s important that he doesn’t miss it.",
-            audio: "level10S2Six",
-          },
-          {
-            role: "System",
-            name: "Son",
-            message:
-              "Now, I’ll call my Mom’s number which is with him and inform about it. Anything else?",
-            audio: "level10S2Seven",
-          },
-          {
-            role: "User",
-            name: "Ram",
-            message: "No, that’s all. Thanks for your help.",
-            audio: "level10S2Eight",
-          },
-          {
-            role: "System",
-            name: "Son",
-            message: "You’re welcome. Have a nice day!",
-            audio: "level10S2Nine",
+              "Hello? Hi, good morning! Am I speaking to Mr. Raghav? Good morning! Actually, my dad isn’t at home right now. He accidentally took my mom’s phone and left his phone here. May I know who’s calling? Oh! This is Ram, his colleague from the office. I need to inform him about an urgent meeting. Do you know when he’ll be back? He just went for a morning walk. He should be back soon. Would you like me to pass a message? Yes, please. Let him know that he has to be at the office half an hour earlier today for an urgent meeting before the regular one. It’s important that he doesn’t miss it. Now, I’ll call my mom’s number, which is with him, and inform him about it. Anything else? No, that’s all. Thanks for your help. You’re welcome. Have a nice day!",
+            audio: "level10S2Announcement",
           },
         ],
       },
@@ -5575,4 +5617,9 @@ export const levelMapping = {
   9025374424: 11,
   4708438660: 11,
   8629231373: 3,
+  5959090366: 10,
+  4498321123: 10,
+  8232305398: 10,
+  9926847910: 10,
+  4221431178: 10,
 };
