@@ -328,11 +328,17 @@ const Mechanics5 = ({
             </span>
           </Box>
           <Box
-            sx={
-              mechanism === "mechanic_4"
-                ? { display: "flex", justifyContent: "center" }
-                : ""
-            }
+            sx={{
+              ...(mechanism === "mechanic_4" && {
+                display: "flex",
+                justifyContent: "center",
+              }),
+              "@media (max-width:1100px)": {
+                gap: "40px",
+                flexWrap: "wrap",
+                justifyContent: "space-evenly",
+              },
+            }}
           >
             {options && options.length > 0 ? (
               options.map((option, i) => (

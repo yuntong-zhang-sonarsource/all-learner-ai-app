@@ -79,6 +79,7 @@ const WordsOrImage = ({
   setOpenMessageDialog,
   isNextButtonCalled,
   setIsNextButtonCalled,
+  audioLink,
 }) => {
   const audioRefs = createRef(null);
   const [isReady, setIsReady] = useState(false);
@@ -812,6 +813,7 @@ const WordsOrImage = ({
               handleNext={handleNext}
               enableNext={enableNext}
               isShowCase={isShowCase || isDiscover}
+              audioLink={audioLink ? audioLink : null}
               {...{
                 contentId,
                 contentType,
