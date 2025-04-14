@@ -344,6 +344,8 @@ const WordsOrImage = ({
     return "#333F61";
   };
 
+  console.log("wds", words, matchedChar, answer);
+
   return (
     <MainLayout
       background={background}
@@ -724,20 +726,40 @@ const WordsOrImage = ({
                     </Avatar>
                   </Box>
                 )}
-                {matchedChar && (
-                  <Box
-                    display={"flex"}
-                    mb={4}
-                    sx={{
-                      color: "red",
-                      width: "100%",
-                      justifyContent: "center",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    {highlightWords(words, matchedChar, getAnswerColor(answer))}
-                  </Box>
-                )}
+                {matchedChar &&
+                  (level === 3 ? (
+                    <Typography
+                      variant="h5"
+                      component="h4"
+                      sx={{
+                        fontSize: "clamp(1.6rem, 2.5vw, 3.8rem)",
+                        fontWeight: 700,
+                        fontFamily: "Quicksand",
+                        lineHeight: "50px",
+                        //background: "#FFF0BD",
+                        color: "black",
+                      }}
+                    >
+                      {words}
+                    </Typography>
+                  ) : (
+                    <Box
+                      display={"flex"}
+                      mb={4}
+                      sx={{
+                        color: "red",
+                        width: "100%",
+                        justifyContent: "center",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      {highlightWords(
+                        words,
+                        matchedChar,
+                        getAnswerColor(answer)
+                      )}
+                    </Box>
+                  ))}
               </Box>
             </Box>
           )}
