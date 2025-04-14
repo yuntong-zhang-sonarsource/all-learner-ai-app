@@ -2721,3 +2721,13 @@ export const chatLoader =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/chat-bubble-loading%20(2).png";
 export const starNewImg =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/5d597391e16156cddd7d740eed8fdac0c1bb4365/starImg.svg";
+export const level11P8TwoUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P8TwoUAudio.wav";
+export const level11P8OneUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P8OneUAudio.wav";
+export const level11P8FiveUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P8FiveUAudio.wav";
+export const level11P8FourUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P8FourUAudio.wav";
+export const level11P8ThreeUAudio =
+  "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P8ThreeUAudio.wav";
