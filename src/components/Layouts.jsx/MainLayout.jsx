@@ -1263,7 +1263,12 @@ const MainLayout = (props) => {
                             padding: "0px 24px 0px 20px",
                           }}
                           onClick={() => {
-                            if ((LEVEL === 1 || LEVEL === 2) && mFlow) {
+                            if (
+                              ((LEVEL === 1 || LEVEL === 2) &&
+                                mFlow === true) ||
+                              mFlow === "true"
+                            ) {
+                              console.log("mFlow value:", mFlow);
                               setLocalData("rFlow", true);
                             }
                             if (
