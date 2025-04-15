@@ -40,6 +40,9 @@ import { Log } from "../../services/telementryService";
 import Mechanics6 from "../../components/Practice/Mechanics6";
 import Mechanics7 from "../../components/Practice/Mechanics7";
 import * as Assets from "../../utils/imageAudioLinks";
+import * as s3Assets from "../../utils/s3Links";
+import { getAssetUrl } from "../../utils/s3Links";
+import { getAssetAudioUrl } from "../../utils/s3Links";
 import { PutBucketInventoryConfigurationRequestFilterSensitiveLog } from "@aws-sdk/client-s3";
 import usePreloadAudio from "../../hooks/usePreloadAudio";
 import { levelMapping } from "../../utils/levelData";
@@ -90,104 +93,163 @@ const Practice = () => {
       {
         completeWord: "Apple",
         syllable: ["Ap", "ple"],
-        img: Assets.Apple,
+        img: getAssetUrl(s3Assets.Apple) || Assets.Apple,
         syllablesAudio: [
-          { name: "Ap", audio: Assets.apAudio },
-          { name: "ple", audio: Assets.pleAudio },
+          {
+            name: "Ap",
+            audio: getAssetAudioUrl(s3Assets.apAudio) || Assets.apAudio,
+          },
+          {
+            name: "ple",
+            audio: getAssetAudioUrl(s3Assets.pleAudio) || Assets.pleAudio,
+          },
         ],
-        completeAudio: Assets.appleAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.appleAudio) || Assets.appleAudio,
       },
       {
         completeWord: "Tiger",
         syllable: ["Ti", "ger"],
-        img: Assets.TigerNewImg,
+        img: getAssetUrl(s3Assets.TigerNewImg) || Assets.TigerNewImg,
         syllablesAudio: [
-          { name: "Ti", audio: Assets.tiAudio },
-          { name: "ger", audio: Assets.gerAudio },
+          {
+            name: "Ti",
+            audio: getAssetAudioUrl(s3Assets.tiAudio) || Assets.tiAudio,
+          },
+          {
+            name: "ger",
+            audio: getAssetAudioUrl(s3Assets.gerAudio) || Assets.gerAudio,
+          },
         ],
-        completeAudio: Assets.tigerAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.tigerAudio) || Assets.tigerAudio,
       },
       {
         completeWord: "Happy",
         syllable: ["Hap", "py"],
-        img: Assets.happyImg,
+        img: getAssetUrl(s3Assets.happyImg) || Assets.happyImg,
         syllablesAudio: [
-          { name: "Hap", audio: Assets.hapAudio },
-          { name: "py", audio: Assets.pyAudio },
+          {
+            name: "Hap",
+            audio: getAssetAudioUrl(s3Assets.hapAudio) || Assets.hapAudio,
+          },
+          {
+            name: "py",
+            audio: getAssetAudioUrl(s3Assets.pyAudio) || Assets.pyAudio,
+          },
         ],
-        completeAudio: Assets.happyAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.happyAudio) || Assets.happyAudio,
       },
       {
         completeWord: "Pencil",
         syllable: ["Pen", "cil"],
-        img: Assets.pencilImg,
+        img: getAssetUrl(s3Assets.pencilImg) || Assets.pencilImg,
         syllablesAudio: [
-          { name: "Pen", audio: Assets.penAudio },
-          { name: "cil", audio: Assets.cilAudio },
+          {
+            name: "Pen",
+            audio: getAssetAudioUrl(s3Assets.penAudio) || Assets.penAudio,
+          },
+          {
+            name: "cil",
+            audio: getAssetAudioUrl(s3Assets.cilAudio) || Assets.cilAudio,
+          },
         ],
-        completeAudio: Assets.pencilAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.pencilAudio) || Assets.pencilAudio,
       },
       {
         completeWord: "Rocket",
         syllable: ["Rock", "et"],
-        img: Assets.RocketNewImg,
+        img: getAssetUrl(s3Assets.RocketNewImg) || Assets.RocketNewImg,
         syllablesAudio: [
-          { name: "Rock", audio: Assets.Rock },
-          { name: "Et", audio: Assets.Et },
+          {
+            name: "Rock",
+            audio: getAssetAudioUrl(s3Assets.Rock) || Assets.Rock,
+          },
+          { name: "Et", audio: getAssetAudioUrl(s3Assets.Et) || Assets.Et },
         ],
-        completeAudio: Assets.RocketS,
+        completeAudio: getAssetAudioUrl(s3Assets.RocketS) || Assets.RocketS,
       },
     ],
     L2: [
       {
         completeWord: "Basket",
         syllable: ["Bas", "ket"],
-        img: Assets.Basket,
+        img: getAssetUrl(s3Assets.Basket) || Assets.Basket,
         syllablesAudio: [
-          { name: "Bas", audio: Assets.Bas },
-          { name: "Ket", audio: Assets.Ket },
+          { name: "Bas", audio: getAssetAudioUrl(s3Assets.Bas) || Assets.Bas },
+          { name: "Ket", audio: getAssetAudioUrl(s3Assets.Ket) || Assets.Ket },
         ],
-        completeAudio: Assets.BasketS,
+        completeAudio: getAssetAudioUrl(s3Assets.BasketS) || Assets.BasketS,
       },
       {
         completeWord: "Dinner",
         syllable: ["Din", "ner"],
-        img: Assets.DinnerNewImg,
+        img: getAssetUrl(s3Assets.DinnerNewImg) || Assets.DinnerNewImg,
         syllablesAudio: [
-          { name: "Din", audio: Assets.dinAudio },
-          { name: "ner", audio: Assets.nerAudio },
+          {
+            name: "Din",
+            audio: getAssetAudioUrl(s3Assets.dinAudio) || Assets.dinAudio,
+          },
+          {
+            name: "ner",
+            audio: getAssetAudioUrl(s3Assets.nerAudio) || Assets.nerAudio,
+          },
         ],
-        completeAudio: Assets.dinnerAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.dinnerAudio) || Assets.dinnerAudio,
       },
       {
         completeWord: "Window",
         syllable: ["Win", "dow"],
-        img: Assets.WindowNewImg,
+        img: getAssetUrl(s3Assets.WindowNewImg) || Assets.WindowNewImg,
         syllablesAudio: [
-          { name: "Win", audio: Assets.winAudio },
-          { name: "dow", audio: Assets.dowAudio },
+          {
+            name: "Win",
+            audio: getAssetAudioUrl(s3Assets.winAudio) || Assets.winAudio,
+          },
+          {
+            name: "dow",
+            audio: getAssetAudioUrl(s3Assets.dowAudio) || Assets.dowAudio,
+          },
         ],
-        completeAudio: Assets.windowAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.windowAudio) || Assets.windowAudio,
       },
       {
         completeWord: "Magnet",
         syllable: ["Mag", "net"],
-        img: Assets.MagnetNewImg,
+        img: getAssetUrl(s3Assets.MagnetNewImg) || Assets.MagnetNewImg,
         syllablesAudio: [
-          { name: "Mag", audio: Assets.magAudio },
-          { name: "net", audio: Assets.netAudio },
+          {
+            name: "Mag",
+            audio: getAssetAudioUrl(s3Assets.magAudio) || Assets.magAudio,
+          },
+          {
+            name: "net",
+            audio: getAssetAudioUrl(s3Assets.netAudio) || Assets.netAudio,
+          },
         ],
-        completeAudio: Assets.magnetAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.magnetAudio) || Assets.magnetAudio,
       },
       {
         completeWord: "Tennis",
         syllable: ["Ten", "nis"],
-        img: Assets.TennisNewImg,
+        img: getAssetUrl(s3Assets.TennisNewImg) || Assets.TennisNewImg,
         syllablesAudio: [
-          { name: "Ten", audio: Assets.tenAudio },
-          { name: "nis", audio: Assets.nisAudio },
+          {
+            name: "Ten",
+            audio: getAssetAudioUrl(s3Assets.tenAudio) || Assets.tenAudio,
+          },
+          {
+            name: "nis",
+            audio: getAssetAudioUrl(s3Assets.nisAudio) || Assets.nisAudio,
+          },
         ],
-        completeAudio: Assets.tennisAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.tennisAudio) || Assets.tennisAudio,
       },
     ],
     P1: [
@@ -215,104 +277,159 @@ const Practice = () => {
       {
         completeWord: "Picture",
         syllable: ["Pic", "ture"],
-        img: Assets.PictureNewImg,
+        img: getAssetUrl(s3Assets.PictureNewImg) || Assets.PictureNewImg,
         syllablesAudio: [
-          { name: "Pic", audio: Assets.picAudio },
-          { name: "ture", audio: Assets.tureAudio },
+          {
+            name: "Pic",
+            audio: getAssetAudioUrl(s3Assets.picAudio) || Assets.picAudio,
+          },
+          {
+            name: "ture",
+            audio: getAssetAudioUrl(s3Assets.tureAudio) || Assets.tureAudio,
+          },
         ],
-        completeAudio: Assets.pictureAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.pictureAudio) || Assets.pictureAudio,
       },
       {
         completeWord: "Number",
         syllable: ["Num", "ber"],
-        img: Assets.NumberNewImg,
+        img: getAssetUrl(s3Assets.NumberNewImg) || Assets.NumberNewImg,
         syllablesAudio: [
-          { name: "Num", audio: Assets.numAudio },
-          { name: "ber", audio: Assets.berAudio },
+          {
+            name: "Num",
+            audio: getAssetAudioUrl(s3Assets.numAudio) || Assets.numAudio,
+          },
+          {
+            name: "ber",
+            audio: getAssetAudioUrl(s3Assets.berAudio) || Assets.berAudio,
+          },
         ],
-        completeAudio: Assets.numberAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.numberAudio) || Assets.numberAudio,
       },
       {
         completeWord: "Doctor",
         syllable: ["Doc", "tor"],
-        img: Assets.DoctorNewImg,
+        img: getAssetUrl(s3Assets.DoctorNewImg) || Assets.DoctorNewImg,
         syllablesAudio: [
-          { name: "Doc", audio: Assets.docAudio },
-          { name: "tor", audio: Assets.torAudio },
+          {
+            name: "Doc",
+            audio: getAssetAudioUrl(s3Assets.docAudio) || Assets.docAudio,
+          },
+          {
+            name: "tor",
+            audio: getAssetAudioUrl(s3Assets.torAudio) || Assets.torAudio,
+          },
         ],
-        completeAudio: Assets.doctorAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.doctorAudio) || Assets.doctorAudio,
       },
       {
         completeWord: "Paper",
         syllable: ["Pa", "per"],
-        img: Assets.questionPaperImg,
+        img: getAssetUrl(s3Assets.questionPaperImg) || Assets.questionPaperImg,
         syllablesAudio: [
-          { name: "Pa", audio: Assets.paAudio },
-          { name: "per", audio: Assets.perAudio },
+          {
+            name: "Pa",
+            audio: getAssetAudioUrl(s3Assets.paAudio) || Assets.paAudio,
+          },
+          {
+            name: "per",
+            audio: getAssetAudioUrl(s3Assets.perAudio) || Assets.perAudio,
+          },
         ],
-        completeAudio: Assets.paperAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.paperAudio) || Assets.paperAudio,
       },
       {
         completeWord: "Monkey",
         syllable: ["Mon", "key"],
-        img: Assets.MonkeyNewImg,
+        img: getAssetUrl(s3Assets.MonkeyNewImg) || Assets.MonkeyNewImg,
         syllablesAudio: [
-          { name: "Mon", audio: Assets.monAudio },
-          { name: "key", audio: Assets.keyAudio },
+          {
+            name: "Mon",
+            audio: getAssetAudioUrl(s3Assets.monAudio) || Assets.monAudio,
+          },
+          {
+            name: "key",
+            audio: getAssetAudioUrl(s3Assets.keyAudio) || Assets.keyAudio,
+          },
         ],
-        completeAudio: Assets.monkeyAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.monkeyAudio) || Assets.monkeyAudio,
       },
     ],
     L4: [
       {
         completeWord: "Garden",
         syllable: ["Gar", "den"],
-        img: Assets.GardenNewImg,
+        img: getAssetUrl(s3Assets.gardenImg) || Assets.GardenNewImg,
         syllablesAudio: [
-          { name: "Gar", audio: Assets.garAudio },
-          { name: "den", audio: Assets.denAudio },
+          {
+            name: "Gar",
+            audio: getAssetAudioUrl(s3Assets.garAudio) || Assets.garAudio,
+          },
+          {
+            name: "den",
+            audio: getAssetAudioUrl(s3Assets.denAudio) || Assets.denAudio,
+          },
         ],
-        completeAudio: Assets.GardenAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.GardenAudio) || Assets.GardenAudio,
       },
       {
         completeWord: "Helmet",
         syllable: ["Hel", "met"],
-        img: Assets.helmetImg,
+        img: getAssetUrl(s3Assets.helmetImg) || Assets.helmetImg,
         syllablesAudio: [
-          { name: "Hel", audio: Assets.helAudio },
-          { name: "met", audio: Assets.metAudio },
+          {
+            name: "Hel",
+            audio: getAssetAudioUrl(s3Assets.helAudio) || Assets.helAudio,
+          },
+          {
+            name: "met",
+            audio: getAssetAudioUrl(s3Assets.metAudio) || Assets.metAudio,
+          },
         ],
-        completeAudio: Assets.helmetAudio,
+        completeAudio:
+          getAssetAudioUrl(s3Assets.helmetAudio) || Assets.helmetAudio,
       },
       {
         completeWord: "Kitten",
         syllable: ["Kit", "ten"],
-        img: Assets.catImage,
+        img: getAssetUrl(s3Assets.catImage) || Assets.catImage,
         syllablesAudio: [
-          { name: "Kit", audio: Assets.Kit },
-          { name: "ten", audio: Assets.Ten },
+          { name: "Kit", audio: getAssetAudioUrl(s3Assets.Kit) || Assets.Kit },
+          { name: "ten", audio: getAssetAudioUrl(s3Assets.Ten) || Assets.Ten },
         ],
-        completeAudio: Assets.KittenS,
+        completeAudio: getAssetAudioUrl(s3Assets.KittenS) || Assets.KittenS,
       },
       {
         completeWord: "Jacket",
         syllable: ["Jack", "et"],
-        img: Assets.Jacket,
+        img: getAssetUrl(s3Assets.Jacket) || Assets.Jacket,
         syllablesAudio: [
-          { name: "Jack", audio: Assets.Jack },
-          { name: "et", audio: Assets.Et },
+          {
+            name: "Jack",
+            audio: getAssetAudioUrl(s3Assets.Jack) || Assets.Jack,
+          },
+          { name: "et", audio: getAssetAudioUrl(s3Assets.Et) || Assets.Et },
         ],
-        completeAudio: Assets.JacketS,
+        completeAudio: getAssetAudioUrl(s3Assets.JacketS) || Assets.JacketS,
       },
       {
         completeWord: "Pocket",
         syllable: ["Pock", "et"],
-        img: Assets.pocketImage,
+        img: getAssetUrl(s3Assets.pocketImage) || Assets.pocketImage,
         syllablesAudio: [
-          { name: "Pock", audio: Assets.Pock },
-          { name: "et", audio: Assets.Et },
+          {
+            name: "Pock",
+            audio: getAssetAudioUrl(s3Assets.Pock) || Assets.Pock,
+          },
+          { name: "et", audio: getAssetAudioUrl(s3Assets.Et) || Assets.Et },
         ],
-        completeAudio: Assets.PocketS,
+        completeAudio: getAssetAudioUrl(s3Assets.PocketS) || Assets.PocketS,
       },
     ],
     P3: [

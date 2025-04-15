@@ -12,6 +12,9 @@ import {
 } from "../../utils/levelData";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
+import * as s3Assets from "../../utils/s3Links";
+import { getAssetUrl } from "../../utils/s3Links";
+import { getAssetAudioUrl } from "../../utils/s3Links";
 import {
   practiceSteps,
   getLocalData,
@@ -230,7 +233,11 @@ const McqFlow = ({
             // />
             <Box sx={{ position: "relative", cursor: "zoom-in" }}>
               <img
-                src={Assets[conversation?.instruction?.content[0]?.value]}
+                src={
+                  getAssetUrl(
+                    s3Assets[conversation?.instruction?.content[0]?.value]
+                  ) || Assets[conversation?.instruction?.content[0]?.value]
+                }
                 style={{
                   borderRadius: "20px",
                   maxWidth: "100%",
@@ -317,7 +324,11 @@ const McqFlow = ({
               </Box>
 
               <img
-                src={Assets[conversation?.instruction?.content[0]?.value]}
+                src={
+                  getAssetUrl(
+                    s3Assets[conversation?.instruction?.content[0]?.value]
+                  ) || Assets[conversation?.instruction?.content[0]?.value]
+                }
                 alt="Zoomed content"
                 style={{
                   // maxWidth: "90vw",

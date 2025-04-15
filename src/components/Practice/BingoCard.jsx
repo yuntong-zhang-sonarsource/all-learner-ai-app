@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as Assets from "../../utils/imageAudioLinks";
+import * as s3Assets from "../../utils/s3Links";
+import { getAssetUrl } from "../../utils/s3Links";
+import { getAssetAudioUrl } from "../../utils/s3Links";
 import Confetti from "react-confetti";
 import {
   practiceSteps,
@@ -265,6 +268,165 @@ const BingoCard = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // const levels = {
+  //   L1: {
+  //     words: [
+  //       "MAN",
+  //       "WA",
+  //       "GO",
+  //       "CIL",
+  //       "MO",
+  //       "THER",
+  //       "FA",
+  //       "TER",
+  //       "SIS",
+  //       "BRO",
+  //       "PEN",
+  //       "E",
+  //     ],
+  //     imageAudioMap: {
+  //       MANGO: {
+  //         image: Assets.mangoR1OneImg,
+  //         audio: Assets.mangoNewAudio,
+  //       },
+  //       WATER: {
+  //         image: Assets.waterImg,
+  //         audio: Assets.waterNewAudio,
+  //       },
+  //       MOTHER: {
+  //         image: Assets.motherImg,
+  //         audio: Assets.motherNewAudio,
+  //       },
+  //       FATHER: {
+  //         image: Assets.fatherImg,
+  //         audio: Assets.fatherNewAudio,
+  //       },
+  //       PENCIL: {
+  //         image: Assets.pencilImg,
+  //         audio: Assets.pencilNewAudio,
+  //       },
+  //     },
+  //     arrM: ["MANGO", "WATER", "MOTHER", "FATHER", "PENCIL"],
+  //   },
+  //   L2: {
+  //     words: [
+  //       "MAR",
+  //       "BAS",
+  //       "DOW",
+  //       "TOR",
+  //       "KET",
+  //       "CRICK",
+  //       "DOC",
+  //       "WIN",
+  //       "BOT",
+  //       "CHER",
+  //       "TLE",
+  //       "ET",
+  //     ],
+  //     imageAudioMap: {
+  //       DOCTOR: {
+  //         image: Assets.doctorImg,
+  //         audio: Assets.doctorNewAudio,
+  //       },
+  //       MARKET: {
+  //         image: Assets.marketImg,
+  //         audio: Assets.marketNewAudio,
+  //       },
+  //       BASKET: {
+  //         image: Assets.basketImg,
+  //         audio: Assets.basketNewAudio,
+  //       },
+  //       CRICKET: {
+  //         image: Assets.cricketImg,
+  //         audio: Assets.cricketNewAudio,
+  //       },
+  //       WINDOW: {
+  //         image: Assets.WindowNewImg,
+  //         audio: Assets.windowNewAudio,
+  //       },
+  //     },
+  //     arrM: ["DOCTOR", "MARKET", "BASKET", "CRICKET", "WINDOW"],
+  //   },
+  //   L3: {
+  //     words: [
+  //       "BAL",
+  //       "CLE",
+  //       "GAR",
+  //       "DLE",
+  //       "LOON",
+  //       "CAN",
+  //       "TEM",
+  //       "SCOO",
+  //       "CY",
+  //       "DEN",
+  //       "TER",
+  //       "PLE",
+  //     ],
+  //     imageAudioMap: {
+  //       BALLOON: {
+  //         image: Assets.balloonImg,
+  //         audio: Assets.balloonNewAudio,
+  //       },
+  //       GARDEN: {
+  //         image: Assets.gardenImg,
+  //         audio: Assets.gardenNewAudio,
+  //       },
+  //       CANDLE: {
+  //         image: Assets.candleImg,
+  //         audio: Assets.candleNewAudio,
+  //       },
+  //       SCOOTER: {
+  //         image: Assets.scooterImg,
+  //         audio: Assets.scooterNewAudio,
+  //       },
+  //       CYCLE: {
+  //         image: Assets.bicycleRImg,
+  //         audio: Assets.cycleNewAudio,
+  //       },
+  //     },
+  //     arrM: ["BALLOON", "GARDEN", "CANDLE", "SCOOTER", "CYCLE"],
+  //   },
+  //   L4: {
+  //     words: [
+  //       "FLOW",
+  //       "PY",
+  //       "MUS",
+  //       "OL",
+  //       "ER",
+  //       "PUP",
+  //       "PER",
+  //       "STU",
+  //       "IC",
+  //       "DENT",
+  //       "SCHO",
+  //       "PA",
+  //     ],
+  //     imageAudioMap: {
+  //       FLOWER: {
+  //         image: Assets.flowerRImg,
+  //         audio: Assets.flowerNewAudio,
+  //       },
+  //       MUSIC: {
+  //         image: Assets.musicImg,
+  //         audio: Assets.musicNewAudio,
+  //       },
+  //       PUPPY: {
+  //         image: Assets.puppyImg,
+  //         audio: Assets.puppyNewAudio,
+  //       },
+  //       STUDENT: {
+  //         image: Assets.studentImg,
+  //         audio: Assets.studentNewAudio,
+  //       },
+  //       PAPER: {
+  //         image: Assets.paperImg,
+  //         audio: Assets.paperNewAudio,
+  //       },
+  //     },
+  //     arrM: ["FLOWER", "MUSIC", "PUPPY", "STUDENT", "PAPER"],
+  //   },
+  // };
+
   const levels = {
     L1: {
       words: [
@@ -283,24 +445,29 @@ const BingoCard = ({
       ],
       imageAudioMap: {
         MANGO: {
-          image: Assets.mangoR1OneImg,
-          audio: Assets.mangoNewAudio,
+          image: getAssetUrl(s3Assets.mangoR1OneImg) || Assets.mangoR1OneImg,
+          audio:
+            getAssetAudioUrl(s3Assets.mangoNewAudio) || Assets.mangoNewAudio,
         },
         WATER: {
-          image: Assets.waterImg,
-          audio: Assets.waterNewAudio,
+          image: getAssetUrl(s3Assets.waterImg) || Assets.waterImg,
+          audio:
+            getAssetAudioUrl(s3Assets.waterNewAudio) || Assets.waterNewAudio,
         },
         MOTHER: {
           image: Assets.motherImg,
-          audio: Assets.motherNewAudio,
+          audio:
+            getAssetAudioUrl(s3Assets.motherNewAudio) || Assets.motherNewAudio,
         },
         FATHER: {
           image: Assets.fatherImg,
-          audio: Assets.fatherNewAudio,
+          audio:
+            getAssetAudioUrl(s3Assets.fatherNewAudio) || Assets.fatherNewAudio,
         },
         PENCIL: {
-          image: Assets.pencilImg,
-          audio: Assets.pencilNewAudio,
+          image: getAssetUrl(s3Assets.pencilImg) || Assets.pencilImg,
+          audio:
+            getAssetAudioUrl(s3Assets.pencilNewAudio) || Assets.pencilNewAudio,
         },
       },
       arrM: ["MANGO", "WATER", "MOTHER", "FATHER", "PENCIL"],
@@ -322,24 +489,30 @@ const BingoCard = ({
       ],
       imageAudioMap: {
         DOCTOR: {
-          image: Assets.doctorImg,
-          audio: Assets.doctorNewAudio,
+          image: getAssetUrl(s3Assets.doctorImg) || Assets.doctorImg,
+          audio:
+            getAssetAudioUrl(s3Assets.doctorNewAudio) || Assets.doctorNewAudio,
         },
         MARKET: {
-          image: Assets.marketImg,
-          audio: Assets.marketNewAudio,
+          image: getAssetUrl(s3Assets.marketImg) || Assets.marketImg,
+          audio:
+            getAssetAudioUrl(s3Assets.marketNewAudio) || Assets.marketNewAudio,
         },
         BASKET: {
-          image: Assets.basketImg,
-          audio: Assets.basketNewAudio,
+          image: getAssetUrl(s3Assets.basketImg) || Assets.basketImg,
+          audio:
+            getAssetAudioUrl(s3Assets.basketNewAudio) || Assets.basketNewAudio,
         },
         CRICKET: {
-          image: Assets.cricketImg,
-          audio: Assets.cricketNewAudio,
+          image: getAssetUrl(s3Assets.cricketImg) || Assets.cricketImg,
+          audio:
+            getAssetAudioUrl(s3Assets.cricketNewAudio) ||
+            Assets.cricketNewAudio,
         },
         WINDOW: {
-          image: Assets.WindowNewImg,
-          audio: Assets.windowNewAudio,
+          image: getAssetUrl(s3Assets.WindowNewImg) || Assets.WindowNewImg,
+          audio:
+            getAssetAudioUrl(s3Assets.windowNewAudio) || Assets.windowNewAudio,
         },
       },
       arrM: ["DOCTOR", "MARKET", "BASKET", "CRICKET", "WINDOW"],
@@ -361,24 +534,31 @@ const BingoCard = ({
       ],
       imageAudioMap: {
         BALLOON: {
-          image: Assets.balloonImg,
-          audio: Assets.balloonNewAudio,
+          image: getAssetUrl(s3Assets.balloonImg) || Assets.balloonImg,
+          audio:
+            getAssetAudioUrl(s3Assets.balloonNewAudio) ||
+            Assets.balloonNewAudio,
         },
         GARDEN: {
-          image: Assets.gardenImg,
-          audio: Assets.gardenNewAudio,
+          image: getAssetUrl(s3Assets.gardenImg) || Assets.gardenImg,
+          audio:
+            getAssetAudioUrl(s3Assets.gardenNewAudio) || Assets.gardenNewAudio,
         },
         CANDLE: {
-          image: Assets.candleImg,
-          audio: Assets.candleNewAudio,
+          image: getAssetUrl(s3Assets.candleImg) || Assets.candleImg,
+          audio:
+            getAssetAudioUrl(s3Assets.candleNewAudio) || Assets.candleNewAudio,
         },
         SCOOTER: {
-          image: Assets.scooterImg,
-          audio: Assets.scooterNewAudio,
+          image: getAssetUrl(s3Assets.scooterImg) || Assets.scooterImg,
+          audio:
+            getAssetAudioUrl(s3Assets.scooterNewAudio) ||
+            Assets.scooterNewAudio,
         },
         CYCLE: {
-          image: Assets.bicycleRImg,
-          audio: Assets.cycleNewAudio,
+          image: getAssetUrl(s3Assets.bicycleRImg) || Assets.bicycleRImg,
+          audio:
+            getAssetAudioUrl(s3Assets.cycleNewAudio) || Assets.cycleNewAudio,
         },
       },
       arrM: ["BALLOON", "GARDEN", "CANDLE", "SCOOTER", "CYCLE"],
@@ -400,24 +580,30 @@ const BingoCard = ({
       ],
       imageAudioMap: {
         FLOWER: {
-          image: Assets.flowerRImg,
-          audio: Assets.flowerNewAudio,
+          image: getAssetUrl(s3Assets.flowerRImg) || Assets.flowerRImg,
+          audio:
+            getAssetAudioUrl(s3Assets.flowerNewAudio) || Assets.flowerNewAudio,
         },
         MUSIC: {
-          image: Assets.musicImg,
-          audio: Assets.musicNewAudio,
+          image: getAssetUrl(s3Assets.musicImg) || Assets.musicImg,
+          audio:
+            getAssetAudioUrl(s3Assets.musicNewAudio) || Assets.musicNewAudio,
         },
         PUPPY: {
-          image: Assets.puppyImg,
-          audio: Assets.puppyNewAudio,
+          image: getAssetUrl(s3Assets.puppyImg) || Assets.puppyImg,
+          audio:
+            getAssetAudioUrl(s3Assets.puppyNewAudio) || Assets.puppyNewAudio,
         },
         STUDENT: {
           image: Assets.studentImg,
-          audio: Assets.studentNewAudio,
+          audio:
+            getAssetAudioUrl(s3Assets.studentNewAudio) ||
+            Assets.studentNewAudio,
         },
         PAPER: {
           image: Assets.paperImg,
-          audio: Assets.paperNewAudio,
+          audio:
+            getAssetAudioUrl(s3Assets.paperNewAudio) || Assets.paperNewAudio,
         },
       },
       arrM: ["FLOWER", "MUSIC", "PUPPY", "STUDENT", "PAPER"],

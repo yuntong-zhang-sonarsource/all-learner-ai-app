@@ -13,6 +13,9 @@ import listenImg2 from "../../assets/listen.png";
 import spinnerStop from "../../assets/pause.png";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
+import * as s3Assets from "../../utils/s3Links";
+import { getAssetUrl } from "../../utils/s3Links";
+import { getAssetAudioUrl } from "../../utils/s3Links";
 import {
   practiceSteps,
   getLocalData,
@@ -161,8 +164,10 @@ const PhoneConversation = ({
       setAudioInstance(null);
     }
     if (isPlaying !== audioKey) {
-      if (Assets[audioKey]) {
-        const audio = new Audio(Assets[audioKey]);
+      if (getAssetAudioUrl(s3Assets[audioKey]) || Assets[audioKey]) {
+        const audio = new Audio(
+          getAssetAudioUrl(s3Assets[audioKey]) || Assets[audioKey]
+        );
 
         audio.onended = () => {
           setIsPlaying(null);
@@ -239,23 +244,23 @@ const PhoneConversation = ({
       setIsRecordingComplete(true);
       setRecAudio(base64Data);
       if (currentLevel === "S1" || currentLevel === "S2") {
-        const comprehension = await handleTextEvaluation(
-          correctAnswerText,
-          transcriptRef.current
-        );
+        // const comprehension = await handleTextEvaluation(
+        //   correctAnswerText,
+        //   transcriptRef.current
+        // );
 
-        if (comprehension) {
-          const options = {
-            originalText: correctAnswerText,
-            contentType: contentType,
-            contentId: contentId,
-            comprehension: comprehension,
-          };
+        // if (comprehension) {
+        const options = {
+          originalText: correctAnswerText,
+          contentType: contentType,
+          contentId: contentId,
+          //comprehension: comprehension,
+        };
 
-          fetchASROutput(base64Data, options, setLoader, setApiResponse);
-        } else {
-          console.error("Failed to get evaluation result.");
-        }
+        fetchASROutput(base64Data, options, setLoader, setApiResponse);
+        // } else {
+        //   console.error("Failed to get evaluation result.");
+        // }
       }
     } else {
       setIsRecordingComplete(false);
@@ -707,7 +712,7 @@ const PhoneConversation = ({
                     isPlaying={isPlaying}
                     playAudio={playAudio}
                     styles={styles}
-                    Assets={Assets}
+                    Assets={getAssetUrl(s3Assets) || Assets}
                     isLast={index === visibleMessages.length - 1}
                   />
                 ))}

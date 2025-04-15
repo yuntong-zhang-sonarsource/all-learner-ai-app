@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import * as Assets from "../../utils/imageAudioLinks";
+import * as s3Assets from "../../utils/s3Links";
+import { getAssetUrl } from "../../utils/s3Links";
+import { getAssetAudioUrl } from "../../utils/s3Links";
 import boyboxImg from "../../assets/boybox.svg";
 import girlImg from "../../assets/girl.svg";
 import girlboxImg from "../../assets/girlbox.svg";
