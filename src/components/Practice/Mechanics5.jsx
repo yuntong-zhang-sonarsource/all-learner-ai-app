@@ -388,7 +388,7 @@ const Mechanics5 = ({
                       />
                     )}
 
-                    <span
+                    <h1
                       style={{
                         color: "#262649",
                         fontWeight: 600,
@@ -398,7 +398,7 @@ const Mechanics5 = ({
                       }}
                     >
                       {option?.text || "Text is missing"}
-                    </span>
+                    </h1>
                   </Box>
                 </Box>
               ))
