@@ -575,7 +575,7 @@ const WordsOrImage = ({
                                 borderRadius: "50%",
                                 boxShadow: "10px 10px 0 0 #ffff12",
                               },
-                              [theme.breakpoints.down(950)]: {
+                              [theme.breakpoints.down(1120)]: {
                                 left: "auto",
                                 right: "90px",
                                 "&::before": {
