@@ -244,7 +244,7 @@ export const rahulTwo = "ed2894a3-3730-4015-a4fa-85133fc6bd9d.png";
 export const friendintroductionAnouncementImg =
   "b0f1311b-c168-4b5b-8664-c2c9d10e96fe.png";
 
-export const level11P2Audio = "70625bbf-0c82-4c1a-82b9-2e023f6a5558.mp3";
+export const level11P2Audio = "82be55d5-6110-4b0f-8a20-e7c4dc31f605.mp3";
 
 export const dosaIce1 = "cab22300-541a-41a4-b7f9-bac30e6e455c.png";
 export const dosaIce2 = "0d9f19e5-76cc-48df-b9a6-327b57053235.png";
