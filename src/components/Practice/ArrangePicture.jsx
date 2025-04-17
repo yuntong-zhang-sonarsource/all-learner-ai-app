@@ -18,6 +18,9 @@ import {
 } from "../../utils/levelData";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
+import * as s3Assets from "../../utils/s3Links";
+import { getAssetUrl } from "../../utils/s3Links";
+import { getAssetAudioUrl } from "../../utils/s3Links";
 import spinnerStop from "../../assets/pause.png";
 import listenImg2 from "../../assets/listen.png";
 import {
@@ -420,7 +423,10 @@ function ArrangePicture({
                     {placedImages[index] && (
                       <>
                         <img
-                          src={Assets[placedImages[index].img]}
+                          src={
+                            getAssetUrl(s3Assets[placedImages[index].img]) ||
+                            Assets[placedImages[index].img]
+                          }
                           alt={`Placed Image ${index + 1}`}
                           style={{
                             width: "100%",
@@ -513,7 +519,9 @@ function ArrangePicture({
                       onClick={() => handleImageClick(image)}
                     >
                       <img
-                        src={Assets[image.img]}
+                        src={
+                          getAssetUrl(s3Assets[image.img]) || Assets[image.img]
+                        }
                         alt={`Image ${image.id}`}
                         style={{
                           width: "100%",

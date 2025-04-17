@@ -12,6 +12,9 @@ import {
 } from "../../utils/levelData";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
+import * as s3Assets from "../../utils/s3Links";
+import { getAssetUrl } from "../../utils/s3Links";
+import { getAssetAudioUrl } from "../../utils/s3Links";
 import {
   practiceSteps,
   getLocalData,
@@ -217,23 +220,19 @@ const AnouncementFlow = ({
       setIsRecordingComplete(true);
       setRecAudio(base64Data);
       if (currentLevel === "S1" || currentLevel === "S2") {
-        const comprehension = await handleTextEvaluation(
-          correctAnswerText,
-          transcriptRef.current
-        );
+        // const comprehension = await handleTextEvaluation(
+        //   correctAnswerText,
+        //   transcriptRef.current
+        // );
 
-        if (comprehension) {
-          const options = {
-            originalText: correctAnswerText,
-            contentType: contentType,
-            contentId: contentId,
-            comprehension: comprehension,
-          };
+        const options = {
+          originalText: correctAnswerText,
+          contentType: contentType,
+          contentId: contentId,
+          //comprehension: comprehension,
+        };
 
-          fetchASROutput(base64Data, options, setLoader, setApiResponse);
-        } else {
-          console.error("Failed to get evaluation result.");
-        }
+        fetchASROutput(base64Data, options, setLoader, setApiResponse);
       }
     } else {
       setIsRecordingComplete(false);
@@ -262,10 +261,27 @@ const AnouncementFlow = ({
       audioInstance.currentTime = 0;
       setIsPlaying(false);
     } else {
-      if (Assets[audioKey]) {
-        const audio = new Audio(Assets[audioKey]);
+      if (getAssetAudioUrl(s3Assets[audioKey]) || Assets[audioKey]) {
+        const audio = new Audio(
+          getAssetAudioUrl(s3Assets[audioKey]) || Assets[audioKey]
+        );
+
+        const primaryUrl = getAssetAudioUrl(s3Assets[audioKey]);
+        const fallbackUrl = Assets[audioKey];
 
         audio.onended = () => setIsPlaying(false);
+
+        audio.onerror = () => {
+          if (fallbackUrl && primaryUrl !== fallbackUrl) {
+            const fallbackAudio = new Audio(fallbackUrl);
+            fallbackAudio.onended = () => setIsPlaying(false);
+            fallbackAudio.play();
+            setAudioInstance(fallbackAudio);
+            setIsPlaying(true);
+          } else {
+            setIsPlaying(false);
+          }
+        };
 
         audio.play();
         setAudioInstance(audio);
@@ -779,7 +795,15 @@ const AnouncementFlow = ({
             }}
           >
             <img
-              src={Assets[imageData?.imageOne] || Assets.atm}
+              src={
+                getAssetUrl(s3Assets[imageData?.imageOne]) ||
+                Assets[imageData?.imageOne] ||
+                Assets.atm
+              }
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = Assets[imageData?.imageOne] || Assets.atm;
+              }}
               alt="Next"
               height={"130px"}
               //width={"75px"}
@@ -787,7 +811,15 @@ const AnouncementFlow = ({
               style={{ cursor: "pointer", marginTop: "0px", zIndex: "9999" }}
             />
             <img
-              src={Assets[imageData?.imageTwo] || Assets.mall}
+              src={
+                getAssetUrl(s3Assets[imageData?.imageTwo]) ||
+                Assets[imageData?.imageTwo] ||
+                Assets.mall
+              }
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = Assets[imageData?.imageTwo] || Assets.mall;
+              }}
               alt="Next"
               height={"130px"}
               //width={"75px"}
@@ -908,11 +940,14 @@ const AnouncementFlow = ({
                     }}
                   >
                     <img
-                      src={
-                        Assets[
-                          imageData?.imageThree || Assets.railAnouncementImg
-                        ]
-                      }
+                      src={getAssetUrl(s3Assets[imageData?.imageThree])}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          Assets[
+                            imageData?.imageThree || Assets.railAnouncementImg
+                          ];
+                      }}
                       alt="Circular"
                       style={{
                         width: "250px",

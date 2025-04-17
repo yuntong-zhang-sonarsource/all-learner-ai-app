@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as Assets from "../../utils/imageAudioLinks";
+import * as s3Assets from "../../utils/s3Links";
+import { getAssetUrl } from "../../utils/s3Links";
+import { getAssetAudioUrl } from "../../utils/s3Links";
 import { practiceSteps, getLocalData } from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import {
@@ -185,23 +188,23 @@ const AskMoreM14 = ({
       setIsRecordingComplete(true);
       setRecAudio(base64Data);
       if (currentLevel === "S1" || currentLevel === "S2") {
-        const comprehension = await handleTextEvaluation(
-          conversation[currentSteps]?.user,
-          transcriptRef.current
-        );
+        // const comprehension = await handleTextEvaluation(
+        //   conversation[currentSteps]?.user,
+        //   transcriptRef.current
+        // );
 
-        if (comprehension) {
-          const options = {
-            originalText: conversation[currentSteps]?.user,
-            contentType: contentType,
-            contentId: contentId,
-            comprehension: comprehension,
-          };
+        // if (comprehension) {
+        const options = {
+          originalText: conversation[currentSteps]?.user,
+          contentType: contentType,
+          contentId: contentId,
+          //comprehension: comprehension,
+        };
 
-          fetchASROutput(base64Data, options, setLoader, setApiResponse);
-        } else {
-          console.error("Failed to get evaluation result.");
-        }
+        fetchASROutput(base64Data, options, setLoader, setApiResponse);
+        // } else {
+        //   console.error("Failed to get evaluation result.");
+        // }
       }
     } else {
       setIsRecordingComplete(false);
@@ -531,7 +534,11 @@ const AskMoreM14 = ({
           }}
         />
         <img
-          src={Assets[imageData?.images?.imageOne] || Assets.beerImg}
+          src={
+            getAssetUrl(s3Assets[imageData?.images?.imageOne]) ||
+            Assets[imageData?.images?.imageOne] ||
+            Assets.beerImg
+          }
           alt="Left Character"
           style={{
             position: "absolute",
@@ -543,7 +550,11 @@ const AskMoreM14 = ({
           }}
         />
         <img
-          src={Assets[imageData?.images?.imageTwo] || Assets.pandaImg}
+          src={
+            getAssetUrl(s3Assets[imageData?.images?.imageTwo]) ||
+            Assets[imageData?.images?.imageTwo] ||
+            Assets.pandaImg
+          }
           alt="Right Character"
           style={{
             position: "absolute",
@@ -725,7 +736,11 @@ const AskMoreM14 = ({
                           //cursor: `url(${clapImage}) 32 24, auto`,
                         }}
                         onClick={() => {
-                          playAudio(Assets[conversation[currentSteps]?.audio]);
+                          playAudio(
+                            getAssetAudioUrl(
+                              s3Assets[conversation[currentSteps]?.audio]
+                            ) || Assets[conversation[currentSteps]?.audio]
+                          );
                         }}
                       >
                         <ListenButton height={50} width={50} />

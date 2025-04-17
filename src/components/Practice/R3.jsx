@@ -37,6 +37,9 @@ import {
 } from "../../utils/levelData";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
+import * as s3Assets from "../../utils/s3Links";
+import { getAssetUrl } from "../../utils/s3Links";
+import { getAssetAudioUrl } from "../../utils/s3Links";
 import {
   practiceSteps,
   getLocalData,
@@ -271,8 +274,10 @@ const R3 = ({
   };
 
   const playAudio = (audioKey) => {
-    if (Assets[audioKey]) {
-      const audioElement = new Audio(Assets[audioKey]);
+    if (getAssetAudioUrl(s3Assets[audioKey]) || Assets[audioKey]) {
+      const audioElement = new Audio(
+        getAssetAudioUrl(s3Assets[audioKey]) || Assets[audioKey]
+      );
       audioElement.play();
       setIsAudioPlaying(true);
       audioElement.onended = () => setIsAudioPlaying(false);

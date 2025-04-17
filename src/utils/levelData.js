@@ -780,11 +780,24 @@ export const level13 = [
             audio: "level13S1Audio5",
           },
           {
+            role: "User",
+            name: "Akshaya",
+            message:
+              "You're welcome! By the way, do you also need my notes for the test?",
+            audio: "level13S1Audio6",
+          },
+          {
             role: "System",
             name: "Mathi",
             message:
-              "We can help the environment in simple ways. Turn off the lights to save energy. Recycle things like paper and plastic to reduce waste. Planting trees gives us clean air. Use a reusable bag instead of plastic bags. Save water by taking short showers. Small actions can make a big difference.",
-            audio: "level13S1Audio6",
+              "Oh yes, that would be super helpful! Especially for Chapter 3.",
+            audio: "level13S1Audio7",
+          },
+          {
+            role: "User",
+            name: "Akshaya",
+            message: "Alright, I'll bring them to you after lunch.",
+            audio: "level13S1Audio8",
           },
         ],
       },
@@ -792,7 +805,7 @@ export const level13 = [
         {
           question: {
             type: "text",
-            value: "What did Mathi ask Akshaya?",
+            value: "What did Mathi ask Akshaya at the beginning?",
           },
           options: [
             {
@@ -803,12 +816,12 @@ export const level13 = [
             {
               type: "text",
               id: "option2",
-              value: "To help with homework",
+              value: "To go to the library",
             },
             {
               type: "text",
               id: "option3",
-              value: "To go to the library",
+              value: "To play a game",
             },
           ],
           answer: "option1",
@@ -816,47 +829,23 @@ export const level13 = [
         {
           question: {
             type: "text",
-            value: "When did Akshaya want the book back?",
+            value: "When did Akshaya want the book to be returned?",
           },
           options: [
             {
               type: "text",
               id: "option1",
-              value: "Today",
-            },
-            {
-              type: "text",
-              id: "option2",
               value: "Tomorrow",
             },
             {
               type: "text",
-              id: "option3",
+              id: "option2",
               value: "Next week",
             },
-          ],
-          answer: "option2",
-        },
-        {
-          question: {
-            type: "text",
-            value: "What is the audio about?",
-          },
-          options: [
-            {
-              type: "text",
-              id: "option1",
-              value: "Ways to help the environment",
-            },
-            {
-              type: "text",
-              id: "option2",
-              value: "A science experiment",
-            },
             {
               type: "text",
               id: "option3",
-              value: "A story about a tree",
+              value: "After lunch",
             },
           ],
           answer: "option1",
@@ -864,23 +853,23 @@ export const level13 = [
         {
           question: {
             type: "text",
-            value: "Which gives us clean air?",
+            value: "Why did Mathi need to borrow the book?",
           },
           options: [
             {
               type: "text",
               id: "option1",
-              value: "Recycling",
+              value: "She lost her book",
             },
             {
               type: "text",
               id: "option2",
-              value: "Planting trees",
+              value: "She forgot her book at home",
             },
             {
               type: "text",
               id: "option3",
-              value: "Using plastic bags",
+              value: "She wanted to buy a new book",
             },
           ],
           answer: "option2",
@@ -888,26 +877,50 @@ export const level13 = [
         {
           question: {
             type: "text",
-            value: "How can we save energy?",
+            value: "What extra help did Akshaya offer?",
           },
           options: [
             {
               type: "text",
               id: "option1",
-              value: "By turning off lights",
+              value: "Help with homework",
             },
             {
               type: "text",
               id: "option2",
-              value: "By using more plastic",
+              value: "Her notes for the test",
             },
             {
               type: "text",
               id: "option3",
-              value: "By taking long showers",
+              value: "An extra pen",
             },
           ],
-          answer: "option1",
+          answer: "option2",
+        },
+        {
+          question: {
+            type: "text",
+            value: "When did Akshaya plan to give Mathi the notes?",
+          },
+          options: [
+            {
+              type: "text",
+              id: "option1",
+              value: "In the morning",
+            },
+            {
+              type: "text",
+              id: "option2",
+              value: "After lunch",
+            },
+            {
+              type: "text",
+              id: "option3",
+              value: "Tomorrow",
+            },
+          ],
+          answer: "option2",
         },
       ],
     },
@@ -1418,9 +1431,33 @@ export const level13 = [
           {
             role: "System",
             name: "Alex",
-            message:
-              "Water is very important for life. We can save water by turning off the tap while brushing our teeth. Take short showers instead of long baths. Fix leaking taps to stop water waste. Use a bucket instead of a hose to wash your car. Water plants in the morning or evening to save water. Every drop counts.",
+            message: "Perfect! Should we watch it at the multiplex or at home?",
             audio: "level13S2Audio5",
+          },
+          {
+            role: "User",
+            name: "Raj",
+            message: "Let’s go to the multiplex, it’s more fun!",
+            audio: "level13S2Audio6",
+          },
+          {
+            role: "System",
+            name: "Alex",
+            message: "Alright, I will get the tickets.",
+            audio: "level13S2Audio7",
+          },
+          {
+            role: "User",
+            name: "Raj",
+            message: "Awesome! Should we have dinner after the movie?",
+            audio: "level13S2Audio8",
+          },
+          {
+            role: "System",
+            name: "Alex",
+            message:
+              "Yes, let’s go to that new South Indian restaurant nearby.",
+            audio: "level13S2Audio9",
           },
         ],
       },
@@ -1476,74 +1513,74 @@ export const level13 = [
         {
           question: {
             type: "text",
-            value: "What is the audio about?",
+            value: "Where did they decide to watch the movie?",
           },
           options: [
             {
               type: "text",
               id: "option1",
-              value: "Saving water and watching a movie",
+              value: "At home",
             },
             {
               type: "text",
               id: "option2",
-              value: "Going on a vacation",
+              value: "At the multiplex",
             },
             {
               type: "text",
               id: "option3",
-              value: "Playing video games",
-            },
-          ],
-          answer: "option1",
-        },
-        {
-          question: {
-            type: "text",
-            value: "When is the best time to water plants?",
-          },
-          options: [
-            {
-              type: "text",
-              id: "option1",
-              value: "In the morning or evening",
-            },
-            {
-              type: "text",
-              id: "option2",
-              value: "At noon",
-            },
-            {
-              type: "text",
-              id: "option3",
-              value: "Anytime during the day",
-            },
-          ],
-          answer: "option1",
-        },
-        {
-          question: {
-            type: "text",
-            value: "How can we save water while brushing our teeth?",
-          },
-          options: [
-            {
-              type: "text",
-              id: "option1",
-              value: "Leave the tap running",
-            },
-            {
-              type: "text",
-              id: "option2",
-              value: "Turn off the tap while brushing",
-            },
-            {
-              type: "text",
-              id: "option3",
-              value: "Brush teeth in the shower",
+              value: "At a friend's place",
             },
           ],
           answer: "option2",
+        },
+        {
+          question: {
+            type: "text",
+            value: "Who will get the tickets?",
+          },
+          options: [
+            {
+              type: "text",
+              id: "option1",
+              value: "Raj",
+            },
+            {
+              type: "text",
+              id: "option2",
+              value: "Alex",
+            },
+            {
+              type: "text",
+              id: "option3",
+              value: "Both of them",
+            },
+          ],
+          answer: "option2",
+        },
+        {
+          question: {
+            type: "text",
+            value: "What type of restaurant did they plan to visit?",
+          },
+          options: [
+            {
+              type: "text",
+              id: "option1",
+              value: "South Indian restaurant",
+            },
+            {
+              type: "text",
+              id: "option2",
+              value: "North Indian restaurant",
+            },
+            {
+              type: "text",
+              id: "option3",
+              value: "Chinese restaurant",
+            },
+          ],
+          answer: "option1",
         },
       ],
     },
@@ -4357,8 +4394,8 @@ export const level15 = [
           {
             role: "System",
             message:
-              "You went to the supermarket and bought these five items: Apples, Bread, Milk, Sugar, and Paneer. Your friend emma found a magic book in the library. When she opened it, a bright light appeared, and she was transported to a jungle. She met a talking parrot, a friendly monkey, and a wise old tortoise who gave her a secret key. The key unlocked a treasure chest filled with glowing stars!",
-            audio: "supermarketMagicStoryAudio",
+              "You went to the supermarket and bought these five items: Apples, Bread, Milk, Sugar, and Paneer. You plan to make a sweet dish using sugar and milk, and a sandwich using bread and paneer. Apples will be used as a healthy snack.",
+            audio: "superMarketAudio",
           },
         ],
       },
@@ -4438,23 +4475,23 @@ export const level15 = [
         {
           question: {
             type: "text",
-            value: "Where did Emma find the magic book?",
+            value: "Which item is used to sweeten food or drinks?",
           },
           options: [
             {
               type: "text",
               id: "option1",
-              value: "In the library",
+              value: "Sugar",
             },
             {
               type: "text",
               id: "option2",
-              value: "In the jungle",
+              value: "Paneer",
             },
             {
               type: "text",
               id: "option3",
-              value: "At school",
+              value: "Bread",
             },
           ],
           answer: "option1",
@@ -4462,23 +4499,23 @@ export const level15 = [
         {
           question: {
             type: "text",
-            value: "Name two animals she met in the jungle.",
+            value: "Which two items are used to make a sweet dish?",
           },
           options: [
             {
               type: "text",
               id: "option1",
-              value: "A parrot and a monkey",
+              value: "Sugar and Milk",
             },
             {
               type: "text",
               id: "option2",
-              value: "A dog and a rabbit",
+              value: "Bread and Paneer",
             },
             {
               type: "text",
               id: "option3",
-              value: "A lion and a snake",
+              value: "Apples and Bread",
             },
           ],
           answer: "option1",
@@ -5291,7 +5328,7 @@ export const level10 = [
           options: [
             { id: "audio1", value: "level10P7ThreeAudio1", type: "audio" },
             { id: "audio2", value: "level10P7ThreeAudio3", type: "audio" },
-            { id: "audio3", value: "level10P7FourAudio2", type: "audio" },
+            { id: "audio3", value: "level10P7FourAudio3", type: "audio" },
           ],
         },
         {
@@ -5301,7 +5338,7 @@ export const level10 = [
           },
           answer: "audio1",
           options: [
-            { id: "audio1", value: "level10P7FourAudio3", type: "audio" },
+            { id: "audio1", value: "level10P7FourAudio2", type: "audio" },
             { id: "audio2", value: "level10P7FiveAudio3", type: "audio" },
             { id: "audio3", value: "level10P7ThreeAudio3", type: "audio" },
           ],

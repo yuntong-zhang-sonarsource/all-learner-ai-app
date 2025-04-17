@@ -21,6 +21,9 @@ import {
 } from "../../utils/levelData";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
+import * as s3Assets from "../../utils/s3Links";
+import { getAssetUrl } from "../../utils/s3Links";
+import { getAssetAudioUrl } from "../../utils/s3Links";
 import {
   practiceSteps,
   getLocalData,
@@ -107,7 +110,7 @@ const AnswerBox = ({ word, isSelected, isCorrect, onClick }) => (
       }}
     >
       <img
-        src={Assets[word.img]}
+        src={getAssetUrl(s3Assets[word.img]) || Assets[word.img]}
         alt={word.text}
         style={{ width: "120px", height: "150px" }}
       />

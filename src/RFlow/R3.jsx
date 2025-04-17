@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Confetti from "react-confetti";
 import * as Assets from "../utils/imageAudioLinks";
+import * as s3Assets from "../utils/s3Links";
+import { getAssetUrl } from "../utils/s3Links";
+import { getAssetAudioUrl } from "../utils/s3Links";
 import {
   ThemeProvider,
   createTheme,
@@ -24,156 +27,438 @@ import {
 } from "../utils/constants";
 import { useNavigate } from "react-router-dom";
 
+// const content = {
+//   L1: [
+//     {
+//       allwords: [
+//         { img: Assets.shopImg, text: "Shop" },
+//         { img: Assets.whaleRImg, text: "Whale" },
+//         { img: Assets.pillowR1ThreeImg, text: "Mug" },
+//       ],
+//       correctWord: "Whale",
+//       audio: Assets.whaleRAudio,
+//       flowName: "P1",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.aimRImg, text: "Aim" },
+//         { img: Assets.ropeR1OneImg, text: "Rope" },
+//         { img: Assets.ropeR1ThreeImg, text: "Pen" },
+//       ],
+//       correctWord: "Aim",
+//       audio: Assets.aimRAudio,
+//       flowName: "P2",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.boatRImg, text: "Boat" },
+//         { img: Assets.bagR1TwoImg, text: "Shoes" },
+//         { img: Assets.bagR1ThreeImg, text: "Watch" },
+//       ],
+//       correctWord: "Boat",
+//       audio: Assets.boatRAudio,
+//       flowName: "P3",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.capR1TwoImg, text: "Belt" },
+//         { img: Assets.phoneRImg, text: "Phone" },
+//         { img: Assets.capR1ThreeImg, text: "Tie" },
+//       ],
+//       correctWord: "Phone",
+//       audio: Assets.phoneRAudio,
+//       flowName: "P4",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.orangeRImg, text: "Orange" },
+//         { img: Assets.dogR1TwoImg, text: "Cat" },
+//         { img: Assets.dogR1ThreeImg, text: "Horse" },
+//       ],
+//       correctWord: "Orange",
+//       audio: Assets.orangeRAudio,
+//       flowName: "P5",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.eggR1TwoImg, text: "Fan" },
+//         { img: Assets.clockRImg, text: "Clock" },
+//         { img: Assets.eggR1ThreeImg, text: "Goat" },
+//       ],
+//       correctWord: "Clock",
+//       audio: Assets.clockRAudio,
+//       flowName: "P6",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.fanR1OneImg, text: "Fan" },
+//         { img: Assets.flowerRImg, text: "Flower" },
+//         { img: Assets.fanR1ThreeImg, text: "Lamp" },
+//       ],
+//       correctWord: "Flower",
+//       audio: Assets.flowerRAudio,
+//       flowName: "P7",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.glassRImg, text: "Glass" },
+//         { img: Assets.hatR1TwoImg, text: "Bat" },
+//         { img: Assets.hatR1ThreeImg, text: "Carpet" },
+//       ],
+//       correctWord: "Glass",
+//       audio: Assets.glassRAudio,
+//       flowName: "P8",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.plantRImg, text: "Plant" },
+//         { img: Assets.hatR1TwoImg, text: "Bat" },
+//         { img: Assets.hatR1ThreeImg, text: "Carpet" },
+//       ],
+//       correctWord: "Plant",
+//       audio: Assets.plantRAudio,
+//       flowName: "P9",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.glassRImg, text: "Glass" },
+//         { img: Assets.sleepRImg, text: "Sleep" },
+//         { img: Assets.fanR1ThreeImg, text: "Lamp" },
+//       ],
+//       correctWord: "Sleep",
+//       audio: Assets.sleepRAudio,
+//       flowName: "P10",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.elephantRImg, text: "Elephant" },
+//         { img: Assets.aimRImg, text: "Aim" },
+//         { img: Assets.hatR1ThreeImg, text: "Carpet" },
+//       ],
+//       correctWord: "Elephant",
+//       audio: Assets.elephantRAudio,
+//       flowName: "P11",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.fanR1ThreeImg, text: "Lamp" },
+//         { img: Assets.hatR1TwoImg, text: "Bat" },
+//         { img: Assets.muscleRImg, text: "Muscle" },
+//       ],
+//       correctWord: "Muscle",
+//       audio: Assets.muscleRAudio,
+//       flowName: "P12",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.capR1TwoImg, text: "Belt" },
+//         { img: Assets.fieldRImg, text: "Field" },
+//         { img: Assets.hatR1ThreeImg, text: "Carpet" },
+//       ],
+//       correctWord: "Field",
+//       audio: Assets.fieldRAudio,
+//       flowName: "P13",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.bicycleRImg, text: "Cycle" },
+//         { img: Assets.ropeR1ThreeImg, text: "Pen" },
+//         { img: Assets.hatR1ThreeImg, text: "Carpet" },
+//       ],
+//       correctWord: "Cycle",
+//       audio: Assets.bicycleRAudio,
+//       flowName: "P14",
+//     },
+//     {
+//       allwords: [
+//         { img: Assets.plantRImg, text: "Plant" },
+//         { img: Assets.mathsRImg, text: "Maths" },
+//         { img: Assets.eggR1ThreeImg, text: "Goat" },
+//       ],
+//       correctWord: "Maths",
+//       audio: Assets.mathsRAudio,
+//       flowName: "P15",
+//     },
+//   ],
+// };
+
 const content = {
   L1: [
     {
       allwords: [
-        { img: Assets.shopImg, text: "Shop" },
-        { img: Assets.whaleRImg, text: "Whale" },
-        { img: Assets.pillowR1ThreeImg, text: "Mug" },
+        { img: getAssetUrl(s3Assets.shopImg) || Assets.shopImg, text: "Shop" },
+        {
+          img: getAssetUrl(s3Assets.whaleRImg) || Assets.whaleRImg,
+          text: "Whale",
+        },
+        {
+          img:
+            getAssetUrl(s3Assets.pillowR1ThreeImg) || Assets.pillowR1ThreeImg,
+          text: "Mug",
+        },
       ],
       correctWord: "Whale",
-      audio: Assets.whaleRAudio,
+      audio: getAssetAudioUrl(s3Assets.whaleRAudio) || Assets.whaleRAudio,
       flowName: "P1",
     },
     {
       allwords: [
-        { img: Assets.aimRImg, text: "Aim" },
-        { img: Assets.ropeR1OneImg, text: "Rope" },
-        { img: Assets.ropeR1ThreeImg, text: "Pen" },
+        { img: getAssetUrl(s3Assets.aimRImg) || Assets.aimRImg, text: "Aim" },
+        {
+          img: getAssetUrl(s3Assets.ropeR1OneImg) || Assets.ropeR1OneImg,
+          text: "Rope",
+        },
+        {
+          img: getAssetUrl(s3Assets.ropeR1ThreeImg) || Assets.ropeR1ThreeImg,
+          text: "Pen",
+        },
       ],
       correctWord: "Aim",
-      audio: Assets.aimRAudio,
+      audio: getAssetAudioUrl(s3Assets.aimRAudio) || Assets.aimRAudio,
       flowName: "P2",
     },
     {
       allwords: [
-        { img: Assets.boatRImg, text: "Boat" },
-        { img: Assets.bagR1TwoImg, text: "Shoes" },
-        { img: Assets.bagR1ThreeImg, text: "Watch" },
+        {
+          img: getAssetUrl(s3Assets.boatRImg) || Assets.boatRImg,
+          text: "Boat",
+        },
+        {
+          img: getAssetUrl(s3Assets.bagR1TwoImg) || Assets.bagR1TwoImg,
+          text: "Shoes",
+        },
+        {
+          img: getAssetUrl(s3Assets.bagR1ThreeImg) || Assets.bagR1ThreeImg,
+          text: "Watch",
+        },
       ],
       correctWord: "Boat",
-      audio: Assets.boatRAudio,
+      audio: getAssetAudioUrl(s3Assets.boatRAudio) || Assets.boatRAudio,
       flowName: "P3",
     },
     {
       allwords: [
-        { img: Assets.capR1TwoImg, text: "Belt" },
-        { img: Assets.phoneRImg, text: "Phone" },
-        { img: Assets.capR1ThreeImg, text: "Tie" },
+        {
+          img: getAssetUrl(s3Assets.capR1TwoImg) || Assets.capR1TwoImg,
+          text: "Belt",
+        },
+        {
+          img: getAssetUrl(s3Assets.phoneRImg) || Assets.phoneRImg,
+          text: "Phone",
+        },
+        {
+          img: getAssetUrl(s3Assets.capR1ThreeImg) || Assets.capR1ThreeImg,
+          text: "Tie",
+        },
       ],
       correctWord: "Phone",
-      audio: Assets.phoneRAudio,
+      audio: getAssetAudioUrl(s3Assets.phoneRAudio) || Assets.phoneRAudio,
       flowName: "P4",
     },
     {
       allwords: [
-        { img: Assets.orangeRImg, text: "Orange" },
-        { img: Assets.dogR1TwoImg, text: "Cat" },
-        { img: Assets.dogR1ThreeImg, text: "Horse" },
+        {
+          img: getAssetUrl(s3Assets.orangeRImg) || Assets.orangeRImg,
+          text: "Orange",
+        },
+        {
+          img: getAssetUrl(s3Assets.dogR1TwoImg) || Assets.dogR1TwoImg,
+          text: "Cat",
+        },
+        {
+          img: getAssetUrl(s3Assets.dogR1ThreeImg) || Assets.dogR1ThreeImg,
+          text: "Horse",
+        },
       ],
       correctWord: "Orange",
-      audio: Assets.orangeRAudio,
+      audio: getAssetAudioUrl(s3Assets.orangeRAudio) || Assets.orangeRAudio,
       flowName: "P5",
     },
     {
       allwords: [
-        { img: Assets.eggR1TwoImg, text: "Fan" },
-        { img: Assets.clockRImg, text: "Clock" },
-        { img: Assets.eggR1ThreeImg, text: "Goat" },
+        {
+          img: getAssetUrl(s3Assets.eggR1TwoImg) || Assets.eggR1TwoImg,
+          text: "Fan",
+        },
+        {
+          img: getAssetUrl(s3Assets.clockRImg) || Assets.clockRImg,
+          text: "Clock",
+        },
+        {
+          img: getAssetUrl(s3Assets.eggR1ThreeImg) || Assets.eggR1ThreeImg,
+          text: "Goat",
+        },
       ],
       correctWord: "Clock",
-      audio: Assets.clockRAudio,
+      audio: getAssetAudioUrl(s3Assets.clockRAudio) || Assets.clockRAudio,
       flowName: "P6",
     },
     {
       allwords: [
-        { img: Assets.fanR1OneImg, text: "Fan" },
-        { img: Assets.flowerRImg, text: "Flower" },
-        { img: Assets.fanR1ThreeImg, text: "Lamp" },
+        {
+          img: getAssetUrl(s3Assets.fanR1OneImg) || Assets.fanR1OneImg,
+          text: "Fan",
+        },
+        {
+          img: getAssetUrl(s3Assets.flowerRImg) || Assets.flowerRImg,
+          text: "Flower",
+        },
+        {
+          img: getAssetUrl(s3Assets.fanR1ThreeImg) || Assets.fanR1ThreeImg,
+          text: "Lamp",
+        },
       ],
       correctWord: "Flower",
-      audio: Assets.flowerRAudio,
+      audio: getAssetAudioUrl(s3Assets.flowerRAudio) || Assets.flowerRAudio,
       flowName: "P7",
     },
     {
       allwords: [
-        { img: Assets.glassRImg, text: "Glass" },
-        { img: Assets.hatR1TwoImg, text: "Bat" },
-        { img: Assets.hatR1ThreeImg, text: "Carpet" },
+        {
+          img: getAssetUrl(s3Assets.glassRImg) || Assets.glassRImg,
+          text: "Glass",
+        },
+        {
+          img: getAssetUrl(s3Assets.hatR1TwoImg) || Assets.hatR1TwoImg,
+          text: "Bat",
+        },
+        {
+          img: getAssetUrl(s3Assets.hatR1ThreeImg) || Assets.hatR1ThreeImg,
+          text: "Carpet",
+        },
       ],
       correctWord: "Glass",
-      audio: Assets.glassRAudio,
+      audio: getAssetAudioUrl(s3Assets.glassRAudio) || Assets.glassRAudio,
       flowName: "P8",
     },
     {
       allwords: [
-        { img: Assets.plantRImg, text: "Plant" },
-        { img: Assets.hatR1TwoImg, text: "Bat" },
-        { img: Assets.hatR1ThreeImg, text: "Carpet" },
+        {
+          img: getAssetUrl(s3Assets.plantRImg) || Assets.plantRImg,
+          text: "Plant",
+        },
+        {
+          img: getAssetUrl(s3Assets.hatR1TwoImg) || Assets.hatR1TwoImg,
+          text: "Bat",
+        },
+        {
+          img: getAssetUrl(s3Assets.hatR1ThreeImg) || Assets.hatR1ThreeImg,
+          text: "Carpet",
+        },
       ],
       correctWord: "Plant",
-      audio: Assets.plantRAudio,
+      audio: getAssetAudioUrl(s3Assets.plantRAudio) || Assets.plantRAudio,
       flowName: "P9",
     },
     {
       allwords: [
-        { img: Assets.glassRImg, text: "Glass" },
-        { img: Assets.sleepRImg, text: "Sleep" },
-        { img: Assets.fanR1ThreeImg, text: "Lamp" },
+        {
+          img: getAssetUrl(s3Assets.glassRImg) || Assets.glassRImg,
+          text: "Glass",
+        },
+        {
+          img: getAssetUrl(s3Assets.sleepRImg) || Assets.sleepRImg,
+          text: "Sleep",
+        },
+        {
+          img: getAssetUrl(s3Assets.fanR1ThreeImg) || Assets.fanR1ThreeImg,
+          text: "Lamp",
+        },
       ],
       correctWord: "Sleep",
-      audio: Assets.sleepRAudio,
+      audio: getAssetAudioUrl(s3Assets.sleepRAudio) || Assets.sleepRAudio,
       flowName: "P10",
     },
     {
       allwords: [
-        { img: Assets.elephantRImg, text: "Elephant" },
-        { img: Assets.aimRImg, text: "Aim" },
-        { img: Assets.hatR1ThreeImg, text: "Carpet" },
+        {
+          img: getAssetUrl(s3Assets.elephantRImg) || Assets.elephantRImg,
+          text: "Elephant",
+        },
+        { img: getAssetUrl(s3Assets.aimRImg) || Assets.aimRImg, text: "Aim" },
+        {
+          img: getAssetUrl(s3Assets.hatR1ThreeImg) || Assets.hatR1ThreeImg,
+          text: "Carpet",
+        },
       ],
       correctWord: "Elephant",
-      audio: Assets.elephantRAudio,
+      audio: getAssetAudioUrl(s3Assets.elephantRAudio) || Assets.elephantRAudio,
       flowName: "P11",
     },
     {
       allwords: [
-        { img: Assets.fanR1ThreeImg, text: "Lamp" },
-        { img: Assets.hatR1TwoImg, text: "Bat" },
-        { img: Assets.muscleRImg, text: "Muscle" },
+        {
+          img: getAssetUrl(s3Assets.fanR1ThreeImg) || Assets.fanR1ThreeImg,
+          text: "Lamp",
+        },
+        {
+          img: getAssetUrl(s3Assets.hatR1TwoImg) || Assets.hatR1TwoImg,
+          text: "Bat",
+        },
+        {
+          img: getAssetUrl(s3Assets.muscleRImg) || Assets.muscleRImg,
+          text: "Muscle",
+        },
       ],
       correctWord: "Muscle",
-      audio: Assets.muscleRAudio,
+      audio: getAssetAudioUrl(s3Assets.muscleRAudio) || Assets.muscleRAudio,
       flowName: "P12",
     },
     {
       allwords: [
-        { img: Assets.capR1TwoImg, text: "Belt" },
-        { img: Assets.fieldRImg, text: "Field" },
-        { img: Assets.hatR1ThreeImg, text: "Carpet" },
+        {
+          img: getAssetUrl(s3Assets.capR1TwoImg) || Assets.capR1TwoImg,
+          text: "Belt",
+        },
+        {
+          img: getAssetUrl(s3Assets.fieldRImg) || Assets.fieldRImg,
+          text: "Field",
+        },
+        {
+          img: getAssetUrl(s3Assets.hatR1ThreeImg) || Assets.hatR1ThreeImg,
+          text: "Carpet",
+        },
       ],
       correctWord: "Field",
-      audio: Assets.fieldRAudio,
+      audio: getAssetAudioUrl(s3Assets.fieldRAudio) || Assets.fieldRAudio,
       flowName: "P13",
     },
     {
       allwords: [
-        { img: Assets.bicycleRImg, text: "Cycle" },
-        { img: Assets.ropeR1ThreeImg, text: "Pen" },
-        { img: Assets.hatR1ThreeImg, text: "Carpet" },
+        {
+          img: getAssetUrl(s3Assets.bicycleRImg) || Assets.bicycleRImg,
+          text: "Cycle",
+        },
+        {
+          img: getAssetUrl(s3Assets.ropeR1ThreeImg) || Assets.ropeR1ThreeImg,
+          text: "Pen",
+        },
+        {
+          img: getAssetUrl(s3Assets.hatR1ThreeImg) || Assets.hatR1ThreeImg,
+          text: "Carpet",
+        },
       ],
       correctWord: "Cycle",
-      audio: Assets.bicycleRAudio,
+      audio: getAssetAudioUrl(s3Assets.bicycleRAudio) || Assets.bicycleRAudio,
       flowName: "P14",
     },
     {
       allwords: [
-        { img: Assets.plantRImg, text: "Plant" },
-        { img: Assets.mathsRImg, text: "Maths" },
-        { img: Assets.eggR1ThreeImg, text: "Goat" },
+        {
+          img: getAssetUrl(s3Assets.plantRImg) || Assets.plantRImg,
+          text: "Plant",
+        },
+        {
+          img: getAssetUrl(s3Assets.mathsRImg) || Assets.mathsRImg,
+          text: "Maths",
+        },
+        {
+          img: getAssetUrl(s3Assets.eggR1ThreeImg) || Assets.eggR1ThreeImg,
+          text: "Goat",
+        },
       ],
       correctWord: "Maths",
-      audio: Assets.mathsRAudio,
+      audio: getAssetAudioUrl(s3Assets.mathsRAudio) || Assets.mathsRAudio,
       flowName: "P15",
     },
   ],

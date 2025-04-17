@@ -9,6 +9,9 @@ import {
 } from "@mui/material";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import * as Assets from "../../utils/imageAudioLinks";
+import * as s3Assets from "../../utils/s3Links";
+import { getAssetUrl } from "../../utils/s3Links";
+import { getAssetAudioUrl } from "../../utils/s3Links";
 import Confetti from "react-confetti";
 import pause from "../../assets/pause.png";
 import Mic from "../../assets/mikee.svg";
@@ -137,7 +140,9 @@ const JumbledWord = ({
 
   console.log("lData", levelData);
 
-  let audioElement = Assets[levelData?.correctWord?.[0]?.audio];
+  let audioElement =
+    getAssetAudioUrl(s3Assets[levelData?.correctWord?.[0]?.audio]) ||
+    Assets[levelData?.correctWord?.[0]?.audio];
 
   const handleMicClick = () => {
     if (!isRecording) {

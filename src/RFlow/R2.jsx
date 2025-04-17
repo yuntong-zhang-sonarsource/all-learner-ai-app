@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import Confetti from "react-confetti";
 import * as Assets from "../utils/imageAudioLinks";
+import * as s3Assets from "../utils/s3Links";
+import { getAssetUrl } from "../utils/s3Links";
+import { getAssetAudioUrl } from "../utils/s3Links";
 import {
   ThemeProvider,
   createTheme,
@@ -56,131 +59,469 @@ import {
   level15,
 } from "../utils/levelData";
 
+// const content = {
+//   L1: [
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.panRImg,
+//         type: "text",
+//       },
+//       answer: "panRAudio",
+//       options: [
+//         { id: "panRAudio", value: "panRAudio", type: "audio" },
+//         { id: "dogR1OneAudio", value: "dogR1OneAudio", type: "audio" },
+//         { id: "capR1OneAudio", value: "capR1OneAudio", type: "audio" },
+//       ],
+//       flowName: "P1",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.batRImg,
+//         type: "text",
+//       },
+//       answer: "batRAudio",
+//       options: [
+//         { id: "eggR1OneAudio", value: "eggR1OneAudio", type: "audio" },
+//         { id: "batRAudio", value: "batRAudio", type: "audio" },
+//         { id: "nestR1OneAudio ", value: "nestR1OneAudio", type: "audio" },
+//       ],
+//       flowName: "P2",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.puzzleRImg,
+//         type: "text",
+//       },
+//       answer: "puzzleRAudio",
+//       options: [
+//         { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
+//         { id: "dogR1OneAudio", value: "dogR1OneAudio", type: "audio" },
+//         { id: "puzzleRAudio", value: "puzzleRAudio", type: "audio" },
+//       ],
+//       flowName: "P3",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.lemonRImg,
+//         type: "text",
+//       },
+//       answer: "lemonRAudio",
+//       options: [
+//         { id: "vanR1OneAudio", value: "vanR1OneAudio", type: "audio" },
+//         { id: "lemonRAudio", value: "lemonRAudio", type: "audio" },
+//         { id: "bellR1OneAudio", value: "bellR1OneAudio", type: "audio" },
+//       ],
+//       flowName: "P4",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.kingRImg,
+//         type: "text",
+//       },
+//       answer: "kingRAudio",
+//       options: [
+//         { id: "kingRAudio", value: "kingRAudio", type: "audio" },
+//         { id: "capR1OneAudio", value: "capR1OneAudio", type: "audio" },
+//         { id: "vanR1OneAudio", value: "vanR1OneAudio", type: "audio" },
+//       ],
+//       flowName: "P5",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.ladderRImg,
+//         type: "text",
+//       },
+//       answer: "ladderRAudio",
+//       options: [
+//         { id: "maskR1OneAudio", value: "maskR1OneAudio", type: "audio" },
+//         { id: "jugR1OneAudio", value: "jugR1OneAudio", type: "audio" },
+//         { id: "ladderRAudio", value: "ladderRAudio", type: "audio" },
+//       ],
+//       flowName: "P6",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.drumRImg,
+//         type: "text",
+//       },
+//       answer: "drumRAudio",
+//       options: [
+//         { id: "goatR1OneAudio", value: "goatR1OneAudio", type: "audio" },
+//         { id: "fanR1OneAudio", value: "fanR1OneAudio", type: "audio" },
+//         { id: "drumRAudio", value: "drumRAudio", type: "audio" },
+//       ],
+//       flowName: "P7",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.coffeeRImg,
+//         type: "text",
+//       },
+//       answer: "coffeeRAudio",
+//       options: [
+//         { id: "coffeeRAudio", value: "coffeeRAudio", type: "audio" },
+//         { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
+//         { id: "appleR1OneAudio", value: "appleR1OneAudio", type: "audio" },
+//       ],
+//       flowName: "P8",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.busRImg,
+//         type: "text",
+//       },
+//       answer: "busRAudio",
+//       options: [
+//         { id: "cardRAudio", value: "cardRAudio", type: "audio" },
+//         { id: "busRAudio", value: "busRAudio", type: "audio" },
+//         { id: "appleR1OneAudio", value: "appleR1OneAudio", type: "audio" },
+//       ],
+//       flowName: "P9",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.graphRImg,
+//         type: "text",
+//       },
+//       answer: "graphRAudio",
+//       options: [
+//         { id: "cardRAudio", value: "cardRAudio", type: "audio" },
+//         { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
+//         { id: "graphRAudio", value: "graphRAudio", type: "audio" },
+//       ],
+//       flowName: "P10",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.ovenRImg,
+//         type: "text",
+//       },
+//       answer: "ovenRAudio",
+//       options: [
+//         { id: "cardRAudio", value: "cardRAudio", type: "audio" },
+//         { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
+//         { id: "ovenRAudio", value: "ovenRAudio", type: "audio" },
+//       ],
+//       flowName: "P11",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.tableRImg,
+//         type: "text",
+//       },
+//       answer: "tableRAudio",
+//       options: [
+//         { id: "cardRAudio", value: "cardRAudio", type: "audio" },
+//         { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
+//         { id: "tableRAudio", value: "tableRAudio", type: "audio" },
+//       ],
+//       flowName: "P12",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.basketRImg,
+//         type: "text",
+//       },
+//       answer: "basketRAudio",
+//       options: [
+//         { id: "cardRAudio", value: "cardRAudio", type: "audio" },
+//         { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
+//         { id: "basketRAudio", value: "basketRAudio", type: "audio" },
+//       ],
+//       flowName: "P13",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.cardRImg,
+//         type: "text",
+//       },
+//       answer: "cardRAudio",
+//       options: [
+//         { id: "cardRAudio", value: "cardRAudio", type: "audio" },
+//         { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
+//         { id: "appleR1OneAudio", value: "appleR1OneAudio", type: "audio" },
+//       ],
+//       flowName: "P14",
+//     },
+//     {
+//       question: {
+//         text: "Which fruit has red color?",
+//         img: Assets.frogRImg,
+//         type: "text",
+//       },
+//       answer: "frogRAudio",
+//       options: [
+//         { id: "frogRAudio", value: "frogRAudio", type: "audio" },
+//         { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
+//         { id: "appleR1OneAudio", value: "appleR1OneAudio", type: "audio" },
+//       ],
+//       flowName: "P15",
+//     },
+//   ],
+// };
+
 const content = {
   L1: [
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.panRImg,
+        img: getAssetUrl(s3Assets.panRImg) || Assets.panRImg,
         type: "text",
       },
-      answer: "panRAudio",
+      answer: getAssetAudioUrl(s3Assets.panRAudio) || Assets.panRAudio,
       options: [
-        { id: "panRAudio", value: "panRAudio", type: "audio" },
-        { id: "dogR1OneAudio", value: "dogR1OneAudio", type: "audio" },
-        { id: "capR1OneAudio", value: "capR1OneAudio", type: "audio" },
+        {
+          id: "panRAudio",
+          value: getAssetAudioUrl(s3Assets.panRAudio) || Assets.panRAudio,
+          type: "audio",
+        },
+        {
+          id: "dogR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.dogR1OneAudio) || Assets.dogR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "capR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.capR1OneAudio) || Assets.capR1OneAudio,
+          type: "audio",
+        },
       ],
       flowName: "P1",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.batRImg,
+        img: getAssetUrl(s3Assets.batRImg) || Assets.batRImg,
         type: "text",
       },
-      answer: "batRAudio",
+      answer: getAssetAudioUrl(s3Assets.batRAudio) || Assets.batRAudio,
       options: [
-        { id: "eggR1OneAudio", value: "eggR1OneAudio", type: "audio" },
-        { id: "batRAudio", value: "batRAudio", type: "audio" },
-        { id: "nestR1OneAudio ", value: "nestR1OneAudio", type: "audio" },
+        {
+          id: "eggR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.eggR1OneAudio) || Assets.eggR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "batRAudio",
+          value: getAssetAudioUrl(s3Assets.batRAudio) || Assets.batRAudio,
+          type: "audio",
+        },
+        {
+          id: "nestR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.nestR1OneAudio) || Assets.nestR1OneAudio,
+          type: "audio",
+        },
       ],
       flowName: "P2",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.puzzleRImg,
+        img: getAssetUrl(s3Assets.puzzleRImg) || Assets.puzzleRImg,
         type: "text",
       },
-      answer: "puzzleRAudio",
+      answer: getAssetAudioUrl(s3Assets.puzzleRAudio) || Assets.puzzleRAudio,
       options: [
-        { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
-        { id: "dogR1OneAudio", value: "dogR1OneAudio", type: "audio" },
-        { id: "puzzleRAudio", value: "puzzleRAudio", type: "audio" },
+        {
+          id: "ropeR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.ropeR1OneAudio) || Assets.ropeR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "dogR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.dogR1OneAudio) || Assets.dogR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "puzzleRAudio",
+          value: getAssetAudioUrl(s3Assets.puzzleRAudio) || Assets.puzzleRAudio,
+          type: "audio",
+        },
       ],
       flowName: "P3",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.lemonRImg,
+        img: getAssetUrl(s3Assets.lemonRImg) || Assets.lemonRImg,
         type: "text",
       },
-      answer: "lemonRAudio",
+      answer: getAssetAudioUrl(s3Assets.lemonRAudio) || Assets.lemonRAudio,
       options: [
-        { id: "vanR1OneAudio", value: "vanR1OneAudio", type: "audio" },
-        { id: "lemonRAudio", value: "lemonRAudio", type: "audio" },
-        { id: "bellR1OneAudio", value: "bellR1OneAudio", type: "audio" },
+        {
+          id: "vanR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.vanR1OneAudio) || Assets.vanR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "lemonRAudio",
+          value: getAssetAudioUrl(s3Assets.lemonRAudio) || Assets.lemonRAudio,
+          type: "audio",
+        },
+        {
+          id: "bellR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.bellR1OneAudio) || Assets.bellR1OneAudio,
+          type: "audio",
+        },
       ],
       flowName: "P4",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.kingRImg,
+        img: getAssetUrl(s3Assets.kingRImg) || Assets.kingRImg,
         type: "text",
       },
-      answer: "kingRAudio",
+      answer: getAssetAudioUrl(s3Assets.kingRAudio) || Assets.kingRAudio,
       options: [
-        { id: "kingRAudio", value: "kingRAudio", type: "audio" },
-        { id: "capR1OneAudio", value: "capR1OneAudio", type: "audio" },
-        { id: "vanR1OneAudio", value: "vanR1OneAudio", type: "audio" },
+        {
+          id: "kingRAudio",
+          value: getAssetAudioUrl(s3Assets.kingRAudio) || Assets.kingRAudio,
+          type: "audio",
+        },
+        {
+          id: "capR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.capR1OneAudio) || Assets.capR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "vanR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.vanR1OneAudio) || Assets.vanR1OneAudio,
+          type: "audio",
+        },
       ],
       flowName: "P5",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.ladderRImg,
+        img: getAssetUrl(s3Assets.ladderRImg) || Assets.ladderRImg,
         type: "text",
       },
-      answer: "ladderRAudio",
+      answer: getAssetAudioUrl(s3Assets.ladderRAudio) || Assets.ladderRAudio,
       options: [
-        { id: "maskR1OneAudio", value: "maskR1OneAudio", type: "audio" },
-        { id: "jugR1OneAudio", value: "jugR1OneAudio", type: "audio" },
-        { id: "ladderRAudio", value: "ladderRAudio", type: "audio" },
+        {
+          id: "maskR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.maskR1OneAudio) || Assets.maskR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "jugR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.jugR1OneAudio) || Assets.jugR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "ladderRAudio",
+          value: getAssetAudioUrl(s3Assets.ladderRAudio) || Assets.ladderRAudio,
+          type: "audio",
+        },
       ],
       flowName: "P6",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.drumRImg,
+        img: getAssetUrl(s3Assets.drumRImg) || Assets.drumRImg,
         type: "text",
       },
-      answer: "drumRAudio",
+      answer: getAssetAudioUrl(s3Assets.drumRAudio) || Assets.drumRAudio,
       options: [
-        { id: "goatR1OneAudio", value: "goatR1OneAudio", type: "audio" },
-        { id: "fanR1OneAudio", value: "fanR1OneAudio", type: "audio" },
-        { id: "drumRAudio", value: "drumRAudio", type: "audio" },
+        {
+          id: "goatR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.goatR1OneAudio) || Assets.goatR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "fanR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.fanR1OneAudio) || Assets.fanR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "drumRAudio",
+          value: getAssetAudioUrl(s3Assets.drumRAudio) || Assets.drumRAudio,
+          type: "audio",
+        },
       ],
       flowName: "P7",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.coffeeRImg,
+        img: getAssetUrl(s3Assets.coffeeRImg) || Assets.coffeeRImg,
         type: "text",
       },
-      answer: "coffeeRAudio",
+      answer: getAssetAudioUrl(s3Assets.coffeeRAudio) || Assets.coffeeRAudio,
       options: [
-        { id: "coffeeRAudio", value: "coffeeRAudio", type: "audio" },
-        { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
-        { id: "appleR1OneAudio", value: "appleR1OneAudio", type: "audio" },
+        {
+          id: "coffeeRAudio",
+          value: getAssetAudioUrl(s3Assets.coffeeRAudio) || Assets.coffeeRAudio,
+          type: "audio",
+        },
+        {
+          id: "ropeR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.ropeR1OneAudio) || Assets.ropeR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "appleR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.appleR1OneAudio) ||
+            Assets.appleR1OneAudio,
+          type: "audio",
+        },
       ],
       flowName: "P8",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.busRImg,
+        img: getAssetUrl(s3Assets.busRImg) || Assets.busRImg,
         type: "text",
       },
-      answer: "busRAudio",
+      answer: Assets.busRAudio,
       options: [
-        { id: "cardRAudio", value: "cardRAudio", type: "audio" },
-        { id: "busRAudio", value: "busRAudio", type: "audio" },
-        { id: "appleR1OneAudio", value: "appleR1OneAudio", type: "audio" },
+        {
+          id: "cardRAudio",
+          value: getAssetAudioUrl(s3Assets.cardRAudio) || Assets.cardRAudio,
+          type: "audio",
+        },
+        { id: "busRAudio", value: Assets.busRAudio, type: "audio" },
+        {
+          id: "appleR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.appleR1OneAudio) ||
+            Assets.appleR1OneAudio,
+          type: "audio",
+        },
       ],
       flowName: "P9",
     },
@@ -190,81 +531,163 @@ const content = {
         img: Assets.graphRImg,
         type: "text",
       },
-      answer: "graphRAudio",
+      answer: getAssetAudioUrl(s3Assets.graphRAudio) || Assets.graphRAudio,
       options: [
-        { id: "cardRAudio", value: "cardRAudio", type: "audio" },
-        { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
-        { id: "graphRAudio", value: "graphRAudio", type: "audio" },
+        {
+          id: "cardRAudio",
+          value: getAssetAudioUrl(s3Assets.cardRAudio) || Assets.cardRAudio,
+          type: "audio",
+        },
+        {
+          id: "ropeR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.ropeR1OneAudio) || Assets.ropeR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "graphRAudio",
+          value: getAssetAudioUrl(s3Assets.graphRAudio) || Assets.graphRAudio,
+          type: "audio",
+        },
       ],
       flowName: "P10",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.ovenRImg,
+        img: getAssetUrl(s3Assets.ovenRImg) || Assets.ovenRImg,
         type: "text",
       },
-      answer: "ovenRAudio",
+      answer: getAssetAudioUrl(s3Assets.ovenRAudio) || Assets.ovenRAudio,
       options: [
-        { id: "cardRAudio", value: "cardRAudio", type: "audio" },
-        { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
-        { id: "ovenRAudio", value: "ovenRAudio", type: "audio" },
+        {
+          id: "cardRAudio",
+          value: getAssetAudioUrl(s3Assets.cardRAudio) || Assets.cardRAudio,
+          type: "audio",
+        },
+        {
+          id: "ropeR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.ropeR1OneAudio) || Assets.ropeR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "ovenRAudio",
+          value: getAssetAudioUrl(s3Assets.ovenRAudio) || Assets.ovenRAudio,
+          type: "audio",
+        },
       ],
       flowName: "P11",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.tableRImg,
+        img: getAssetUrl(s3Assets.tableRImg) || Assets.tableRImg,
         type: "text",
       },
-      answer: "tableRAudio",
+      answer: getAssetAudioUrl(s3Assets.tableRAudio) || Assets.tableRAudio,
       options: [
-        { id: "cardRAudio", value: "cardRAudio", type: "audio" },
-        { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
-        { id: "tableRAudio", value: "tableRAudio", type: "audio" },
+        {
+          id: "cardRAudio",
+          value: getAssetAudioUrl(s3Assets.cardRAudio) || Assets.cardRAudio,
+          type: "audio",
+        },
+        {
+          id: "ropeR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.ropeR1OneAudio) || Assets.ropeR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "tableRAudio",
+          value: getAssetAudioUrl(s3Assets.tableRAudio) || Assets.tableRAudio,
+          type: "audio",
+        },
       ],
       flowName: "P12",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.basketRImg,
+        img: getAssetUrl(s3Assets.basketRImg) || Assets.basketRImg,
         type: "text",
       },
-      answer: "basketRAudio",
+      answer: getAssetAudioUrl(s3Assets.basketRAudio) || Assets.basketRAudio,
       options: [
-        { id: "cardRAudio", value: "cardRAudio", type: "audio" },
-        { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
-        { id: "basketRAudio", value: "basketRAudio", type: "audio" },
+        {
+          id: "cardRAudio",
+          value: getAssetAudioUrl(s3Assets.cardRAudio) || Assets.cardRAudio,
+          type: "audio",
+        },
+        {
+          id: "ropeR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.ropeR1OneAudio) || Assets.ropeR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "basketRAudio",
+          value: getAssetAudioUrl(s3Assets.basketRAudio) || Assets.basketRAudio,
+          type: "audio",
+        },
       ],
       flowName: "P13",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.cardRImg,
+        img: getAssetUrl(s3Assets.cardRImg) || Assets.cardRImg,
         type: "text",
       },
-      answer: "cardRAudio",
+      answer: getAssetAudioUrl(s3Assets.cardRAudio) || Assets.cardRAudio,
       options: [
-        { id: "cardRAudio", value: "cardRAudio", type: "audio" },
-        { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
-        { id: "appleR1OneAudio", value: "appleR1OneAudio", type: "audio" },
+        {
+          id: "cardRAudio",
+          value: getAssetAudioUrl(s3Assets.cardRAudio) || Assets.cardRAudio,
+          type: "audio",
+        },
+        {
+          id: "ropeR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.ropeR1OneAudio) || Assets.ropeR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "appleR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.appleR1OneAudio) ||
+            Assets.appleR1OneAudio,
+          type: "audio",
+        },
       ],
       flowName: "P14",
     },
     {
       question: {
         text: "Which fruit has red color?",
-        img: Assets.frogRImg,
+        img: getAssetUrl(s3Assets.frogRImg) || Assets.frogRImg,
         type: "text",
       },
-      answer: "frogRAudio",
+      answer: getAssetAudioUrl(s3Assets.frogRAudio) || Assets.frogRAudio,
       options: [
-        { id: "frogRAudio", value: "frogRAudio", type: "audio" },
-        { id: "ropeR1OneAudio", value: "ropeR1OneAudio", type: "audio" },
-        { id: "appleR1OneAudio", value: "appleR1OneAudio", type: "audio" },
+        {
+          id: "frogRAudio",
+          value: getAssetAudioUrl(s3Assets.frogRAudio) || Assets.frogRAudio,
+          type: "audio",
+        },
+        {
+          id: "ropeR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.ropeR1OneAudio) || Assets.ropeR1OneAudio,
+          type: "audio",
+        },
+        {
+          id: "appleR1OneAudio",
+          value:
+            getAssetAudioUrl(s3Assets.appleR1OneAudio) ||
+            Assets.appleR1OneAudio,
+          type: "audio",
+        },
       ],
       flowName: "P15",
     },
