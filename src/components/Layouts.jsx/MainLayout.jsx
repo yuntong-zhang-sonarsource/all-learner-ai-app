@@ -150,6 +150,7 @@ const MainLayout = (props) => {
 
   const rFlow = getLocalData("rFlow");
   const mFlow = getLocalData("mFail");
+  const allCompleted = getLocalData("allCompleted");
 
   let LEVEL = props?.level;
 
@@ -400,198 +401,296 @@ const MainLayout = (props) => {
         </Card>
       ) : (
         <>
-          {(!isShowCase || (isShowCase && startShowCase)) && !gameOverData && (
-            <Card
-              sx={{
-                position: { xs: "absolute", md: "relative" },
-                left: { xs: "0px", md: "auto" },
-                width: { xs: "100%", md: "85vw" },
-                minHeight: "80vh",
-                borderRadius: "20px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                backgroundImage: `url(${cardBackground || textureImage})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-                boxShadow: "0px 4px 20px -1px rgba(0, 0, 0, 0.00)",
-                backdropFilter: "blur(25px)",
-                mt: "75px",
-              }}
-            >
-              <Box>
-                {isRecordingComplete && answer && isCorrect && (
-                  <Confetti width={width} height={"600px"} />
-                )}
-              </Box>
-              <CardContent
+          {(!isShowCase || (isShowCase && startShowCase)) &&
+            !gameOverData &&
+            !allCompleted && (
+              <Card
                 sx={{
-                  minHeight: "100%",
-                  opacity: disableScreen ? 0.25 : 1,
-                  pointerEvents: disableScreen ? "none" : "initial",
+                  position: { xs: "absolute", md: "relative" },
+                  left: { xs: "0px", md: "auto" },
+                  width: { xs: "100%", md: "85vw" },
+                  minHeight: "80vh",
+                  borderRadius: "20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  backgroundImage: `url(${cardBackground || textureImage})`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  boxShadow: "0px 4px 20px -1px rgba(0, 0, 0, 0.00)",
+                  backdropFilter: "blur(25px)",
+                  mt: "75px",
                 }}
               >
-                {showTimer && (
-                  <Box sx={{ position: "absolute" }}>
-                    <img
-                      src={timer}
-                      alt="timer"
-                      style={{ height: "58px", width: "58px" }}
-                    />
-                  </Box>
-                )}
-                {props.children}
-              </CardContent>
-              {steps > 0 && (
-                <Box
+                <Box>
+                  {isRecordingComplete && answer && isCorrect && (
+                    <Confetti width={width} height={"600px"} />
+                  )}
+                </Box>
+                <CardContent
                   sx={{
-                    width: { xs: "100%", md: "85vw" },
-                    position: "absolute",
-                    display: "flex",
-                    top: "0",
+                    minHeight: "100%",
+                    opacity: disableScreen ? 0.25 : 1,
+                    pointerEvents: disableScreen ? "none" : "initial",
                   }}
                 >
-                  {stepsArr?.map((step, index) => {
-                    const showGreen = step + 1 <= currentStep;
-                    return (
-                      <Box
-                        key={index}
-                        index={index}
-                        sx={{
-                          height: "8px",
-                          width: `${100 / steps}%`,
-                          background: showGreen ? "#18DE2C" : "#C1C6CC",
-                          marginLeft: "3px",
-                        }}
-                      ></Box>
-                    );
-                  })}
-                </Box>
-              )}
-              {contentType &&
-                contentType.toLowerCase() !== "word" &&
-                startShowCase && (
-                  <Box
-                    position={"absolute"}
-                    top={20}
-                    left={20}
-                    justifyContent={"center"}
-                  >
-                    <Box display={"flex"}>
-                      {[...Array(Math.max(0, redLivesToShow) || 0).keys()]?.map(
-                        (elem) => (
-                          <Diamond />
-                        )
-                      )}
-
-                      {[
-                        ...Array(Math.max(0, blackLivesToShow) || 0).keys(),
-                      ]?.map((elem) => (
-                        <HeartBlack />
-                      ))}
+                  {showTimer && (
+                    <Box sx={{ position: "absolute" }}>
+                      <img
+                        src={timer}
+                        alt="timer"
+                        style={{ height: "58px", width: "58px" }}
+                      />
                     </Box>
-                    <span
-                      style={{
-                        marginLeft: "5px",
-                        color: "#000000",
-                        fontWeight: 700,
-                        fontSize: "24px",
-                        lineHeight: "30px",
-                        fontFamily: "Quicksand",
-                      }}
-                    >
-                      {`You have ${redLivesToShow} lives`}
-                    </span>
-                  </Box>
-                )}
-              <Box sx={{ height: "110px", position: "relative" }}>
-                <Box
-                  sx={{
-                    position: "absolute",
-                    left: 0,
-                    bottom: "-2px",
-                    zIndex: "9999",
-                  }}
-                >
-                  <footer>
-                    {rFlow === "true" ? (
-                      LEVEL == 1 ? (
-                        <img
-                          src={Assets.rOneMileImage}
-                          alt="R One"
-                          height={"250px"}
-                        />
-                      ) : LEVEL === 2 ? (
-                        <img
-                          src={
-                            props.rStep === 2
-                              ? rTwoMileImage
-                              : props.rStep === 3
-                              ? rThreeMileImage
-                              : props.rStep === 4
-                              ? rFourMileImage
-                              : null
-                          }
-                          alt={`R Step ${props.rStep}`}
-                          height={"200px"}
-                        />
-                      ) : null
-                    ) : (
-                      LEVEL && levelsImages?.[LEVEL]?.milestone
-                    )}
-                  </footer>
-                </Box>
-                <Box
-                  sx={{
-                    borderBottom: "1.5px solid rgba(51, 63, 97, 0.15)",
-                    width: "100%",
-                  }}
-                ></Box>
-                {showNext && (
+                  )}
+                  {props.children}
+                </CardContent>
+                {steps > 0 && (
                   <Box
                     sx={{
+                      width: { xs: "100%", md: "85vw" },
+                      position: "absolute",
                       display: "flex",
-                      justifyContent: currentPracticeStep ? "center" : "right",
-                      alignItems: "center",
-                      width: "100%",
-                      height: "100%",
+                      top: "0",
                     }}
                   >
-                    {showProgress && rFlow !== "true" && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          width: "100%",
+                    {stepsArr?.map((step, index) => {
+                      const showGreen = step + 1 <= currentStep;
+                      return (
+                        <Box
+                          key={index}
+                          index={index}
+                          sx={{
+                            height: "8px",
+                            width: `${100 / steps}%`,
+                            background: showGreen ? "#18DE2C" : "#C1C6CC",
+                            marginLeft: "3px",
+                          }}
+                        ></Box>
+                      );
+                    })}
+                  </Box>
+                )}
+                {contentType &&
+                  contentType.toLowerCase() !== "word" &&
+                  startShowCase && (
+                    <Box
+                      position={"absolute"}
+                      top={20}
+                      left={20}
+                      justifyContent={"center"}
+                    >
+                      <Box display={"flex"}>
+                        {[
+                          ...Array(Math.max(0, redLivesToShow) || 0).keys(),
+                        ]?.map((elem) => (
+                          <Diamond />
+                        ))}
+
+                        {[
+                          ...Array(Math.max(0, blackLivesToShow) || 0).keys(),
+                        ]?.map((elem) => (
+                          <HeartBlack />
+                        ))}
+                      </Box>
+                      <span
+                        style={{
+                          marginLeft: "5px",
+                          color: "#000000",
+                          fontWeight: 700,
+                          fontSize: "24px",
+                          lineHeight: "30px",
+                          fontFamily: "Quicksand",
                         }}
                       >
+                        {`You have ${redLivesToShow} lives`}
+                      </span>
+                    </Box>
+                  )}
+                <Box sx={{ height: "110px", position: "relative" }}>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      left: 0,
+                      bottom: "-2px",
+                      zIndex: "9999",
+                    }}
+                  >
+                    <footer>
+                      {rFlow === "true" ? (
+                        LEVEL == 1 ? (
+                          <img
+                            src={Assets.rOneMileImage}
+                            alt="R One"
+                            height={"250px"}
+                          />
+                        ) : LEVEL === 2 ? (
+                          <img
+                            src={
+                              props.rStep === 2
+                                ? rTwoMileImage
+                                : props.rStep === 3
+                                ? rThreeMileImage
+                                : props.rStep === 4
+                                ? rFourMileImage
+                                : null
+                            }
+                            alt={`R Step ${props.rStep}`}
+                            height={"200px"}
+                          />
+                        ) : null
+                      ) : (
+                        LEVEL && levelsImages?.[LEVEL]?.milestone
+                      )}
+                    </footer>
+                  </Box>
+                  <Box
+                    sx={{
+                      borderBottom: "1.5px solid rgba(51, 63, 97, 0.15)",
+                      width: "100%",
+                    }}
+                  ></Box>
+                  {showNext && (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: currentPracticeStep
+                          ? "center"
+                          : "right",
+                        alignItems: "center",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    >
+                      {showProgress && rFlow !== "true" && (
                         <Box
                           sx={{
                             display: "flex",
                             justifyContent: "center",
-                            flexDirection: "column",
+                            width: "100%",
                           }}
                         >
-                          {" "}
                           <Box
                             sx={{
                               display: "flex",
                               justifyContent: "center",
-                              alignItems: "center",
-                              height: "48px",
-                              border: "1.5px solid rgba(51, 63, 97, 0.15)",
-                              ml: {
-                                xs: 10,
-                                sm: 15,
-                                lg: 25,
-                                md: 18,
-                              },
-                              borderRadius: "30px",
-                              background: "white",
+                              flexDirection: "column",
                             }}
                           >
-                            {practiceSteps.map((elem, i) => {
-                              return (
+                            {" "}
+                            <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "48px",
+                                border: "1.5px solid rgba(51, 63, 97, 0.15)",
+                                ml: {
+                                  xs: 10,
+                                  sm: 15,
+                                  lg: 25,
+                                  md: 18,
+                                },
+                                borderRadius: "30px",
+                                background: "white",
+                              }}
+                            >
+                              {practiceSteps.map((elem, i) => {
+                                return (
+                                  <Box
+                                    key={i}
+                                    sx={{
+                                      width: {
+                                        xs: "24px",
+                                        sm: "26px",
+                                        md: "28px",
+                                        lg: "36px",
+                                      },
+                                      height: {
+                                        xs: "24px",
+                                        sm: "26px",
+                                        md: "28px",
+                                        lg: "36px",
+                                      },
+                                      background:
+                                        currentPracticeStep > i
+                                          ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
+                                          : currentPracticeStep === i
+                                          ? "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)"
+                                          : "rgba(0, 0, 0, 0.04)",
+                                      ml: {
+                                        xs: 0.5,
+                                        sm: 0.5,
+                                        md: 1.5,
+                                        lg: 2,
+                                      },
+                                      mr:
+                                        i === practiceSteps?.length - 1 ? 2 : 0,
+                                      borderRadius: "30px",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    {currentPracticeStep > i ? (
+                                      <GreenTick />
+                                    ) : (
+                                      <span
+                                        style={{
+                                          color:
+                                            currentPracticeStep === i
+                                              ? "white"
+                                              : "#1E2937",
+                                          fontWeight: 600,
+                                          lineHeight: "20px",
+                                          fontSize: "16px",
+                                          fontFamily: "Quicksand",
+                                        }}
+                                      >
+                                        {LEVEL === 1
+                                          ? elem.title
+                                          : LEVEL === 2
+                                          ? elem.titleNew
+                                          : LEVEL === 3
+                                          ? elem.titleThree
+                                          : elem.name}
+                                      </span>
+                                    )}
+                                  </Box>
+                                );
+                              })}
+                            </Box>
+                          </Box>
+                        </Box>
+                      )}
+                      {rFlow == "true" && (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            width: "100%",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "48px",
+                                border: "1.5px solid rgba(51, 63, 97, 0.15)",
+                                ml: { xs: 10, sm: 15, lg: 25, md: 18 },
+                                borderRadius: "30px",
+                                background: "white",
+                              }}
+                            >
+                              {flowNames?.map((flow, i) => (
                                 <Box
                                   key={i}
                                   sx={{
@@ -608,192 +707,99 @@ const MainLayout = (props) => {
                                       lg: "36px",
                                     },
                                     background:
-                                      currentPracticeStep > i
-                                        ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
-                                        : currentPracticeStep === i
+                                      flow === activeFlow
                                         ? "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)"
+                                        : flowNames?.indexOf(flow) <
+                                          flowNames?.indexOf(activeFlow)
+                                        ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
                                         : "rgba(0, 0, 0, 0.04)",
-                                    ml: {
-                                      xs: 0.5,
-                                      sm: 0.5,
-                                      md: 1.5,
-                                      lg: 2,
-                                    },
-                                    mr: i === practiceSteps?.length - 1 ? 2 : 0,
+                                    ml: { xs: 0.5, sm: 0.5, md: 1.5, lg: 2 },
+                                    mr: i === flowNames?.length - 1 ? 2 : 0,
                                     borderRadius: "30px",
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
                                   }}
                                 >
-                                  {currentPracticeStep > i ? (
+                                  {flowNames?.indexOf(flow) <
+                                  flowNames?.indexOf(activeFlow) ? (
                                     <GreenTick />
                                   ) : (
                                     <span
                                       style={{
                                         color:
-                                          currentPracticeStep === i
+                                          flow === activeFlow
                                             ? "white"
                                             : "#1E2937",
                                         fontWeight: 600,
-                                        lineHeight: "20px",
                                         fontSize: "16px",
                                         fontFamily: "Quicksand",
                                       }}
                                     >
-                                      {LEVEL === 1
-                                        ? elem.title
-                                        : LEVEL === 2
-                                        ? elem.titleNew
-                                        : LEVEL === 3
-                                        ? elem.titleThree
-                                        : elem.name}
+                                      {flow}
                                     </span>
                                   )}
                                 </Box>
-                              );
-                            })}
+                              ))}
+                            </Box>
                           </Box>
                         </Box>
-                      </Box>
-                    )}
-                    {rFlow == "true" && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          width: "100%",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              height: "48px",
-                              border: "1.5px solid rgba(51, 63, 97, 0.15)",
-                              ml: { xs: 10, sm: 15, lg: 25, md: 18 },
-                              borderRadius: "30px",
-                              background: "white",
-                            }}
-                          >
-                            {flowNames?.map((flow, i) => (
-                              <Box
-                                key={i}
-                                sx={{
-                                  width: {
-                                    xs: "24px",
-                                    sm: "26px",
-                                    md: "28px",
-                                    lg: "36px",
-                                  },
-                                  height: {
-                                    xs: "24px",
-                                    sm: "26px",
-                                    md: "28px",
-                                    lg: "36px",
-                                  },
-                                  background:
-                                    flow === activeFlow
-                                      ? "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)"
-                                      : flowNames?.indexOf(flow) <
-                                        flowNames?.indexOf(activeFlow)
-                                      ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
-                                      : "rgba(0, 0, 0, 0.04)",
-                                  ml: { xs: 0.5, sm: 0.5, md: 1.5, lg: 2 },
-                                  mr: i === flowNames?.length - 1 ? 2 : 0,
-                                  borderRadius: "30px",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                }}
-                              >
-                                {flowNames?.indexOf(flow) <
-                                flowNames?.indexOf(activeFlow) ? (
-                                  <GreenTick />
-                                ) : (
-                                  <span
-                                    style={{
-                                      color:
-                                        flow === activeFlow
-                                          ? "white"
-                                          : "#1E2937",
-                                      fontWeight: 600,
-                                      fontSize: "16px",
-                                      fontFamily: "Quicksand",
-                                    }}
-                                  >
-                                    {flow}
-                                  </span>
-                                )}
-                              </Box>
-                            ))}
-                          </Box>
-                        </Box>
-                      </Box>
-                    )}
-                  </Box>
-                )}
-                {nextLessonAndHome && (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      mt: 4,
-                      ml: 4,
-                      mr: 4,
-                    }}
-                  >
+                      )}
+                    </Box>
+                  )}
+                  {nextLessonAndHome && (
                     <Box
                       sx={{
-                        cursor: "pointer",
-                        background:
-                          "linear-gradient(90deg, rgba(255,144,80,1) 0%, rgba(225,84,4,1) 85%)",
-                        minWidth: "100px",
-                        height: "55px",
-                        borderRadius: "10px",
                         display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        padding: "0px 24px 0px 20px",
+                        justifyContent: "space-between",
+                        mt: 4,
+                        ml: 4,
+                        mr: 4,
                       }}
-                      onClick={() => handleNext()}
                     >
-                      <span
-                        style={{
-                          color: "#FFFFFF",
-                          fontWeight: 600,
-                          fontSize: "20px",
-                          fontFamily: "Quicksand",
-                        }}
-                      >
-                        {"Next Lesson"}
-                      </span>
-                    </Box>
-                    {enableNext ? (
                       <Box
-                        sx={{ cursor: "pointer" }}
+                        sx={{
+                          cursor: "pointer",
+                          background:
+                            "linear-gradient(90deg, rgba(255,144,80,1) 0%, rgba(225,84,4,1) 85%)",
+                          minWidth: "100px",
+                          height: "55px",
+                          borderRadius: "10px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          padding: "0px 24px 0px 20px",
+                        }}
                         onClick={() => handleNext()}
                       >
-                        <NextButton />
+                        <span
+                          style={{
+                            color: "#FFFFFF",
+                            fontWeight: 600,
+                            fontSize: "20px",
+                            fontFamily: "Quicksand",
+                          }}
+                        >
+                          {"Next Lesson"}
+                        </span>
                       </Box>
-                    ) : (
-                      <Box sx={{ cursor: "pointer" }}>
-                        <NextButton disabled />
-                      </Box>
-                    )}
-                  </Box>
-                )}
-              </Box>
-            </Card>
-          )}
+                      {enableNext ? (
+                        <Box
+                          sx={{ cursor: "pointer" }}
+                          onClick={() => handleNext()}
+                        >
+                          <NextButton />
+                        </Box>
+                      ) : (
+                        <Box sx={{ cursor: "pointer" }}>
+                          <NextButton disabled />
+                        </Box>
+                      )}
+                    </Box>
+                  )}
+                </Box>
+              </Card>
+            )}
           {((isShowCase && !startShowCase) || gameOverData) && (
             <Card
               sx={{
@@ -1304,6 +1310,30 @@ const MainLayout = (props) => {
                   }
                 </Box>
               </Box>
+            </Card>
+          )}
+          {LEVEL === 15 && allCompleted && (
+            <Card
+              sx={{
+                width: "70%",
+                //height: "100%",
+                borderRadius: "20px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                backgroundImage: `url(${cardBackground || textureImage})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "round",
+                boxShadow: "0px 4px 20px -1px rgba(0, 0, 0, 0.00)",
+                backdropFilter: "blur(25px)",
+                mt: "50px",
+              }}
+            >
+              <img
+                src={Assets.allLevCompleted}
+                width={"100%"}
+                height={"100%"}
+              />
             </Card>
           )}
         </>

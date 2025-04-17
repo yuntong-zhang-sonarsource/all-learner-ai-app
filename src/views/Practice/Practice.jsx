@@ -954,6 +954,15 @@ const Practice = () => {
           }
           setLocalData("previous_level", getSetData.data.previous_level);
           if (getSetData.data.sessionResult === "pass") {
+            if (
+              level === 15 &&
+              (currentLevel === "S1" || currentLevel === "S2")
+            ) {
+              setLocalData("allCompleted", true);
+              gameOver({ link: "/assesment-end" }, true);
+              return;
+            }
+
             try {
               await axios.post(
                 `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.ADD_LESSON}`,
