@@ -554,7 +554,7 @@ const PhoneConversation = ({
             <img
               src={Assets.chatLoader}
               alt="Loading"
-              style={{ width: "80px", margin: "15px 0px" }}
+              style={{ height: "15px", margin: "15px 0px" }}
             />
           </div>
         )}
@@ -712,7 +712,7 @@ const PhoneConversation = ({
                     isPlaying={isPlaying}
                     playAudio={playAudio}
                     styles={styles}
-                    Assets={getAssetUrl(s3Assets) || Assets}
+                    Assets={Assets}
                     isLast={index === visibleMessages.length - 1}
                   />
                 ))}

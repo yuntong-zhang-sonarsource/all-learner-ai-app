@@ -5328,7 +5328,7 @@ export const level10 = [
           options: [
             { id: "audio1", value: "level10P7ThreeAudio1", type: "audio" },
             { id: "audio2", value: "level10P7ThreeAudio3", type: "audio" },
-            { id: "audio3", value: "level10P7FourAudio2", type: "audio" },
+            { id: "audio3", value: "level10P7FourAudio3", type: "audio" },
           ],
         },
         {
@@ -5338,7 +5338,7 @@ export const level10 = [
           },
           answer: "audio1",
           options: [
-            { id: "audio1", value: "level10P7FourAudio3", type: "audio" },
+            { id: "audio1", value: "level10P7FourAudio2", type: "audio" },
             { id: "audio2", value: "level10P7FiveAudio3", type: "audio" },
             { id: "audio3", value: "level10P7ThreeAudio3", type: "audio" },
           ],

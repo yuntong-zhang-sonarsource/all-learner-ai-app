@@ -194,6 +194,7 @@ const McqFlow = ({
         style={{
           display: "flex",
           flexDirection: "column",
+          height: "100%",
           //justifyContent: "center",
           alignItems: "center",
           //gap: "20px",
@@ -265,10 +266,24 @@ const McqFlow = ({
                 }}
               >
                 {/* Zoom icon positioned in the top-left corner */}
-                <ZoomInIcon
+                {/* <ZoomInIcon
                   onClick={() => setZoomOpen(true)}
                   sx={{ color: "white", fontSize: "22px", cursor: "pointer" }}
-                />
+                /> */}
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 180,
+                    right: 6,
+                  }}
+                >
+                  <img
+                    src={Assets.zoomIcon}
+                    onClick={() => setZoomOpen(true)}
+                    height={"65px"}
+                    width={"65px"}
+                  />
+                </Box>
               </Box>
             </Box>
           )}
@@ -310,7 +325,7 @@ const McqFlow = ({
                 }}
               >
                 {/* Close icon positioned within the gradient overlay */}
-                <CloseIcon
+                {/* <CloseIcon
                   onClick={() => setZoomOpen(false)}
                   sx={{
                     color: "white",
@@ -320,6 +335,11 @@ const McqFlow = ({
                     borderRadius: "50%",
                     padding: "4px",
                   }}
+                /> */}
+                <img
+                  src={Assets.closeIcon}
+                  onClick={() => setZoomOpen(false)}
+                  style={{ marginTop: "20px", cursor: "pointer" }}
                 />
               </Box>
 
@@ -339,6 +359,16 @@ const McqFlow = ({
               />
             </Box>
           </Modal>
+
+          <Box
+            style={{
+              width: "1px",
+              backgroundColor: "#E0E2E7",
+              height: "280px",
+              margin: "0px 30px",
+              border: "1px solid #E0E2E7",
+            }}
+          />
 
           {/* MCQ Section on the right */}
           <div style={{ width: "50%" }}>

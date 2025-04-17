@@ -2731,3 +2731,7 @@ export const level11P8FourUAudio =
   "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P8FourUAudio.wav";
 export const level11P8ThreeUAudio =
   "https://github.com/anik200002/imagesEkstep/raw/refs/heads/main/level11P8ThreeUAudio.wav";
+export const zoomIcon =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/5ecf50600f5f2487f304e5cd8d8277aa7ab26300/zoomIcon.svg";
+export const closeIcon =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/771b1015c6eec7e87e9969f7c63f93463b46b149/closeIcon.svg";

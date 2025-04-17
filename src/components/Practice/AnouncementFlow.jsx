@@ -266,7 +266,22 @@ const AnouncementFlow = ({
           getAssetAudioUrl(s3Assets[audioKey]) || Assets[audioKey]
         );
 
+        const primaryUrl = getAssetAudioUrl(s3Assets[audioKey]);
+        const fallbackUrl = Assets[audioKey];
+
         audio.onended = () => setIsPlaying(false);
+
+        audio.onerror = () => {
+          if (fallbackUrl && primaryUrl !== fallbackUrl) {
+            const fallbackAudio = new Audio(fallbackUrl);
+            fallbackAudio.onended = () => setIsPlaying(false);
+            fallbackAudio.play();
+            setAudioInstance(fallbackAudio);
+            setIsPlaying(true);
+          } else {
+            setIsPlaying(false);
+          }
+        };
 
         audio.play();
         setAudioInstance(audio);
@@ -785,6 +800,10 @@ const AnouncementFlow = ({
                 Assets[imageData?.imageOne] ||
                 Assets.atm
               }
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = Assets[imageData?.imageOne] || Assets.atm;
+              }}
               alt="Next"
               height={"130px"}
               //width={"75px"}
@@ -797,6 +816,10 @@ const AnouncementFlow = ({
                 Assets[imageData?.imageTwo] ||
                 Assets.mall
               }
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = Assets[imageData?.imageTwo] || Assets.mall;
+              }}
               alt="Next"
               height={"130px"}
               //width={"75px"}
@@ -917,16 +940,14 @@ const AnouncementFlow = ({
                     }}
                   >
                     <img
-                      src={
-                        getAssetUrl(
-                          s3Assets[
+                      src={getAssetUrl(s3Assets[imageData?.imageThree])}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          Assets[
                             imageData?.imageThree || Assets.railAnouncementImg
-                          ]
-                        ) ||
-                        Assets[
-                          imageData?.imageThree || Assets.railAnouncementImg
-                        ]
-                      }
+                          ];
+                      }}
                       alt="Circular"
                       style={{
                         width: "250px",

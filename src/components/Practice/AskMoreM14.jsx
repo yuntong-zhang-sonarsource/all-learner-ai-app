@@ -737,7 +737,7 @@ const AskMoreM14 = ({
                         }}
                         onClick={() => {
                           playAudio(
-                            getAssetUrl(
+                            getAssetAudioUrl(
                               s3Assets[conversation[currentSteps]?.audio]
                             ) || Assets[conversation[currentSteps]?.audio]
                           );

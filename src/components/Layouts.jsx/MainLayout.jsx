@@ -1115,13 +1115,13 @@ const MainLayout = (props) => {
                                 sx={{
                                   wordWrap: "break-word",
                                   whiteSpace: "normal",
-                                  maxWidth: "200px",
+                                  maxWidth: "150px",
                                   fontWeight: "700",
                                   fontSize: "16px",
                                   fontFamily: "Quicksand",
                                 }}
                               >
-                                Let’s practice more and come back stronger!
+                                Let’s practice more
                               </Typography>
                             </Stack>
                           </Stack>
