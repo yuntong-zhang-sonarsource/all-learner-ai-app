@@ -940,7 +940,11 @@ const AnouncementFlow = ({
                     }}
                   >
                     <img
-                      src={getAssetUrl(s3Assets[imageData?.imageThree])}
+                      src={getAssetUrl(
+                        s3Assets[imageData?.imageThree] ||
+                          Assets[imageData?.imageThree] ||
+                          Assets.railAnouncementImg
+                      )}
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src =
