@@ -61,6 +61,7 @@ import cryPanda from "../../assets/images/cryPanda.svg";
 import { uniqueId } from "../../services/utilService";
 import { end } from "../../services/telementryService";
 import { levelMapping } from "../../utils/levelData";
+import scoreView from "../../assets/images/scoreView.svg";
 
 export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
   const [selectedLang, setSelectedLang] = useState(lang);
@@ -486,26 +487,28 @@ export const ProfileHeader = ({
             alignItems: "center",
           }}
         >
-          {/* <Box sx={{ position: "relative" }} mr="10px">
-            <img
-              src={scoreView}
-              alt="scoreView"
-              width={"86px"}
-              height={"35px"}
-            />
-            <Box sx={{ position: "absolute", top: "6px", right: "16px" }}>
-              <span
-                style={{
-                  color: "#FFDD39",
-                  fontWeight: 700,
-                  fontSize: "18px",
-                  fontFamily: "Quicksand",
-                }}
-              >
-                {points}
-              </span>
+          {process.env.REACT_APP_IS_IN_APP_AUTHORISATION === "true" && (
+            <Box sx={{ position: "relative" }} mr="10px">
+              <img
+                src={scoreView}
+                alt="scoreView"
+                width={"86px"}
+                height={"35px"}
+              />
+              <Box sx={{ position: "absolute", top: "6px", right: "16px" }}>
+                <span
+                  style={{
+                    color: "#FFDD39",
+                    fontWeight: 700,
+                    fontSize: "18px",
+                    fontFamily: "Quicksand",
+                  }}
+                >
+                  {points}
+                </span>
+              </Box>
             </Box>
-          </Box> */}
+          )}
 
           <Box
             mr={{ xs: "10px", sm: "90px" }}
@@ -657,7 +660,8 @@ const Assesment = ({ discoverStart }) => {
         localStorage.setItem("lang", lang || "ta");
         if (
           process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
-          localStorage.getItem("contentSessionId") !== null
+          (localStorage.getItem("contentSessionId") !== null ||
+            process.env.REACT_APP_IS_IN_APP_AUTHORISATION === "true")
         ) {
           const getPointersDetails = await axios.get(
             `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${usernameDetails?.data?.result?.virtualID}/${session_id}?language=${lang}`
@@ -742,7 +746,8 @@ const Assesment = ({ discoverStart }) => {
         if (
           process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
           virtualId &&
-          localStorage.getItem("contentSessionId") !== null
+          (localStorage.getItem("contentSessionId") !== null ||
+            process.env.REACT_APP_IS_IN_APP_AUTHORISATION === "true")
         ) {
           const getPointersDetails = await axios.get(
             `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`

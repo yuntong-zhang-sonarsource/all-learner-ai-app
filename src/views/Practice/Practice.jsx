@@ -1296,7 +1296,8 @@ const Practice = () => {
 
       if (
         process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
-        localStorage.getItem("contentSessionId") !== null
+        (localStorage.getItem("contentSessionId") !== null ||
+          process.env.REACT_APP_IS_IN_APP_AUTHORISATION === "true")
       ) {
         const getPointersDetails = await axios.get(
           `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
