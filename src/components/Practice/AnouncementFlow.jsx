@@ -200,6 +200,7 @@ const AnouncementFlow = ({
       alert("Speech recognition is not supported in your browser.");
       return;
     }
+    setRecAudio(null);
     resetTranscript();
     setIsRecording(true);
     SpeechRecognition.startListening({
@@ -215,25 +216,10 @@ const AnouncementFlow = ({
     //console.log("Final Transcript:", transcriptRef.current);
   };
 
-  const handleRecordingComplete = async (base64Data) => {
+  const handleRecordingComplete = (base64Data) => {
     if (base64Data) {
       setIsRecordingComplete(true);
       setRecAudio(base64Data);
-      if (currentLevel === "S1" || currentLevel === "S2") {
-        // const comprehension = await handleTextEvaluation(
-        //   correctAnswerText,
-        //   transcriptRef.current
-        // );
-
-        const options = {
-          originalText: correctAnswerText,
-          contentType: contentType,
-          contentId: contentId,
-          //comprehension: comprehension,
-        };
-
-        fetchASROutput(base64Data, options, setLoader, setApiResponse);
-      }
     } else {
       setIsRecordingComplete(false);
       setRecAudio("");
@@ -563,8 +549,18 @@ const AnouncementFlow = ({
     setIsPressedOnce(false);
   };
 
-  const loadNextTask = () => {
+  const loadNextTask = async () => {
     setIsLoading(true);
+
+    if (currentLevel === "S1" || currentLevel === "S2") {
+      const options = {
+        originalText: correctAnswerText,
+        contentType: contentType,
+        contentId: contentId,
+      };
+
+      await fetchASROutput(recAudio, options, setLoader, setApiResponse);
+    }
 
     setTimeout(() => {
       setRecAudio(null);
@@ -1244,7 +1240,7 @@ const AnouncementFlow = ({
                           isCorrect && (
                             <div
                               onClick={loadNextTask}
-                              style={{ cursor: "pointer", marginLeft: "35px" }}
+                              style={{ cursor: "pointer", marginLeft: "23px" }}
                             >
                               <NextButtonRound height={45} width={45} />
                             </div>
@@ -1252,7 +1248,7 @@ const AnouncementFlow = ({
                         : recAudio && (
                             <div
                               onClick={loadNextTask}
-                              style={{ cursor: "pointer", marginLeft: "35px" }}
+                              style={{ cursor: "pointer", marginLeft: "23px" }}
                             >
                               <NextButtonRound height={45} width={45} />
                             </div>
