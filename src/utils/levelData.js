@@ -4142,29 +4142,34 @@ export const level15 = [
     mechanics: "askMore",
     data: {
       images: {
-        imageOne: "salesPerson",
-        imageTwo: "mother",
+        imageOne: "mother",
+        imageTwo: "salesPerson",
       },
       conversation: [
         {
           speaker: "How do turtles swim?",
           user: "Turtles use their flippers to swim gracefully and effortlessly.",
+          audio: "level15P5OneUAudio",
         },
         {
           speaker: "What did someone do in a hurry?",
           user: "A hurried dash to the sea.",
+          audio: "level15P5TwoUAudio",
         },
         {
           speaker: "What was Owlie pretending to be?",
           user: "Owlie was pretending to be a curio!",
+          audio: "level15P5ThreeUAudio",
         },
         {
           speaker: "Where did the poor farmer till the land?",
           user: "The poor farmer tilled the land near the once small depression.",
+          audio: "level15P5FourUAudio",
         },
         {
           speaker: "What happened to the garden?",
           user: "The garden became a happy place.",
+          audio: "level15P5FiveUAudio",
         },
       ],
     },
@@ -4181,22 +4186,27 @@ export const level15 = [
         {
           speaker: "How do dolphins move in water?",
           user: "Dolphins glide smoothly through the ocean waves.",
+          audio: "level15P6OneUAudio",
         },
         {
           speaker: "What did the little crab do on the beach?",
           user: "The little crab scurried quickly across the sandy shore.",
+          audio: "level15P6TwoUAudio",
         },
         {
           speaker: "Why was Owlie excited?",
           user: "Owlie discovered a shiny pebble and hooted with joy.",
+          audio: "level15P6ThreeUAudio",
         },
         {
           speaker: "What did the farmer plant in his field?",
           user: "The farmer carefully planted rows of golden wheat.",
+          audio: "level15P6FourUAudio",
         },
         {
           speaker: "What made the garden beautiful?",
           user: "Bright flowers and buzzing bees filled the garden with life.",
+          audio: "level15P6FiveUAudio",
         },
       ],
     },
@@ -5316,7 +5326,7 @@ export const level10 = [
           options: [
             { id: "audio1", value: "level10P7FourAudio2", type: "audio" },
             { id: "audio2", value: "level10P7FiveAudio3", type: "audio" },
-            { id: "audio3", value: "level10P7FourAudio3", type: "audio" },
+            { id: "audio3", value: "level10P7FiveAudio1", type: "audio" },
           ],
         },
         {
@@ -5328,7 +5338,7 @@ export const level10 = [
           options: [
             { id: "audio1", value: "level10P7ThreeAudio1", type: "audio" },
             { id: "audio2", value: "level10P7ThreeAudio3", type: "audio" },
-            { id: "audio3", value: "level10P7FourAudio3", type: "audio" },
+            { id: "audio3", value: "level10P7OneAudio2", type: "audio" },
           ],
         },
         {

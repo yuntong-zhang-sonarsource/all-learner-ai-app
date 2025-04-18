@@ -360,15 +360,17 @@ const McqFlow = ({
             </Box>
           </Modal>
 
-          <Box
-            style={{
-              width: "1px",
-              backgroundColor: "#E0E2E7",
-              height: "280px",
-              margin: "0px 30px",
-              border: "1px solid #E0E2E7",
-            }}
-          />
+          {!conversation?.instruction?.content[0]?.text && (
+            <Box
+              style={{
+                width: "1px",
+                backgroundColor: "#E0E2E7",
+                height: "280px",
+                margin: "0px 30px",
+                border: "1px solid #E0E2E7",
+              }}
+            />
+          )}
 
           {/* MCQ Section on the right */}
           <div style={{ width: "50%" }}>

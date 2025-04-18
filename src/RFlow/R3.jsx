@@ -334,7 +334,7 @@ const content = {
     {
       allwords: [
         {
-          img: getAssetUrl(s3Assets.plantRImg) || Assets.plantRImg,
+          img: getAssetUrl(s3Assets.gardenImg) || Assets.gardenImg,
           text: "Plant",
         },
         {
@@ -445,7 +445,7 @@ const content = {
     {
       allwords: [
         {
-          img: getAssetUrl(s3Assets.plantRImg) || Assets.plantRImg,
+          img: getAssetUrl(s3Assets.gardenImg) || Assets.gardenImg,
           text: "Plant",
         },
         {

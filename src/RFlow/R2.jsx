@@ -840,8 +840,8 @@ const R2 = ({
   };
 
   const playAudio = (audioKey) => {
-    if (Assets[audioKey]) {
-      const audioElement = new Audio(Assets[audioKey]);
+    if (audioKey) {
+      const audioElement = new Audio(audioKey);
       audioElement.play();
       setIsAudioPlaying(true);
       audioElement.onended = () => setIsAudioPlaying(false);
@@ -1130,7 +1130,7 @@ const R2 = ({
                                   width: "80px",
                                   height: "80px",
                                   background:
-                                    selectedText === audio.id
+                                    selectedText === audio.value
                                       ? isMatch
                                         ? "#58CC02"
                                         : "#FF0000"
@@ -1143,11 +1143,16 @@ const R2 = ({
                                   fontSize: "30px",
                                   fontWeight: "bold",
                                   boxShadow:
-                                    selectedText === audio.id
+                                    selectedText === audio.value
                                       ? "none"
                                       : style.boxShadow,
                                   cursor: "pointer",
                                   color: "#FFFFFF",
+                                  filter:
+                                    activeIndex !== index
+                                      ? "brightness(50%)"
+                                      : "none",
+                                  transition: "filter 0.3s ease",
                                 }}
                                 onClick={() => {
                                   setActiveIndex(index);
@@ -1166,17 +1171,17 @@ const R2 = ({
                                 {/* {index + 1} */}
                               </div>
                             </div>
-                            <input
+                            {/* <input
                               type="checkbox"
                               id={`checkbox-${audio.id}`}
-                              checked={selectedCheckbox === audio.id}
-                              onChange={() => handleCheckboxChange(audio.id)}
+                              checked={selectedCheckbox === audio.value}
+                              onChange={() => handleCheckboxChange(audio.value)}
                               style={{
                                 width: "60px",
                                 height: "60px",
                                 appearance: "none",
                                 backgroundColor:
-                                  selectedCheckbox === audio.id
+                                  selectedCheckbox === audio.value
                                     ? "#58CC02"
                                     : "#BB81D066",
                                 border: "2px solid white",
@@ -1189,7 +1194,49 @@ const R2 = ({
                                 marginTop: "15px",
                                 marginLeft: "30px",
                               }}
-                            />
+                            /> */}
+                            <div
+                              style={{
+                                width: "60px",
+                                height: "60px",
+                                backgroundColor:
+                                  selectedCheckbox === audio.value
+                                    ? "#58CC02"
+                                    : "#BB81D066",
+                                border: "2px solid white",
+                                borderRadius: "8px",
+                                cursor: "pointer",
+                                position: "relative",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginTop: "15px",
+                                marginLeft: "30px",
+                              }}
+                              onClick={() => handleCheckboxChange(audio.value)}
+                            >
+                              <input
+                                type="checkbox"
+                                id={`checkbox-${audio.id}`}
+                                checked={selectedCheckbox === audio.value}
+                                readOnly
+                                style={{
+                                  display: "none", // hide the native checkbox
+                                }}
+                              />
+                              {/* {selectedCheckbox === audio.value && ( */}
+                              <span
+                                style={{
+                                  fontSize: "36px",
+                                  fontWeight: "900",
+                                  color: "white",
+                                  lineHeight: 1,
+                                }}
+                              >
+                                ✓
+                              </span>
+                              {/* )} */}
+                            </div>
 
                             {/* {selectedCheckbox === audio.text && (
                             <div

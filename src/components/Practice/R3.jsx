@@ -555,9 +555,11 @@ const R3 = ({
                             justifyContent: "center",
                             //fontSize: "30px",
                             fontWeight: "bold",
-                            // boxShadow: `0px 4px 0px 0px ${
-                            //   colors[index % colors.length]
-                            // }90`,
+                            filter:
+                              activeIndex !== index
+                                ? "brightness(50%)"
+                                : "none",
+                            transition: "filter 0.3s ease",
                             cursor: "pointer",
                             color: "#FFFFFF",
                           }}
@@ -577,7 +579,7 @@ const R3 = ({
                           />
                         </div>
                       </div>
-                      <input
+                      {/* <input
                         type="checkbox"
                         id={`checkbox-${audio.id}`}
                         checked={selectedCheckbox === audio.id}
@@ -600,7 +602,50 @@ const R3 = ({
                           marginTop: "15px",
                           marginLeft: "30px",
                         }}
-                      />
+                      /> */}
+
+                      <div
+                        style={{
+                          width: "60px",
+                          height: "60px",
+                          backgroundColor:
+                            selectedCheckbox === audio.id
+                              ? "#58CC02"
+                              : "#BB81D066",
+                          border: "2px solid white",
+                          borderRadius: "8px",
+                          cursor: "pointer",
+                          position: "relative",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginTop: "15px",
+                          marginLeft: "30px",
+                        }}
+                        onClick={() => handleCheckboxChange(audio.id)}
+                      >
+                        <input
+                          type="checkbox"
+                          id={`checkbox-${audio.id}`}
+                          checked={selectedCheckbox === audio.id}
+                          readOnly
+                          style={{
+                            display: "none",
+                          }}
+                        />
+                        {/* {selectedCheckbox === audio.value && ( */}
+                        <span
+                          style={{
+                            fontSize: "36px",
+                            fontWeight: "900",
+                            color: "white",
+                            lineHeight: 1,
+                          }}
+                        >
+                          ✓
+                        </span>
+                        {/* )} */}
+                      </div>
 
                       {/* {selectedCheckbox === audio.text && (
                     <div
