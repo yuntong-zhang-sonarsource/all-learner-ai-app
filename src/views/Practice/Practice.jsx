@@ -773,52 +773,6 @@ const Practice = () => {
 
       let practiceProgress = getLocalData("practiceProgress");
 
-      //     if(virtualId === "6760800019"){
-      //       setLevel(12);
-      //       //setMechanism({ id: "read_aloud", name: "readAloud" });
-      //     }
-
-      //     if(virtualId === "1621936833"){
-      //       setLevel(13);
-      //     }
-      //     if(virtualId === "9526496994"){
-      //       setLevel(14);
-      //     }
-      //     if(virtualId === "7656513916"){
-      //       setLevel(4);
-      //     }
-      //     if(virtualId === "3464419415"){
-      //       setLevel(5);
-      //     }
-      //     if(virtualId === "6131132191"){
-      //       setLevel(6);
-      //     }
-      //     if(virtualId === "8909322850"){
-      //       setLevel(7);
-      //     }
-      //     if(virtualId === "9620863046"){
-      //       setLevel(10);
-      //     }
-
-      //     let updatedLevel =
-      // virtualId === "6760800019"
-      //   ? 12
-      //   : virtualId === "1621936833"
-      //   ? 13
-      //   : virtualId === "7656513916"
-      //   ? 4
-      //   : virtualId === "3464419415"
-      //   ? 5
-      //   : virtualId === "6131132191"
-      //   ? 6
-      //   : virtualId === "8909322850"
-      //   ? 7
-      //   : virtualId === "9526496994"
-      //   ? 14
-      //   : virtualId === "9620863046"
-      //   ? 10
-      //   : 1;
-
       if (levelMapping[virtualId] !== undefined) {
         setLevel(levelMapping[virtualId]);
       } else {
@@ -890,7 +844,7 @@ const Practice = () => {
         (elem) => elem.title === practiceSteps?.[newPracticeStep]?.name
       );
 
-      console.log("cq", currentQuestion, questions, isGameOver, updatedLevel);
+      console.log("cqer", currentQuestion, questions, updatedLevel);
 
       // if(updatedLevel === 14){
       //   setCurrentQuestion(currentQuestion + 1);
@@ -926,7 +880,7 @@ const Practice = () => {
             `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_SET_RESULT}`,
             {
               sub_session_id: sub_session_id,
-              contentType: currentContentType,
+              contentType: currentContentType || "Paragraph",
               session_id: sessionId,
               user_id: virtualId,
               totalSyllableCount: totalSyllableCount,
@@ -1013,60 +967,87 @@ const Practice = () => {
           gameOver();
           return;
         }
-        const resGetContent = await axios.get(
-          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
-            (currentGetContent?.mechanism?.id
-              ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
-              : "") +
-            (currentGetContent?.competency
-              ? `&level_competency=${currentGetContent?.competency}`
-              : "") +
-            (currentGetContent?.tags
-              ? `&tags=${currentGetContent?.tags}`
-              : "") +
-            (currentGetContent?.storyMode
-              ? `&story_mode=${currentGetContent?.storyMode}`
-              : "")
-        );
 
-        //TODO: required only for S1 and S2
+        if (![10, 11, 12, 13, 14, 15].includes(updatedLevel)) {
+          const resGetContent = await axios.get(
+            `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
+              (currentGetContent?.mechanism?.id
+                ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
+                : "") +
+              (currentGetContent?.competency
+                ? `&level_competency=${currentGetContent?.competency}`
+                : "") +
+              (currentGetContent?.tags
+                ? `&tags=${currentGetContent?.tags}`
+                : "") +
+              (currentGetContent?.storyMode
+                ? `&story_mode=${currentGetContent?.storyMode}`
+                : "")
+          );
 
-        setTotalSyllableCount(resGetContent?.data?.totalSyllableCount);
-        setLivesData({
-          ...livesData,
-          totalTargets: resGetContent?.data?.totalSyllableCount,
-          targetsForLives:
-            resGetContent?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE,
-          targetPerLive:
-            (resGetContent?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE) /
-            LIVES,
-        });
+          //TODO: required only for S1 and S2
 
-        let showcaseLevel =
-          currentPracticeStep === 3 || currentPracticeStep === 8;
-        setIsShowCase(showcaseLevel);
+          setTotalSyllableCount(resGetContent?.data?.totalSyllableCount);
+          setLivesData({
+            ...livesData,
+            totalTargets: resGetContent?.data?.totalSyllableCount,
+            targetsForLives:
+              resGetContent?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE,
+            targetPerLive:
+              (resGetContent?.data?.subsessionTargetsCount *
+                TARGETS_PERCENTAGE) /
+              LIVES,
+          });
 
-        // TODO: API returns contents if 200 status
-        quesArr = [...quesArr, ...(resGetContent?.data?.content || [])];
-        setCurrentContentType(resGetContent?.data?.content?.[0]?.contentType);
-        setCurrentCollectionId(resGetContent?.data?.content?.[0]?.collectionId);
+          let showcaseLevel =
+            currentPracticeStep === 3 || currentPracticeStep === 8;
+          setIsShowCase(showcaseLevel);
 
-        // TODO: not required - not using this anywhere
-        setAssessmentResponse(resGetContent);
+          // TODO: API returns contents if 200 status
+          quesArr = [...quesArr, ...(resGetContent?.data?.content || [])];
+          setCurrentContentType(resGetContent?.data?.content?.[0]?.contentType);
+          setCurrentCollectionId(
+            resGetContent?.data?.content?.[0]?.collectionId
+          );
 
-        setCurrentQuestion(0);
+          // TODO: not required - not using this anywhere
+          setAssessmentResponse(resGetContent);
 
-        // TODO: not required - we are geting this data from API
-        practiceProgress[virtualId] = {
-          currentQuestion: newQuestionIndex,
-          currentPracticeProgress,
-          currentPracticeStep: newPracticeStep,
-        };
-        setLocalData("practiceProgress", JSON.stringify(practiceProgress));
-        setProgressData(practiceProgress[virtualId]);
-        localStorage.setItem("storyTitle", resGetContent?.name);
+          setCurrentQuestion(0);
 
-        setQuestions(quesArr);
+          // TODO: not required - we are geting this data from API
+          practiceProgress[virtualId] = {
+            currentQuestion: newQuestionIndex,
+            currentPracticeProgress,
+            currentPracticeStep: newPracticeStep,
+          };
+          setLocalData("practiceProgress", JSON.stringify(practiceProgress));
+          setProgressData(practiceProgress[virtualId]);
+          localStorage.setItem("storyTitle", resGetContent?.name);
+
+          setQuestions(quesArr);
+        }
+
+        if ([10, 11, 12, 13, 14, 15].includes(updatedLevel)) {
+          let showcaseLevel =
+            currentPracticeStep === 3 || currentPracticeStep === 8;
+          setIsShowCase(showcaseLevel);
+          setCurrentQuestion(0);
+
+          practiceProgress[virtualId] = {
+            currentQuestion: newQuestionIndex,
+            currentPracticeProgress,
+            currentPracticeStep: newPracticeStep,
+          };
+          setLocalData("practiceProgress", JSON.stringify(practiceProgress));
+          setProgressData(practiceProgress[virtualId]);
+
+          const dummyQuestions = Array.from({ length: 5 }, (_, i) => ({
+            id: `dummy-${i + 1}`,
+          }));
+
+          setQuestions(dummyQuestions);
+        }
 
         // TODO: needs to revisit this logic
         setTimeout(() => {
@@ -1331,40 +1312,53 @@ const Practice = () => {
 
       console.log("crg", currentGetContent, level, virtualId, updatedLevel);
 
-      const resWord = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
-          (currentGetContent?.mechanism?.id
-            ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
-            : "") +
-          (currentGetContent?.competency
-            ? `&level_competency=${currentGetContent?.competency}`
-            : "") +
-          (currentGetContent?.tags ? `&tags=${currentGetContent?.tags}` : "") +
-          (currentGetContent?.storyMode
-            ? `&story_mode=${currentGetContent?.storyMode}`
-            : "")
-      );
+      if (![10, 11, 12, 13, 14, 15].includes(updatedLevel)) {
+        const resWord = await axios.get(
+          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
+            (currentGetContent?.mechanism?.id
+              ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
+              : "") +
+            (currentGetContent?.competency
+              ? `&level_competency=${currentGetContent?.competency}`
+              : "") +
+            (currentGetContent?.tags
+              ? `&tags=${currentGetContent?.tags}`
+              : "") +
+            (currentGetContent?.storyMode
+              ? `&story_mode=${currentGetContent?.storyMode}`
+              : "")
+        );
 
-      // TODO: handle error if resWord is empty
+        // TODO: handle error if resWord is empty
 
-      setTotalSyllableCount(resWord?.data?.totalSyllableCount);
-      setLivesData({
-        ...livesData,
-        totalTargets: resWord?.data?.totalSyllableCount,
-        targetsForLives:
-          resWord?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE,
-        targetPerLive:
-          (resWord?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE) / LIVES,
-      });
-      quesArr = [...quesArr, ...(resWord?.data?.content || [])];
-      setCurrentContentType(currentGetContent.criteria);
+        setTotalSyllableCount(resWord?.data?.totalSyllableCount);
+        setLivesData({
+          ...livesData,
+          totalTargets: resWord?.data?.totalSyllableCount,
+          targetsForLives:
+            resWord?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE,
+          targetPerLive:
+            (resWord?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE) /
+            LIVES,
+        });
+        quesArr = [...quesArr, ...(resWord?.data?.content || [])];
+        setCurrentContentType(currentGetContent.criteria);
 
-      setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
-      setAssessmentResponse(resWord);
+        setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
+        setAssessmentResponse(resWord);
 
-      localStorage.setItem("storyTitle", resWord?.name);
+        localStorage.setItem("storyTitle", resWord?.name);
 
-      setQuestions(quesArr);
+        setQuestions(quesArr);
+      }
+
+      if ([10, 11, 12, 13, 14, 15].includes(updatedLevel)) {
+        const dummyQuestions = Array.from({ length: 5 }, (_, i) => ({
+          id: `dummy-${i + 1}`,
+        }));
+
+        setQuestions(dummyQuestions);
+      }
       setMechanism(currentGetContent.mechanism);
 
       // if (virtualId === "6760800019" || level == 12) {
@@ -1449,35 +1443,50 @@ const Practice = () => {
         (elem) => elem.title === practiceSteps?.[newCurrentPracticeStep].name
       );
       let quesArr = [];
-      const resWord = await axios.get(
-        `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
-          (currentGetContent?.mechanism?.id
-            ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
-            : "") +
-          (currentGetContent?.competency
-            ? `&level_competency=${currentGetContent?.competency}`
-            : "") +
-          (currentGetContent?.tags ? `&tags=${currentGetContent?.tags}` : "") +
-          (currentGetContent?.storyMode
-            ? `&story_mode=${currentGetContent?.storyMode}`
-            : "")
-      );
-      setTotalSyllableCount(resWord?.data?.totalSyllableCount);
-      setLivesData({
-        ...livesData,
-        totalTargets: resWord?.data?.totalSyllableCount,
-        targetsForLives:
-          resWord?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE,
-        targetPerLive:
-          (resWord?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE) / LIVES,
-      });
-      quesArr = [...quesArr, ...(resWord?.data?.content || [])];
-      setCurrentContentType(currentGetContent.criteria);
-      setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
-      setAssessmentResponse(resWord);
 
-      localStorage.setItem("storyTitle", resWord?.name);
-      setQuestions(quesArr);
+      if (![10, 11, 12, 13, 14, 15].includes(level)) {
+        const resWord = await axios.get(
+          `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
+            (currentGetContent?.mechanism?.id
+              ? `&mechanics_id=${currentGetContent?.mechanism?.id}`
+              : "") +
+            (currentGetContent?.competency
+              ? `&level_competency=${currentGetContent?.competency}`
+              : "") +
+            (currentGetContent?.tags
+              ? `&tags=${currentGetContent?.tags}`
+              : "") +
+            (currentGetContent?.storyMode
+              ? `&story_mode=${currentGetContent?.storyMode}`
+              : "")
+        );
+        setTotalSyllableCount(resWord?.data?.totalSyllableCount);
+        setLivesData({
+          ...livesData,
+          totalTargets: resWord?.data?.totalSyllableCount,
+          targetsForLives:
+            resWord?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE,
+          targetPerLive:
+            (resWord?.data?.subsessionTargetsCount * TARGETS_PERCENTAGE) /
+            LIVES,
+        });
+        quesArr = [...quesArr, ...(resWord?.data?.content || [])];
+        setCurrentContentType(currentGetContent.criteria);
+        setCurrentCollectionId(resWord?.data?.content?.[0]?.collectionId);
+        setAssessmentResponse(resWord);
+
+        localStorage.setItem("storyTitle", resWord?.name);
+        setQuestions(quesArr);
+      }
+
+      if ([10, 11, 12, 13, 14, 15].includes(level)) {
+        const dummyQuestions = Array.from({ length: 5 }, (_, i) => ({
+          id: `dummy-${i + 1}`,
+        }));
+
+        setQuestions(dummyQuestions);
+      }
+
       setTimeout(() => {
         setMechanism(currentGetContent.mechanism);
       }, 1000);

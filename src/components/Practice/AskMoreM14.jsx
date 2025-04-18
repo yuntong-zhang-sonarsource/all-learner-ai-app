@@ -145,6 +145,7 @@ const AskMoreM14 = ({
       alert("Speech recognition is not supported in your browser.");
       return;
     }
+    setRecAudio(null);
     resetTranscript();
     setIsRecording(true);
     handleMikeClick();
@@ -183,29 +184,10 @@ const AskMoreM14 = ({
     //console.log("Final Transcript:", transcriptRef.current);
   };
 
-  const handleRecordingComplete = async (base64Data) => {
+  const handleRecordingComplete = (base64Data) => {
     if (base64Data) {
       setIsRecordingComplete(true);
       setRecAudio(base64Data);
-      if (currentLevel === "S1" || currentLevel === "S2") {
-        // const comprehension = await handleTextEvaluation(
-        //   conversation[currentSteps]?.user,
-        //   transcriptRef.current
-        // );
-
-        // if (comprehension) {
-        const options = {
-          originalText: conversation[currentSteps]?.user,
-          contentType: contentType,
-          contentId: contentId,
-          //comprehension: comprehension,
-        };
-
-        fetchASROutput(base64Data, options, setLoader, setApiResponse);
-        // } else {
-        //   console.error("Failed to get evaluation result.");
-        // }
-      }
     } else {
       setIsRecordingComplete(false);
       setRecAudio("");
@@ -385,7 +367,19 @@ const AskMoreM14 = ({
 
   const cloudPositions = generateCloudPositions();
 
-  const handlePauseClick = () => {
+  const handlePauseClick = async () => {
+    setIsLoading(true);
+
+    if (currentLevel === "S1" || currentLevel === "S2") {
+      const options = {
+        originalText: conversation[currentSteps]?.user,
+        contentType: contentType,
+        contentId: contentId,
+      };
+
+      await fetchASROutput(recAudio, options, setLoader, setApiResponse);
+    }
+
     if (currentSteps < conversation.length - 1) {
       const audio = new Audio(correctSound);
       audio.play();
@@ -406,6 +400,7 @@ const AskMoreM14 = ({
     setIsMikeClicked(false);
     setShowClock(false);
     setRecAudio("");
+    setIsLoading(false);
   };
 
   const handleMikeClick = () => {

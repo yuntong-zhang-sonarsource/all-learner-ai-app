@@ -106,7 +106,7 @@ const McqFlow = ({
     audio.play();
   };
 
-  steps = 1;
+  steps = 5;
 
   const getConversation = (level, currentLevel) => {
     const levelData = levelMap[level];
@@ -477,7 +477,7 @@ const McqFlow = ({
                 recAudio && (
                   <div
                     onClick={loadNextTask}
-                    style={{ cursor: "pointer", marginLeft: "35px" }}
+                    style={{ cursor: "pointer", marginLeft: "23px" }}
                   >
                     <NextButtonRound height={45} width={45} />
                   </div>
@@ -485,7 +485,7 @@ const McqFlow = ({
               : recAudio && (
                   <div
                     onClick={loadNextTask}
-                    style={{ cursor: "pointer", marginLeft: "35px" }}
+                    style={{ cursor: "pointer", marginLeft: "23px" }}
                   >
                     <NextButtonRound height={45} width={45} />
                   </div>
