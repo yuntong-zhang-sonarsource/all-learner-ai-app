@@ -842,7 +842,7 @@ const AnouncementFlow = ({
             />
           </div>
         )}
-        {showConfetti && <Confetti />}
+        {showConfetti && <Confetti height={"350px"} />}
         <div style={styles.innerContainer}>
           {!showQuestion ? (
             <div
@@ -1101,8 +1101,8 @@ const AnouncementFlow = ({
                   src={isPlaying ? spinnerStop : listenImg2}
                   alt="Audio"
                   style={{
-                    height: "50px",
-                    width: "50px",
+                    height: "45px",
+                    width: "45px",
                     cursor: "pointer",
                     //: "5px",
                   }}

@@ -634,7 +634,7 @@ const PhoneConversation = ({
       }}
     >
       <div style={styles.mainContainer}>
-        {showConfetti && <Confetti />}
+        {showConfetti && <Confetti height={"350px"} />}
         <div style={styles.innerContainer}>
           {!showQuestion ? (
             <>
