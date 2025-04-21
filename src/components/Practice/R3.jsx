@@ -149,6 +149,7 @@ const R3 = ({
   const [showReset, setShowReset] = useState(false);
   const [progress, setProgress] = React.useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [audioInstance, setAudioInstance] = useState(null);
   const {
     transcript,
     interimTranscript,
@@ -239,6 +240,12 @@ const R3 = ({
   };
 
   const handleNextClick = () => {
+    if (isAudioPlaying) {
+      // If already playing, stop the audio
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+      setIsAudioPlaying(false);
+    }
     if (selectedCheckbox) {
       handleAudioClick(selectedCheckbox);
       setShowNextButton(false);
@@ -274,11 +281,18 @@ const R3 = ({
   };
 
   const playAudio = (audioKey) => {
+    if (isAudioPlaying) {
+      // If already playing, stop the audio
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+      setIsAudioPlaying(false);
+    }
     if (getAssetAudioUrl(s3Assets[audioKey]) || Assets[audioKey]) {
       const audioElement = new Audio(
         getAssetAudioUrl(s3Assets[audioKey]) || Assets[audioKey]
       );
       audioElement.play();
+      setAudioInstance(audioElement);
       setIsAudioPlaying(true);
       audioElement.onended = () => setIsAudioPlaying(false);
     } else {

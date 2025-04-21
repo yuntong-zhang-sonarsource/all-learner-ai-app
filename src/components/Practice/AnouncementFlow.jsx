@@ -236,6 +236,12 @@ const AnouncementFlow = ({
   // };
 
   const handleHintClick = () => {
+    if (isPlaying) {
+      // If already playing, stop the audio
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+      setIsPlaying(false);
+    }
     setStep("start");
     setIsPressedOnce(true);
   };
@@ -496,6 +502,12 @@ const AnouncementFlow = ({
   };
 
   const handleNextClick = () => {
+    if (isPlaying) {
+      // If already playing, stop the audio
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+      setIsPlaying(false);
+    }
     setShowQuestion(true);
     setIsPressedOnce(false);
   };
@@ -550,6 +562,12 @@ const AnouncementFlow = ({
   };
 
   const loadNextTask = async () => {
+    if (isPlaying) {
+      // If already playing, stop the audio
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+      setIsPlaying(false);
+    }
     setIsLoading(true);
 
     if (currentLevel === "S1" || currentLevel === "S2") {
