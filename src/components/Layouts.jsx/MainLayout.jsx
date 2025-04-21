@@ -800,519 +800,533 @@ const MainLayout = (props) => {
                 </Box>
               </Card>
             )}
-          {((isShowCase && !startShowCase) || gameOverData) && (
-            <Card
-              sx={{
-                width: "85vw",
-                minHeight: "80vh",
-                borderRadius: "20px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                backgroundImage: `url(${cardBackground || textureImage})`,
-                backgroundSize: "contain",
-                backgroundRepeat: "round",
-                boxShadow: "0px 4px 20px -1px rgba(0, 0, 0, 0.00)",
-                backdropFilter: "blur(25px)",
-                mt: "50px",
-              }}
-            >
-              <Box>{shake && <Confetti width={width} height={"602px"} />}</Box>
-              <CardContent
+          {((isShowCase && !startShowCase) || gameOverData) &&
+            !allCompleted && (
+              <Card
                 sx={{
-                  width: "82vw",
-                  minHeight: "100%",
-                  opacity: disableScreen ? 0.25 : 1,
-                  pointerEvents: disableScreen ? "none" : "initial",
+                  width: "85vw",
+                  minHeight: "80vh",
+                  borderRadius: "20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  backgroundImage: `url(${cardBackground || textureImage})`,
+                  backgroundSize: "contain",
+                  backgroundRepeat: "round",
+                  boxShadow: "0px 4px 20px -1px rgba(0, 0, 0, 0.00)",
+                  backdropFilter: "blur(25px)",
+                  mt: "50px",
                 }}
               >
-                {isShowCase && !startShowCase && !gameOverData && (
-                  <>
-                    <Typography
-                      className="successHeader"
-                      sx={{
-                        textAlign: "center",
-                      }}
-                    >
-                      Hurray!!!
-                    </Typography>
-                    <Typography
-                      sx={{
-                        mb: 1,
-                        mt: 1,
-                        textAlign: "center",
-                      }}
-                    >
-                      <span
-                        style={{
-                          color: "#50507D",
-                          fontWeight: 600,
-                          fontSize: "20px",
-                          lineHeight: "37px",
-                          letterSpacing: "2%",
-                          fontFamily: "Quicksand",
+                <Box>
+                  {shake && <Confetti width={width} height={"602px"} />}
+                </Box>
+                <CardContent
+                  sx={{
+                    width: "82vw",
+                    minHeight: "100%",
+                    opacity: disableScreen ? 0.25 : 1,
+                    pointerEvents: disableScreen ? "none" : "initial",
+                  }}
+                >
+                  {isShowCase && !startShowCase && !gameOverData && (
+                    <>
+                      <Typography
+                        className="successHeader"
+                        sx={{
+                          textAlign: "center",
                         }}
                       >
-                        {"Ready for Challenge?"}
-                      </span>
-                    </Typography>
-                  </>
-                )}
-                {gameOverData && (
-                  <>
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: "-120px",
-                        left: "-70px",
-                      }}
-                    >
-                      {!gameOverData?.userWon && (
-                        <img
-                          src={clouds}
-                          alt="clouds"
-                          style={{ zIndex: -999 }}
-                        />
-                      )}
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        position: "relative",
-                        zIndex: "100",
-                      }}
-                    >
-                      {gameOverData?.userWon ? (
-                        <img
-                          src={gameWon}
-                          alt="gameWon"
-                          style={{ zIndex: 9999, height: 340 }}
-                        />
-                      ) : (
-                        <Stack
-                          justifyContent="center"
-                          alignItems="center"
-                          direction={"row"}
-                          zIndex={100}
+                        Hurray!!!
+                      </Typography>
+                      <Typography
+                        sx={{
+                          mb: 1,
+                          mt: 1,
+                          textAlign: "center",
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: "#50507D",
+                            fontWeight: 600,
+                            fontSize: "20px",
+                            lineHeight: "37px",
+                            letterSpacing: "2%",
+                            fontFamily: "Quicksand",
+                          }}
                         >
-                          <Stack justifyContent="center" alignItems="center">
-                            <img
-                              src={`https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.3/src/assets/images/gameLost.svg`}
-                              alt="gameLost"
-                              style={{ height: 340 }}
-                            />
-                            <Typography
-                              sx={{ mb: 1, mt: 1, textAlign: "center" }}
-                            >
-                              {!props.pageName === "m8" && (
-                                <span
-                                  style={{
-                                    fontWeight: 600,
-                                    fontSize: "24px",
-                                    lineHeight: "1.5",
-                                    letterSpacing: "1px",
-                                    fontFamily: "Quicksand",
-                                    backgroundColor: "rgb(237, 134, 0)",
-                                    padding: "6px 12px",
-                                    color: "#fff",
-                                    borderRadius: "20px",
-                                    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-                                    textShadow:
-                                      "1px 1px 2px rgba(0, 0, 0, 0.5)",
-                                  }}
-                                >
-                                  {percentage <= 0 ? 0 : percentage}/100
-                                </span>
-                              )}
-                              <br />
-
-                              {!fluency ? (
-                                <Typography textAlign="center" sx={{ mt: 2 }}>
-                                  Good try! Need more speed.
-                                </Typography>
-                              ) : (
-                                <Typography textAlign="center" sx={{ mt: 2 }}>
-                                  You need{" "}
-                                  <span style={{ fontWeight: "bold" }}>
-                                    {Math.abs(70 - percentage)}
-                                  </span>{" "}
-                                  more.
-                                </Typography>
-                              )}
-                            </Typography>
-                          </Stack>
-                          {/* second stack below*/}
+                          {"Ready for Challenge?"}
+                        </span>
+                      </Typography>
+                    </>
+                  )}
+                  {gameOverData && (
+                    <>
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: "-120px",
+                          left: "-70px",
+                        }}
+                      >
+                        {!gameOverData?.userWon && (
+                          <img
+                            src={clouds}
+                            alt="clouds"
+                            style={{ zIndex: -999 }}
+                          />
+                        )}
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          position: "relative",
+                          zIndex: "100",
+                        }}
+                      >
+                        {gameOverData?.userWon ? (
+                          <img
+                            src={gameWon}
+                            alt="gameWon"
+                            style={{ zIndex: 9999, height: 340 }}
+                          />
+                        ) : (
                           <Stack
-                            direction={"column"}
+                            justifyContent="center"
                             alignItems="center"
-                            spacing={2}
-                            marginLeft={"10px"}
+                            direction={"row"}
+                            zIndex={100}
                           >
+                            <Stack justifyContent="center" alignItems="center">
+                              <img
+                                src={`https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.3/src/assets/images/gameLost.svg`}
+                                alt="gameLost"
+                                style={{ height: 340 }}
+                              />
+                              <Typography
+                                sx={{ mb: 1, mt: 1, textAlign: "center" }}
+                              >
+                                {!props.pageName === "m8" && (
+                                  <span
+                                    style={{
+                                      fontWeight: 600,
+                                      fontSize: "24px",
+                                      lineHeight: "1.5",
+                                      letterSpacing: "1px",
+                                      fontFamily: "Quicksand",
+                                      backgroundColor: "rgb(237, 134, 0)",
+                                      padding: "6px 12px",
+                                      color: "#fff",
+                                      borderRadius: "20px",
+                                      boxShadow:
+                                        "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                                      textShadow:
+                                        "1px 1px 2px rgba(0, 0, 0, 0.5)",
+                                    }}
+                                  >
+                                    {percentage <= 0 ? 0 : percentage}/100
+                                  </span>
+                                )}
+                                <br />
+
+                                {!fluency ? (
+                                  <Typography textAlign="center" sx={{ mt: 2 }}>
+                                    Good try! Need more speed.
+                                  </Typography>
+                                ) : (
+                                  <Typography textAlign="center" sx={{ mt: 2 }}>
+                                    You need{" "}
+                                    <span style={{ fontWeight: "bold" }}>
+                                      {Math.abs(70 - percentage)}
+                                    </span>{" "}
+                                    more.
+                                  </Typography>
+                                )}
+                              </Typography>
+                            </Stack>
+                            {/* second stack below*/}
                             <Stack
-                              sx={{
-                                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px;",
-                                paddingY: "49px",
-                                paddingX: "30px",
-                                borderRadius: "13px",
-                                marginLeft: "80px",
-                                bgcolor: "#FFFFFF",
-                                zIndex: 100,
-                              }}
-                              direction={"row"}
+                              direction={"column"}
+                              alignItems="center"
+                              spacing={2}
+                              marginLeft={"10px"}
                             >
                               <Stack
                                 sx={{
-                                  paddingRight:
-                                    (props.pageName === "wordsorimage" ||
-                                      props.pageName === "m5") &&
-                                    !fluency
-                                      ? "20px"
-                                      : "0px",
-                                  borderRight:
-                                    (props.pageName === "wordsorimage" ||
-                                      props.pageName === "m5") &&
-                                    !fluency
-                                      ? "1px dashed grey"
-                                      : "none",
+                                  boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px;",
+                                  paddingY: "49px",
+                                  paddingX: "30px",
+                                  borderRadius: "13px",
+                                  marginLeft: "80px",
+                                  bgcolor: "#FFFFFF",
+                                  zIndex: 100,
                                 }}
+                                direction={"row"}
                               >
-                                {(props.pageName === "wordsorimage" ||
-                                  props.pageName === "m5") &&
-                                  storedData?.map((elem, index) => (
-                                    <Stack
-                                      key={index}
-                                      justifyContent={"start"}
-                                      alignItems={"center"}
-                                      direction={"row"}
-                                      mt={index > 0 ? "25px" : 0}
-                                    >
-                                      <Box
-                                        sx={{
-                                          marginLeft: "35px",
-                                          marginRight: "5px",
-                                        }}
-                                      >
-                                        {elem?.audioUrl ? (
-                                          <button
-                                            onClick={() =>
-                                              handleAudioPlay(index)
-                                            }
-                                            style={{
-                                              height: "30px",
-                                              cursor: "pointer",
-                                              background: "none",
-                                              border: "none",
-                                              padding: "0",
-                                            }}
-                                            aria-label={
-                                              audioPlaying === index
-                                                ? "Pause audio"
-                                                : "Play audio"
-                                            }
-                                          >
-                                            <img
-                                              src={
-                                                audioPlaying === index
-                                                  ? pauseButton
-                                                  : playButton
-                                              }
-                                              alt={
-                                                audioPlaying === index
-                                                  ? "Pause"
-                                                  : "Play"
-                                              }
-                                              style={{ height: "30px" }}
-                                            />
-                                          </button>
-                                        ) : (
-                                          <Box></Box>
-                                        )}
-                                        <audio
-                                          ref={(el) =>
-                                            (audioRefs.current[index] = el)
-                                          }
-                                          src={elem?.audioUrl}
-                                        />
-                                      </Box>
-
-                                      {elem?.correctAnswer === false ? (
-                                        <img
-                                          src="https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.2-tn-dev/src/assets/wrong.svg"
-                                          alt="wrongImage"
-                                        />
-                                      ) : (
-                                        <img
-                                          src="https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.2-tn-dev/src/assets/correct.svg"
-                                          alt="correctImage"
-                                        />
-                                      )}
-                                      <span
-                                        style={{
-                                          marginLeft: "8px",
-                                          color: "#1E2937",
-                                          fontWeight: 700,
-                                          lineHeight: "30px",
-                                          fontSize: "15px",
-                                          fontFamily: "Quicksand",
-                                          minWidth: "100px",
-                                        }}
-                                      >
-                                        {elem.selectedAnswer || "Binocular"}
-                                      </span>
-                                    </Stack>
-                                  ))}
-                              </Stack>
-                              {(fluency ||
-                                [10, 11, 12, 13, 14, 15].includes(LEVEL)) && (
                                 <Stack
                                   sx={{
-                                    paddingLeft:
+                                    paddingRight:
                                       (props.pageName === "wordsorimage" ||
                                         props.pageName === "m5") &&
                                       !fluency
                                         ? "20px"
                                         : "0px",
+                                    borderRight:
+                                      (props.pageName === "wordsorimage" ||
+                                        props.pageName === "m5") &&
+                                      !fluency
+                                        ? "1px dashed grey"
+                                        : "none",
                                   }}
-                                  justifyContent={"center"}
-                                  alignItems={"center"}
                                 >
-                                  <img
-                                    src="https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.2-tn-dev/src/assets/turtle.svg"
-                                    alt="turtleImage"
-                                  />
-                                  <span
-                                    style={{
-                                      marginTop: "12px",
-                                      color: "#1E2937",
-                                      fontWeight: 700,
-                                      lineHeight: "25px",
-                                      fontSize: "20px",
-                                      fontFamily: "Quicksand",
-                                    }}
-                                  >
-                                    {"Oops, a bit slow!"}
-                                  </span>
+                                  {(props.pageName === "wordsorimage" ||
+                                    props.pageName === "m5") &&
+                                    storedData?.map((elem, index) => (
+                                      <Stack
+                                        key={index}
+                                        justifyContent={"start"}
+                                        alignItems={"center"}
+                                        direction={"row"}
+                                        mt={index > 0 ? "25px" : 0}
+                                      >
+                                        <Box
+                                          sx={{
+                                            marginLeft: "35px",
+                                            marginRight: "5px",
+                                          }}
+                                        >
+                                          {elem?.audioUrl ? (
+                                            <button
+                                              onClick={() =>
+                                                handleAudioPlay(index)
+                                              }
+                                              style={{
+                                                height: "30px",
+                                                cursor: "pointer",
+                                                background: "none",
+                                                border: "none",
+                                                padding: "0",
+                                              }}
+                                              aria-label={
+                                                audioPlaying === index
+                                                  ? "Pause audio"
+                                                  : "Play audio"
+                                              }
+                                            >
+                                              <img
+                                                src={
+                                                  audioPlaying === index
+                                                    ? pauseButton
+                                                    : playButton
+                                                }
+                                                alt={
+                                                  audioPlaying === index
+                                                    ? "Pause"
+                                                    : "Play"
+                                                }
+                                                style={{ height: "30px" }}
+                                              />
+                                            </button>
+                                          ) : (
+                                            <Box></Box>
+                                          )}
+                                          <audio
+                                            ref={(el) =>
+                                              (audioRefs.current[index] = el)
+                                            }
+                                            src={elem?.audioUrl}
+                                          />
+                                        </Box>
+
+                                        {elem?.correctAnswer === false ? (
+                                          <img
+                                            src="https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.2-tn-dev/src/assets/wrong.svg"
+                                            alt="wrongImage"
+                                          />
+                                        ) : (
+                                          <img
+                                            src="https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.2-tn-dev/src/assets/correct.svg"
+                                            alt="correctImage"
+                                          />
+                                        )}
+                                        <span
+                                          style={{
+                                            marginLeft: "8px",
+                                            color: "#1E2937",
+                                            fontWeight: 700,
+                                            lineHeight: "30px",
+                                            fontSize: "15px",
+                                            fontFamily: "Quicksand",
+                                            minWidth: "100px",
+                                          }}
+                                        >
+                                          {elem.selectedAnswer || "Binocular"}
+                                        </span>
+                                      </Stack>
+                                    ))}
                                 </Stack>
-                              )}
-                            </Stack>
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
-                              sx={{
-                                backgroundColor: "#F8EAD2",
-                                border: "2px solid yellow",
-                                borderRadius: "40px",
-                                padding: "10px 20px",
-                                //maxWidth: "100%",
-                              }}
-                            >
-                              <img
-                                src={Assets.starNewImg}
-                                alt="Star"
-                                style={{
-                                  width: "100px",
-                                  height: "100px",
-                                  flexShrink: 0,
-                                }}
-                              />
-                              <Typography
-                                variant="body1"
+                                {(fluency ||
+                                  [10, 11, 12, 13, 14, 15].includes(LEVEL)) && (
+                                  <Stack
+                                    sx={{
+                                      paddingLeft:
+                                        (props.pageName === "wordsorimage" ||
+                                          props.pageName === "m5") &&
+                                        !fluency
+                                          ? "20px"
+                                          : "0px",
+                                    }}
+                                    justifyContent={"center"}
+                                    alignItems={"center"}
+                                  >
+                                    <img
+                                      src="https://raw.githubusercontent.com/Sunbird-ALL/all-learner-ai-app/refs/heads/all-1.2-tn-dev/src/assets/turtle.svg"
+                                      alt="turtleImage"
+                                    />
+                                    <span
+                                      style={{
+                                        marginTop: "12px",
+                                        color: "#1E2937",
+                                        fontWeight: 700,
+                                        lineHeight: "25px",
+                                        fontSize: "20px",
+                                        fontFamily: "Quicksand",
+                                      }}
+                                    >
+                                      {"Oops, a bit slow!"}
+                                    </span>
+                                  </Stack>
+                                )}
+                              </Stack>
+                              <Stack
+                                direction="row"
+                                alignItems="center"
+                                spacing={2}
                                 sx={{
-                                  wordWrap: "break-word",
-                                  whiteSpace: "normal",
-                                  maxWidth: "150px",
-                                  fontWeight: "700",
-                                  fontSize: "16px",
-                                  fontFamily: "Quicksand",
+                                  backgroundColor: "#F8EAD2",
+                                  border: "2px solid yellow",
+                                  borderRadius: "40px",
+                                  padding: "10px 20px",
+                                  //maxWidth: "100%",
                                 }}
                               >
-                                Let’s practice more
-                              </Typography>
+                                <img
+                                  src={Assets.starNewImg}
+                                  alt="Star"
+                                  style={{
+                                    width: "100px",
+                                    height: "100px",
+                                    flexShrink: 0,
+                                  }}
+                                />
+                                <Typography
+                                  variant="body1"
+                                  sx={{
+                                    wordWrap: "break-word",
+                                    whiteSpace: "normal",
+                                    maxWidth: "150px",
+                                    fontWeight: "700",
+                                    fontSize: "16px",
+                                    fontFamily: "Quicksand",
+                                  }}
+                                >
+                                  Let’s practice more
+                                </Typography>
+                              </Stack>
                             </Stack>
                           </Stack>
-                        </Stack>
-                      )}
-                    </Box>
-                  </>
-                )}
-              </CardContent>
-              <Box sx={{ height: "120px", position: "relative" }}>
-                <Box
-                  sx={{
-                    borderBottom: "1.5px solid rgba(51, 63, 97, 0.15)",
-                    width: "100%",
-                  }}
-                ></Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: currentPracticeStep ? "center" : "right",
-                    alignItems: "center",
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  {
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: currentPracticeStep
-                          ? "center"
-                          : "right",
-                        alignItems: "center",
-                        width: "100%",
-                        height: "100%",
-                      }}
-                    >
-                      {showProgress && (
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            width: "100%",
-                          }}
-                        >
+                        )}
+                      </Box>
+                    </>
+                  )}
+                </CardContent>
+                <Box sx={{ height: "120px", position: "relative" }}>
+                  <Box
+                    sx={{
+                      borderBottom: "1.5px solid rgba(51, 63, 97, 0.15)",
+                      width: "100%",
+                    }}
+                  ></Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: currentPracticeStep ? "center" : "right",
+                      alignItems: "center",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  >
+                    {
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: currentPracticeStep
+                            ? "center"
+                            : "right",
+                          alignItems: "center",
+                          width: "100%",
+                          height: "100%",
+                        }}
+                      >
+                        {showProgress && (
                           <Box
                             sx={{
                               display: "flex",
                               justifyContent: "center",
-                              flexDirection: "column",
+                              width: "100%",
                             }}
                           >
-                            {" "}
                             <Box
                               sx={{
                                 display: "flex",
                                 justifyContent: "center",
-                                alignItems: "center",
-                                height: "48px",
-                                border: "1.5px solid rgba(51, 63, 97, 0.15)",
-                                ml: {
-                                  lg: 25,
-                                  md: 18,
-                                },
-                                borderRadius: "30px",
-                                background: "white",
+                                flexDirection: "column",
                               }}
                             >
-                              {practiceSteps.map((elem, i) => {
-                                return (
-                                  <Box
-                                    key={i}
-                                    sx={{
-                                      width: {
-                                        md: "28px",
-                                        lg: "36px",
-                                      },
-                                      height: {
-                                        md: "28px",
-                                        lg: "36px",
-                                      },
-                                      background:
-                                        currentPracticeStep > i
-                                          ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
-                                          : currentPracticeStep === i
-                                          ? "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)"
-                                          : "rgba(0, 0, 0, 0.04)",
-                                      ml: {
-                                        md: 1.5,
-                                        lg: 2,
-                                      },
-                                      mr:
-                                        i === practiceSteps?.length - 1 ? 2 : 0,
-                                      borderRadius: "30px",
-                                      display: "flex",
-                                      justifyContent: "center",
-                                      alignItems: "center",
-                                    }}
-                                  >
-                                    {currentPracticeStep > i ? (
-                                      <GreenTick />
-                                    ) : (
-                                      <span
-                                        style={{
-                                          color:
-                                            currentPracticeStep === i
-                                              ? "white"
-                                              : "#1E2937",
-                                          fontWeight: 600,
-                                          lineHeight: "20px",
-                                          fontSize: "16px",
-                                          fontFamily: "Quicksand",
-                                        }}
-                                      >
-                                        {LEVEL === 1 ? elem.title : elem.name}
-                                      </span>
-                                    )}
-                                  </Box>
-                                );
-                              })}
+                              {" "}
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  height: "48px",
+                                  border: "1.5px solid rgba(51, 63, 97, 0.15)",
+                                  ml: {
+                                    lg: 25,
+                                    md: 18,
+                                  },
+                                  borderRadius: "30px",
+                                  background: "white",
+                                }}
+                              >
+                                {practiceSteps.map((elem, i) => {
+                                  return (
+                                    <Box
+                                      key={i}
+                                      sx={{
+                                        width: {
+                                          md: "28px",
+                                          lg: "36px",
+                                        },
+                                        height: {
+                                          md: "28px",
+                                          lg: "36px",
+                                        },
+                                        background:
+                                          currentPracticeStep > i
+                                            ? "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)"
+                                            : currentPracticeStep === i
+                                            ? "linear-gradient(90deg, #FF4BC2 0%, #C20281 95%)"
+                                            : "rgba(0, 0, 0, 0.04)",
+                                        ml: {
+                                          md: 1.5,
+                                          lg: 2,
+                                        },
+                                        mr:
+                                          i === practiceSteps?.length - 1
+                                            ? 2
+                                            : 0,
+                                        borderRadius: "30px",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      {currentPracticeStep > i ? (
+                                        <GreenTick />
+                                      ) : (
+                                        <span
+                                          style={{
+                                            color:
+                                              currentPracticeStep === i
+                                                ? "white"
+                                                : "#1E2937",
+                                            fontWeight: 600,
+                                            lineHeight: "20px",
+                                            fontSize: "16px",
+                                            fontFamily: "Quicksand",
+                                          }}
+                                        >
+                                          {LEVEL === 1 ? elem.title : elem.name}
+                                        </span>
+                                      )}
+                                    </Box>
+                                  );
+                                })}
+                              </Box>
                             </Box>
                           </Box>
-                        </Box>
-                      )}
-                      <Box
-                        sx={{ display: "flex", justifyContent: "right", mr: 4 }}
-                      >
+                        )}
                         <Box
                           sx={{
-                            cursor: "pointer",
-                            background:
-                              "linear-gradient(90deg, rgba(255,144,80,1) 0%, rgba(225,84,4,1) 85%)",
-                            minWidth: "160px",
-                            height: "55px",
-                            borderRadius: "10px",
                             display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            padding: "0px 24px 0px 20px",
-                          }}
-                          onClick={() => {
-                            if (
-                              ((LEVEL === 1 || LEVEL === 2) &&
-                                mFlow === true) ||
-                              mFlow === "true"
-                            ) {
-                              console.log("mFlow value:", mFlow);
-                              setLocalData("rFlow", true);
-                            }
-                            if (
-                              props.pageName === "wordsorimage" ||
-                              props.pageName === "m5"
-                            ) {
-                              resetStoredData();
-                            }
-                            if (isShowCase && !startShowCase && !gameOverData) {
-                              setStartShowCase(true);
-                            }
-                            if (gameOverData) {
-                              gameOverData.link
-                                ? navigate(gameOverData.link)
-                                : navigate("/_practice");
-                            }
+                            justifyContent: "right",
+                            mr: 4,
                           }}
                         >
-                          <Typography
-                            style={{
-                              color: "#FFFFFF",
-                              fontWeight: 600,
-                              fontSize: "20px",
-                              fontFamily: "Quicksand",
+                          <Box
+                            sx={{
+                              cursor: "pointer",
+                              background:
+                                "linear-gradient(90deg, rgba(255,144,80,1) 0%, rgba(225,84,4,1) 85%)",
+                              minWidth: "160px",
+                              height: "55px",
+                              borderRadius: "10px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              padding: "0px 24px 0px 20px",
                             }}
-                            fontSize={{ md: "14px", xs: "10px" }}
+                            onClick={() => {
+                              if (
+                                ((LEVEL === 1 || LEVEL === 2) &&
+                                  mFlow === true) ||
+                                mFlow === "true"
+                              ) {
+                                console.log("mFlow value:", mFlow);
+                                setLocalData("rFlow", true);
+                              }
+                              if (
+                                props.pageName === "wordsorimage" ||
+                                props.pageName === "m5"
+                              ) {
+                                resetStoredData();
+                              }
+                              if (
+                                isShowCase &&
+                                !startShowCase &&
+                                !gameOverData
+                              ) {
+                                setStartShowCase(true);
+                              }
+                              if (gameOverData) {
+                                gameOverData.link
+                                  ? navigate(gameOverData.link)
+                                  : navigate("/_practice");
+                              }
+                            }}
                           >
-                            {!gameOverData ? "Start Game ➜" : "Practice ➜"}
-                          </Typography>
+                            <Typography
+                              style={{
+                                color: "#FFFFFF",
+                                fontWeight: 600,
+                                fontSize: "20px",
+                                fontFamily: "Quicksand",
+                              }}
+                              fontSize={{ md: "14px", xs: "10px" }}
+                            >
+                              {!gameOverData ? "Start Game ➜" : "Practice ➜"}
+                            </Typography>
+                          </Box>
                         </Box>
                       </Box>
-                    </Box>
-                  }
+                    }
+                  </Box>
                 </Box>
-              </Box>
-            </Card>
-          )}
+              </Card>
+            )}
           {LEVEL === 15 && allCompleted && (
             <Card
               sx={{
