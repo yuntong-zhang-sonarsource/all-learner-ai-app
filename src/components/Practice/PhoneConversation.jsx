@@ -251,6 +251,13 @@ const PhoneConversation = ({
   };
 
   const handleNextClick = () => {
+    if (isPlaying) {
+      // If already playing, stop the audio
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+      setIsPlaying(false);
+      setAudioInstance(null);
+    }
     setShowQuestion(true);
   };
 
@@ -296,6 +303,13 @@ const PhoneConversation = ({
   };
 
   const loadNextTask = async () => {
+    if (isPlaying) {
+      // If already playing, stop the audio
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+      setIsPlaying(false);
+      setAudioInstance(null);
+    }
     setIsLoading(true);
 
     if (currentLevel === "S1" || currentLevel === "S2") {
@@ -620,7 +634,7 @@ const PhoneConversation = ({
       }}
     >
       <div style={styles.mainContainer}>
-        {showConfetti && <Confetti />}
+        {showConfetti && <Confetti height={"350px"} />}
         <div style={styles.innerContainer}>
           {!showQuestion ? (
             <>

@@ -212,6 +212,7 @@ const JumbledWord = ({
   };
 
   const goToNextStep = () => {
+    stopCompleteAudio();
     handleNext();
     resetStates();
   };

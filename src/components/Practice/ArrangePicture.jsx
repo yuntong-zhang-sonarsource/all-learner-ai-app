@@ -151,6 +151,13 @@ function ArrangePicture({
   const allTexts = conversation?.audioData?.[audioIndex]?.text;
 
   const handleNextStep = () => {
+    if (isReadAloudPlaying) {
+      window.speechSynthesis.cancel();
+      utteranceRef.current = null;
+      setHighlightedWord(null);
+      setIsReadAloudPlaying(false);
+      //return;
+    }
     if (audioIndex < conversation?.audioData?.length - 1) {
       setAudioIndex(audioIndex + 1);
       setIsPressedOnce(false);
@@ -160,6 +167,13 @@ function ArrangePicture({
   };
 
   const handleNextTask = () => {
+    if (isReadAloudPlaying) {
+      window.speechSynthesis.cancel();
+      utteranceRef.current = null;
+      setHighlightedWord(null);
+      setIsReadAloudPlaying(false);
+      //return;
+    }
     handleNext();
     setPlacedImages([null, null, null, null, null]);
     setWrongAttempts([false, false, false, false, false]);

@@ -170,9 +170,9 @@ const AskMoreM14 = ({
   };
 
   const stopCompleteAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+    if (isPlaying) {
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
       setIsPlaying(false);
     }
   };
@@ -368,6 +368,11 @@ const AskMoreM14 = ({
   const cloudPositions = generateCloudPositions();
 
   const handlePauseClick = async () => {
+    if (isPlaying) {
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+      setIsPlaying(false);
+    }
     setIsLoading(true);
 
     if (currentLevel === "S1" || currentLevel === "S2") {

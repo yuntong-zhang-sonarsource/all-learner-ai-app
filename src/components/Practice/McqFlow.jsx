@@ -96,6 +96,10 @@ const McqFlow = ({
     }
   };
 
+  const handleStartRecording = () => {
+    setRecAudio(null);
+  };
+
   const playAudioCorrect = () => {
     const audio = new Audio(correctSound);
     audio.play();
@@ -293,7 +297,7 @@ const McqFlow = ({
             onClose={() => setZoomOpen(false)}
             sx={{
               display: "flex",
-              alignItems: "center",
+              alignItems: "flex-start",
               justifyContent: "center",
               zIndex: "99999",
             }}
@@ -303,7 +307,8 @@ const McqFlow = ({
                 position: "relative",
                 outline: "none",
                 height: "500px",
-                width: "500px",
+                marginTop: "30px",
+                //width: "500px",
               }}
             >
               {/* Subtle gradient overlay at the top of the zoomed image */}
@@ -353,7 +358,8 @@ const McqFlow = ({
                 style={{
                   // maxWidth: "90vw",
                   // maxHeight: "90vh",
-                  width: "100%",
+                  height: "90%",
+                  //width: "100%",
                   borderRadius: "8px",
                 }}
               />
@@ -387,7 +393,7 @@ const McqFlow = ({
             ) : null}
 
             <div>
-              {conversation?.tasks[currentStep - 1]?.options.map((option) => (
+              {conversation?.tasks?.[currentStep - 1]?.options.map((option) => (
                 <div
                   key={option.id}
                   style={{
@@ -459,6 +465,8 @@ const McqFlow = ({
               originalText={parentWords}
               audioLink={audio ? audio : completeAudio}
               buttonAnimation={selectedOption}
+              handleStartRecording={handleStartRecording}
+              //handleStopRecording={handleStopRecording}
               {...{
                 contentId,
                 contentType,
