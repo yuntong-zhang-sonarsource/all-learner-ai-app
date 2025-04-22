@@ -4849,7 +4849,7 @@ export const level10 = [
           {
             role: "System",
             message:
-              "Attention, passengers! The toy train to Ooty is about to depart. Please ensure you have your tickets and belongings with you. During the journey, you will witness beautiful scenery, including mountains, monkeys, and landscapes. Kindly follow the train staff’s instructions and enjoy your trip!",
+              "A group of students and teachers went on a toy train trip to Ooty. They were excited to see the beautiful scenery. The train stopped because a baby elephant was sitting on the track. Muthu, a naughty boy, used bananas to move the baby elephant. The train continued, and everyone enjoyed the sights of monkeys, mountains, and landscapes.Everyone was thrilled and excitedly talked about the memorable trip.",
             audio: "toyTrainAudio",
           },
         ],
