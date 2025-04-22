@@ -28,7 +28,8 @@ export const fetchASROutput = async (
       contentType: "Paragraph",
       mechanics_id: localStorage.getItem("mechanism_id") || "",
       //comprehension: options.comprehension || "",
-      ans_key: [`1. ${options.originalText}` || "1."],
+      ans_key: [`1. ${options.originalText}` || ""],
+      questionText: [`1. ${options.questionText}` || ""],
     };
 
     const { data } = await axios.post(

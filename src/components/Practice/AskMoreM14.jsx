@@ -378,6 +378,7 @@ const AskMoreM14 = ({
     if (currentLevel === "S1" || currentLevel === "S2") {
       const options = {
         originalText: conversation[currentSteps]?.user,
+        questionText: conversation[currentSteps]?.speaker,
         contentType: contentType,
         contentId: contentId,
       };

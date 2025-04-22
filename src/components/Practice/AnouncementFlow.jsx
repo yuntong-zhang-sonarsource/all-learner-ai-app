@@ -105,6 +105,7 @@ const AnouncementFlow = ({
   const [loader, setLoader] = useState(false);
   const [apiResponse, setApiResponse] = useState("");
   const [correctAnswerText, setCorrectAnswerText] = useState("");
+  const [questionText, setQuestionText] = useState("");
   const [finalTranscript, setFinalTranscript] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -190,8 +191,10 @@ const AnouncementFlow = ({
       const correctOption =
         currentTask.options.find((opt) => opt.id === currentTask.answer)
           ?.value || "Unknown";
+      const question = currentTask.question.value;
 
       setCorrectAnswerText(correctOption);
+      setQuestionText(question);
     }
   }, [currentTaskIndex, tasks]);
 
@@ -573,6 +576,7 @@ const AnouncementFlow = ({
     if (currentLevel === "S1" || currentLevel === "S2") {
       const options = {
         originalText: correctAnswerText,
+        questionText: questionText,
         contentType: contentType,
         contentId: contentId,
       };
