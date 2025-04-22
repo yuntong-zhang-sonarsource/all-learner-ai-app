@@ -1330,7 +1330,7 @@ const MainLayout = (props) => {
           {LEVEL === 15 && allCompleted && (
             <Card
               sx={{
-                width: "70%",
+                width: "65%",
                 //height: "100%",
                 borderRadius: "20px",
                 display: "flex",
@@ -1341,7 +1341,7 @@ const MainLayout = (props) => {
                 backgroundRepeat: "round",
                 boxShadow: "0px 4px 20px -1px rgba(0, 0, 0, 0.00)",
                 backdropFilter: "blur(25px)",
-                mt: "50px",
+                mt: "100px",
               }}
             >
               <img
@@ -1349,6 +1349,121 @@ const MainLayout = (props) => {
                 width={"100%"}
                 height={"100%"}
               />
+              <Box sx={{ height: "120px", position: "relative" }}>
+                <Box
+                  sx={{
+                    borderBottom: "1.5px solid rgba(51, 63, 97, 0.15)",
+                    width: "100%",
+                  }}
+                ></Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  {
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    >
+                      {showProgress && (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "100%",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              flexDirection: "column",
+                              width: "100%",
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "48px",
+                                border: "1.5px solid rgba(51, 63, 97, 0.15)",
+                                // ml: {
+                                //   lg: 25,
+                                //   md: 18,
+                                // },
+                                borderRadius: "30px",
+                                background: "white",
+                              }}
+                            >
+                              {practiceSteps.map((elem, i) => {
+                                return (
+                                  <Box
+                                    key={i}
+                                    sx={{
+                                      width: {
+                                        md: "28px",
+                                        lg: "36px",
+                                      },
+                                      height: {
+                                        md: "28px",
+                                        lg: "36px",
+                                      },
+                                      background:
+                                        "linear-gradient(90deg, rgba(132, 246, 48, 0.1) 0%, rgba(64, 149, 0, 0.1) 95%)",
+                                      ml: {
+                                        md: 1.5,
+                                        lg: 2,
+                                      },
+                                      mr:
+                                        i === practiceSteps?.length - 1 ? 2 : 0,
+                                      borderRadius: "30px",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    {/* {currentPracticeStep > i ? ( */}
+                                    <GreenTick />
+                                    {/* ) : (
+                                        <span
+                                          style={{
+                                            color:
+                                              currentPracticeStep === i
+                                                ? "white"
+                                                : "#1E2937",
+                                            fontWeight: 600,
+                                            lineHeight: "20px",
+                                            fontSize: "16px",
+                                            fontFamily: "Quicksand",
+                                          }}
+                                        >
+                                          {LEVEL === 1 ? elem.title : elem.name}
+                                        </span>
+                                      )} */}
+                                  </Box>
+                                );
+                              })}
+                            </Box>
+                          </Box>
+                        </Box>
+                      )}
+                    </Box>
+                  }
+                </Box>
+              </Box>
             </Card>
           )}
         </>

@@ -2736,4 +2736,4 @@ export const zoomIcon =
 export const closeIcon =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/771b1015c6eec7e87e9969f7c63f93463b46b149/closeIcon.svg";
 export const allLevCompleted =
-  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/9e38c62c270cc9ee3e22bb918e0fc10451af9499/level15Pass.svg";
+  "https://raw.githubusercontent.com/anik200002/imagesEkstep/2e2d21575a53c5dc9c5d615666db20fa2aaaf765/allCompleted.svg";
