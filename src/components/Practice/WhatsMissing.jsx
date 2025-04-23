@@ -114,7 +114,7 @@ const AnswerBox = ({ word, isSelected, isCorrect, onClick }) => (
       <img
         src={getAssetUrl(s3Assets[word.img]) || Assets[word.img]}
         alt={word.text}
-        style={{ width: "120px", height: "150px" }}
+        style={{ width: "140px", height: "140px", marginBottom: "40px" }}
       />
     </div>
     <div
