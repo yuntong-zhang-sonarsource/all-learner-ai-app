@@ -328,6 +328,8 @@ const PhoneConversation = ({
 
     setTimeout(() => {
       setRecAudio(null);
+      const audio = new Audio(correctSound);
+      audio.play();
       handleNext();
       if (currentTaskIndex < tasks.length - 1) {
         setCurrentTaskIndex(currentTaskIndex + 1);
@@ -758,13 +760,16 @@ const PhoneConversation = ({
                       cursor: "pointer",
                       marginTop: "10px",
                     }}
-                    onClick={() => playAudio(conversationData[0].audio)}
+                    onClick={() =>
+                      playAudio(conversation?.instructions?.completeAudio)
+                    }
                   />
                 )}
                 <div style={styles.questionBox}>
                   {tasks[currentTaskIndex]?.question?.value}
                 </div>
-                {recording === "no" && (
+                {/* {recording === "no" && ( */}
+                {currentLevel !== "S1" && currentLevel !== "S2" && (
                   <div style={styles.optionsContainer}>
                     {tasks[currentTaskIndex]?.options.map((option, index) => (
                       <div
@@ -799,27 +804,29 @@ const PhoneConversation = ({
                     ))}
                   </div>
                 )}
-                {recording === "recording" && (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      marginTop:
-                        currentLevel === "S1" || currentLevel === "S2"
-                          ? "35px"
-                          : "30px",
-                      gap: "10px",
-                    }}
-                  >
-                    {isLoading ? (
-                      <Box sx={{ display: "flex" }}>
-                        <CircularProgress
-                          size="3rem"
-                          sx={{ color: "#E15404" }}
-                        />
-                      </Box>
-                    ) : (
-                      <>
+                {/* {recording === "recording" && ( */}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop:
+                      currentLevel === "S1" || currentLevel === "S2"
+                        ? "35px"
+                        : "30px",
+                    gap: "10px",
+                  }}
+                >
+                  {isLoading ? (
+                    <Box sx={{ display: "flex" }}>
+                      <CircularProgress size="3rem" sx={{ color: "#E15404" }} />
+                    </Box>
+                  ) : (
+                    <>
+                      {((currentLevel !== "S1" &&
+                        currentLevel !== "S2" &&
+                        selectedOption) ||
+                        currentLevel === "S1" ||
+                        currentLevel === "S2") && (
                         <VoiceAnalyser
                           pageName={"m8"}
                           setVoiceText={setVoiceText}
@@ -848,34 +855,35 @@ const PhoneConversation = ({
                             setOpenMessageDialog,
                           }}
                         />
-                        {currentLevel !== "S1" && currentLevel !== "S2"
-                          ? selectedOption !== null &&
-                            recAudio && (
-                              <div
-                                onClick={loadNextTask}
-                                style={{
-                                  cursor: "pointer",
-                                  marginLeft: "23px",
-                                }}
-                              >
-                                <NextButtonRound height={45} width={45} />
-                              </div>
-                            )
-                          : recAudio && (
-                              <div
-                                onClick={loadNextTask}
-                                style={{
-                                  cursor: "pointer",
-                                  marginLeft: "23px",
-                                }}
-                              >
-                                <NextButtonRound height={45} width={45} />
-                              </div>
-                            )}
-                      </>
-                    )}
-                  </div>
-                )}
+                      )}
+                      {currentLevel !== "S1" && currentLevel !== "S2"
+                        ? selectedOption !== null &&
+                          recAudio && (
+                            <div
+                              onClick={loadNextTask}
+                              style={{
+                                cursor: "pointer",
+                                marginLeft: "23px",
+                              }}
+                            >
+                              <NextButtonRound height={45} width={45} />
+                            </div>
+                          )
+                        : recAudio && (
+                            <div
+                              onClick={loadNextTask}
+                              style={{
+                                cursor: "pointer",
+                                marginLeft: "23px",
+                              }}
+                            >
+                              <NextButtonRound height={45} width={45} />
+                            </div>
+                          )}
+                    </>
+                  )}
+                </div>
+                {/* // )} */}
               </div>
             )
           )}

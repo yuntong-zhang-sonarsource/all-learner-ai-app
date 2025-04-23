@@ -32,6 +32,8 @@ import {
   SpeakButton,
   ListenButton,
 } from "../../utils/constants";
+import correctSound from "../../assets/correct.wav";
+import wrongSound from "../../assets/audio/wrong.wav";
 
 const levelMap = {
   10: level10,
@@ -183,11 +185,15 @@ function Step2({ handleNext, level, currentStep }) {
     setShowMessage(isAnswerCorrect);
 
     if (isAnswerCorrect) {
+      const audio = new Audio(correctSound);
+      audio.play();
       setTimeout(() => {
         setShowMessage(false);
         setFinalState(true);
       }, 2000);
     } else {
+      const audio = new Audio(wrongSound);
+      audio.play();
       setShowRedRectangle(true);
       setTimeout(() => {
         setSelectedAnswer(null);
@@ -221,15 +227,15 @@ function Step2({ handleNext, level, currentStep }) {
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
           padding: "10px",
         }}
       >
-        <img
+        {/* <img
           src={profileImg}
           alt="Profile"
           style={{ width: "40px", height: "40px" }}
-        />
+        /> */}
         {showRedRectangle && (
           <div style={{ display: "flex", gap: "10px" }}>
             <div

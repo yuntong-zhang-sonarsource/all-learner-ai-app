@@ -182,6 +182,8 @@ export const level14S2ThreeUAudio = "46614e00-f981-40f0-bf9e-9945198c0079.mp3";
 export const level14S2FourUAudio = "f78ff491-4fb4-4814-9777-33f92b916835.mp3";
 export const level14S2FiveUAudio = "f84ad2ad-8d0f-4945-a4f5-c6bfa71c0542.mp3";
 
+export const level12P2CAudio = "476ff83d-74a2-458c-b507-81f8ff0c4328.mp3";
+export const level12P6CAudio = "476ff83d-74a2-458c-b507-81f8ff0c4328.mp3";
 export const level12P2Audio_1 = "fc4b4dbd-85ed-455f-83aa-683717b0de7a.mp3";
 export const level12P2Audio_2 = "5b9d62f0-6970-4718-8f57-619e5d7c1511.mp3";
 export const level12P2Audio_3 = "bf89226e-4efb-4af0-b755-7f38f5aff58d.mp3";
@@ -750,6 +752,10 @@ export const roadsafetyAnouncementImg =
   "c8ea41ca-4462-4d91-abc9-de32a6a7a17e.png";
 
 export const roadSafetyAudio = "b2c4dd09-26f2-4613-b066-ee7e25d01bca.mp3";
+export const level13P1CAudio = "c14c2c5c-72cf-49e9-a305-3b85d8de813d.mp3";
+export const level13P5CAudio = "e672dc1f-02db-4af3-8d81-99e1e1ebca5d.mp3";
+export const level13S1CAudio = "f5564f8b-c616-48cf-90d7-e715e41783d9.mp3";
+export const level13S2CAudio = "420e5f17-7732-4ddd-928b-e8b2f025aa92.mp3";
 
 export const level13S2Audio1 = "215b4ee8-0b6f-449f-a255-bb64f0fa0009.mp3";
 export const level13S2Audio2 = "aacc273e-f37c-44c8-b2c6-4dc0717c4fde.mp3";
@@ -768,11 +774,11 @@ export const level15P1FourUAudio = "d2ca7e2a-aa3e-4276-87f8-0d2b42417130.mp3";
 export const level15P1FiveUAudio = "6a4efd78-3fa6-42a1-bf80-07ccede10ace.mp3";
 export const level15P1SixUAudio = "7b677b68-95c6-49c9-a7bf-aa075c693879.mp3";
 
-export const level15P2OneUAudio = "d2ca7e2a-aa3e-4276-87f8-0d2b42417130.mp3";
-export const level15P2TwoUAudio = "f3eadd72-4843-4121-8667-42704bcb2660.mp3";
-export const level15P2ThreeUAudio = "afdf7ab8-02d6-4c47-86a2-70f2a472b3f3.mp3";
-export const level15P2FourUAudio = "6a4efd78-3fa6-42a1-bf80-07ccede10ace.mp3";
-export const level15P2FiveUAudio = "7b677b68-95c6-49c9-a7bf-aa075c693879.mp3";
+export const level15P2OneAudio = "2a5cab63-a001-4ba4-bbec-bac20dacd1f8.mp3";
+export const level15P2TwoAudio = "c5e69711-16e7-473e-be86-5433c3513da3.mp3";
+export const level15P2ThreeAudio = "db8ec164-2287-4279-a869-e2c992d8bf89.mp3";
+export const level15P2FourAudio = "fb721ad8-0a59-4dee-9e4d-8b286b66841c.mp3";
+export const level15P2FiveAudio = "c46b009d-dfcc-4940-b29b-ff6c9fb5cde3.mp3";
 
 export const ToyAudio = "63b5107a-9d0a-4454-b4ad-24c07c9f4750.mp3";
 export const PillowAudio = "93e7e25d-12ee-473b-8e9a-39724504633c.mp3";

@@ -8595,7 +8595,6 @@ export const levelGetContent = {
         criteria: "paragraph",
         template: "simple",
         mechanism: { id: "AnouncementFlow", name: "AnouncementFlow" },
-        //mechanism: { id: "ReadAloudMcqM10", name: "ReadAloudMcqM10" },
       },
       {
         title: "P5",
@@ -8763,7 +8762,7 @@ export const levelGetContent = {
         title: "P2",
         criteria: "sentence",
         template: "simple",
-        mechanism: { id: "askMore", name: "askMore" },
+        mechanism: { id: "jumbledWord", name: "jumbledWord" },
       },
       {
         title: "P3",
