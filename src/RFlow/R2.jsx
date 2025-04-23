@@ -766,6 +766,8 @@ const R2 = ({
   const [showReset, setShowReset] = useState(false);
   const [progress, setProgress] = React.useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [handPhase, setHandPhase] = useState("audio");
+  const [audioInstance, setAudioInstance] = useState(null);
   const {
     transcript,
     interimTranscript,
@@ -832,19 +834,48 @@ const R2 = ({
   };
 
   const handleNextClick = () => {
+    if (isAudioPlaying) {
+      // If already playing, stop the audio
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+      setIsAudioPlaying(false);
+    }
     if (selectedCheckbox) {
       setProgress(0);
       handleAudioClick(selectedCheckbox);
       setShowNextButton(false);
     }
+    setActiveIndex(0);
+    setHandPhase("audio");
   };
 
   const playAudio = (audioKey) => {
+    if (isAudioPlaying) {
+      // If already playing, stop the audio
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+      setIsAudioPlaying(false);
+    }
     if (audioKey) {
       const audioElement = new Audio(audioKey);
+      setHandPhase("audio");
       audioElement.play();
+      setTimeout(() => {
+        setHandPhase("checkbox");
+      }, 1500);
+      setAudioInstance(audioElement);
       setIsAudioPlaying(true);
-      audioElement.onended = () => setIsAudioPlaying(false);
+      //audioElement.onended = () => setIsAudioPlaying(false);
+      audioElement.onended = () => {
+        setIsAudioPlaying(false);
+        setTimeout(() => {
+          setActiveIndex(
+            (prev) =>
+              (prev + 1) % content?.L1[currentQuestionIndex]?.options.length
+          );
+          setHandPhase("audio");
+        }, 1500);
+      };
     } else {
       console.error("Audio file not found:", audioKey);
     }
@@ -856,6 +887,8 @@ const R2 = ({
     setShowReset(false);
     setShowRecordButton(false);
     setProgress(0);
+    setActiveIndex(0);
+    setHandPhase("audio");
   };
 
   const handleAudioClick = (text) => {
@@ -1094,10 +1127,20 @@ const R2 = ({
                                 alt="Hint"
                                 style={{
                                   position: "absolute",
-                                  bottom: "40px",
-                                  left: "-30px",
-                                  transform: "rotate(-45deg)",
+                                  ...(handPhase === "audio"
+                                    ? {
+                                        bottom: "40px",
+                                        left: "-30px",
+                                        transform: "rotate(-120deg)",
+                                      }
+                                    : {
+                                        bottom: "-50px",
+                                        left: "-30px",
+                                        transform: "rotate(-120deg)",
+                                      }),
                                   height: "80px",
+                                  zIndex: "9999",
+                                  transition: "all 0.3s ease",
                                 }}
                               />
                             )}

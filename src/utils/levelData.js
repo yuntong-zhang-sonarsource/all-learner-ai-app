@@ -394,6 +394,7 @@ export const level13 = [
     data: {
       instructions: {
         type: "chat",
+        completeAudio: "level13P1CAudio",
         content: [
           {
             role: "System",
@@ -748,6 +749,7 @@ export const level13 = [
     data: {
       instructions: {
         type: "chat",
+        completeAudio: "level13S1CAudio",
         content: [
           {
             role: "System",
@@ -931,6 +933,7 @@ export const level13 = [
     data: {
       instructions: {
         type: "chat",
+        completeAudio: "level13P5CAudio",
         content: [
           {
             role: "System",
@@ -1403,6 +1406,7 @@ export const level13 = [
     data: {
       instructions: {
         type: "chat",
+        completeAudio: "level13S2CAudio",
         content: [
           {
             role: "System",
@@ -1736,6 +1740,7 @@ export const level12 = [
     data: {
       instructions: {
         type: "chat",
+        completeAudio: "level12P2CAudio",
         content: [
           {
             role: "System",
@@ -2390,6 +2395,7 @@ export const level12 = [
     data: {
       instructions: {
         type: "chat",
+        completeAudio: "level12P2CAudio",
         content: [
           {
             role: "System",
@@ -3917,40 +3923,69 @@ export const level15 = [
   },
   {
     level: "P2",
-    mechanics: "askMore",
-    data: {
-      images: {
-        imageOne: "child",
-        imageTwo: "boyChildImg",
+    mechanics: "jumbledWord",
+    data: [
+      {
+        correctWord: [
+          {
+            audio: "level15P2OneAudio",
+            correctSentence: "One day the trees will move again.",
+          },
+        ],
+        jumbledWords: ["the trees", "day", "will move", "again.", "One"],
       },
-      conversation: [
-        {
-          speaker: "Where did Tom get the balloon from?",
-          user: "Tom bought a red balloon from the shop.",
-          audio: "level15P2OneUAudio",
-        },
-        {
-          speaker: "What happened to Tom’s balloon?",
-          user: "Suddenly, the balloon slipped from his hand and floated into the sky!",
-          audio: "level15P2TwoUAudio",
-        },
-        {
-          speaker: "How did Tom feel after losing his balloon?",
-          user: "Tom felt sad watching his balloon fly away.",
-          audio: "level15P2ThreeUAudio",
-        },
-        {
-          speaker: "What did Tom’s mother do when he was sad?",
-          user: "His mother gave him a new balloon to cheer him up.",
-          audio: "level15P2FourUAudio",
-        },
-        {
-          speaker: "How did Tom react after getting a new balloon?",
-          user: "Tom smiled and held the new balloon tightly.",
-          audio: "level15P2FiveUAudio",
-        },
-      ],
-    },
+      {
+        correctWord: [
+          {
+            audio: "level15P2TwoAudio",
+            correctSentence: "With gently smiling jaws.",
+          },
+        ],
+        jumbledWords: ["jaws.", "gently", "With", "smiling"],
+      },
+      {
+        correctWord: [
+          {
+            audio: "level15P2ThreeAudio",
+            correctSentence: "She was just a baby, after all.",
+          },
+        ],
+        jumbledWords: ["after all.", "a baby,", "just", "She", "was"],
+      },
+      {
+        correctWord: [
+          {
+            audio: "level15P2FourAudio",
+            correctSentence:
+              "The monsoon season was the time for rambling about.",
+          },
+        ],
+        jumbledWords: [
+          "for rambling",
+          "The monsoon",
+          "was the",
+          "season",
+          "time",
+          "about.",
+        ],
+      },
+      {
+        correctWord: [
+          {
+            audio: "level15P2FiveAudio",
+            correctSentence: "Don’t you ever give me a fright like that again.",
+          },
+        ],
+        jumbledWords: [
+          "you ever",
+          "like that",
+          "Don’t",
+          "a fright",
+          "again.",
+          "give me",
+        ],
+      },
+    ],
   },
   {
     level: "P3",
@@ -4849,7 +4884,7 @@ export const level10 = [
           {
             role: "System",
             message:
-              "Attention, passengers! The toy train to Ooty is about to depart. Please ensure you have your tickets and belongings with you. During the journey, you will witness beautiful scenery, including mountains, monkeys, and landscapes. Kindly follow the train staff’s instructions and enjoy your trip!",
+              "A group of students and teachers went on a toy train trip to Ooty. They were excited to see the beautiful scenery. The train stopped because a baby elephant was sitting on the track. Muthu, a naughty boy, used bananas to move the baby elephant. The train continued, and everyone enjoyed the sights of monkeys, mountains, and landscapes.Everyone was thrilled and excitedly talked about the memorable trip.",
             audio: "toyTrainAudio",
           },
         ],

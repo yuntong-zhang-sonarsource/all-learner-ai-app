@@ -150,6 +150,7 @@ const R3 = ({
   const [progress, setProgress] = React.useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [audioInstance, setAudioInstance] = useState(null);
+  const [handPhase, setHandPhase] = useState("audio");
   const {
     transcript,
     interimTranscript,
@@ -250,6 +251,8 @@ const R3 = ({
       handleAudioClick(selectedCheckbox);
       setShowNextButton(false);
     }
+    setActiveIndex(0);
+    setHandPhase("audio");
   };
 
   const startRecording = () => {
@@ -291,10 +294,23 @@ const R3 = ({
       const audioElement = new Audio(
         getAssetAudioUrl(s3Assets[audioKey]) || Assets[audioKey]
       );
+      setHandPhase("audio");
       audioElement.play();
+      setTimeout(() => {
+        setHandPhase("checkbox");
+      }, 1500);
       setAudioInstance(audioElement);
       setIsAudioPlaying(true);
-      audioElement.onended = () => setIsAudioPlaying(false);
+      //audioElement.onended = () =>
+      audioElement.onended = () => {
+        setIsAudioPlaying(false);
+        setTimeout(() => {
+          setActiveIndex(
+            (prev) => (prev + 1) % conversation[currentStep - 1]?.options.length
+          );
+          setHandPhase("audio");
+        }, 1500);
+      };
     } else {
       console.error("Audio file not found:", audioKey);
     }
@@ -337,6 +353,8 @@ const R3 = ({
     setShowReset(false);
     setShowRecordButton(false);
     setProgress(0);
+    setActiveIndex(0);
+    setHandPhase("audio");
   };
 
   return (
@@ -516,10 +534,20 @@ const R3 = ({
                           alt="Hint"
                           style={{
                             position: "absolute",
-                            bottom: "40px",
-                            left: "-30px",
-                            transform: "rotate(-45deg)",
+                            ...(handPhase === "audio"
+                              ? {
+                                  bottom: "40px",
+                                  left: "-30px",
+                                  transform: "rotate(-120deg)",
+                                }
+                              : {
+                                  bottom: "-50px",
+                                  left: "-30px",
+                                  transform: "rotate(-120deg)",
+                                }),
                             height: "80px",
+                            zIndex: "9999",
+                            transition: "all 0.3s ease",
                           }}
                         />
                       )}
@@ -593,31 +621,6 @@ const R3 = ({
                           />
                         </div>
                       </div>
-                      {/* <input
-                        type="checkbox"
-                        id={`checkbox-${audio.id}`}
-                        checked={selectedCheckbox === audio.id}
-                        onChange={() => handleCheckboxChange(audio.id)}
-                        style={{
-                          width: "60px",
-                          height: "60px",
-                          appearance: "none",
-                          backgroundColor:
-                            selectedCheckbox === audio.id
-                              ? "#58CC02"
-                              : "#BB81D066",
-                          border: "2px solid white",
-                          borderRadius: "8px",
-                          cursor: "pointer",
-                          position: "relative",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          marginTop: "15px",
-                          marginLeft: "30px",
-                        }}
-                      /> */}
-
                       <div
                         style={{
                           width: "60px",
@@ -647,7 +650,6 @@ const R3 = ({
                             display: "none",
                           }}
                         />
-                        {/* {selectedCheckbox === audio.value && ( */}
                         <span
                           style={{
                             fontSize: "36px",
@@ -658,35 +660,7 @@ const R3 = ({
                         >
                           ✓
                         </span>
-                        {/* )} */}
                       </div>
-
-                      {/* {selectedCheckbox === audio.text && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        width: "60px",
-                        height: "245px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        pointerEvents: "none",
-                      }}
-                    >
-                      <svg
-                        width="30"
-                        height="30"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="white"
-                        strokeWidth="3"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    </div>
-                  )} */}
                     </div>
                   );
                 })}
