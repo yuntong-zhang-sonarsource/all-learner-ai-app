@@ -149,6 +149,7 @@ const SpeakSentenceComponent = () => {
             collectionId: currentCollectionId,
             totalSyllableCount: totalSyllableCount,
             language: localStorage.getItem("lang"),
+            max_level: 15,
           }
         );
 
