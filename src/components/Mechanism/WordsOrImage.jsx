@@ -95,7 +95,6 @@ const WordsOrImage = ({
   const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
   const [showHint, setShowHint] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-  //const [isPlaying, setIsPlaying] = useState(false);
 
   const audioRef = useRef(null);
   const currentWordRef = useRef(null);
@@ -195,7 +194,6 @@ const WordsOrImage = ({
       .play()
       .then(() => {
         setIsPlaying(true);
-        //console.log("Audio is playing...");
       })
       .catch((error) => {
         console.error("Error playing audio:", error);
@@ -205,7 +203,6 @@ const WordsOrImage = ({
       URL.revokeObjectURL(objectUrl);
       setIsPlaying(false);
       audioRef.current = null;
-      //console.log("Audio playback ended. Object URL revoked.");
     };
   };
 

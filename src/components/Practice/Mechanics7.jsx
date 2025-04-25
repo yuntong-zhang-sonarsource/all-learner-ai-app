@@ -302,7 +302,6 @@ const Mechanics7 = ({
       .play()
       .then(() => {
         setIsPlaying(true);
-        //console.log("Audio is playing...");
       })
       .catch((error) => {
         console.error("Error playing audio:", error);
@@ -311,7 +310,6 @@ const Mechanics7 = ({
     audio.onended = () => {
       URL.revokeObjectURL(objectUrl);
       setIsPlaying(false);
-      //console.log("Audio playback ended. Object URL revoked.");
     };
   };
 
@@ -550,8 +548,6 @@ const Mechanics7 = ({
       selectedWordsRef.current?.length + 1 !== wordsAfterSplit?.length ||
       isSelected
     ) {
-      // let audio = new Audio(isSelected ? removeSound : addSound);
-      // audio.play();
       setEnableNext(false);
     }
 
@@ -587,11 +583,6 @@ const Mechanics7 = ({
         setSelectedWords(updatedSelectedWords);
         selectedWordsRef.current = updatedSelectedWords;
       }
-
-      // if (selectedWordsRef.current.length + 1 === wordsAfterSplit?.length) {
-      //   let audio = new Audio(correctSound);
-      //   audio.play();
-      // }
     }
   };
 

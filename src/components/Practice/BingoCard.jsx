@@ -911,42 +911,6 @@ const BingoCard = ({
           </div>
         )}
 
-        {/* {showCoinsImg && (
-          <div
-            style={{
-              position: "absolute",
-              //left: screenWidth < 768 ? "50%" : "157px",
-              left: screenWidth < 768 ? "30%" : "15%",
-              bottom: screenWidth < 768 ? "220px" : "308px",
-              width: screenWidth < 768 ? "140px" : "240px",
-              height: screenWidth < 768 ? "90px" : "130px",
-              zIndex: 0,
-              animation: "moveCoins 0s linear forwards",
-              transform: screenWidth < 768 ? "translateX(-50%)" : "none",
-            }}
-          >
-            <img
-              src={Assets.coinssImg}
-              alt="Coins Animation"
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-            />
-
-            <img
-              src={Assets.textCoinsImg}
-              alt="Text Coins"
-              style={{
-                position: "absolute",
-                top: "60%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: screenWidth < 768 ? "20%" : "15%",
-              }}
-            />
-          </div>
-        )} */}
         <div
           style={{
             position: "absolute",
@@ -1055,14 +1019,6 @@ const BingoCard = ({
                   }}
                   onClick={handleReset}
                 >
-                  {/* <img
-                  src={Assets.resetImg}
-                  alt="Reset"
-                  style={{
-                    width: screenWidth < 768 ? "40px" : "50px",
-                    height: screenWidth < 768 ? "40px" : "70px",
-                  }}
-                /> */}
                   <RetryIcon
                     height={screenWidth < 768 ? 40 : 50}
                     width={screenWidth < 768 ? 40 : 50}

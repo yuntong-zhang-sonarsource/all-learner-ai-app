@@ -203,24 +203,6 @@ const PhoneConversation = ({
     setShowQuestion(false);
   }, [currentLevel]);
 
-  // useEffect(() => {
-  //   let index = 0;
-  //   setVisibleMessages([]);
-
-  //   const interval = setInterval(() => {
-  //     if (index < conversationData.length) {
-  //       setVisibleMessages((prev) => [...prev, conversationData[index]]);
-  //       index++;
-  //       const audio = new Audio(correctSound);
-  //       audio.play();
-  //     } else {
-  //       clearInterval(interval);
-  //     }
-  //   }, 1500);
-
-  //   return () => clearInterval(interval);
-  // }, [conversationData]);
-
   useEffect(() => {
     setVisibleMessages([]);
     indexRef.current = 0;
