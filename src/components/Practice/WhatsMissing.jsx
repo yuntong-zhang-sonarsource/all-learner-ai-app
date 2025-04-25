@@ -491,8 +491,6 @@ function WhatsMissing({
 
   const handleNextStep = () => setCurrentSteps(2);
 
-  steps = 1;
-
   console.log("lvls", currentStep);
 
   return (
