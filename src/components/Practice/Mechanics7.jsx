@@ -434,6 +434,8 @@ const Mechanics7 = ({
   };
 
   const stopRecording = (word) => {
+    let audio = new Audio(correctSound);
+    audio.play();
     if (isChrome) {
       SpeechRecognition.stopListening();
       stopAudioRecording();
@@ -548,8 +550,8 @@ const Mechanics7 = ({
       selectedWordsRef.current?.length + 1 !== wordsAfterSplit?.length ||
       isSelected
     ) {
-      let audio = new Audio(isSelected ? removeSound : addSound);
-      audio.play();
+      // let audio = new Audio(isSelected ? removeSound : addSound);
+      // audio.play();
       setEnableNext(false);
     }
 
@@ -586,14 +588,10 @@ const Mechanics7 = ({
         selectedWordsRef.current = updatedSelectedWords;
       }
 
-      if (selectedWordsRef.current.length + 1 === wordsAfterSplit?.length) {
-        let audio = new Audio(
-          [...selectedWordsRef.current, word].join(" ") === parentWords
-            ? correctSound
-            : wrongSound
-        );
-        audio.play();
-      }
+      // if (selectedWordsRef.current.length + 1 === wordsAfterSplit?.length) {
+      //   let audio = new Audio(correctSound);
+      //   audio.play();
+      // }
     }
   };
 

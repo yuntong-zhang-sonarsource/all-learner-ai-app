@@ -297,7 +297,7 @@ const McqFlow = ({
             onClose={() => setZoomOpen(false)}
             sx={{
               display: "flex",
-              alignItems: "flex-start",
+              alignItems: "center",
               justifyContent: "center",
               zIndex: "99999",
             }}

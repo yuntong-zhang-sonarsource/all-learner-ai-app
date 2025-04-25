@@ -182,7 +182,7 @@ const BingoCard = ({
         setShowNextButton(true);
         setShowCoinsImg(false);
       }, 1000);
-    }, 3000);
+    }, 2000);
 
     setTimeout(() => {
       setSelectedWords([]);
@@ -911,7 +911,7 @@ const BingoCard = ({
           </div>
         )}
 
-        {showCoinsImg && (
+        {/* {showCoinsImg && (
           <div
             style={{
               position: "absolute",
@@ -946,7 +946,7 @@ const BingoCard = ({
               }}
             />
           </div>
-        )}
+        )} */}
         <div
           style={{
             position: "absolute",
