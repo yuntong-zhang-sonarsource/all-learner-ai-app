@@ -53,7 +53,7 @@ export const magAudio = "c265a218-6ba9-427e-b8b5-021d96cf34c5.mp3";
 export const netAudio = "680920d5-9f10-4e5c-94b4-892eb8a73639.mp3";
 export const magnetAudio = "220a198a-a138-4f29-ac35-382bb58e40df.mp3";
 
-export const TennisNewImg = "fc2b08a8-d61f-4a23-9ebf-2bf7ca50090e.png";
+export const TennisNewImg = "171b7425-6f7a-4fe8-8e5c-44f1d6704734.png";
 export const tenAudio = "fc2b08a8-d61f-4a23-9ebf-2bf7ca50090e.mp3";
 export const nisAudio = "c01a51af-3a03-49ef-94ac-ebd5c4815fd5.mp3";
 export const tennisAudio = "2af8a1d3-f69f-4828-9c0c-5d7897892df8.mp3";

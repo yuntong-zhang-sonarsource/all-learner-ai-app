@@ -30,6 +30,8 @@ import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 import teacherImg from "../../assets/teacher.png";
 import studentImg from "../../assets/student.png";
+import listenImg2 from "../../assets/listen.png";
+import spinnerStop from "../../assets/pause.png";
 
 const isChrome =
   /Chrome/.test(navigator.userAgent) &&
@@ -175,6 +177,34 @@ const WordsOrImage = ({
 
       setRecognition(recognitionInstance);
     }
+  };
+
+  const playAudioFromBlob = (blob) => {
+    if (!(blob instanceof Blob)) {
+      console.error("Invalid input: Expected a Blob or File.");
+      return;
+    }
+
+    const audio = new Audio();
+    const objectUrl = URL.createObjectURL(blob);
+
+    audio.src = objectUrl;
+    audioRef.current = audio;
+
+    audio
+      .play()
+      .then(() => {
+        setIsPlaying(true);
+      })
+      .catch((error) => {
+        console.error("Error playing audio:", error);
+      });
+
+    audio.onended = () => {
+      URL.revokeObjectURL(objectUrl);
+      setIsPlaying(false);
+      audioRef.current = null;
+    };
   };
 
   const startAudioRecording = () => {
@@ -335,6 +365,14 @@ const WordsOrImage = ({
       audioRef.current.play().catch((error) => {
         console.error("Error playing audio:", error);
       });
+    }
+  };
+
+  const stopCompleteAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
     }
   };
 
@@ -814,9 +852,67 @@ const WordsOrImage = ({
                     margin: "0 auto",
                   }}
                 >
-                  <Box sx={{ cursor: "pointer" }} onClick={playAudio}>
+                  {/* <Box sx={{ cursor: "pointer" }} onClick={playAudio}>
                     <ListenButton />
-                  </Box>
+                  </Box> */}
+                  {isPlaying ? (
+                    <div>
+                      <Box
+                        sx={{
+                          //marginTop: "7px",
+                          position: "relative",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          //minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                          cursor: "pointer",
+                          //marginLeft: getMarginLeft(0),
+                        }}
+                        onClick={stopCompleteAudio}
+                      >
+                        <img
+                          src={spinnerStop}
+                          alt="Audio"
+                          style={{
+                            height: "70px",
+                            width: "70px",
+                            cursor: "pointer",
+                          }}
+                        />
+                        {/* <StopButton height={50} width={50} /> */}
+                      </Box>
+                    </div>
+                  ) : (
+                    <div>
+                      <Box
+                        className="walkthrough-step-4"
+                        sx={{
+                          //marginTop: "7px",
+                          position: "relative",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          //minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                          //cursor: `url(${clapImage}) 32 24, auto`,
+                          //marginLeft: getMarginLeft(0),
+                        }}
+                        onClick={() => {
+                          playAudioFromBlob(recordedAudioBlob);
+                        }}
+                      >
+                        <img
+                          src={listenImg2}
+                          alt="Audio"
+                          style={{
+                            height: "70px",
+                            width: "70px",
+                            cursor: "pointer",
+                          }}
+                        />
+                        {/* <ListenButton height={50} width={50} /> */}
+                      </Box>
+                    </div>
+                  )}
                   <Box
                     sx={{ cursor: "pointer", marginLeft: "16px" }}
                     onClick={() => retryRecording(words, true)}

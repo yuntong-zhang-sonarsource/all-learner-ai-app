@@ -124,8 +124,6 @@ const AnouncementFlow = ({
     console.log("Live Transcript:", transcript);
   }, [transcript]);
 
-  console.log("showcase", fluency, isShowCase, livesData, gameOverData);
-
   // let mediaRecorder;
   // let recordedChunks = [];
 
