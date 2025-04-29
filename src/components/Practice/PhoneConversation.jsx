@@ -340,7 +340,7 @@ const PhoneConversation = ({
         contentId: contentId,
       };
 
-      fetchASROutput(recAudio, options, setLoader, setApiResponse);
+      await fetchASROutput(recAudio, options, setLoader, setApiResponse);
     }
 
     setTimeout(() => {

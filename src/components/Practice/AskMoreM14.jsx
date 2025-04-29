@@ -390,7 +390,9 @@ const AskMoreM14 = ({
       const audio = new Audio(correctSound);
       audio.play();
       setCurrentStep((prev) => prev + 1);
-      handleNext();
+      setTimeout(() => {
+        handleNext();
+      }, 2000);
       setShowPandaText(false);
     } else {
       const audio = new Audio(correctSound);
