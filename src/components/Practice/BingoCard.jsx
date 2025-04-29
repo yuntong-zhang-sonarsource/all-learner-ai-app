@@ -869,6 +869,7 @@ const BingoCard = ({
                 //width: screenWidth < 768 ? "120px" : "170px",
                 height: screenWidth < 768 ? "90px" : "165px",
                 zIndex: 100,
+                cursor: "pointer",
               }}
             />
             <div style={{ display: "flex", marginTop: "10px", gap: "15px" }}>
@@ -928,6 +929,7 @@ const BingoCard = ({
             style={{
               width: screenWidth < 768 ? "150px" : "250px",
               height: screenWidth < 768 ? "250px" : "450px",
+              cursor: "pointer",
             }}
           />
           {!hideButtons &&
@@ -955,6 +957,7 @@ const BingoCard = ({
                   transition: "transform 0.5s ease-in-out",
                   zIndex: 100,
                   padding: screenWidth < 768 ? "8px 16px" : "10px 20px",
+                  cursor: "pointer",
                 }}
               />
             )}
@@ -1047,6 +1050,7 @@ const BingoCard = ({
                 //width: screenWidth < 768 ? "120px" : "170px",
                 height: screenWidth < 768 ? "90px" : "165px",
                 zIndex: 100,
+                cursor: "pointer",
               }}
             />
             <div style={{ display: "flex", marginTop: "10px", gap: "15px" }}>
@@ -1110,6 +1114,7 @@ const BingoCard = ({
                 //width: screenWidth < 768 ? "170px" : "230px",
                 height: screenWidth < 768 ? "100px" : "185px",
                 zIndex: 21,
+                cursor: "pointer",
               }}
             />
             <img
@@ -1122,6 +1127,7 @@ const BingoCard = ({
                 transform: "translate(-50%, -50%)",
                 height: screenWidth < 768 ? "40px" : "100px",
                 zIndex: 22,
+                cursor: "pointer",
               }}
             />
           </div>
@@ -1146,6 +1152,7 @@ const BingoCard = ({
                   width: screenWidth < 768 ? "170px" : "230px",
                   //height: screenWidth < 768 ? "85px" : "160px",
                   zIndex: 21,
+                  cursor: "pointer",
                 }}
               />
               <img
@@ -1158,6 +1165,7 @@ const BingoCard = ({
                   transform: "translate(-50%, -50%)",
                   height: screenWidth < 786 ? "40px" : "50px",
                   zIndex: 22,
+                  cursor: "pointer",
                 }}
                 onClick={() =>
                   startRecording(levels[currentLevel]?.arrM[currentWordIndex])
@@ -1182,6 +1190,7 @@ const BingoCard = ({
                   width: screenWidth < 768 ? "170px" : "230px",
                   //height: screenWidth < 768 ? "85px" : "160px",
                   zIndex: 21,
+                  cursor: "pointer",
                 }}
               />
               <div
@@ -1201,6 +1210,7 @@ const BingoCard = ({
                     transform: "translate(-50%, -50%)",
                     height: screenWidth < 786 ? "15px" : "30px",
                     zIndex: 22,
+                    cursor: "pointer",
                   }}
                 />
                 <img
@@ -1213,6 +1223,7 @@ const BingoCard = ({
                     transform: "translate(-50%, -50%)",
                     height: screenWidth < 786 ? "40px" : "50px",
                     zIndex: 22,
+                    cursor: "pointer",
                   }}
                   onClick={() => stopRecording()}
                 />

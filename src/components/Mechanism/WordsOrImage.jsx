@@ -6,7 +6,7 @@ import {
   Avatar,
 } from "@mui/material";
 import { motion } from "framer-motion";
-import { createRef, useState, useEffect, useRef } from "react";
+import { createRef, useState, useEffect, useRef, useCallback } from "react";
 import v11 from "../../assets/audio/V10.mp3";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import RecordVoiceVisualizer from "../../utils/RecordVoiceVisualizer";
@@ -83,6 +83,7 @@ const WordsOrImage = ({
   setIsNextButtonCalled,
 }) => {
   const audioRefs = createRef(null);
+  const [audioInstance, setAudioInstance] = useState(null);
   const [isReady, setIsReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [storedData, setStoredData] = useState([]);
@@ -97,6 +98,7 @@ const WordsOrImage = ({
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const audioRef = useRef(null);
+  const audioRefNew = useRef(null);
   const currentWordRef = useRef(null);
   const currentIsSelected = useRef(false);
   const {
@@ -112,9 +114,112 @@ const WordsOrImage = ({
   useEffect(() => {
     transcriptRef.current = transcript;
   }, [transcript]);
+  const [recordedBlob, setRecordedBlob] = useState(null);
+  const mediaRecorderRef = useRef(null);
+  const recordedChunksRef = useRef([]);
 
-  let mediaRecorder;
-  let recordedChunks = [];
+  const mimeType = "audio/webm;codecs=opus";
+
+  const startAudioRecording = useCallback(async () => {
+    setRecordedBlob(null);
+    recordedChunksRef.current = [];
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      if (!MediaRecorder.isTypeSupported(mimeType)) {
+        console.error("MIME type not supported:", mimeType);
+        return;
+      }
+
+      const mediaRecorder = new MediaRecorder(stream, { mimeType });
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          recordedChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        if (recordedChunksRef.current.length === 0) {
+          console.warn("No audio data captured.");
+          setRecordedBlob(null);
+          return;
+        }
+
+        const blob = new Blob(recordedChunksRef.current, { type: mimeType });
+        setRecordedBlob(blob);
+        recordedChunksRef.current = [];
+      };
+
+      mediaRecorderRef.current = mediaRecorder;
+      mediaRecorder.start(100); // Emit data every 100ms
+      setIsRecording(true);
+    } catch (err) {
+      console.error("Error starting audio recording:", err);
+    }
+  }, []);
+
+  const stopAudioRecording = useCallback(() => {
+    const recorder = mediaRecorderRef.current;
+    if (recorder && recorder.state !== "inactive") {
+      recorder.requestData(); // Flush remaining data
+      recorder.stop();
+      setIsRecording(false);
+    }
+  }, []);
+
+  const playRecordings = useCallback(() => {
+    console.log("play", isPlaying);
+
+    if (!recordedBlob || !(recordedBlob instanceof Blob)) {
+      console.error("No valid audio blob to play:", recordedBlob);
+      return;
+    }
+
+    if (audioRefNew.current) {
+      // If audio is already playing, resume from where it left off
+      audioRefNew.current.play();
+      setIsPlaying(true);
+      return;
+    }
+
+    const audioUrl = URL.createObjectURL(recordedBlob);
+    const audio = new Audio(audioUrl);
+    audioRefNew.current = audio;
+
+    // audio.onplay = () => {
+    //   setIsPlaying(true);
+    // };
+    audio.play();
+    setIsPlaying(true);
+
+    console.log("play", isPlaying);
+
+    audio.onended = () => {
+      setIsPlaying(false);
+      audioRefNew.current = null;
+    };
+
+    audio.onerror = () => {
+      console.error("Playback failed:", audio.error);
+      setIsPlaying(false);
+    };
+
+    audio.play().catch((err) => {
+      console.error("Playback failed:", err);
+      setIsPlaying(false);
+    });
+  }, [recordedBlob]);
+
+  const stopPlayback = useCallback(() => {
+    if (audioRefNew.current) {
+      audioRefNew.current.pause();
+      audioRefNew.current.currentTime = 0;
+      audioRefNew.current = null;
+      setIsPlaying(false);
+    }
+  }, []);
 
   const initializeRecognition = () => {
     let recognitionInstance;
@@ -175,62 +280,6 @@ const WordsOrImage = ({
       };
 
       setRecognition(recognitionInstance);
-    }
-  };
-
-  const playAudioFromBlob = (blob) => {
-    if (!(blob instanceof Blob)) {
-      console.error("Invalid input: Expected a Blob or File.");
-      return;
-    }
-
-    const audio = new Audio();
-    const objectUrl = URL.createObjectURL(blob);
-
-    audio.src = objectUrl;
-    audioRef.current = audio;
-
-    audio
-      .play()
-      .then(() => {
-        setIsPlaying(true);
-      })
-      .catch((error) => {
-        console.error("Error playing audio:", error);
-      });
-
-    audio.onended = () => {
-      URL.revokeObjectURL(objectUrl);
-      setIsPlaying(false);
-      audioRef.current = null;
-    };
-  };
-
-  const startAudioRecording = () => {
-    navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then((stream) => {
-        mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.ondataavailable = (event) => {
-          if (event.data.size > 0) {
-            recordedChunks.push(event.data);
-          }
-        };
-        mediaRecorder.start();
-      })
-      .catch((error) => {
-        console.error("Error accessing audio stream:", error);
-      });
-  };
-
-  const stopAudioRecording = () => {
-    if (mediaRecorder) {
-      mediaRecorder.stop();
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(recordedChunks, { type: "audio/webm" });
-        setRecordedAudioBlob(audioBlob);
-        recordedChunks = [];
-      };
     }
   };
 
@@ -296,6 +345,12 @@ const WordsOrImage = ({
   };
 
   const nextRecording = () => {
+    if (audioRefNew.current) {
+      audioRefNew.current.pause();
+      audioRefNew.current.currentTime = 0;
+      audioRefNew.current = null;
+      setIsPlaying(false);
+    }
     setShowListenRetryButtons(false);
     setShowSpeakButton(true);
     setShowStopButton(false);
@@ -858,7 +913,10 @@ const WordsOrImage = ({
                           cursor: "pointer",
                           //marginLeft: getMarginLeft(0),
                         }}
-                        onClick={stopCompleteAudio}
+                        onClick={() => {
+                          stopPlayback();
+                          //setIsPlaying(false);
+                        }}
                       >
                         <img
                           src={spinnerStop}
@@ -887,8 +945,10 @@ const WordsOrImage = ({
                           //marginLeft: getMarginLeft(0),
                         }}
                         onClick={() => {
-                          playAudioFromBlob(recordedAudioBlob);
+                          playRecordings();
+                          //setIsPlaying(true);
                         }}
+                        //disabled={!recordedAudioBlob}
                       >
                         <img
                           src={listenImg2}

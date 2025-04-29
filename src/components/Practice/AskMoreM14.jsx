@@ -736,6 +736,7 @@ const AskMoreM14 = ({
                           justifyContent: "center",
                           alignItems: "center",
                           minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                          cursor: "pointer",
                           //cursor: `url(${clapImage}) 32 24, auto`,
                         }}
                         onClick={() => {
