@@ -3,7 +3,7 @@ name: ALL new tn dev Deployment
 on:
   push:
     branches:
-      - all-1.4.0-dev
+      - mozhigal-2.1-dev
 
 jobs:
   deploy:
