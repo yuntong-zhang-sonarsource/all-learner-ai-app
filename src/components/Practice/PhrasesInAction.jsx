@@ -24,6 +24,8 @@ import {
   getLocalData,
   NextButtonRound,
   RetryIcon,
+  ListenButton,
+  StopButton,
 } from "../../utils/constants";
 
 const theme = createTheme();
@@ -1144,6 +1146,7 @@ const PhrasesInAction = ({
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [isRecordingStopped2, setIsRecordingStopped2] = useState(false);
   const [isAnswerIncorrect, setIsAnswerIncorrect] = useState(false);
+  const [audioInstance, setAudioInstance] = useState(null);
 
   const handleMicClick2 = () => {
     if (!isRecording2) {
@@ -1186,17 +1189,25 @@ const PhrasesInAction = ({
   };
 
   const playAudio2 = () => {
-    const audioElement = new Audio(
-      level === 3
-        ? levelData?.audio
-        : getAssetAudioUrl(s3Assets[levelData?.audio]) ||
-          Assets[levelData?.audio]
-    );
-    audioElement.play();
-    setIsPlaying(true);
-    audioElement.onended = () => {
+    if (isPlaying) {
+      // If already playing, stop the audio
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
       setIsPlaying(false);
-    };
+    } else {
+      const audioElement = new Audio(
+        level === 3
+          ? levelData?.audio
+          : getAssetAudioUrl(s3Assets[levelData?.audio]) ||
+            Assets[levelData?.audio]
+      );
+      audioElement.play();
+      setAudioInstance(audioElement);
+      setIsPlaying(true);
+      audioElement.onended = () => {
+        setIsPlaying(false);
+      };
+    }
   };
 
   // Step 3
@@ -1285,12 +1296,12 @@ const PhrasesInAction = ({
         <div
           style={{
             width: "100%",
-            height: "100vh",
+            height: "100%",
             backgroundColor: "#eae6ff",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            padding: "0px",
+            padding: "40px 0px",
           }}
         >
           <div
@@ -1305,6 +1316,7 @@ const PhrasesInAction = ({
               alignItems: "center",
               justifyContent: "center",
               border: "1px solid #d9d2fc",
+              padding: "50px 0px",
             }}
           >
             {/* <img
@@ -1344,17 +1356,39 @@ const PhrasesInAction = ({
                       <span style={{ margin: "0 10px" }}>
                         {levelData?.allwords[0]?.text}
                       </span>
-                      <img
-                        src={isPlaying ? pause : listenImg}
-                        alt="Audio Control"
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          marginLeft: "10px",
-                          cursor: "pointer",
-                        }}
-                        onClick={playAudio2}
-                      />
+                      {isPlaying ? (
+                        <Box
+                          sx={{
+                            marginTop: "7px",
+                            position: "relative",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                            cursor: "pointer",
+                          }}
+                          onClick={playAudio2}
+                        >
+                          <StopButton height={45} width={45} />
+                        </Box>
+                      ) : (
+                        <Box
+                          //className="walkthrough-step-1"
+                          sx={{
+                            marginTop: "7px",
+                            position: "relative",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                            cursor: "pointer",
+                            //cursor: `url(${clapImage}) 32 24, auto`,
+                          }}
+                          onClick={playAudio2}
+                        >
+                          <ListenButton height={50} width={50} />
+                        </Box>
+                      )}
                     </div>
                   )}
 
@@ -1449,7 +1483,15 @@ const PhrasesInAction = ({
                     }}
                   >
                     {isRecording && (
-                      <>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginBottom: "15px",
+                        }}
+                      >
                         <Box
                           style={{ marginTop: "10px", marginBottom: "50px" }}
                         >
@@ -1470,7 +1512,7 @@ const PhrasesInAction = ({
                             style={{ width: "60px", height: "60px" }}
                           />
                         </button>
-                      </>
+                      </div>
                     )}
 
                     {!isRecording && !isRecordingStopped && (
@@ -1523,25 +1565,39 @@ const PhrasesInAction = ({
                         <span style={{ margin: "0 10px", color: textColor }}>
                           {levelData?.correctWordTwo}
                         </span>
-                        <img
-                          src={isPlaying ? pause : listenImg}
-                          alt="Listen"
-                          style={{
-                            width: isMobile
-                              ? "30px"
-                              : isTablet
-                              ? "35px"
-                              : "40px",
-                            height: isMobile
-                              ? "30px"
-                              : isTablet
-                              ? "35px"
-                              : "40px",
-                            marginLeft: "10px",
-                            cursor: "pointer",
-                          }}
-                          onClick={playAudio2}
-                        />
+                        {isPlaying ? (
+                          <Box
+                            sx={{
+                              marginTop: "7px",
+                              position: "relative",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                              cursor: "pointer",
+                            }}
+                            onClick={playAudio2}
+                          >
+                            <StopButton height={45} width={45} />
+                          </Box>
+                        ) : (
+                          <Box
+                            //className="walkthrough-step-1"
+                            sx={{
+                              marginTop: "7px",
+                              position: "relative",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                              cursor: "pointer",
+                              //cursor: `url(${clapImage}) 32 24, auto`,
+                            }}
+                            onClick={playAudio2}
+                          >
+                            <ListenButton height={50} width={50} />
+                          </Box>
+                        )}
                       </div>
 
                       {isMatched ? (
@@ -1700,7 +1756,15 @@ const PhrasesInAction = ({
                     }}
                   >
                     {isRecording2 && (
-                      <>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginBottom: "15px",
+                        }}
+                      >
                         <Box
                           style={{ marginTop: "10px", marginBottom: "50px" }}
                         >
@@ -1732,7 +1796,7 @@ const PhrasesInAction = ({
                             }}
                           />
                         </button>
-                      </>
+                      </div>
                     )}
 
                     {isCorrectImageSelected &&

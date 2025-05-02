@@ -390,7 +390,9 @@ const AskMoreM14 = ({
       const audio = new Audio(correctSound);
       audio.play();
       setCurrentStep((prev) => prev + 1);
-      handleNext();
+      setTimeout(() => {
+        handleNext();
+      }, 2000);
       setShowPandaText(false);
     } else {
       const audio = new Audio(correctSound);
@@ -734,6 +736,7 @@ const AskMoreM14 = ({
                           justifyContent: "center",
                           alignItems: "center",
                           minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                          cursor: "pointer",
                           //cursor: `url(${clapImage}) 32 24, auto`,
                         }}
                         onClick={() => {

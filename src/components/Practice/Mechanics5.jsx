@@ -187,13 +187,18 @@ const Mechanics5 = ({
         <Grid item xs={4} position="relative">
           {/* Image with full-width gradient overlay on top */}
           {image?.split("/")?.[4] && (
-            <Box sx={{ position: "relative", cursor: "zoom-in" }}>
+            <Box
+              sx={{
+                position: "relative",
+                cursor: "zoom-in",
+                width: "fit-content",
+              }}
+            >
               <img
                 src={image}
                 style={{
                   borderRadius: "20px",
                   maxWidth: "100%",
-                  height: "250px",
                 }}
                 alt="contentImage"
                 onClick={() => setZoomOpen(true)} // Open modal on click

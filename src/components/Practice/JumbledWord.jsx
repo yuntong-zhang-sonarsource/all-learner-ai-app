@@ -450,10 +450,11 @@ const JumbledWord = ({
                       <div
                         style={{
                           display: "flex",
+                          flexDirection: "column",
                           alignItems: "center",
                           justifyContent: "center",
                           marginTop: "40px",
-                          position: "relative",
+                          //position: "relative",
                         }}
                       >
                         <Box>
@@ -461,7 +462,7 @@ const JumbledWord = ({
                         </Box>
                         <Box
                           sx={{
-                            //marginTop: "7px",
+                            marginTop: "50px",
                             //position: "relative",
                             display: "flex",
                             justifyContent: "center",

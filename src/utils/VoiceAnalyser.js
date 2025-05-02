@@ -749,6 +749,7 @@ function VoiceAnalyser(props) {
                         "Microphone is blocked. Enable microphone to continue.",
                       isError: true,
                     });
+                    setAudioPermission(true);
                   }}
                 >
                   <SpeakButton />
