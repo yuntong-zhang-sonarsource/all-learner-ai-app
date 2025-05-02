@@ -110,14 +110,15 @@ const PhoneConversation = ({
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
-
+  const intervalRef = useRef(null);
+  const indexRef = useRef(0);
   const transcriptRef = useRef("");
   useEffect(() => {
     transcriptRef.current = transcript;
     console.log("Live Transcript:", transcript);
   }, [transcript]);
 
-  console.log("showcase", fluency, isShowCase, livesData, gameOverData);
+  console.log("showcases", isShowCase, startShowCase);
 
   //steps = 1;
 
@@ -203,22 +204,38 @@ const PhoneConversation = ({
   }, [currentLevel]);
 
   useEffect(() => {
-    let index = 0;
     setVisibleMessages([]);
+    indexRef.current = 0;
 
-    const interval = setInterval(() => {
-      if (index < conversationData.length) {
-        setVisibleMessages((prev) => [...prev, conversationData[index]]);
-        index++;
-        const audio = new Audio(correctSound);
-        audio.play();
-      } else {
-        clearInterval(interval);
-      }
-    }, 1500);
+    const startInterval = () => {
+      intervalRef.current = setInterval(() => {
+        if (indexRef.current < conversationData.length) {
+          setVisibleMessages((prev) => [
+            ...prev,
+            conversationData[indexRef.current],
+          ]);
+          indexRef.current++;
+          const audio = new Audio(correctSound);
+          audio.play();
+        } else {
+          clearInterval(intervalRef.current);
+        }
+      }, 1500);
+    };
 
-    return () => clearInterval(interval);
-  }, [conversationData]);
+    if (!isShowCase || (isShowCase && startShowCase)) {
+      startInterval();
+    }
+
+    return () => clearInterval(intervalRef.current);
+  }, [conversationData, isShowCase, startShowCase]);
+
+  // Stop interval if showQuestion is true
+  useEffect(() => {
+    if (showQuestion) {
+      clearInterval(intervalRef.current);
+    }
+  }, [showQuestion]);
 
   console.log("m1011", currentLevel, selectedOption, recAudio);
 
@@ -323,7 +340,7 @@ const PhoneConversation = ({
         contentId: contentId,
       };
 
-      fetchASROutput(recAudio, options, setLoader, setApiResponse);
+      await fetchASROutput(recAudio, options, setLoader, setApiResponse);
     }
 
     setTimeout(() => {

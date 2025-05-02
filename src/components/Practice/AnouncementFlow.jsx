@@ -20,6 +20,8 @@ import {
   getLocalData,
   NextButtonRound,
   RetryIcon,
+  ListenButton,
+  StopButton,
 } from "../../utils/constants";
 import spinnerStop from "../../assets/pause.png";
 import raMic from "../../assets/listen.png";
@@ -123,8 +125,6 @@ const AnouncementFlow = ({
     transcriptRef.current = transcript;
     console.log("Live Transcript:", transcript);
   }, [transcript]);
-
-  console.log("showcase", fluency, isShowCase, livesData, gameOverData);
 
   // let mediaRecorder;
   // let recordedChunks = [];
@@ -1101,17 +1101,43 @@ const AnouncementFlow = ({
                   alignItems: "center",
                 }}
               >
-                <img
-                  src={isPlaying ? spinnerStop : listenImg2}
-                  alt="Audio"
-                  style={{
-                    height: "45px",
-                    width: "45px",
-                    cursor: "pointer",
-                    //: "5px",
-                  }}
-                  onClick={() => playAudio(conversationData[0].audio)}
-                />
+                {isPlaying ? (
+                  <Box
+                    sx={{
+                      marginTop: "7px",
+                      position: "relative",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      playAudio(conversationData[0]?.audio);
+                    }}
+                  >
+                    <StopButton height={45} width={45} />
+                  </Box>
+                ) : (
+                  <Box
+                    //className="walkthrough-step-1"
+                    sx={{
+                      marginTop: "7px",
+                      position: "relative",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                      cursor: "pointer",
+                      //cursor: `url(${clapImage}) 32 24, auto`,
+                    }}
+                    onClick={() => {
+                      playAudio(conversationData[0]?.audio);
+                    }}
+                  >
+                    <ListenButton height={50} width={50} />
+                  </Box>
+                )}
                 <div style={styles.questionBox}>
                   {tasks[currentTaskIndex]?.question?.value}
                 </div>

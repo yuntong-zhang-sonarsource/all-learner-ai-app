@@ -34,6 +34,7 @@ import {
 } from "../../utils/constants";
 import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
+import RecordVoiceVisualizer from "../../utils/RecordVoiceVisualizer";
 
 const levelMap = {
   10: level10,
@@ -94,6 +95,7 @@ const AnswerBox = ({ word, isSelected, isCorrect, onClick }) => (
       flexDirection: "column",
       alignItems: "center",
       cursor: "pointer",
+      borderRadius: "8px",
       backgroundColor: isSelected
         ? isCorrect
           ? "#58CC023D"
@@ -105,6 +107,7 @@ const AnswerBox = ({ word, isSelected, isCorrect, onClick }) => (
     <div
       style={{
         border: "0.1px solid #ccc",
+        borderRadius: "8px",
         padding: "10px",
         width: "89%",
         display: "flex",
@@ -131,6 +134,8 @@ const AnswerBox = ({ word, isSelected, isCorrect, onClick }) => (
         borderTop: "none",
         borderLeft: "0.5px solid #ccc",
         borderRight: "0.5px solid #ccc",
+        borderBottomLeftRadius: "8px",
+        borderBottomRightRadius: "8px",
       }}
     >
       {word.text}
@@ -221,7 +226,7 @@ function Step2({ handleNext, level, currentStep }) {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        height: "100vh",
+        height: "100%",
       }}
     >
       <div
@@ -276,19 +281,19 @@ function Step2({ handleNext, level, currentStep }) {
 
       <div
         style={{
-          fontSize: "24px",
-          margin: "20px 0",
-          fontWeight: "bold",
+          fontSize: "30px",
+          fontWeight: "600",
+          fontFamily: "Quicksand",
           textAlign: "center",
           whiteSpace: "pre-line",
-          marginBottom: "20px",
+          marginBottom: "50px",
+          marginTop: "30px",
+          color: "#333F61",
         }}
       >
-        <p>
-          {finalState
-            ? conversation[currentStep - 1]?.finalQuestion
-            : conversation[currentStep - 1]?.question}
-        </p>
+        {finalState
+          ? conversation[currentStep - 1]?.finalQuestion
+          : conversation[currentStep - 1]?.question}
       </div>
 
       <div
@@ -317,28 +322,65 @@ function Step2({ handleNext, level, currentStep }) {
               .map((word, index) => <AnswerBox key={index} word={word} />)}
       </div>
 
-      <BottomBar>
-        {showMessage && (
-          <div
-            style={{
-              background: "white",
-              padding: "10px 20px",
-              fontSize: "18px",
-              fontWeight: "bold",
-              borderRadius: "10px",
-            }}
-          >
-            Great job!
-          </div>
-        )}
+      {/* <BottomBar> */}
+      {showMessage && (
+        <div
+          style={{
+            background: "white",
+            padding: "10px 20px",
+            fontSize: "48px",
+            fontWeight: "700",
+            borderRadius: "10px",
+            color: "#333F61",
+            fontFamily: "Quicksand",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          Great job!
+        </div>
+      )}
 
-        {finalState && (
-          <>
-            {showMic && (
+      {finalState && (
+        <>
+          {showMic && (
+            <div>
+              <Box
+                sx={{
+                  marginTop: "7px",
+                  position: "relative",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                  cursor: "pointer",
+                  //marginLeft: getMarginLeft(0),
+                }}
+                onClick={handleMicClick}
+              >
+                <SpeakButton height={45} width={45} />
+              </Box>
+            </div>
+          )}
+
+          {showPause && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+              }}
+            >
+              <Box>
+                <RecordVoiceVisualizer />
+              </Box>
               <div>
                 <Box
                   sx={{
-                    marginTop: "7px",
+                    marginTop: "35px",
                     position: "relative",
                     display: "flex",
                     justifyContent: "center",
@@ -347,131 +389,70 @@ function Step2({ handleNext, level, currentStep }) {
                     cursor: "pointer",
                     //marginLeft: getMarginLeft(0),
                   }}
-                  onClick={handleMicClick}
+                  onClick={handlePauseClick}
                 >
-                  <SpeakButton height={45} width={45} />
+                  <StopButton height={45} width={45} />
                 </Box>
               </div>
-              // <button
-              //   onClick={handleMicClick}
-              //   style={{
-              //     background: "none",
-              //     border: "none",
-              //     padding: "5px",
-              //   }}
-              // >
-              //   <img
-              //     src={micImg}
-              //     alt="Microphone"
-              //     style={{
-              //       width: "45px",
-              //       backgroundColor: "white",
-              //       borderRadius: "50%",
-              //     }}
-              //   />
-              // </button>
-            )}
+            </div>
+          )}
 
-            {showPause && (
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
-                {showEffect && (
-                  <img
-                    src={effectImg}
-                    alt="Effect"
-                    style={{ width: "160px" }}
-                  />
-                )}
-                <div>
-                  <Box
-                    sx={{
-                      marginTop: "7px",
-                      position: "relative",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      minWidth: { xs: "50px", sm: "60px", md: "70px" },
-                      cursor: "pointer",
-                      //marginLeft: getMarginLeft(0),
-                    }}
-                    onClick={handlePauseClick}
-                  >
-                    <StopButton height={45} width={45} />
-                  </Box>
-                </div>
-                {/* <button
-                  onClick={handlePauseClick}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    padding: "5px",
-                  }}
-                >
-                  <img
-                    src={pauseImg}
-                    alt="Pause"
-                    style={{
-                      width: "45px",
-                      backgroundColor: "white",
-                      borderRadius: "50%",
-                    }}
-                  />
-                </button> */}
-              </div>
-            )}
+          {showNext && (
+            <div
+              onClick={() => {
+                handleNext();
+                setSelectedAnswer(null);
+                setIsCorrect(null);
+                setShowMessage(false);
+                setFinalState(false);
+                setShowMic(true);
+                setShowPause(false);
+                setShowNext(false);
+                setShowEffect(false);
+                setShowRedRectangle(false);
+              }}
+              style={{
+                cursor: "pointer",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <NextButtonRound height={50} width={50} />
+            </div>
+            // <button
+            //   style={{
+            //     background: "none",
+            //     border: "none",
+            //     padding: "3px",
+            //   }}
+            //   onClick={() => {
+            //     handleNext();
+            //     setSelectedAnswer(null);
+            //     setIsCorrect(null);
+            //     setShowMessage(false);
+            //     setFinalState(false);
+            //     setShowMic(true);
+            //     setShowPause(false);
+            //     setShowNext(false);
+            //     setShowEffect(false);
+            //     setShowRedRectangle(false);
+            //   }}
+            // >
+            //   <img
+            //     src={nextImg}
+            //     alt="Next"
+            //     style={{
+            //       width: "130px",
+            //       borderRadius: "30%",
+            //     }}
+            //   />
 
-            {showNext && (
-              <div
-                onClick={() => {
-                  handleNext();
-                  setSelectedAnswer(null);
-                  setIsCorrect(null);
-                  setShowMessage(false);
-                  setFinalState(false);
-                  setShowMic(true);
-                  setShowPause(false);
-                  setShowNext(false);
-                  setShowEffect(false);
-                  setShowRedRectangle(false);
-                }}
-                style={{ cursor: "pointer" }}
-              >
-                <NextButtonRound height={50} width={50} />
-              </div>
-              // <button
-              //   style={{
-              //     background: "none",
-              //     border: "none",
-              //     padding: "3px",
-              //   }}
-              //   onClick={() => {
-              //     handleNext();
-              //     setSelectedAnswer(null);
-              //     setIsCorrect(null);
-              //     setShowMessage(false);
-              //     setFinalState(false);
-              //     setShowMic(true);
-              //     setShowPause(false);
-              //     setShowNext(false);
-              //     setShowEffect(false);
-              //     setShowRedRectangle(false);
-              //   }}
-              // >
-              //   <img
-              //     src={nextImg}
-              //     alt="Next"
-              //     style={{
-              //       width: "130px",
-              //       borderRadius: "30%",
-              //     }}
-              //   />
-
-              // </button>
-            )}
-          </>
-        )}
-      </BottomBar>
+            // </button>
+          )}
+        </>
+      )}
+      {/* </BottomBar> */}
     </div>
   );
 }
@@ -509,8 +490,6 @@ function WhatsMissing({
   const [currentSteps, setCurrentSteps] = useState(2);
 
   const handleNextStep = () => setCurrentSteps(2);
-
-  steps = 1;
 
   console.log("lvls", currentStep);
 
