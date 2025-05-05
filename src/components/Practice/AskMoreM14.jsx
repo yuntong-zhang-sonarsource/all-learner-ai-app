@@ -141,10 +141,10 @@ const AskMoreM14 = ({
   }, [transcript]);
 
   const handleStartRecording = () => {
-    if (!browserSupportsSpeechRecognition) {
-      alert("Speech recognition is not supported in your browser.");
-      return;
-    }
+    // if (!browserSupportsSpeechRecognition) {
+    //   //alert("Speech recognition is not supported in your browser.");
+    //   return;
+    // }
     setRecAudio(null);
     resetTranscript();
     setIsRecording(true);

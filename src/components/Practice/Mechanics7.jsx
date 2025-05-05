@@ -411,10 +411,10 @@ const Mechanics7 = ({
   const startRecording = (word, isSelected) => {
     //console.log('recs', recognition);
     if (isChrome) {
-      if (!browserSupportsSpeechRecognition) {
-        alert("Speech recognition is not supported in your browser.");
-        return;
-      }
+      // if (!browserSupportsSpeechRecognition) {
+      //   //alert("Speech recognition is not supported in your browser.");
+      //   return;
+      // }
       resetTranscript();
       startAudioRecording();
       SpeechRecognition.startListening({
