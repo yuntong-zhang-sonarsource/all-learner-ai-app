@@ -844,7 +844,7 @@ const Practice = () => {
         (elem) => elem.title === practiceSteps?.[newPracticeStep]?.name
       );
 
-      console.log("cqer", currentQuestion, questions, updatedLevel);
+      console.log("cqer", currentQuestion, questions, level);
 
       // if(updatedLevel === 14){
       //   setCurrentQuestion(currentQuestion + 1);
@@ -969,7 +969,9 @@ const Practice = () => {
           return;
         }
 
-        if (![10, 11, 12, 13, 14, 15].includes(updatedLevel)) {
+        console.log("levelNew", level);
+
+        if (![10, 11, 12, 13, 14, 15].includes(level)) {
           const resGetContent = await axios.get(
             `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
               (currentGetContent?.mechanism?.id
@@ -1029,7 +1031,7 @@ const Practice = () => {
           setQuestions(quesArr);
         }
 
-        if ([10, 11, 12, 13, 14, 15].includes(updatedLevel)) {
+        if ([10, 11, 12, 13, 14, 15].includes(level)) {
           let showcaseLevel =
             currentPracticeStep === 3 || currentPracticeStep === 8;
           setIsShowCase(showcaseLevel);
@@ -1312,7 +1314,7 @@ const Practice = () => {
 
       console.log("crg", currentGetContent, level, virtualId, updatedLevel);
 
-      if (![10, 11, 12, 13, 14, 15].includes(updatedLevel)) {
+      if (![10, 11, 12, 13, 14, 15].includes(level)) {
         const resWord = await axios.get(
           `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_CONTENT}/${currentGetContent.criteria}/${virtualId}?language=${lang}&contentlimit=${limit}&gettargetlimit=${limit}` +
             (currentGetContent?.mechanism?.id
@@ -1352,7 +1354,7 @@ const Practice = () => {
         setQuestions(quesArr);
       }
 
-      if ([10, 11, 12, 13, 14, 15].includes(updatedLevel)) {
+      if ([10, 11, 12, 13, 14, 15].includes(level)) {
         const dummyQuestions = Array.from({ length: 5 }, (_, i) => ({
           id: `dummy-${i + 1}`,
         }));

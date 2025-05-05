@@ -20,6 +20,7 @@ import {
   ListenButton,
   NextButtonRound,
   RetryIcon,
+  getLocalData,
 } from "../../utils/constants";
 import { phoneticMatch } from "../../utils/phoneticUtils";
 import SpeechRecognition, {
@@ -27,6 +28,11 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import RecordVoiceVisualizer from "../../utils/RecordVoiceVisualizer";
 import Joyride from "react-joyride";
+import {
+  fetchASROutput,
+  handleTextEvaluation,
+  callTelemetryApi,
+} from "../../utils/apiUtil";
 
 // const isChrome =
 //   /Chrome/.test(navigator.userAgent) &&
@@ -311,6 +317,20 @@ const Mechanics7 = ({
       URL.revokeObjectURL(objectUrl);
       setIsPlaying(false);
     };
+  };
+
+  const callTelemetry = async () => {
+    const sessionId = getLocalData("sessionId");
+    const responseStartTime = new Date().getTime();
+    let responseText = "";
+    await callTelemetryApi(
+      currentText,
+      sessionId,
+      currentStep - 1,
+      recAudio,
+      responseStartTime,
+      responseText?.responseText || ""
+    );
   };
 
   const playWordAudio = (audio) => {
@@ -1273,6 +1293,7 @@ const Mechanics7 = ({
                 onClick={() => {
                   setIsRecorded(false);
                   if (isLastSyllable) {
+                    callTelemetry();
                     handleNext();
                     setStepIndex(0);
                   } else {

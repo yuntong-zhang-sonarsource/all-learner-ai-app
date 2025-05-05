@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { Box } from "@mui/material";
 import schoolsImg from "../../assets/schools.svg";
 import parkImg from "../../assets/park.svg";
@@ -35,6 +35,11 @@ import {
 import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 import RecordVoiceVisualizer from "../../utils/RecordVoiceVisualizer";
+import {
+  fetchASROutput,
+  handleTextEvaluation,
+  callTelemetryApi,
+} from "../../utils/apiUtil";
 
 const levelMap = {
   10: level10,
@@ -153,6 +158,89 @@ function Step2({ handleNext, level, currentStep }) {
   const [showNext, setShowNext] = useState(false);
   const [showEffect, setShowEffect] = useState(false);
   const [showRedRectangle, setShowRedRectangle] = useState(false);
+  const [recordedBlob, setRecordedBlob] = useState(null);
+  const mediaRecorderRef = useRef(null);
+  const recordedChunksRef = useRef([]);
+
+  const mimeType = "audio/webm;codecs=opus";
+
+  const startAudioRecording = useCallback(async () => {
+    setRecordedBlob(null);
+    recordedChunksRef.current = [];
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      if (!MediaRecorder.isTypeSupported(mimeType)) {
+        console.error("MIME type not supported:", mimeType);
+        return;
+      }
+
+      const mediaRecorder = new MediaRecorder(stream, { mimeType });
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          recordedChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        if (recordedChunksRef.current.length === 0) {
+          console.warn("No audio data captured.");
+          setRecordedBlob(null);
+          return;
+        }
+
+        const blob = new Blob(recordedChunksRef.current, { type: mimeType });
+        setRecordedBlob(blob);
+        recordedChunksRef.current = [];
+      };
+
+      mediaRecorderRef.current = mediaRecorder;
+      mediaRecorder.start(100); // Emit data every 100ms
+      //setIsRecording(true);
+    } catch (err) {
+      console.error("Error starting audio recording:", err);
+    }
+  }, []);
+
+  const stopAudioRecording = useCallback(() => {
+    const recorder = mediaRecorderRef.current;
+    if (recorder && recorder.state !== "inactive") {
+      recorder.requestData(); // Flush remaining data
+      recorder.stop();
+      //setIsRecording(false);
+    }
+  }, []);
+
+  const blobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64data = reader.result.split(",")[1];
+        resolve(base64data);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
+  const callTelemetry = async () => {
+    const sessionId = getLocalData("sessionId");
+    const responseStartTime = new Date().getTime();
+    let responseText = "";
+    const base64Data = await blobToBase64(recordedBlob);
+    //console.log("bvlobss", recordedBlob, conversation[currentStep - 1]?.correctAnswer)
+
+    await callTelemetryApi(
+      conversation[currentStep - 1]?.correctAnswer,
+      sessionId,
+      currentStep - 1,
+      base64Data,
+      responseStartTime,
+      responseText?.responseText || ""
+    );
+  };
 
   const getConversation = (level, currentLevel) => {
     const levelData = levelMap[level];
@@ -210,12 +298,14 @@ function Step2({ handleNext, level, currentStep }) {
 
   const handleMicClick = () => {
     setShowMic(false);
+    startAudioRecording();
     setShowPause(true);
     setShowEffect(true);
   };
 
   const handlePauseClick = () => {
     setShowPause(false);
+    stopAudioRecording();
     setShowNext(true);
     setShowEffect(true);
   };
@@ -400,6 +490,7 @@ function Step2({ handleNext, level, currentStep }) {
           {showNext && (
             <div
               onClick={() => {
+                callTelemetry();
                 handleNext();
                 setSelectedAnswer(null);
                 setIsCorrect(null);
