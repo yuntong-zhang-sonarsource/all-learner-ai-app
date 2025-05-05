@@ -33,10 +33,12 @@ import studentImg from "../../assets/student.png";
 import listenImg2 from "../../assets/listen.png";
 import spinnerStop from "../../assets/pause.png";
 
-const isChrome =
-  /Chrome/.test(navigator.userAgent) &&
-  /Google Inc/.test(navigator.vendor) &&
-  !/Edg/.test(navigator.userAgent);
+// const isChrome =
+//   /Chrome/.test(navigator.userAgent) &&
+//   /Google Inc/.test(navigator.vendor) &&
+//   !/Edg/.test(navigator.userAgent);
+
+const isChrome = true;
 
 const WordsOrImage = ({
   handleNext,
@@ -287,7 +289,7 @@ const WordsOrImage = ({
   const startRecording = (word, isSelected) => {
     if (isChrome) {
       if (!browserSupportsSpeechRecognition) {
-        alert("Speech recognition is not supported in your browser.");
+        //alert("Speech recognition is not supported in your browser.");
         return;
       }
       resetTranscript();

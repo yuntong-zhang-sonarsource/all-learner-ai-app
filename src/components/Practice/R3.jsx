@@ -258,10 +258,10 @@ const R3 = ({
   const startRecording = () => {
     setIsRecording(true);
     console.log("Recording started...");
-    if (!browserSupportsSpeechRecognition) {
-      alert("Speech recognition is not supported in your browser.");
-      return;
-    }
+    // if (!browserSupportsSpeechRecognition) {
+    //   //alert("Speech recognition is not supported in your browser.");
+    //   return;
+    // }
     resetTranscript();
     SpeechRecognition.startListening({
       continuous: true,
