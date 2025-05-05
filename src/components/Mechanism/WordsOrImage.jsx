@@ -287,10 +287,10 @@ const WordsOrImage = ({
 
   const startRecording = (word, isSelected) => {
     if (isChrome) {
-      if (!browserSupportsSpeechRecognition) {
-        //alert("Speech recognition is not supported in your browser.");
-        return;
-      }
+      // if (!browserSupportsSpeechRecognition) {
+      //   //alert("Speech recognition is not supported in your browser.");
+      //   return;
+      // }
       resetTranscript();
       startAudioRecording();
       SpeechRecognition.startListening({
@@ -317,14 +317,24 @@ const WordsOrImage = ({
         finalTranscript
       );
 
-      if (matchPercentage < 49) {
-        setAnswer(false);
-        const audio = new Audio(wrongSound);
-        audio.play();
-      } else {
+      const isFirefox =
+        typeof navigator !== "undefined" &&
+        navigator.userAgent.toLowerCase().includes("firefox");
+
+      if (isFirefox) {
         setAnswer(true);
         const audio = new Audio(correctSound);
         audio.play();
+      } else {
+        if (matchPercentage < 49) {
+          setAnswer(false);
+          const audio = new Audio(wrongSound);
+          audio.play();
+        } else {
+          setAnswer(true);
+          const audio = new Audio(correctSound);
+          audio.play();
+        }
       }
       setIsRecording(false);
       setShowStopButton(false);
@@ -433,6 +443,14 @@ const WordsOrImage = ({
   };
 
   const getAnswerColor = (answer) => {
+    const isFirefox =
+      typeof navigator !== "undefined" &&
+      navigator.userAgent.toLowerCase().includes("firefox");
+
+    if (isFirefox && (answer === true || answer === false)) {
+      return "green";
+    }
+
     if (answer === true) return "green";
     if (answer === false) return "red";
     return "#333F61";
