@@ -187,13 +187,18 @@ const Mechanics5 = ({
         <Grid item xs={4} position="relative">
           {/* Image with full-width gradient overlay on top */}
           {image?.split("/")?.[4] && (
-            <Box sx={{ position: "relative", cursor: "zoom-in" }}>
+            <Box
+              sx={{
+                position: "relative",
+                cursor: "zoom-in",
+                width: "fit-content",
+              }}
+            >
               <img
                 src={image}
                 style={{
                   borderRadius: "20px",
                   maxWidth: "100%",
-                  height: "250px",
                 }}
                 alt="contentImage"
                 onClick={() => setZoomOpen(true)} // Open modal on click
@@ -290,7 +295,13 @@ const Mechanics5 = ({
         </Grid>
 
         <Grid item xs={8} paddingLeft={2}>
-          <Box paddingBottom={3} marginLeft={-10} sx={{ display: "flex" }}>
+          <Box
+            paddingBottom={3}
+            sx={{
+              display: "flex",
+              marginLeft: mechanism === "mechanic_4" ? "-10px" : "",
+            }}
+          >
             <audio
               key={question_audio} // Key added to force remount when source changes
               ref={questionAudioRef}
@@ -322,11 +333,17 @@ const Mechanics5 = ({
             </span>
           </Box>
           <Box
-            sx={
-              mechanism === "mechanic_4"
-                ? { display: "flex", justifyContent: "center" }
-                : ""
-            }
+            sx={{
+              ...(mechanism === "mechanic_4" && {
+                display: "flex",
+                justifyContent: "center",
+              }),
+              "@media (max-width:1100px)": {
+                gap: "40px",
+                flexWrap: "wrap",
+                justifyContent: "space-evenly",
+              },
+            }}
           >
             {options && options.length > 0 ? (
               options.map((option, i) => (
@@ -376,7 +393,7 @@ const Mechanics5 = ({
                       />
                     )}
 
-                    <span
+                    <h1
                       style={{
                         color: "#262649",
                         fontWeight: 600,
@@ -386,7 +403,7 @@ const Mechanics5 = ({
                       }}
                     >
                       {option?.text || "Text is missing"}
-                    </span>
+                    </h1>
                   </Box>
                 </Box>
               ))

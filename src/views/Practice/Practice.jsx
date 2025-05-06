@@ -1281,7 +1281,8 @@ const Practice = () => {
 
       if (
         process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
-        localStorage.getItem("contentSessionId") !== null
+        (localStorage.getItem("contentSessionId") !== null ||
+          process.env.REACT_APP_IS_IN_APP_AUTHORISATION === "true")
       ) {
         const getPointersDetails = await axios.get(
           `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
@@ -1659,10 +1660,16 @@ const Practice = () => {
       (!mechanism && rFlow !== "true") ||
       (mechanism?.id === "mechanic_15" && rFlow !== "true")
     ) {
+      const mechanics_data = questions[currentQuestion]?.mechanics_data;
+
       return (
         <WordsOrImage
           {...{
             level: level,
+            audioLink:
+              mechanism?.id === "mechanic_15"
+                ? `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/mechanics_audios/${mechanics_data?.[0]?.audio_url}`
+                : null,
             mechanism_id: mechanism?.id,
             header:
               mechanism?.id &&

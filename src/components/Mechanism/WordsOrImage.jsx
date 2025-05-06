@@ -89,6 +89,7 @@ const WordsOrImage = ({
   setOpenMessageDialog,
   isNextButtonCalled,
   setIsNextButtonCalled,
+  audioLink,
 }) => {
   const audioRefs = createRef(null);
   const [audioInstance, setAudioInstance] = useState(null);
@@ -697,7 +698,7 @@ const WordsOrImage = ({
                         <p>Hint</p>
                         {showHint && (
                           <Box
-                            sx={{
+                            sx={(theme) => ({
                               position: "absolute",
                               bottom: "0px",
                               left: "90px",
@@ -727,7 +728,16 @@ const WordsOrImage = ({
                                 borderRadius: "50%",
                                 boxShadow: "10px 10px 0 0 #ffff12",
                               },
-                            }}
+                              [theme.breakpoints.down(1120)]: {
+                                left: "auto",
+                                right: "90px",
+                                "&::before": {
+                                  left: "auto",
+                                  right: "-15px",
+                                  boxShadow: "-10px 10px 0 0 #ffff12", // Flip direction
+                                },
+                              },
+                            })}
                           >
                             {hints}
                           </Box>
@@ -1052,6 +1062,7 @@ const WordsOrImage = ({
               handleNext={handleNext}
               enableNext={enableNext}
               isShowCase={isShowCase || isDiscover}
+              audioLink={audioLink ? audioLink : null}
               {...{
                 contentId,
                 contentType,
