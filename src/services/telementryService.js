@@ -22,8 +22,8 @@ function checkTokenInLocalStorage() {
 if (localStorage.getItem("contentSessionId") !== null) {
   contentSessionId = localStorage.getItem("contentSessionId");
 } else {
-  contentSessionId =
-    localStorage.getItem("virtualStorySessionID") || uniqueId();
+  contentSessionId = localStorage.getItem("sessionId") || uniqueId();
+  localStorage.setItem("sessionId", contentSessionId);
   localStorage.setItem("allAppContentSessionId", contentSessionId);
 }
 
@@ -251,7 +251,7 @@ export const getEventOptions = () => {
       }`,
       cdata: [
         {
-          id: localStorage.getItem("virtualStorySessionID") || contentSessionId,
+          id: localStorage.getItem("sessionId") || contentSessionId,
           type: "ContentSession",
         },
         { id: playSessionId, type: "PlaySession" },
