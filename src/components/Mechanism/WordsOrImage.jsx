@@ -19,6 +19,7 @@ import {
   StopButton,
   SpeakButton,
   NextButtonRound,
+  getLocalData,
 } from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
 import PropTypes from "prop-types";
@@ -32,6 +33,11 @@ import teacherImg from "../../assets/teacher.png";
 import studentImg from "../../assets/student.png";
 import listenImg2 from "../../assets/listen.png";
 import spinnerStop from "../../assets/pause.png";
+import {
+  fetchASROutput,
+  handleTextEvaluation,
+  callTelemetryApi,
+} from "../../utils/apiUtil";
 
 // const isChrome =
 //   /Chrome/.test(navigator.userAgent) &&
@@ -150,7 +156,9 @@ const WordsOrImage = ({
           return;
         }
 
-        const blob = new Blob(recordedChunksRef.current, { type: mimeType });
+        const blob = new Blob(recordedChunksRef.current, {
+          type: "audio/webm",
+        });
         setRecordedBlob(blob);
         recordedChunksRef.current = [];
       };
@@ -186,6 +194,8 @@ const WordsOrImage = ({
       setIsPlaying(true);
       return;
     }
+
+    console.log("bls", recordedBlob);
 
     const audioUrl = URL.createObjectURL(recordedBlob);
     const audio = new Audio(audioUrl);
@@ -350,6 +360,35 @@ const WordsOrImage = ({
     }
   };
 
+  const blobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64data = reader.result.split(",")[1];
+        resolve(base64data);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
+  const callTelemetry = async () => {
+    const sessionId = getLocalData("sessionId");
+    const responseStartTime = new Date().getTime();
+    let responseText = "";
+    const base64Data = await blobToBase64(recordedBlob);
+    console.log("bvlobss", recordedBlob);
+
+    await callTelemetryApi(
+      words,
+      sessionId,
+      currentStep - 1,
+      base64Data,
+      responseStartTime,
+      responseText?.responseText || ""
+    );
+  };
+
   const retryRecording = (word, isSelected) => {
     setShowListenRetryButtons(false);
     setShowSpeakButton(false);
@@ -364,6 +403,7 @@ const WordsOrImage = ({
       audioRefNew.current = null;
       setIsPlaying(false);
     }
+    callTelemetry();
     setShowListenRetryButtons(false);
     setShowSpeakButton(true);
     setShowStopButton(false);

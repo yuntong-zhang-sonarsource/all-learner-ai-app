@@ -27,7 +27,11 @@ import spinnerStop from "../../assets/pause.png";
 import raMic from "../../assets/listen.png";
 import raStop from "../../assets/pause.png";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
-import { fetchASROutput, handleTextEvaluation } from "../../utils/apiUtil";
+import {
+  fetchASROutput,
+  handleTextEvaluation,
+  callTelemetryApi,
+} from "../../utils/apiUtil";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -573,6 +577,10 @@ const AnouncementFlow = ({
     }
     setIsLoading(true);
 
+    const sessionId = getLocalData("sessionId");
+    const responseStartTime = new Date().getTime();
+    let responseText = "";
+
     if (currentLevel === "S1" || currentLevel === "S2") {
       const options = {
         originalText: correctAnswerText,
@@ -581,8 +589,18 @@ const AnouncementFlow = ({
         contentId: contentId,
       };
 
-      await fetchASROutput(recAudio, options, setLoader, setApiResponse);
+      responseText = await fetchASROutput(recAudio, options, setLoader);
+      setApiResponse(responseText);
     }
+    //console.log('apiResp', responseText);
+    await callTelemetryApi(
+      correctAnswerText,
+      sessionId,
+      currentStep - 1,
+      recAudio,
+      responseStartTime,
+      responseText?.responseText || ""
+    );
 
     setTimeout(() => {
       setRecAudio(null);

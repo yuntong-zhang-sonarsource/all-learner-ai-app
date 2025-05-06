@@ -2737,3 +2737,19 @@ export const closeIcon =
   "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/771b1015c6eec7e87e9969f7c63f93463b46b149/closeIcon.svg";
 export const allLevCompleted =
   "https://raw.githubusercontent.com/anik200002/imagesEkstep/2e2d21575a53c5dc9c5d615666db20fa2aaaf765/allCompleted.svg";
+export const r2MileImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/r2mile.png";
+export const r3MileImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/r3mile.png";
+export const r4MileImg =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/r4mile.png";
+export const dogGif =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/dogGif.gif";
+export const hintGif =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/refs/heads/main/handIconGif.gif";
+export const r3WrongTick =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/bf41e73150a28d6d818aa10806ca84ce4882bccc/r3WrongTick.svg";
+export const r3Reset =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/bf41e73150a28d6d818aa10806ca84ce4882bccc/r3Reset.svg";
+export const correctTick =
+  "https://raw.githubusercontent.com/Ayansaha20/EkStepImages/bf41e73150a28d6d818aa10806ca84ce4882bccc/correctTick.svg";

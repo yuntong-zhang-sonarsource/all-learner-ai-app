@@ -30,6 +30,11 @@ import wrongSound from "../../assets/audio/wrong.wav";
 import { Modal } from "@mui/material";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import CloseIcon from "@mui/icons-material/Close";
+import {
+  fetchASROutput,
+  handleTextEvaluation,
+  callTelemetryApi,
+} from "../../utils/apiUtil";
 
 const levelMap = {
   10: level10,
@@ -161,7 +166,19 @@ const McqFlow = ({
     setIsCorrect(null);
   };
 
-  const loadNextTask = () => {
+  const loadNextTask = async () => {
+    const sessionId = getLocalData("sessionId");
+    const responseStartTime = new Date().getTime();
+    let responseText = "";
+    //console.log("apiResp", responseText);
+    await callTelemetryApi(
+      conversation?.tasks[currentStep - 1]?.answer,
+      sessionId,
+      currentStep - 1,
+      recAudio,
+      responseStartTime,
+      responseText?.responseText || ""
+    );
     setRecAudio(null);
     handleNext();
     if (currentTaskIndex < tasks.length - 1) {
