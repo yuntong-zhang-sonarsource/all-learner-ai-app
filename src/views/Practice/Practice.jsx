@@ -886,7 +886,10 @@ const Practice = () => {
               user_id: virtualId,
               totalSyllableCount: totalSyllableCount,
               language: localStorage.getItem("lang"),
-              max_level: maxLevel || process.env.REACT_APP_MAX_LEVEL,
+              max_level: parseInt(
+                maxLevel || process.env.REACT_APP_MAX_LEVEL,
+                10
+              ),
               is_mechanics: mechanism && mechanism?.id ? true : false,
             }
           );
