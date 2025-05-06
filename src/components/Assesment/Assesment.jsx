@@ -739,7 +739,7 @@ const Assesment = ({ discoverStart }) => {
         let sessionId = getLocalData("sessionId");
 
         if (!sessionId || sessionId === "null") {
-          sessionId = uniqueId();
+          sessionId = localStorage.getItem("contentSessionId") || uniqueId();
           localStorage.setItem("sessionId", sessionId);
         }
 
