@@ -1058,27 +1058,69 @@ const AnouncementFlow = ({
               )}
 
               {step === "start" && (
-                <img
-                  src={raMic}
-                  alt="Start"
-                  height={"70px"}
-                  width={"70px"}
-                  onClick={handleReadAloud}
-                  style={{ cursor: "pointer", marginTop: "50px" }}
-                />
+                // <img
+                //   src={raMic}
+                //   alt="Start"
+                //   height={"70px"}
+                //   width={"70px"}
+                //   onClick={() => {
+                //     playAudio(conversationData[0]?.audio)
+                //   }}
+                //   style={{ cursor: "pointer", marginTop: "50px" }}
+                // />
+                <>
+                  {isPlaying ? (
+                    <Box
+                      sx={{
+                        marginTop: "7px",
+                        position: "relative",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        playAudio(conversationData[0]?.audio);
+                        setStep("stopped");
+                      }}
+                    >
+                      <StopButton height={45} width={45} />
+                    </Box>
+                  ) : (
+                    <Box
+                      //className="walkthrough-step-1"
+                      sx={{
+                        marginTop: "7px",
+                        position: "relative",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                        cursor: "pointer",
+                        //cursor: `url(${clapImage}) 32 24, auto`,
+                      }}
+                      onClick={() => {
+                        playAudio(conversationData[0]?.audio);
+                      }}
+                    >
+                      <ListenButton height={45} width={45} />
+                    </Box>
+                  )}
+                </>
               )}
 
               {/* Stop Button */}
-              {step === "playing" && (
-                <img
-                  src={raStop}
-                  alt="Stop"
-                  height={"70px"}
-                  width={"70px"}
-                  onClick={handleReadAloud}
-                  style={{ cursor: "pointer", marginTop: "50px" }}
-                />
-              )}
+              {/* {step === "playing" && (
+                // <img
+                //   src={raStop}
+                //   alt="Stop"
+                //   height={"70px"}
+                //   width={"70px"}
+                //   onClick={handleReadAloud}
+                //   style={{ cursor: "pointer", marginTop: "50px" }}
+              
+              )} */}
 
               {/* Replay & Next Buttons */}
               {step === "stopped" && (
@@ -1093,8 +1135,13 @@ const AnouncementFlow = ({
                     onClick={handleReplay}
                     style={{ cursor: "pointer", marginTop: "80px" }}
                   /> */}
-                  <div onClick={handleReplay} style={{ cursor: "pointer" }}>
-                    <RetryIcon height={70} width={70} />
+                  <div
+                    onClick={() => {
+                      setStep("start");
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <RetryIcon height={45} width={45} />
                   </div>
                   {/* <img
                     src={raNext}
@@ -1105,7 +1152,7 @@ const AnouncementFlow = ({
                     style={{ cursor: "pointer", marginTop: "80px" }}
                   /> */}
                   <div onClick={handleNextClick} style={{ cursor: "pointer" }}>
-                    <NextButtonRound height={70} width={70} />
+                    <NextButtonRound height={45} width={45} />
                   </div>
                 </div>
               )}
