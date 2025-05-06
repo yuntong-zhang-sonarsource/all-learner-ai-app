@@ -886,7 +886,7 @@ const Practice = () => {
               user_id: virtualId,
               totalSyllableCount: totalSyllableCount,
               language: localStorage.getItem("lang"),
-              max_level: maxLevel || 15,
+              max_level: maxLevel || process.env.REACT_APP_MAX_LEVEL,
               is_mechanics: mechanism && mechanism?.id ? true : false,
             }
           );
