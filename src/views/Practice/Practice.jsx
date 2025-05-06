@@ -876,6 +876,7 @@ const Practice = () => {
 
         if (isShowCase || isGameOver) {
           const sub_session_id = getLocalData("sub_session_id");
+          const maxLevel = getLocalData("max_level");
           const getSetResultRes = await axios.post(
             `${process.env.REACT_APP_LEARNER_AI_APP_HOST}/${config.URLS.GET_SET_RESULT}`,
             {
@@ -885,7 +886,10 @@ const Practice = () => {
               user_id: virtualId,
               totalSyllableCount: totalSyllableCount,
               language: localStorage.getItem("lang"),
-              max_level: 15,
+              max_level: parseInt(
+                maxLevel || process.env.REACT_APP_MAX_LEVEL,
+                10
+              ),
               is_mechanics: mechanism && mechanism?.id ? true : false,
             }
           );
