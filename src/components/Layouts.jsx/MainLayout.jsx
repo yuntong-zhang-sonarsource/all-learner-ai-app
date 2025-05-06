@@ -528,11 +528,11 @@ const MainLayout = (props) => {
                           <img
                             src={
                               props.rStep === 2
-                                ? rTwoMileImage
+                                ? Assets.r2MileImg
                                 : props.rStep === 3
-                                ? rThreeMileImage
+                                ? Assets.r3MileImg
                                 : props.rStep === 4
-                                ? rFourMileImage
+                                ? Assets.r4MileImg
                                 : null
                             }
                             alt={`R Step ${props.rStep}`}

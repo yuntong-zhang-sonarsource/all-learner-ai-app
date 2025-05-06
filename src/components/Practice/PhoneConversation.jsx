@@ -23,7 +23,11 @@ import {
   RetryIcon,
 } from "../../utils/constants";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
-import { fetchASROutput, handleTextEvaluation } from "../../utils/apiUtil";
+import {
+  fetchASROutput,
+  handleTextEvaluation,
+  callTelemetryApi,
+} from "../../utils/apiUtil";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -240,10 +244,10 @@ const PhoneConversation = ({
   console.log("m1011", currentLevel, selectedOption, recAudio);
 
   const handleStartRecording = () => {
-    if (!browserSupportsSpeechRecognition) {
-      alert("Speech recognition is not supported in your browser.");
-      return;
-    }
+    // if (!browserSupportsSpeechRecognition) {
+    //   //alert("Speech recognition is not supported in your browser.");
+    //   return;
+    // }
     setRecAudio(null);
     resetTranscript();
     setIsRecording(true);
@@ -332,6 +336,10 @@ const PhoneConversation = ({
     }
     setIsLoading(true);
 
+    const sessionId = getLocalData("sessionId");
+    const responseStartTime = new Date().getTime();
+    let responseText = "";
+
     if (currentLevel === "S1" || currentLevel === "S2") {
       const options = {
         originalText: correctAnswerText,
@@ -340,8 +348,17 @@ const PhoneConversation = ({
         contentId: contentId,
       };
 
-      await fetchASROutput(recAudio, options, setLoader, setApiResponse);
+      responseText = await fetchASROutput(recAudio, options, setLoader);
+      setApiResponse(responseText);
     }
+    await callTelemetryApi(
+      correctAnswerText,
+      sessionId,
+      currentStep - 1,
+      recAudio,
+      responseStartTime,
+      responseText?.responseText || ""
+    );
 
     setTimeout(() => {
       setRecAudio(null);

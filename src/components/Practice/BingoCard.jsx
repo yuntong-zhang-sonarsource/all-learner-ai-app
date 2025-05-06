@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import * as Assets from "../../utils/imageAudioLinks";
 import * as s3Assets from "../../utils/s3Links";
 import { getAssetUrl } from "../../utils/s3Links";
@@ -23,6 +23,11 @@ import SpeechRecognition, {
 import MainLayout from "../Layouts.jsx/MainLayout";
 import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
+import {
+  fetchASROutput,
+  handleTextEvaluation,
+  callTelemetryApi,
+} from "../../utils/apiUtil";
 
 // const isChrome =
 //   /Chrome/.test(navigator.userAgent) &&
@@ -109,6 +114,89 @@ const BingoCard = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
   const [scale, setScale] = useState(1);
+  const [recordedBlob, setRecordedBlob] = useState(null);
+  const mediaRecorderRef = useRef(null);
+  const recordedChunksRef = useRef([]);
+
+  const mimeType = "audio/webm;codecs=opus";
+
+  const startAudioRecording = useCallback(async () => {
+    setRecordedBlob(null);
+    recordedChunksRef.current = [];
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      if (!MediaRecorder.isTypeSupported(mimeType)) {
+        console.error("MIME type not supported:", mimeType);
+        return;
+      }
+
+      const mediaRecorder = new MediaRecorder(stream, { mimeType });
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          recordedChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        if (recordedChunksRef.current.length === 0) {
+          console.warn("No audio data captured.");
+          setRecordedBlob(null);
+          return;
+        }
+
+        const blob = new Blob(recordedChunksRef.current, { type: mimeType });
+        setRecordedBlob(blob);
+        recordedChunksRef.current = [];
+      };
+
+      mediaRecorderRef.current = mediaRecorder;
+      mediaRecorder.start(100); // Emit data every 100ms
+      setIsRecording(true);
+    } catch (err) {
+      console.error("Error starting audio recording:", err);
+    }
+  }, []);
+
+  const stopAudioRecording = useCallback(() => {
+    const recorder = mediaRecorderRef.current;
+    if (recorder && recorder.state !== "inactive") {
+      recorder.requestData(); // Flush remaining data
+      recorder.stop();
+      setIsRecording(false);
+    }
+  }, []);
+
+  const blobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64data = reader.result.split(",")[1];
+        resolve(base64data);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
+  const callTelemetry = async () => {
+    const sessionId = getLocalData("sessionId");
+    const responseStartTime = new Date().getTime();
+    let responseText = "";
+    const base64Data = await blobToBase64(recordedBlob);
+    console.log("bvlobss", recordedBlob);
+
+    await callTelemetryApi(
+      levels[currentLevel]?.arrM[currentWordIndex],
+      sessionId,
+      currentStep - 1,
+      base64Data,
+      responseStartTime,
+      responseText?.responseText || ""
+    );
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -135,11 +223,12 @@ const BingoCard = ({
   const startRecording = (word, isSelected) => {
     //console.log('recs', recognition);
     if (isChrome) {
-      if (!browserSupportsSpeechRecognition) {
-        alert("Speech recognition is not supported in your browser.");
-        return;
-      }
+      // if (!browserSupportsSpeechRecognition) {
+      //   //alert("Speech recognition is not supported in your browser.");
+      //   return;
+      // }
       resetTranscript();
+      startAudioRecording();
       SpeechRecognition.startListening({
         continuous: true,
         interimResults: true,
@@ -153,6 +242,7 @@ const BingoCard = ({
   const stopRecording = () => {
     if (isChrome) {
       SpeechRecognition.stopListening();
+      stopAudioRecording();
       const finalTranscript = transcriptRef.current;
       setIsMicOn(false);
       setIsRecording(false);
@@ -764,6 +854,7 @@ const BingoCard = ({
 
   const handleNextButton = () => {
     if (currentWordIndex < levels[currentLevel]?.arrM.length - 1) {
+      callTelemetry();
       setCurrentWordIndex(currentWordIndex + 1);
       setShowNextButton(false);
       setShowHint(false);
@@ -773,6 +864,7 @@ const BingoCard = ({
       startAudio(currentWordIndex + 1);
       handleNext();
     } else {
+      callTelemetry();
       handleNext();
     }
   };

@@ -799,7 +799,7 @@ const R3 = ({
                 }}
                 src={Assets.pzMic}
                 alt="mic"
-                style={{ width: "70px", height: "70px" }}
+                style={{ width: "70px", height: "70px", cursor: "pointer" }}
               />
             </div>
           )}

@@ -258,10 +258,10 @@ const R3 = ({
   const startRecording = () => {
     setIsRecording(true);
     console.log("Recording started...");
-    if (!browserSupportsSpeechRecognition) {
-      alert("Speech recognition is not supported in your browser.");
-      return;
-    }
+    // if (!browserSupportsSpeechRecognition) {
+    //   //alert("Speech recognition is not supported in your browser.");
+    //   return;
+    // }
     resetTranscript();
     SpeechRecognition.startListening({
       continuous: true,
@@ -417,7 +417,7 @@ const R3 = ({
               >
                 {/* Dog Image - Moves with Progress */}
                 <img
-                  src={dogGif}
+                  src={Assets.dogGif}
                   alt="Dog"
                   style={{
                     position: "relative",
@@ -530,7 +530,7 @@ const R3 = ({
                     >
                       {index === activeIndex && (
                         <img
-                          src={handIconGif}
+                          src={Assets.hintGif}
                           alt="Hint"
                           style={{
                             position: "absolute",
@@ -698,7 +698,7 @@ const R3 = ({
                 }}
               >
                 <img
-                  src={isMatch ? correctTick : r3WrongTick}
+                  src={isMatch ? Assets.correctTick : Assets.r3WrongTick}
                   alt="Effect"
                   style={{
                     height: "80px",
@@ -718,7 +718,7 @@ const R3 = ({
                 }}
               >
                 <img
-                  src={r3Reset}
+                  src={Assets.r3Reset}
                   alt="Effect"
                   style={{
                     height: "80px",

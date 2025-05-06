@@ -793,7 +793,7 @@ const R1 = ({
                 }}
                 src={Assets.pzMic}
                 alt="mic"
-                style={{ width: "70px", height: "70px" }}
+                style={{ width: "70px", height: "70px", cursor: "pointer" }}
               />
             </div>
           )}
@@ -845,7 +845,12 @@ const R1 = ({
                   if (currentQuestionIndex === content.L1.length - 1) {
                     setLocalData("rFlow", false);
                     setLocalData("mFail", false);
-                    window.location.reload();
+                    //window.location.reload();
+                    if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+                      navigate("/");
+                    } else {
+                      navigate("/discover-start");
+                    }
                   } else {
                     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
                   }

@@ -27,7 +27,11 @@ import spinnerStop from "../../assets/pause.png";
 import raMic from "../../assets/listen.png";
 import raStop from "../../assets/pause.png";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
-import { fetchASROutput, handleTextEvaluation } from "../../utils/apiUtil";
+import {
+  fetchASROutput,
+  handleTextEvaluation,
+  callTelemetryApi,
+} from "../../utils/apiUtil";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -199,10 +203,10 @@ const AnouncementFlow = ({
   }, [currentTaskIndex, tasks]);
 
   const handleStartRecording = () => {
-    if (!browserSupportsSpeechRecognition) {
-      alert("Speech recognition is not supported in your browser.");
-      return;
-    }
+    // if (!browserSupportsSpeechRecognition) {
+    //   //alert("Speech recognition is not supported in your browser.");
+    //   return;
+    // }
     setRecAudio(null);
     resetTranscript();
     setIsRecording(true);
@@ -573,6 +577,10 @@ const AnouncementFlow = ({
     }
     setIsLoading(true);
 
+    const sessionId = getLocalData("sessionId");
+    const responseStartTime = new Date().getTime();
+    let responseText = "";
+
     if (currentLevel === "S1" || currentLevel === "S2") {
       const options = {
         originalText: correctAnswerText,
@@ -581,8 +589,18 @@ const AnouncementFlow = ({
         contentId: contentId,
       };
 
-      await fetchASROutput(recAudio, options, setLoader, setApiResponse);
+      responseText = await fetchASROutput(recAudio, options, setLoader);
+      setApiResponse(responseText);
     }
+    //console.log('apiResp', responseText);
+    await callTelemetryApi(
+      correctAnswerText,
+      sessionId,
+      currentStep - 1,
+      recAudio,
+      responseStartTime,
+      responseText?.responseText || ""
+    );
 
     setTimeout(() => {
       setRecAudio(null);
@@ -1040,27 +1058,69 @@ const AnouncementFlow = ({
               )}
 
               {step === "start" && (
-                <img
-                  src={raMic}
-                  alt="Start"
-                  height={"70px"}
-                  width={"70px"}
-                  onClick={handleReadAloud}
-                  style={{ cursor: "pointer", marginTop: "50px" }}
-                />
+                // <img
+                //   src={raMic}
+                //   alt="Start"
+                //   height={"70px"}
+                //   width={"70px"}
+                //   onClick={() => {
+                //     playAudio(conversationData[0]?.audio)
+                //   }}
+                //   style={{ cursor: "pointer", marginTop: "50px" }}
+                // />
+                <>
+                  {isPlaying ? (
+                    <Box
+                      sx={{
+                        marginTop: "7px",
+                        position: "relative",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        playAudio(conversationData[0]?.audio);
+                        setStep("stopped");
+                      }}
+                    >
+                      <StopButton height={45} width={45} />
+                    </Box>
+                  ) : (
+                    <Box
+                      //className="walkthrough-step-1"
+                      sx={{
+                        marginTop: "7px",
+                        position: "relative",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minWidth: { xs: "50px", sm: "60px", md: "70px" },
+                        cursor: "pointer",
+                        //cursor: `url(${clapImage}) 32 24, auto`,
+                      }}
+                      onClick={() => {
+                        playAudio(conversationData[0]?.audio);
+                      }}
+                    >
+                      <ListenButton height={45} width={45} />
+                    </Box>
+                  )}
+                </>
               )}
 
               {/* Stop Button */}
-              {step === "playing" && (
-                <img
-                  src={raStop}
-                  alt="Stop"
-                  height={"70px"}
-                  width={"70px"}
-                  onClick={handleReadAloud}
-                  style={{ cursor: "pointer", marginTop: "50px" }}
-                />
-              )}
+              {/* {step === "playing" && (
+                // <img
+                //   src={raStop}
+                //   alt="Stop"
+                //   height={"70px"}
+                //   width={"70px"}
+                //   onClick={handleReadAloud}
+                //   style={{ cursor: "pointer", marginTop: "50px" }}
+              
+              )} */}
 
               {/* Replay & Next Buttons */}
               {step === "stopped" && (
@@ -1075,8 +1135,13 @@ const AnouncementFlow = ({
                     onClick={handleReplay}
                     style={{ cursor: "pointer", marginTop: "80px" }}
                   /> */}
-                  <div onClick={handleReplay} style={{ cursor: "pointer" }}>
-                    <RetryIcon height={70} width={70} />
+                  <div
+                    onClick={() => {
+                      setStep("start");
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <RetryIcon height={45} width={45} />
                   </div>
                   {/* <img
                     src={raNext}
@@ -1087,7 +1152,7 @@ const AnouncementFlow = ({
                     style={{ cursor: "pointer", marginTop: "80px" }}
                   /> */}
                   <div onClick={handleNextClick} style={{ cursor: "pointer" }}>
-                    <NextButtonRound height={70} width={70} />
+                    <NextButtonRound height={45} width={45} />
                   </div>
                 </div>
               )}
