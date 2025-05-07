@@ -75,6 +75,7 @@ jobs:
           REACT_APP_SHOW_HELP_VIDEO: ${{ vars.REACT_APP_SHOW_HELP_VIDEO }}
           REACT_APP_PARENT_ORIGIN_URL: ${{ vars.REACT_APP_PARENT_ORIGIN_URL }}
           REACT_APP_SHOW_HELP_VIDEO_LINK: ${{ vars.REACT_APP_SHOW_HELP_VIDEO_LINK }}
+          REACT_APP_MAX_LEVEL: ${{ vars.REACT_APP_MAX_LEVEL }}
           CI: false # Disabling CI to not treat warnings as errors
         run: npm run build
 
