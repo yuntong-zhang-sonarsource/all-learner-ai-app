@@ -301,7 +301,7 @@ function VoiceAnalyser(props) {
     if (props.originalText) {
       setEnableAfterLoad(true);
     }
-  }, [props.originalText]);
+  }, [props.originalText, recordedAudio]);
 
   useEffect(() => {
     if (recordedAudioBase64 !== "") {

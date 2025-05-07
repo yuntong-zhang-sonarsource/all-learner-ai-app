@@ -159,7 +159,12 @@ const McqFlow = ({
     setShowQuestion(false);
   }, [currentLevel]);
 
-  console.log("mcqFlow", conversation, currentStep);
+  const task = conversation?.tasks[currentStep - 1];
+  const correctAnswer = task?.options.find(
+    (option) => option.id === task.answer
+  )?.value;
+
+  console.log("mcqFlow", correctAnswer);
 
   const resetState = () => {
     setSelectedOption(null);
