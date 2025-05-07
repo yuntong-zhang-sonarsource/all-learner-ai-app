@@ -11,7 +11,7 @@ import {
   randomizeArray,
 } from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
-import correctSound from "../../assets/audio/correct.wav";
+import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 

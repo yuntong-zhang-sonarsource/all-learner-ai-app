@@ -40,6 +40,17 @@ import desktopLevel6 from "../../assets/images/desktopLevel6.png";
 import desktopLevel7 from "../../assets/images/desktopLevel7.png";
 import desktopLevel8 from "../../assets/images/desktopLevel8.png";
 import desktopLevel9 from "../../assets/images/desktopLevel9.png";
+import desktopLevel10 from "../../assets/images/desktopLevel10.png";
+import desktopLevel11 from "../../assets/images/desktopLevel11.png";
+import desktopLevel12 from "../../assets/images/desktopLevel12.png";
+import desktopLevel13 from "../../assets/images/desktopLevel13.png";
+import desktopLevel14 from "../../assets/images/desktopLevel14.png";
+import desktopLevel15 from "../../assets/images/desktopLevel15.png";
+import rOneImage from "../../assets/R1Back.png";
+import rTwoImage from "../../assets/R2Back.png";
+import rThreeImage from "../../assets/R3Back.png";
+import rFourImage from "../../assets/R4Back.png";
+import Image from "../../assets/images/DeskTopR1Image.png";
 import profilePic from "../../assets/images/profile_url.png";
 import textureImage from "../../assets/images/textureImage.png";
 import back from "../../assets/images/back-arrow.png";
@@ -49,6 +60,8 @@ import panda from "../../assets/images/panda.svg";
 import cryPanda from "../../assets/images/cryPanda.svg";
 import { uniqueId } from "../../services/utilService";
 import { end } from "../../services/telementryService";
+import { levelMapping } from "../../utils/levelData";
+import scoreView from "../../assets/images/scoreView.svg";
 
 export const LanguageModal = ({ lang, setLang, setOpenLangModal }) => {
   const [selectedLang, setSelectedLang] = useState(lang);
@@ -474,26 +487,28 @@ export const ProfileHeader = ({
             alignItems: "center",
           }}
         >
-          {/* <Box sx={{ position: "relative" }} mr="10px">
-            <img
-              src={scoreView}
-              alt="scoreView"
-              width={"86px"}
-              height={"35px"}
-            />
-            <Box sx={{ position: "absolute", top: "6px", right: "16px" }}>
-              <span
-                style={{
-                  color: "#FFDD39",
-                  fontWeight: 700,
-                  fontSize: "18px",
-                  fontFamily: "Quicksand",
-                }}
-              >
-                {points}
-              </span>
+          {process.env.REACT_APP_IS_IN_APP_AUTHORISATION === "true" && (
+            <Box sx={{ position: "relative" }} mr="10px">
+              <img
+                src={scoreView}
+                alt="scoreView"
+                width={"86px"}
+                height={"35px"}
+              />
+              <Box sx={{ position: "absolute", top: "6px", right: "16px" }}>
+                <span
+                  style={{
+                    color: "#FFDD39",
+                    fontWeight: 700,
+                    fontSize: "18px",
+                    fontFamily: "Quicksand",
+                  }}
+                >
+                  {points}
+                </span>
+              </Box>
             </Box>
-          </Box> */}
+          )}
 
           <Box
             mr={{ xs: "10px", sm: "90px" }}
@@ -586,6 +601,51 @@ const Assesment = ({ discoverStart }) => {
         setLevel(
           getMilestoneDetails?.data.data?.milestone_level?.replace("m", "")
         );
+
+        // if(usernameDetails?.data?.result?.virtualID === "6760800019"){
+        //   setLevel(12);
+        // }
+        // if(usernameDetails?.data?.result?.virtualID === "1621936833"){
+        //   setLevel(13);
+        // }
+        // if(usernameDetails?.data?.result?.virtualID === "9526496994"){
+        //   setLevel(14);
+        // }
+        // if(usernameDetails?.data?.result?.virtualID === "7656513916"){
+        //   setLevel(4);
+        // }
+        // if(usernameDetails?.data?.result?.virtualID === "3464419415"){
+        //   setLevel(5);
+        // }
+        // if(usernameDetails?.data?.result?.virtualID === "6131132191"){
+        //   setLevel(6);
+        // }
+        // if(usernameDetails?.data?.result?.virtualID === "8909322850"){
+        //   setLevel(7);
+        // }
+
+        if (
+          levelMapping[usernameDetails?.data?.result?.virtualID] !== undefined
+        ) {
+          setLevel(levelMapping[usernameDetails?.data?.result?.virtualID]);
+        } else {
+          const token = getLocalData("token");
+          if (token) {
+            try {
+              const decoded = jwtDecode(token);
+              const emisUsername = String(decoded.emis_username);
+
+              if (levelMapping[emisUsername] !== undefined) {
+                setLevel(levelMapping[emisUsername]);
+              }
+            } catch (error) {
+              console.error("Error decoding JWT token:", error);
+            }
+          }
+        }
+
+        console.log("Assigned LEVEL:", level);
+
         localStorage.setItem(
           "virtualId",
           usernameDetails?.data?.result?.virtualID
@@ -598,7 +658,11 @@ const Assesment = ({ discoverStart }) => {
         }
 
         localStorage.setItem("lang", lang || "ta");
-        if (process.env.REACT_APP_IS_APP_IFRAME !== "true" && localStorage.getItem("contentSessionId") !== null) {
+        if (
+          process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
+          (localStorage.getItem("contentSessionId") !== null ||
+            process.env.REACT_APP_IS_IN_APP_AUTHORISATION === "true")
+        ) {
           const getPointersDetails = await axios.get(
             `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${usernameDetails?.data?.result?.virtualID}/${session_id}?language=${lang}`
           );
@@ -630,14 +694,61 @@ const Assesment = ({ discoverStart }) => {
             getMilestoneDetails?.data.data?.milestone_level?.replace("m", "")
           )
         );
+        // if(virtualId === "6760800019"){
+        //   setLevel(12);
+        // }
+        // if(virtualId === "1621936833"){
+        //   setLevel(13);
+        // }
+        // if(virtualId === "9526496994"){
+        //   setLevel(14);
+        // }
+        // if(virtualId === "7656513916"){
+        //   setLevel(4);
+        // }
+        // if(virtualId === "3464419415"){
+        //   setLevel(5);
+        // }
+        // if(virtualId === "6131132191"){
+        //   setLevel(6);
+        // }
+        // if(virtualId === "8909322850"){
+        //   setLevel(7);
+        // }
+
+        if (levelMapping[virtualId] !== undefined) {
+          setLevel(levelMapping[virtualId]);
+        } else {
+          const token = getLocalData("token");
+          if (token) {
+            try {
+              const decoded = jwtDecode(token);
+              const emisUsername = String(decoded.emis_username);
+
+              if (levelMapping[emisUsername] !== undefined) {
+                setLevel(levelMapping[emisUsername]);
+              }
+            } catch (error) {
+              console.error("Error decoding JWT token:", error);
+            }
+          }
+        }
+
+        console.log("Assigned LEVEL:", level);
+
         let sessionId = getLocalData("sessionId");
 
         if (!sessionId || sessionId === "null") {
-          sessionId = uniqueId();
+          sessionId = localStorage.getItem("contentSessionId") || uniqueId();
           localStorage.setItem("sessionId", sessionId);
         }
 
-        if (process.env.REACT_APP_IS_APP_IFRAME !== "true" && virtualId && localStorage.getItem("contentSessionId") !== null) {
+        if (
+          process.env.REACT_APP_IS_APP_IFRAME !== "true" &&
+          virtualId &&
+          (localStorage.getItem("contentSessionId") !== null ||
+            process.env.REACT_APP_IS_IN_APP_AUTHORISATION === "true")
+        ) {
           const getPointersDetails = await axios.get(
             `${process.env.REACT_APP_LEARNER_AI_ORCHESTRATION_HOST}/${config.URLS.GET_POINTER}/${virtualId}/${sessionId}?language=${lang}`
           );
@@ -711,12 +822,36 @@ const Assesment = ({ discoverStart }) => {
     desktopLevel7,
     desktopLevel8,
     desktopLevel9,
+    desktopLevel10,
+    desktopLevel11,
+    desktopLevel12,
+    desktopLevel13,
+    desktopLevel14,
+    desktopLevel15,
   };
+
+  const rFlow = getLocalData("rFlow");
+  const rStep = Number(getLocalData("rStep")) || 2;
 
   const sectionStyle = {
     width: "100vw",
     height: "100vh",
-    backgroundImage: `url(${images?.[`desktopLevel${level || 1}`]})`,
+    // backgroundImage: `url(${
+    //   rFlow === "true" ? rOneImage : images?.[`desktopLevel${level || 1}`]
+    // })`,
+    backgroundImage: `url(${
+      rFlow === "true"
+        ? level == 1
+          ? rOneImage
+          : level == 2 && rStep === 2
+          ? rTwoImage
+          : level == 2 && rStep === 3
+          ? rThreeImage
+          : level == 2 && rStep === 4
+          ? rFourImage
+          : images?.[`desktopLevel${level || 1}`]
+        : images?.[`desktopLevel${level || 1}`]
+    })`,
     backgroundRepeat: "round",
     backgroundSize: "auto",
     position: "relative",
@@ -772,7 +907,7 @@ const Assesment = ({ discoverStart }) => {
             >
               <Box
                 sx={{
-                  width: "165px",
+                  width: rFlow === "true" ? "190px" : "165px",
                   height: "64px",
                   background: levelConfig[level].color,
                   borderRadius: "10px",
@@ -795,7 +930,9 @@ const Assesment = ({ discoverStart }) => {
                     textShadow: "#000 1px 0 10px",
                   }}
                 >
-                  {`Start Level ${level}`}
+                  {rFlow === "true"
+                    ? `Start Refresher ${level === 1 ? "1" : rStep}`
+                    : `Start Level ${level}`}
                 </span>
               </Box>
             </Box>
@@ -874,6 +1011,7 @@ const Assesment = ({ discoverStart }) => {
                 sx={{
                   cursor: "pointer",
                   mt: { xs: 1, md: 2 },
+                  zIndex: 9999,
                 }}
                 onClick={handleRedirect}
               >

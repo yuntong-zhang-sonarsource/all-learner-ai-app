@@ -11,9 +11,9 @@ import {
   randomizeArray,
 } from "../../utils/constants";
 import MainLayout from "../Layouts.jsx/MainLayout";
-import correctSound from "../../assets/audio/correct.wav";
+import correctSound from "../../assets/correct.wav";
 import wrongSound from "../../assets/audio/wrong.wav";
-import removeSound from "../../assets/audio/remove.wav";
+import removeSound from "../../assets/remove.wav";
 import VoiceAnalyser from "../../utils/VoiceAnalyser";
 import { Modal } from "@mui/material";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
@@ -57,7 +57,7 @@ const Mechanics2 = ({
   options,
   audio,
   isNextButtonCalled,
-  setIsNextButtonCalled
+  setIsNextButtonCalled,
 }) => {
   const [words, setWords] = useState([]);
   const [sentences, setSentences] = useState([]);
@@ -514,7 +514,7 @@ const Mechanics2 = ({
               showOnlyListen: !answer?.isAns,
               setOpenMessageDialog,
               isNextButtonCalled,
-              setIsNextButtonCalled
+              setIsNextButtonCalled,
             }}
           />
         </Box>

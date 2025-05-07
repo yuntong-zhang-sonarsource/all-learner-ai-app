@@ -308,6 +308,11 @@ const SpeakSentenceComponent = () => {
     //   navigate("/discover-start")
     // }
   };
+
+  useEffect(() => {
+    localStorage.setItem("mechanism_id", "");
+  }, []);
+
   return (
     <>
       {!!openMessageDialog && (
@@ -337,7 +342,7 @@ const SpeakSentenceComponent = () => {
           storyLine,
           handleNext,
           type: questions[currentQuestion]?.contentType,
-          image: elephant,
+          // image: elephant,
           enableNext,
           showTimer: false,
           points,

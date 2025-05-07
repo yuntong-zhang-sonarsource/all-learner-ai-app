@@ -15,6 +15,8 @@ const AudioRecorder = (props) => {
   const mediaStreamRef = useRef(null);
   const [showLoader, setShowLoader] = useState(false);
 
+  console.log("pageName", props.pageName);
+
   useEffect(() => {
     // Cleanup when component unmounts
     return () => {
@@ -49,6 +51,8 @@ const AudioRecorder = (props) => {
       recorderRef.current.startRecording();
 
       setIsRecording(true);
+
+      props.handleStartRecording?.();
     } catch (err) {
       console.error("Failed to start recording:", err);
     }
@@ -73,6 +77,8 @@ const AudioRecorder = (props) => {
           }
           setIsRecording(false);
           props.setEnableNext?.(true);
+
+          props.handleStopRecording?.();
         });
       }
     }, 500);
@@ -84,6 +90,28 @@ const AudioRecorder = (props) => {
     const url = window.URL.createObjectURL(blob);
     props?.setRecordedAudio(url);
   };
+
+  const getPulseAnimationStyle = (color) => ({
+    position: "absolute",
+    width: "90px",
+    height: "90px",
+    backgroundColor: color,
+    borderRadius: "50%",
+    animation: "pulse 1.2s linear infinite",
+    "@keyframes pulse": {
+      "0%": {
+        transform: "scale(0.6)",
+        opacity: 0,
+      },
+      "50%": {
+        opacity: 1,
+      },
+      "100%": {
+        transform: "scale(1.4)",
+        opacity: 0,
+      },
+    },
+  });
 
   return (
     <div>
@@ -101,16 +129,54 @@ const AudioRecorder = (props) => {
                 }}
               >
                 <Box
-                  sx={{ cursor: "pointer", height: "38px" }}
+                  sx={{
+                    cursor: "pointer",
+                    ...((props.pageName === "m7" ||
+                      props.pageName === "m8") && {
+                      width: "90px",
+                      height: "90px",
+                      borderRadius: "50%",
+                      position: "relative",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }),
+                  }}
                   onClick={stopRecording}
                 >
-                  <StopButton />
+                  <Box
+                    sx={
+                      props.pageName === "m7" ||
+                      (props.pageName === "m8" && props.buttonAnimation)
+                        ? getPulseAnimationStyle("#FF4B4B33")
+                        : {}
+                    }
+                  />
+                  <Box
+                    sx={{
+                      position: "relative",
+                      zIndex: 1,
+                    }}
+                  >
+                    <StopButton
+                      height={
+                        props.pageName == "m7" || props.pageName === "m8"
+                          ? 45
+                          : 70
+                      }
+                      width={
+                        props.pageName == "m7" || props.pageName === "m8"
+                          ? 45
+                          : 70
+                      }
+                    />
+                  </Box>
                 </Box>
                 {showLoader ? (
                   <div className="loader"></div>
                 ) : (
-                  <Box style={{ marginTop: "50px", marginBottom: "50px" }}>
-                    <RecordVoiceVisualizer />
+                  <Box style={{ marginTop: "10px", marginBottom: "50px" }}>
+                    {props.pageName !== "m8" && <RecordVoiceVisualizer />}
                   </Box>
                 )}
               </div>
@@ -120,16 +186,19 @@ const AudioRecorder = (props) => {
               <div
                 style={{
                   display: !props.showOnlyListen ? "flex" : "",
-                  justifyContent: "space-between",
                   margin: "0 auto",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
                 className="game-action-button"
               >
                 {props.enableAfterLoad &&
                   props?.originalText &&
-                  (!props.dontShowListen || props.recordedAudio) && (
+                  (!props.dontShowListen ||
+                    props.recordedAudio ||
+                    !props.pageName === "m8") && (
                     <>
-                      {!props.isShowCase && (
+                      {!props.isShowCase && !(props.pageName === "m8") && (
                         <Box>
                           {!props.pauseAudio ? (
                             <div
@@ -138,7 +207,20 @@ const AudioRecorder = (props) => {
                               }}
                             >
                               <Box sx={{ cursor: "pointer" }}>
-                                <ListenButton />
+                                <ListenButton
+                                  height={
+                                    props.pageName == "m7" ||
+                                    props.pageName === "m8"
+                                      ? 45
+                                      : 70
+                                  }
+                                  width={
+                                    props.pageName == "m7" ||
+                                    props.pageName === "m8"
+                                      ? 45
+                                      : 70
+                                  }
+                                />
                               </Box>
                             </div>
                           ) : (
@@ -148,14 +230,27 @@ const AudioRecorder = (props) => {
                                 props.playAudio(false);
                               }}
                             >
-                              <StopButton />
+                              <StopButton
+                                height={
+                                  props.pageName == "m7" ||
+                                  props.pageName === "m8"
+                                    ? 45
+                                    : 70
+                                }
+                                width={
+                                  props.pageName == "m7" ||
+                                  props.pageName === "m8"
+                                    ? 45
+                                    : 70
+                                }
+                              />
                             </Box>
                           )}
                         </Box>
                       )}
                       <Box
                         sx={{
-                          marginLeft: props.isShowCase ? "" : "35px",
+                          marginLeft: props.isShowCase ? "" : "30px",
                           cursor: "pointer",
                         }}
                       >
@@ -166,7 +261,13 @@ const AudioRecorder = (props) => {
                                 !props.isStudentAudioPlaying
                               )
                             }
-                            style={{ height: "70px" }}
+                            style={{
+                              height:
+                                props.pageName == "m7" ||
+                                props.pageName === "m8"
+                                  ? 45
+                                  : 70,
+                            }}
                             src={
                               props.isStudentAudioPlaying
                                 ? pauseButton
@@ -186,15 +287,70 @@ const AudioRecorder = (props) => {
                     props?.originalText &&
                     !props.showOnlyListen && (
                       <Box
-                        marginLeft={
-                          !props.dontShowListen || props.recordedAudio
-                            ? "32px"
-                            : "0px"
-                        }
+                        marginLeft={props.recordedAudio ? "32px" : "0px"}
                         sx={{ cursor: "pointer" }}
                         onClick={startRecording}
                       >
-                        {!props.recordedAudio ? <SpeakButton /> : <RetryIcon />}
+                        {!props.recordedAudio ? (
+                          <Box
+                            sx={{
+                              ...((props.pageName == "m7" ||
+                                props.pageName === "m8") && {
+                                width: "90px",
+                                height: "90px",
+                                borderRadius: "50%",
+                                position: "relative",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }),
+                            }}
+                          >
+                            <Box
+                              sx={
+                                props.pageName == "m7" ||
+                                (props.pageName === "m8" &&
+                                  props.buttonAnimation)
+                                  ? getPulseAnimationStyle("#58CC0233")
+                                  : {}
+                              }
+                            />
+                            <Box
+                              sx={{
+                                position: "relative",
+                                zIndex: 1,
+                              }}
+                            >
+                              <SpeakButton
+                                height={
+                                  props.pageName == "m7" ||
+                                  props.pageName === "m8"
+                                    ? 45
+                                    : 70
+                                }
+                                width={
+                                  props.pageName == "m7" ||
+                                  props.pageName === "m8"
+                                    ? 45
+                                    : 70
+                                }
+                              />
+                            </Box>
+                          </Box>
+                        ) : (
+                          <RetryIcon
+                            height={
+                              props.pageName == "m7" || props.pageName === "m8"
+                                ? 45
+                                : 70
+                            }
+                            width={
+                              props.pageName == "m7" || props.pageName === "m8"
+                                ? 45
+                                : 70
+                            }
+                          />
+                        )}
                       </Box>
                     )
                   ) : (

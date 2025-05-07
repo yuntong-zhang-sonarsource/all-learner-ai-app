@@ -103,12 +103,15 @@ function VoiceAnalyser(props) {
       return;
     }
     const { audioLink } = props;
+    console.log("llink", audioLink);
+
     try {
       let audio = new Audio(
         audioLink
           ? audioLink
           : `${process.env.REACT_APP_AWS_S3_BUCKET_CONTENT_URL}/all-audio-files/${lang}/${props.contentId}.wav`
       );
+      console.log("audo", audio);
       audio.addEventListener("canplaythrough", () => {
         set_temp_audio(audio);
         setPauseAudio(val);
@@ -262,13 +265,24 @@ function VoiceAnalyser(props) {
         reader.onload = function (e) {
           let base64Data = e.target.result.split(",")[1];
           setRecordedAudioBase64(base64Data);
+          if (props.pageName === "m7" || props.pageName === "m8") {
+            props.onAudioProcessed(base64Data);
+          }
         };
       };
       request.send();
     } else {
-      setLoader(false);
-      setRecordedAudioBase64("");
-      setApiResponse("");
+      if (props.pageName === "m8") {
+        setTimeout(() => {
+          setLoader(false);
+          setRecordedAudioBase64("");
+          setApiResponse("");
+        }, 1500);
+      } else {
+        setLoader(false);
+        setRecordedAudioBase64("");
+        setApiResponse("");
+      }
     }
   }, [recordedAudio]);
 
@@ -287,7 +301,7 @@ function VoiceAnalyser(props) {
     if (props.originalText) {
       setEnableAfterLoad(true);
     }
-  }, [props.originalText]);
+  }, [props.originalText, recordedAudio]);
 
   useEffect(() => {
     if (recordedAudioBase64 !== "") {
@@ -534,7 +548,13 @@ function VoiceAnalyser(props) {
           setPauseAudio(false);
         }
       }
-      setLoader(false);
+      if (props.pageName === "m8") {
+        setTimeout(() => {
+          setLoader(false);
+        }, 1500);
+      } else {
+        setLoader(false);
+      }
       if (props.setIsNextButtonCalled) {
         props.setIsNextButtonCalled(false);
       }
@@ -690,6 +710,7 @@ function VoiceAnalyser(props) {
               return (
                 <>
                   <AudioCompare
+                    pageName={props.pageName}
                     setRecordedAudio={setRecordedAudio}
                     originalText={props.originalText}
                     playAudio={playAudio}
@@ -708,6 +729,9 @@ function VoiceAnalyser(props) {
                     showOnlyListen={props.showOnlyListen}
                     setOpenMessageDialog={props.setOpenMessageDialog}
                     enableAfterLoad={enableAfterLoad}
+                    buttonAnimation={props.buttonAnimation}
+                    handleStartRecording={props.handleStartRecording}
+                    handleStopRecording={props.handleStopRecording}
                   />
                   {/* <RecordVoiceVisualizer /> */}
                 </>
@@ -725,6 +749,7 @@ function VoiceAnalyser(props) {
                         "Microphone is blocked. Enable microphone to continue.",
                       isError: true,
                     });
+                    setAudioPermission(true);
                   }}
                 >
                   <SpeakButton />
@@ -736,18 +761,31 @@ function VoiceAnalyser(props) {
       )}
       {!loader && (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          {props.enableNext && (
+          {props.enableNext && props.pageName !== "m8" && (
             <Box
               sx={{ cursor: "pointer" }}
               onClick={() => {
                 if (props.setIsNextButtonCalled) {
                   props.setIsNextButtonCalled(true);
+                  if (props.pageName === "m7" || props.pageName === "m8") {
+                    props.onAudioProcessed("");
+                  }
                 } else {
                   props.handleNext();
+                  if (props.pageName === "m7" || props.pageName === "m8") {
+                    props.onAudioProcessed("");
+                  }
                 }
               }}
             >
-              <NextButtonRound />
+              <NextButtonRound
+                height={
+                  props.pageName == "m7" || props.pageName === "m8" ? 45 : 70
+                }
+                width={
+                  props.pageName == "m7" || props.pageName === "m8" ? 45 : 70
+                }
+              />
             </Box>
           )}
         </Box>
@@ -758,6 +796,7 @@ function VoiceAnalyser(props) {
 
 VoiceAnalyser.propTypes = {
   enableNext: PropTypes.bool.isRequired,
+  onAudioProcessed: PropTypes.func,
   setIsNextButtonCalled: PropTypes.func,
   handleNext: PropTypes.func.isRequired,
   originalText: PropTypes.string,
@@ -776,6 +815,8 @@ VoiceAnalyser.propTypes = {
   contentId: PropTypes.string,
   updateStoredData: PropTypes.func.isRequired,
   pageName: PropTypes.string,
+  handleStartRecording: PropTypes.func,
+  handleStopRecording: PropTypes.func,
 };
 
 export default VoiceAnalyser;
