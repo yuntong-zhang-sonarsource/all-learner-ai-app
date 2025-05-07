@@ -16,6 +16,8 @@ import { MessageDialog } from "../Assesment/Assesment";
 import { Log } from "../../services/telementryService";
 import usePreloadAudio from "../../hooks/usePreloadAudio";
 
+const PARENT_ORIGIN = process.env.REACT_APP_PARENT_ORIGIN || "*";
+
 const SpeakSentenceComponent = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const navigate = useNavigate();
@@ -110,7 +112,7 @@ const SpeakSentenceComponent = () => {
           score: score,
           message: "all-test-rig-score",
         },
-        "*"
+        PARENT_ORIGIN
       );
     }
   };

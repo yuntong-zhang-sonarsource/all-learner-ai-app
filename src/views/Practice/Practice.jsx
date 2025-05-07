@@ -734,6 +734,9 @@ const Practice = () => {
     }
   }, [voiceText]);
 
+  // Define the trusted parent origin from environment variable
+  const PARENT_ORIGIN = process.env.REACT_APP_PARENT_ORIGIN || "";
+
   const send = (score) => {
     if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
       window.parent.postMessage(
@@ -741,7 +744,7 @@ const Practice = () => {
           score: score,
           message: "all-test-rig-score",
         },
-        "*"
+        PARENT_ORIGIN
       );
     }
   };
@@ -1637,24 +1640,25 @@ const Practice = () => {
     }
   }
 
-  useEffect(() => {
-    if (questions[currentQuestion]?.contentSourceData) {
-      if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-        const contentSourceData =
-          questions[currentQuestion]?.contentSourceData || [];
-        const stringLengths = contentSourceData.map((item) => item.text.length);
-        const length =
-          questions[currentQuestion]?.mechanics_data &&
-          (questions[currentQuestion]?.mechanics_data[0]?.mechanics_id ===
-            "mechanic_2" ||
-            questions[currentQuestion]?.mechanics_data[0]?.mechanics_id ===
-              "mechanic_1")
-            ? 500
-            : stringLengths[0];
-        window.parent.postMessage({ type: "stringLengths", length }, "*");
-      }
-    }
-  }, [questions[currentQuestion]]);
+   useEffect(() => {
+     if (questions[currentQuestion]?.contentSourceData) {
+       if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
+         const contentSourceData =
+           questions[currentQuestion]?.contentSourceData || [];
+         const stringLengths = contentSourceData.map((item) => item.text.length);
+         const length =
+           questions[currentQuestion]?.mechanics_data &&
+           (questions[currentQuestion]?.mechanics_data[0]?.mechanics_id ===
+             "mechanic_2" ||
+             questions[currentQuestion]?.mechanics_data[0]?.mechanics_id ===
+               "mechanic_1")
+             ? 500
+             : stringLengths[0];
+         const parentOrigin = process.env.REACT_APP_PARENT_ORIGIN || window.origin;
+         window.parent.postMessage({ type: "stringLengths", length }, parentOrigin);
+       }
+     }
+   }, [questions[currentQuestion]]);
 
   console.log("mec", mechanism, level, rFlow);
 

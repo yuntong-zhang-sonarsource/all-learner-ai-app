@@ -359,10 +359,13 @@ export const ProfileHeader = ({
   const navigate = useNavigate();
   const [openMessageDialog, setOpenMessageDialog] = useState("");
 
+  // Get the trusted parent origin from environment variable, fallback to '*'
+  const parentOrigin = process.env.REACT_APP_PARENT_ORIGIN || "*";
+
   const handleProfileBack = () => {
     try {
       if (process.env.REACT_APP_IS_APP_IFRAME === "true") {
-        window.parent.postMessage({ type: "restore-iframe-content" }, "*");
+        window.parent.postMessage({ type: "restore-iframe-content" }, parentOrigin);
         navigate("/");
       } else {
         navigate("/discover-start");
